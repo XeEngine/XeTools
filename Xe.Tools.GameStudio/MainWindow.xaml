@@ -1,0 +1,39 @@
+﻿<Window x:Class="Xe.Tools.GameStudio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.GameStudio"
+        mc:Ignorable="d"
+        Title="XeEngine Game Studio" Height="350" Width="356.395">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem x:Name="_menuFileProperties" Header="_New" Click="MenuItem_FileNewClick"/>
+                    <MenuItem x:Name="_menuFileOpen" Header="_Open..." Click="MenuItem_FileOpenClick"/>
+                    <MenuItem x:Name="_menuFileSave" Header="_Save" Click="MenuItem_FileSaveClick"/>
+                    <MenuItem x:Name="_menuFileSaveAs" Header="Save _as..." Click="MenuItem_FileSaveAsClick"/>
+                    <Separator/>
+                    <MenuItem Header="Recent pro_jects">
+                        <Separator/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem x:Name="_fileExit" Header="E_xit" Click="MenuItem_ExitClick"/>
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Settings"/>
+                </MenuItem>
+                <MenuItem Header="_View">
+                </MenuItem>
+                <MenuItem Header="_Project">
+                    <MenuItem Header="_Run"/>
+                    <MenuItem Header="_Build"/>
+                    <MenuItem Header="_Clean"/>
+                    <Separator/>
+                    <MenuItem x:Name="_menuProjectProperties" Header="_Properties" Click="MenuItem_ProjectPropertiesClick"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+    </Grid>
+</Window>
