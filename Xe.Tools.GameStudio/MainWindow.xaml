@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         mc:Ignorable="d"
-        Title="XeEngine Game Studio" Height="350" Width="356.395">
+        Title="XeEngine Game Studio" Height="350" Width="350" Initialized="Window_Initialized">
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -34,6 +34,15 @@
                     <MenuItem x:Name="_menuProjectProperties" Header="_Properties" Click="MenuItem_ProjectPropertiesClick"/>
                 </MenuItem>
             </Menu>
+            <DockPanel>
+                <local:ResourceView x:Name="ctrlResourceView" Width="224">
+
+                </local:ResourceView>
+                <StackPanel>
+                    
+                </StackPanel>
+            </DockPanel>
         </DockPanel>
+
     </Grid>
 </Window>

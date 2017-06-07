@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Xe.Tools
 {
@@ -13,8 +14,12 @@ namespace Xe.Tools
 	}
 
 	public partial class Project : IInfoLastEdit
-	{
-		private string _filename;
+    {
+        private string _filename;
+        private string _projectFileName;
+        private string _projectPath;
+        private Version _version = new Version();
+        private List<Container> _containers = new List<Container>();
 		
 		[JsonIgnore]
 		public string FileName
@@ -23,25 +28,36 @@ namespace Xe.Tools
 			private set
 			{
 				_filename = value;
-				ProjectFileName = Path.GetFileName(_filename);
-				ProjectPath = Path.GetDirectoryName(Path.GetFullPath(_filename));
+                _projectFileName = Path.GetFileName(_filename);
+                _projectPath = Path.GetDirectoryName(Path.GetFullPath(_filename));
 			}
 		}
 
 		[JsonIgnore]
-		public string ProjectFileName { get; private set; }
+		public string ProjectFileName { get => _projectFileName; }
 		
 		[JsonIgnore]
-		public string ProjectPath { get; private set; }
+		public string ProjectPath { get => _projectPath; }
 
 		public string Name { get; set; }
-		public string Shortname { get; set; }
-		public Version Version { get; set; }
+		public string ShortName { get; set; }
+		public Version Version
+		{
+            get => _version;
+            set { _version = value != null ? _version : new Version(); }
+		}
 		public string Company { get; set; }
 		public string Producer { get; set; }
-		public string Year { get; set; }
+		public string Copyright { get; set; }
+		public int Year { get; set; }
 
-		public string ProcessString(string str)
+        public List<Container> Containers
+        {
+            get => _containers;
+            set { _containers = value != null ? _containers : new List<Container>(); }
+        }
+
+        public string ProcessString(string str)
 		{
 			int i = 0;
 			while (i < str.Length - 2)
@@ -101,7 +117,7 @@ namespace Xe.Tools
 			{
 				using (var writer = new StreamWriter(file))
 				{
-					writer.Write(JsonConvert.SerializeObject(this));
+					writer.Write(JsonConvert.SerializeObject(this, Formatting.Indented));
 				}
 			}
 		}
@@ -119,8 +135,7 @@ namespace Xe.Tools
 				default:
 					throw new ArgumentException($"{filename} seems to not be a xml or json file.");
 			}
-			project.ProjectFileName = Path.GetFileName(filename);
-			project.ProjectPath = Path.GetDirectoryName(Path.GetFullPath(filename));
+			project.FileName = filename;
 			return project;
 		}
 
@@ -134,7 +149,7 @@ namespace Xe.Tools
 			{
 				using (var reader = new StreamReader(file))
 				{
-					return JsonConvert.DeserializeObject<Project>(reader.ReadLine());
+					return JsonConvert.DeserializeObject<Project>(reader.ReadToEnd());
 				}
 			}
 		}

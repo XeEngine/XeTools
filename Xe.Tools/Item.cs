@@ -22,20 +22,21 @@ namespace Xe.Tools
 			/// <summary>
 			/// Ogni oggetto ha un proprio tipo che ne descriverà il contenuto.
 			/// </summary>
-			public string Type;
-			/// <summary>
-			/// Nome human-friendly da dare ad un oggetto.
-			/// </summary>
-			public string Alias;
-			/// <summary>
-			/// Nome del file o percorso da caricare in input.
-			/// Il percorso non è processato.
-			/// </summary>
-			public string Input;
-			/// <summary>
-			/// Nome del file o percorso usato come output.
-			/// </summary>
-			public string Output;
+			public string Type { get; set; }
+            /// <summary>
+            /// Nome human-friendly da dare ad un oggetto.
+            /// </summary>
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+			public string Alias { get; set; }
+            /// <summary>
+            /// Nome del file o percorso da caricare in input.
+            /// Il percorso non è processato.
+            /// </summary>
+            public string Input { get; set; }
+            /// <summary>
+            /// Nome del file o percorso usato come output.
+            /// </summary>
+            public string Output { get; set; }
 
 			/// <summary>
 			/// Lista dei parametri per modificare il comporamento di un oggetto.
@@ -66,21 +67,27 @@ namespace Xe.Tools
 				get { return _parameters; }
 			}
 
-			/// <summary>
-			/// Come Input, ma fornisce un percorso concreto del file.
-			/// </summary>
-			public string FileNameInput
-			{ get { return Parent.ProcessPath(Input, false); } }
-			/// <summary>
-			/// Come Output, ma fornisce un percorso concreto del file.
-			/// </summary>
-			public string FileNameOutput
-			{ get { return Parent.ProcessPath(Output, false); } }
+            /// <summary>
+            /// Come Input, ma fornisce un percorso concreto del file.
+            /// </summary>
+            [JsonIgnore]
+            public string FileNameInput
+			{ get { return Parent?.ProcessPath(Input, false); } }
 
-			public string RelativeFileNameInput
-			{ get { return Parent.ProcessPath(Input, true); } }
-			public string RelativeFileNameOutput
-			{ get { return Parent.ProcessPath(Output, true); } }
+            /// <summary>
+            /// Come Output, ma fornisce un percorso concreto del file.
+            /// </summary>
+            [JsonIgnore]
+            public string FileNameOutput
+			{ get { return Parent?.ProcessPath(Output, false); } }
+
+            [JsonIgnore]
+            public string RelativeFileNameInput
+			{ get { return Parent?.ProcessPath(Input, true); } }
+
+            [JsonIgnore]
+            public string RelativeFileNameOutput
+			{ get { return Parent?.ProcessPath(Output, true); } }
 
 			public string ProcessPath(string path, bool relative)
 			{

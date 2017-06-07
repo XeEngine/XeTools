@@ -5,48 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         mc:Ignorable="d"
-        Title="Project properties" Height="339.867" Width="264.12">
-    <Grid>
-        <StackPanel Margin="10 10 10 10">
+        Title="Project properties" Height="446.467" Width="264.12">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,-1">
+        <StackPanel Margin="10">
+            <TextBlock Text="Identification" FontWeight="Bold"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
+                <StackPanel Grid.Column="0" Margin="0 0 5 0">
                     <TextBlock Text="Name" />
                     <TextBox x:Name="_name" TextChanged="Name_TextChanged"/>
                 </StackPanel>
-                <StackPanel Grid.Column="1">
+                <StackPanel Grid.Column="1" Margin="5 0 0 0">
                     <TextBlock Text="Short name" />
-                    <TextBox x:Name="_shortName"/>
+                    <TextBox x:Name="_shortName" TextChanged="ShortName_TextChanged"/>
                 </StackPanel>
             </Grid>
-            <GroupBox Header="Version">
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Margin="0 0 5 0" Grid.Column="0">
-                            <TextBlock Text="Major" />
-                            <TextBox x:Name="_versionMajor"/>
-                        </StackPanel>
-                        <StackPanel Margin="5 0 5 0" Grid.Column="1">
-                            <TextBlock Text="Minor" />
-                            <TextBox x:Name="_versionMinor"/>
-                        </StackPanel>
-                        <StackPanel Margin="5 0 0 0" Grid.Column="2">
-                            <TextBlock Text="Revision" />
-                            <TextBox x:Name="_versionRevision"/>
-                        </StackPanel>
-                    </Grid>
-                    <TextBlock Text="Build info" />
-                    <TextBox x:Name="_versionInfo"/>
+            <TextBlock Text="Company" />
+            <TextBox x:Name="_company" TextChanged="Company_TextChanged"/>
+            <TextBlock Text="Producer" />
+            <TextBox x:Name="_producer" TextChanged="Producer_TextChanged"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="0 0 5 0">
+                    <TextBlock Text="Copyright" />
+                    <TextBox x:Name="_copyright" TextChanged="Copyright_TextChanged"/>
                 </StackPanel>
-            </GroupBox>
+                <StackPanel Grid.Column="1" Margin="5 0 0 0">
+                    <TextBlock Text="Year" />
+                    <TextBox x:Name="_year" TextChanged="Year_TextChanged" PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                </StackPanel>
+            </Grid>
+            <TextBlock Text="Version" FontWeight="Bold" Padding="0 10 0 0"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0 0 5 0" Grid.Column="0">
+                    <TextBlock Text="Major" />
+                    <TextBox x:Name="_versionMajor" TextChanged="VersionMajor_TextChanged" PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                </StackPanel>
+                <StackPanel Margin="5 0 5 0" Grid.Column="1">
+                    <TextBlock Text="Minor" />
+                    <TextBox x:Name="_versionMinor" TextChanged="VersionMinor_TextChanged" PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                </StackPanel>
+                <StackPanel Margin="5 0 0 0" Grid.Column="2">
+                    <TextBlock Text="Revision" />
+                    <TextBox x:Name="_versionRevision" TextChanged="VersionRevision_TextChanged" PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                </StackPanel>
+            </Grid>
+            <TextBlock Text="Build info" />
+            <TextBox x:Name="_versionInfo" TextChanged="VersionInfo_TextChanged"/>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Window>

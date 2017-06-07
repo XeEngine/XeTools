@@ -1,0 +1,23 @@
+﻿<Window x:Class="Xe.Tools.GameStudio.ContainersManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.GameStudio"
+        mc:Ignorable="d"
+        Title="Containers manager" Height="167.159" Width="340">
+    <Grid>
+        <StackPanel Orientation="Horizontal" Margin="10, 10, 10,40" Grid.ColumnSpan="2">
+            <ListBox x:Name="listContainers" Width="150" HorizontalAlignment="Left" SelectionChanged="List_SelectionChanged" IsEnabled="False" />
+            <StackPanel>
+                <DockPanel>
+                    <StackPanel>
+                        <Button x:Name="buttonAdd" Width="80" Margin="10 0 0 10" HorizontalAlignment="Left" Click="ButtonAdd_Click">Add</Button>
+                        <Button x:Name="buttonRemove" Width="80" Margin="10 0 0 10" HorizontalAlignment="Left" Click="ButtonRemove_Click" IsEnabled="False">Remove</Button>
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </StackPanel>
+        <Button x:Name="buttonClose" Width="80" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="ButtonClose_Click" Grid.Column="1" Height="20">Close</Button>
+    </Grid>
+</Window>

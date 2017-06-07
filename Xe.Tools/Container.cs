@@ -21,6 +21,8 @@ namespace Xe.Tools
 			public string ProcessPath(string filename, bool relative)
 			{
 				if (filename == null) return "";
+                if (Parent == null) relative = true;
+
 				if (filename.Contains("$(InputDir)"))
 				{
 					var basepath = Name;
@@ -41,7 +43,7 @@ namespace Xe.Tools
 					if (!relative) basepath = Path.Combine(path, Name);
 					filename = filename.Replace("$(OutputDir)", basepath);
 				}
-				return Parent.ProcessString(filename);
+				return Parent?.ProcessString(filename) ?? filename;
 			}
 
 			/// <summary>

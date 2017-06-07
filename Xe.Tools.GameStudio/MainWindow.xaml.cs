@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,17 +30,32 @@ namespace Xe.Tools.GameStudio
 			set
 			{
 				_project = value;
-				UpdateWindowName();
-			}
+                UpdateWindowName();
+                ctrlResourceView.Project = _project;
+            }
 		}
 
 		public MainWindow()
 		{
 			InitializeComponent();
-			Project = new Project();
+
+            var fileLastOpen = Properties.Settings.Default.FileLastOpen;
+            if (File.Exists(fileLastOpen))
+            {
+                Project = Project.Open(fileLastOpen);
+            }
+            else
+            {
+                Project = new Project();
+            }
 		}
 
-		private void MenuItem_FileNewClick(object sender, RoutedEventArgs e)
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MenuItem_FileNewClick(object sender, RoutedEventArgs e)
 		{
 			Project = new Project();
 		}
@@ -49,7 +65,11 @@ namespace Xe.Tools.GameStudio
 			var fd = FileDialog.Factory(FileDialog.Behavior.Open,
 				FileDialog.Type.XeGameProject);
 			if (fd.ShowDialog() ?? false == true)
-				Project = Project.Open(fd.FileName);
+            {
+                Project = Project.Open(fd.FileName);
+                Properties.Settings.Default.FileLastOpen = fd.FileName;
+                Properties.Settings.Default.Save();
+            }
 		}
 
 		private void MenuItem_FileSaveClick(object sender, RoutedEventArgs e)
@@ -68,7 +88,7 @@ namespace Xe.Tools.GameStudio
 
 		private void MenuItem_ExitClick(object sender, RoutedEventArgs e)
 		{
-
+            Close();
 		}
 
 		private void MenuItem_ProjectPropertiesClick(object sender, RoutedEventArgs e)
@@ -94,5 +114,5 @@ namespace Xe.Tools.GameStudio
 				Project.Save(fd.FileName);
 			}
 		}
-	}
+    }
 }
