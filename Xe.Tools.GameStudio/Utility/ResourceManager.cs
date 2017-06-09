@@ -121,8 +121,15 @@ namespace Xe.Tools.GameStudio.Utility
                 treeViewItem = GetTreeViewItemParent(treeViewItem);
             var node = treeViewItem.Tag as ItemNode;
 
-            var path = node.Path;
+            // Check if file already exists
             var filename = Path.GetFileName(file);
+            if (node.Childs.TryGetValue(filename, out _))
+            {
+                // file already exists, no need to add it back.
+                return;
+            }
+
+                var path = node.Path;
             var dstFile = Path.Combine(path, filename);
             var fullPath = Path.GetFullPath(
                 Path.Combine(Project.ProjectPath,
@@ -138,15 +145,22 @@ namespace Xe.Tools.GameStudio.Utility
             }
             else
             {
+                var dstPath = Path.GetDirectoryName(fullPath);
+                if (!Directory.Exists(dstPath))
+                    Directory.CreateDirectory(dstPath);
                 File.Copy(file, fullPath);
             }
 
-            // Add the node
-            var newNode = AddNodeToNode(node, filename, new Project.Item()
+            // Create the project item
+            var item = new Project.Item()
             {
-                Type = "copy",
-                Input = path
-            });
+                Type = "copy"
+            };
+
+            // Add the node
+            var newNode = AddNodeToNode(node, filename, item);
+            item.Input = newNode.Path.Replace('\\', '/');
+            Container.Items.Add(item);
 
             // Add the item to the tree
             treeViewItem.Items.Add(new TreeViewItem()
@@ -164,16 +178,25 @@ namespace Xe.Tools.GameStudio.Utility
         public void Delete(bool physicalDelete)
         {
             var node = SelectedNode;
+            bool isDirectory = node.IsDirectory;
             if (physicalDelete)
             {
                 var path = SelectedFullPath;
-                if (!node.IsDirectory)
-                    File.Delete(path);
+                if (!isDirectory)
+                {
+                    if (File.Exists(path))
+                        File.Delete(path);
+                }
                 else
-                    Directory.Delete(path, true);
+                {
+                    if (Directory.Exists(path))
+                        Directory.Delete(path, true);
+                }
             }
 
-            node.Parent.Childs.Remove(node.Name);
+            RemoveNode(node);
+            if (node.Parent != null)
+                node.Parent.Childs.Remove(node.Name);
 
             var treeViewItem = SelectedTreeViewItem;
             var parent = GetTreeViewItemParent(treeViewItem);
@@ -209,7 +232,7 @@ namespace Xe.Tools.GameStudio.Utility
             {
                 foreach (var item in Container.Items)
                 {
-                    var path = item.Input.Replace("$(InputDir)/", "").Split('/');
+                    var path = item.Input.Replace("$(InputDir)/", "").Split(new char[] { '/', '\\' });
                     AddItemToNode(item, MainNode, path, string.Empty, 0);
                 }
             }
@@ -231,6 +254,14 @@ namespace Xe.Tools.GameStudio.Utility
                 AddNodeToNode(node, path[index], item);
             }
         }
+        private void RemoveNode(ItemNode node)
+        {
+            foreach (var itemNode in node.Childs.Values)
+                RemoveNode(itemNode);
+            node.Childs.Clear();
+            if (node.Item != null)
+                Container.Items.Remove(node.Item);
+        }
         private static ItemNode AddNodeToNode(ItemNode parent, string name, Project.Item item = null)
         {
             ItemNode node;
@@ -248,10 +279,22 @@ namespace Xe.Tools.GameStudio.Utility
         private void PopulateTreeView()
         {
             TreeView.Items.Clear();
+
+            var viewItem = new TreeViewItem
+            {
+                Header = new HeaderModel
+                {
+                    Name = MainNode.Name,
+                    Icon = Icons.SpecialFolder,
+                    TextColor = TreeView.Foreground
+                },
+                Tag = MainNode
+            };
             foreach (var item in MainNode.Childs.Values)
             {
-                AddNodeToItemCollection(TreeView.Items, item);
+                AddNodeToItemCollection(viewItem.Items, item);
             }
+            TreeView.Items.Add(viewItem);
         }
         private void AddNodeToItemCollection(ItemCollection itemCollection, ItemNode node)
         {
@@ -277,6 +320,7 @@ namespace Xe.Tools.GameStudio.Utility
             DependencyObject parent = VisualTreeHelper.GetParent(treeViewItem);
             while (!(parent is TreeViewItem))
             {
+                if (parent == null) return null;
                 parent = VisualTreeHelper.GetParent(parent);
             }
             return parent as TreeViewItem;

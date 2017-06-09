@@ -23,19 +23,23 @@ namespace Xe.Tools
 			/// Ogni oggetto ha un proprio tipo che ne descriverà il contenuto.
 			/// </summary>
 			public string Type { get; set; }
+
             /// <summary>
             /// Nome human-friendly da dare ad un oggetto.
             /// </summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 			public string Alias { get; set; }
+
             /// <summary>
             /// Nome del file o percorso da caricare in input.
             /// Il percorso non è processato.
             /// </summary>
             public string Input { get; set; }
+
             /// <summary>
             /// Nome del file o percorso usato come output.
             /// </summary>
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public string Output { get; set; }
 
 			/// <summary>

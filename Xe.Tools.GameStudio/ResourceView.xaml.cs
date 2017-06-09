@@ -111,9 +111,6 @@ namespace Xe.Tools.GameStudio
             }
         }
 
-
-
-
         private void treeFileView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             bool isItemSelected = SelectedNode != null;
@@ -127,10 +124,13 @@ namespace Xe.Tools.GameStudio
         }
         private void ctrlButtonAddItem_Click(object sender, RoutedEventArgs e)
         {
-            var fd = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.Any);
+            var fd = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.Any, true);
             if (fd.ShowDialog() ?? false)
             {
-                _resourceManager.AddFile(fd.FileName);
+                foreach  (var filename in fd.FileNames)
+                {
+                    _resourceManager.AddFile(filename);
+                }
             }
         }
         private void ctrlButtonRemoveItem_Click(object sender, RoutedEventArgs e)
@@ -143,10 +143,9 @@ namespace Xe.Tools.GameStudio
 
             string strMessage;
             var path = _resourceManager.SelectedFullPath;
-            if (node.IsDirectory)
+            if (node.IsDirectory && Directory.Exists(path))
             {
-                if (Directory.EnumerateFileSystemEntries(path)
-                    .Count() > 0)
+                if (Directory.EnumerateFileSystemEntries(path).Count() > 0)
                     strMessage = strDeleteDir;
                 else
                     strMessage = null;

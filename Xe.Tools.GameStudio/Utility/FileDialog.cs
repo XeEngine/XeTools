@@ -18,14 +18,17 @@ namespace Xe.Tools.GameStudio.Utility
 			XeGameProject
 		}
 
-		public static Microsoft.Win32.FileDialog Factory(Behavior behavior, Type type) {
+		public static Microsoft.Win32.FileDialog Factory(Behavior behavior, Type type, bool multipleSelection = false) {
 			Microsoft.Win32.FileDialog fd;
 			switch (behavior)
 			{
 				case Behavior.Open:
-					fd = new Microsoft.Win32.OpenFileDialog();
-					fd.CheckFileExists = true;
-					break;
+                    fd = new Microsoft.Win32.OpenFileDialog()
+                    {
+                        CheckFileExists = true,
+                        Multiselect = multipleSelection
+                    };
+                    break;
 				case Behavior.Save:
 					fd = new Microsoft.Win32.SaveFileDialog();
 					break;
