@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
 using System.Collections.Generic;
 
 namespace Xe.Tools
@@ -99,28 +99,17 @@ namespace Xe.Tools
 		}
 		public void Save(string filename)
 		{
-			switch (Path.GetExtension(filename))
-			{
-				case ".xml": SaveXml(filename); break;
-				case ".json": SaveJson(filename); break;
-				default:
-					throw new ArgumentException($"{filename} seems to not be a xml or json file.");
-			}
-		}
-		public void SaveXml(string filename)
-		{
-			throw new NotImplementedException();
-		}
-		public void SaveJson(string filename)
-		{
-			using (var file = new FileStream(filename, FileMode.Create, FileAccess.Write))
-			{
-				using (var writer = new StreamWriter(file))
-				{
-					writer.Write(JsonConvert.SerializeObject(this, Formatting.Indented));
-				}
-			}
-		}
+            foreach (var container in Containers)
+                container.Items = container.Items.OrderBy(x => x.Input).ToList();
+            Containers = Containers.OrderBy(x => x.Name).ToList();
+            using (var file = new FileStream(filename, FileMode.Create, FileAccess.Write))
+            {
+                using (var writer = new StreamWriter(file))
+                {
+                    writer.Write(JsonConvert.SerializeObject(this, Formatting.Indented));
+                }
+            }
+        }
 
 		public static Project Open(string filename)
 		{
