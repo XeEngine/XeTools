@@ -26,21 +26,21 @@ namespace Xe.Tools
 				if (filename.Contains("$(InputDir)"))
 				{
 					var basepath = Name;
-					if (!relative) basepath = Path.Combine(Parent.ProjectPath, basepath);
+					if (!relative) basepath = System.IO.Path.Combine(Parent.ProjectPath, basepath);
 					filename = filename.Replace("$(InputDir)", basepath);
 				}
 				if (filename.Contains("$(TempDir)"))
 				{
-					var basepath = Path.Combine(Name, ".tmp");
+					var basepath = System.IO.Path.Combine(Name, ".tmp");
 					if (!relative)
-						basepath = Path.Combine(Parent.ProjectPath, basepath);
+						basepath = System.IO.Path.Combine(Parent.ProjectPath, basepath);
 					filename = filename.Replace("$(TempDir)", basepath);
 				}
 				if (filename.Contains("$(OutputDir)"))
 				{
 					string path = Environment.Variables["ProjectFileOutputDir"].ToString();
 					var basepath = Name;
-					if (!relative) basepath = Path.Combine(path, Name);
+					if (!relative) basepath = System.IO.Path.Combine(path, Name);
 					filename = filename.Replace("$(OutputDir)", basepath);
 				}
 				return Parent?.ProcessString(filename) ?? filename;

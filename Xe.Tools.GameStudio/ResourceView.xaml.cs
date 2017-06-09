@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xe.Tools.GameStudio.Utility;
+using static Xe.Tools.GameStudio.Utility.ResourceManager;
 
 namespace Xe.Tools.GameStudio
 {
@@ -21,24 +23,8 @@ namespace Xe.Tools.GameStudio
 	/// </summary>
 	public partial class ResourceView : UserControl
     {
-        private class ItemNode
-        {
-            public string Name { get; set; }
-            public Project.Item Item { get; set; }
-            public Dictionary<string, ItemNode> Childs { get; set; } = new Dictionary<string, ItemNode>();
-            public bool IsDirectory { get => Item == null; }
-        }
-        private class HeaderModel
-        {
-            public string Name { get; set; }
-            public string Type { get; set; }
-            public object Icon { get; set; }
-            public Brush TextColor { get; set; }
-        }
-
         private Project _project;
-        private Project.Container _container;
-        private ItemNode _mainNode = new ItemNode();
+        private ResourceManager _resourceManager;
         private bool _isUpdatingContainersList = false;
 
         public Project Project
@@ -46,24 +32,41 @@ namespace Xe.Tools.GameStudio
             get => _project;
             set
             {
+                if (value == null) return;
                 _project = value;
+                _resourceManager = new ResourceManager(_project, treeFileView);
+                _resourceManager.OnFileOverwriteConfirm += ResourceManager_OnFileOverwriteConfirm;
                 UpdateContainersList();
             }
         }
+
+        private bool ResourceManager_OnFileOverwriteConfirm(string originalFile, string newFile)
+        {
+            return MessageBox.Show("Do you want to overwrite the existing file?",
+                "Overwrite confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                MessageBoxResult.Yes;
+        }
+
         protected Project.Container Container
         {
-            get => _container;
-            set
-            {
-                _container = value;
-                UpdateFilesList();
-            }
+            get => _resourceManager.Container;
+            set => _resourceManager.Container = value;
+        }
+
+        private ItemNode _mainNode { get => _resourceManager.MainNode; }
+
+        private TreeViewItem SelectedTreeViewItem
+        {
+            get => _resourceManager.SelectedTreeViewItem;
+        }
+        private ItemNode SelectedNode
+        {
+            get => _resourceManager.SelectedNode;
         }
 
 		public ResourceView()
 		{
 			InitializeComponent();
-            //Container = new ContainerTest().Container;
         }
 
         private void ComboBoxContainers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -108,73 +111,72 @@ namespace Xe.Tools.GameStudio
             }
         }
 
-        /// <summary>
-        /// Aggiorna la lista dei files
-        /// </summary>
-        private void UpdateFilesList()
-        {
-            _mainNode.Childs.Clear();
-            _mainNode.Name = Container.Name;
-            if (Container.Items != null)
-            {
-                foreach (var item in Container.Items)
-                {
-                    var path = item.Input.Replace("$(InputDir)/", "").Split('/');
-                    AddItemToNode(item, _mainNode, path, 0);
-                }
-            }
 
-            treeFileView.Items.Clear();
-            foreach (var item in _mainNode.Childs.Values)
-            {
-                AddNodeChildsToItemCollection(treeFileView.Items, item);
-            }
-        }
-        
-        private void AddItemToNode(Project.Item item, ItemNode node, string[] path, int index)
+
+
+        private void treeFileView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (index < path.Length - 1)
-            {
-                var name = path[index];
-                if (!node.Childs.TryGetValue(name, out var child))
-                {
-                    child = new ItemNode()
-                    {
-                        Name = name
-                    };
-                    node.Childs.Add(name, child);
-                }
-                AddItemToNode(item, child, path, index + 1);
-            }
-            else if (index < path.Length)
-            {
-                var name = path[index];
-                node.Childs.Add(name, new ItemNode()
-                {
-                    Name = name,
-                    Item = item
-                });
-            }
+            bool isItemSelected = SelectedNode != null;
+            ctrlButtonAddItem.IsEnabled = isItemSelected;
+            ctrlButtonRemoveItem.IsEnabled = isItemSelected;
+            ctrlButtonAddFolder.IsEnabled = isItemSelected;
         }
 
-
-        private void AddNodeChildsToItemCollection(ItemCollection itemCollection, ItemNode node)
+        private void ctrlButtonNewItem_Click(object sender, RoutedEventArgs e)
         {
-            var viewItem = new TreeViewItem
+        }
+        private void ctrlButtonAddItem_Click(object sender, RoutedEventArgs e)
+        {
+            var fd = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.Any);
+            if (fd.ShowDialog() ?? false)
             {
-                Header = new HeaderModel
-                {
-                    Name = node.Name,
-                    Icon = node.IsDirectory ? Icons.Folder : Icons.Document,
-                    TextColor = new SolidColorBrush(Color.FromRgb(0, 0, 0))
-                },
-                Tag = node.Item
+                _resourceManager.AddFile(fd.FileName);
+            }
+        }
+        private void ctrlButtonRemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            var node = _resourceManager.SelectedNode;
+            if (node == null) return;
+
+            const string strDeleteDir = "You are deleting a folder with some files inside.\nDo you want to delete the content? If you click No, they will be deleted only from this application.";
+            const string strFileDir = "Do you want to delete the file? If you click No, it will be deleted only from this application.";
+
+            string strMessage;
+            var path = _resourceManager.SelectedFullPath;
+            if (node.IsDirectory)
+            {
+                if (Directory.EnumerateFileSystemEntries(path)
+                    .Count() > 0)
+                    strMessage = strDeleteDir;
+                else
+                    strMessage = null;
+            }
+            else
+                strMessage = strFileDir;
+
+            bool physicalDelete;
+            if (strMessage != null)
+            {
+                var r = MessageBox.Show(strMessage, "Delete confirmation",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                physicalDelete = r == MessageBoxResult.Yes;
+            }
+            else
+                physicalDelete = true;
+            _resourceManager.Delete(physicalDelete);
+        }
+
+        private void ctrlButtonAddFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Dialogs.SingleInputDialog()
+            {
+                Title = "Create a new folder",
+                Description = "Please specify the name of the folder that you want to create",
+                Text = "new folder"
             };
-            itemCollection.Add(viewItem);
-
-            foreach (var item in node.Childs)
+            if (dialog.ShowDialog() ?? false)
             {
-                AddNodeChildsToItemCollection(viewItem.Items, item.Value);
+                _resourceManager.CreateDirectory(dialog.Text);
             }
         }
     }

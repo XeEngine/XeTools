@@ -14,6 +14,7 @@ namespace Xe.Tools.GameStudio.Utility
 		}
 		public enum Type
 		{
+            Any,
 			XeGameProject
 		}
 
@@ -32,12 +33,22 @@ namespace Xe.Tools.GameStudio.Utility
 					throw new ArgumentException("Invalid parameter", nameof(behavior));
 			}
 			fd.CheckPathExists = true;
+
+            string filter;
 			switch (type)
 			{
+                case Type.Any:
+                    filter = "Any file|*.*";
+                    break;
 				case Type.XeGameProject:
-					fd.Filter = "XeEngine game project|*.game.proj.json";
+					filter = "XeEngine game project|*.game.proj.json";
 					break;
+                default:
+                    filter = null;
+                    break;
 			}
+            fd.Filter = filter;
+
 			return fd;
 		}
 	}

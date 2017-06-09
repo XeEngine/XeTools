@@ -24,14 +24,15 @@
             <ComboBox x:Name="_comboBoxContainers" Width="80" SelectionChanged="ComboBoxContainers_SelectionChanged">
             </ComboBox>
             <Separator/>
-            <TextBlock>asd</TextBlock>
-            <TextBlock>asd</TextBlock>
+            <Button x:Name="ctrlButtonNewItem" Content="{StaticResource NewFile_16x}" Click="ctrlButtonNewItem_Click" IsEnabled="False"/>
+            <Button x:Name="ctrlButtonAddItem" Content="{StaticResource AddFile_16x}" Click="ctrlButtonAddItem_Click" IsEnabled="False"/>
+            <Button x:Name="ctrlButtonAddFolder" Content="{StaticResource NewSolutionFolder_16x}" Click="ctrlButtonAddFolder_Click" IsEnabled="False"/>
+            <Button x:Name="ctrlButtonRemoveItem" Content="{StaticResource Remove_color_16x}" Click="ctrlButtonRemoveItem_Click" IsEnabled="False"/>
             <Separator/>
             <TextBlock>asd</TextBlock>
-            <Button Content="{StaticResource Folder_16x}"/>
         </ToolBar>
 
-        <TreeView x:Name="treeFileView" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="2">
+        <TreeView x:Name="treeFileView" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="2" SelectedItemChanged="treeFileView_SelectedItemChanged">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate">

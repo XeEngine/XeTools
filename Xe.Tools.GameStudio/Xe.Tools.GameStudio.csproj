@@ -59,13 +59,22 @@
       <DependentUpon>ContainersManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContainerTest.cs" />
+    <Compile Include="Dialogs\SingleInputDialog.xaml.cs">
+      <DependentUpon>SingleInputDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\Brushes.cs" />
     <Compile Include="Utility\FileDialog.cs" />
     <Compile Include="Utility\Helper.cs" />
     <Compile Include="Utility\Icons.cs" />
+    <Compile Include="Utility\ResourceManager.cs" />
     <Page Include="ContainersManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\SingleInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
