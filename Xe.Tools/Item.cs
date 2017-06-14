@@ -13,9 +13,6 @@ namespace Xe.Tools
 		/// </summary>
 		public class Item
 		{
-			private Parameter[] _tmpParameters = new Parameter[0];
-			private Dictionary<string, List<string>> _parameters = new Dictionary<string, List<string>>();
-			
 			[JsonIgnore]
 			public Container Parent;
 
@@ -45,32 +42,8 @@ namespace Xe.Tools
 			/// <summary>
 			/// Lista dei parametri per modificare il comporamento di un oggetto.
 			/// </summary>
-			public Parameter[] Parameters
-			{
-				get { return _tmpParameters; }
-				set
-				{
-					_parameters.Clear();
-					if (value == null) return;
-					foreach (var item in value)
-					{
-						if (_parameters.TryGetValue(item.Name, out List<string> items))
-							items.Add(item.Value);
-						else
-							_parameters.Add(item.Name, new List<string>() { item.Value });
-					}
-					_tmpParameters = value;
-				}
-			}
-
-			/// <summary>
-			/// Lista dei parametri per modificare il comporamento di un oggetto.
-			/// </summary>
-			private Dictionary<string, List<string>> Parameters2
-			{
-				get { return _parameters; }
-			}
-
+			public List<Tuple<string, string>> Parameters { get; set; }
+            
             /// <summary>
             /// Come Input, ma fornisce un percorso concreto del file.
             /// </summary>
