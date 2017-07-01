@@ -7,9 +7,68 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Xe.Tools.Components;
+using Xe.Tools.Modules;
+using static Xe.Tools.GameStudio.Utility.ResourceManager;
 
 namespace Xe.Tools.GameStudio.Utility
 {
+    internal static class Extensions
+    {
+        internal static string GetFileNameWithoutExtensions(this string path)
+        {
+            return Path.GetFileName(path)?.Split('.').FirstOrDefault();
+        }
+
+        internal static string GetFullPath(this Project.Container container, Project project)
+        {
+            return Path.Combine(project.ProjectPath, container.Name);
+        }
+
+        internal static string GetFullPath(this ItemNode node, Project.Container container, Project project)
+        {
+            if (node == null) return null;
+            return Path.Combine(container.GetFullPath(project), node.Path);
+        }
+
+        internal static ItemNode GetNode(this TreeViewItem treeViewItem)
+        {
+            return treeViewItem?.Tag as ItemNode;
+        }
+
+        internal static TreeViewItem GetParent(this TreeViewItem treeViewItem)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(treeViewItem);
+            while (!(parent is TreeViewItem))
+            {
+                if (parent == null) return null;
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return parent as TreeViewItem;
+        }
+        internal static TreeViewItem GetSelectedItem(this TreeView treeView)
+        {
+            return treeView.SelectedItem as TreeViewItem;
+        }
+        internal static ItemNode GetSelectedNode(this TreeView treeView)
+        {
+            return treeView.GetSelectedItem()?.GetNode();
+        }
+        internal static string GetSelectedPath(this TreeView treeView)
+        {
+            return treeView.GetSelectedNode()?.Path;
+        }
+        internal static ItemNode GetDirectoryNode(this TreeView treeView)
+        {
+            var node = treeView.GetSelectedNode();
+            if (node != null && !node.IsDirectory)
+            {
+                node = treeView.GetSelectedItem()?.GetParent()?.GetNode();
+            }
+            return node;
+        }
+    }
+
     internal class ResourceManager
     {
         public class ItemNode
@@ -32,6 +91,7 @@ namespace Xe.Tools.GameStudio.Utility
             public object Icon { get; set; }
             public Brush TextColor { get; set; }
         }
+
 
         public delegate bool FileOverwriteConfirm(string originalFile, string newFile);
         public event FileOverwriteConfirm OnFileOverwriteConfirm;
@@ -58,29 +118,29 @@ namespace Xe.Tools.GameStudio.Utility
         }
 
         public TreeView TreeView { get; private set; }
-        public TreeViewItem SelectedTreeViewItem
-        {
-            get => TreeView.SelectedItem as TreeViewItem;
-        }
+        
+        /// <summary>
+        /// Node selected on the TreeView
+        /// </summary>
         public ItemNode SelectedNode
         {
-            get => SelectedTreeViewItem?.Tag as ItemNode;
+            get => TreeView.GetSelectedNode();
         }
-        public string SelectedPath
-        {
-            get => SelectedNode?.Path;
-        }
-        public string SelectedFullPath
-        {
-            get
-            {
-                var basePath = ContainerPath;
-                var selectedPath = SelectedPath;
-                if (selectedPath == null)
-                    return basePath;
-                return Path.Combine(basePath, selectedPath);
-            }
-        }
+
+        /// <summary>
+        /// Obtains the full path of the currently selected item
+        /// </summary>
+        public string SelectedFullPath => TreeView.GetSelectedNode().GetFullPath(Container, Project);
+
+        /// <summary>
+        /// Obtains the path of the currently selected item
+        /// </summary>
+        public string SelectedDirectoryPath => TreeView.GetDirectoryNode().Path;
+
+        /// <summary>
+        /// Obtains the full path of the currently selected item
+        /// </summary>
+        public string SelectedDirectoryFullPath => TreeView.GetDirectoryNode().GetFullPath(Container, Project);
 
         public ResourceManager(Project project, TreeView treeView)
         {
@@ -96,12 +156,15 @@ namespace Xe.Tools.GameStudio.Utility
         /// <param name="name">Name of the directory to add</param>
         public void CreateDirectory(string name)
         {
+            // Search for invalid characters
             foreach (var c in Path.GetInvalidFileNameChars())
             {
                 if (name.Contains(c))
                     throw new ArgumentException($"Character {c} is not allowed for a directory.", name);
             }
-            var fullPath = Path.Combine(SelectedFullPath, name);
+
+            // Obtain the current directory and create a full path
+            var fullPath = Path.Combine(SelectedDirectoryFullPath, name);
             if (!Directory.Exists(fullPath))
                 Directory.CreateDirectory(fullPath);
 
@@ -109,36 +172,91 @@ namespace Xe.Tools.GameStudio.Utility
             if (!SelectedNode.Childs.Keys.Contains(name))
             {
                 var node = AddNodeToNode(SelectedNode, name);
-                AddNodeToItemCollection(SelectedTreeViewItem.Items, node);
+                AddNodeToItemCollection(TreeView.GetSelectedItem().Items, node);
             }
         }
-        
-        public void AddFile(string file)
-        {
-            // Obtains the node that is a directory
-            var treeViewItem = SelectedTreeViewItem;
-            if (!SelectedNode.IsDirectory)
-                treeViewItem = GetTreeViewItemParent(treeViewItem);
-            var node = treeViewItem.Tag as ItemNode;
 
-            // Check if file already exists
-            var filename = Path.GetFileName(file);
-            if (node.Childs.TryGetValue(filename, out _))
+        /// <summary>
+        /// Obtain the node with the specified file name, searching it from
+        /// the current directory node
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public ItemNode GetNodeFromCurrentDirectory(string fileName)
+        {
+            var fileName2 = fileName.GetFileNameWithoutExtensions();
+            return TreeView.GetDirectoryNode().Childs.Values
+                .Where(x => x.Name.GetFileNameWithoutExtensions() == fileName2)
+                .FirstOrDefault();
+        }
+        
+        public void CreateFile(string fileName, Module module, bool deleteExisting = false)
+        {
+            Delete(GetNodeFromCurrentDirectory(fileName), deleteExisting);
+
+            var treeViewItem = TreeView.GetSelectedItem();
+            var node = SelectedNode;
+            if (!node.IsDirectory)
             {
-                // file already exists, no need to add it back.
-                return;
+                treeViewItem = treeViewItem.GetParent();
+                node = treeViewItem.GetNode();
             }
 
-                var path = node.Path;
-            var dstFile = Path.Combine(path, filename);
-            var fullPath = Path.GetFullPath(
-                Path.Combine(Project.ProjectPath,
-                Path.Combine(Container.Name, dstFile)));
+            var fullPath = Path.Combine(node.GetFullPath(Container, Project), fileName);
+            var directoryPath = Path.GetDirectoryName(fullPath);
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+
+            // TODO create a new file with the structure of specified module
+            using (var writer = new StreamWriter(fullPath))
+                writer.WriteLine("{}");
+
+            // Create the project item
+            var item = new Project.Item()
+            {
+                Type = module.Name,
+                Parent = Container
+            };
+            var newNode = AddNodeToNode(node, fileName, item);
+            item.Input = newNode.Path.Replace('\\', '/');
+            Container.Items.Add(item);
+
+            // Add the item to the tree
+            treeViewItem.Items.Add(new TreeViewItem()
+            {
+                Header = new HeaderModel
+                {
+                    Name = newNode.Name,
+                    Icon = Icons.Document,
+                    TextColor = TreeView.Foreground
+                },
+                Tag = newNode
+            });
+        }
+
+        public void AddFile(string filePath)
+        {
+            var fileName = Path.GetFileName(filePath);
+            // file already exists, no need to add it back.
+            if (GetNodeFromCurrentDirectory(filePath) != null)
+            {
+                Log.Message($"File {filePath} does already exist in {SelectedDirectoryPath}");
+            }
+
+            var treeViewItem = TreeView.GetSelectedItem();
+            var node = SelectedNode;
+            if (!node.IsDirectory)
+            {
+                treeViewItem = treeViewItem.GetParent();
+                node = treeViewItem.GetNode();
+            }
+            
+            var fullPath = Path.Combine(node.GetFullPath(Container, Project), fileName);
             if (File.Exists(fullPath))
             {
-                if (fullPath != Path.GetFullPath(file))
+                if (Path.GetFullPath(filePath) != fullPath)
                 {
-                    if (!OnFileOverwriteConfirm?.Invoke(fullPath, file) ?? false)
+                    if (!OnFileOverwriteConfirm?.Invoke(fullPath, filePath) ?? false)
                         return;
                 }
                 // source file and destination file matches, no copy or overwrite message needed.
@@ -148,7 +266,7 @@ namespace Xe.Tools.GameStudio.Utility
                 var dstPath = Path.GetDirectoryName(fullPath);
                 if (!Directory.Exists(dstPath))
                     Directory.CreateDirectory(dstPath);
-                File.Copy(file, fullPath);
+                File.Copy(filePath, fullPath);
             }
 
             // Create the project item
@@ -158,7 +276,7 @@ namespace Xe.Tools.GameStudio.Utility
             };
 
             // Add the node
-            var newNode = AddNodeToNode(node, filename, item);
+            var newNode = AddNodeToNode(node, fileName, item);
             item.Input = newNode.Path.Replace('\\', '/');
             Container.Items.Add(item);
 
@@ -177,7 +295,11 @@ namespace Xe.Tools.GameStudio.Utility
 
         public void Delete(bool physicalDelete)
         {
-            var node = SelectedNode;
+            Delete(SelectedNode, physicalDelete);
+        }
+        public void Delete(ItemNode node, bool physicalDelete)
+        {
+            if (node == null) return;
             bool isDirectory = node.IsDirectory;
             if (physicalDelete)
             {
@@ -198,8 +320,8 @@ namespace Xe.Tools.GameStudio.Utility
             if (node.Parent != null)
                 node.Parent.Childs.Remove(node.Name);
 
-            var treeViewItem = SelectedTreeViewItem;
-            var parent = GetTreeViewItemParent(treeViewItem);
+            var treeViewItem = TreeView.GetSelectedItem();
+            var parent = treeViewItem?.GetParent();
             if (parent != null)
             {
                 parent.Items.Remove(treeViewItem);
@@ -314,16 +436,6 @@ namespace Xe.Tools.GameStudio.Utility
             {
                 AddNodeToItemCollection(viewItem.Items, item.Value);
             }
-        }
-        private static TreeViewItem GetTreeViewItemParent(TreeViewItem treeViewItem)
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent(treeViewItem);
-            while (!(parent is TreeViewItem))
-            {
-                if (parent == null) return null;
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            return parent as TreeViewItem;
         }
         #endregion
     }

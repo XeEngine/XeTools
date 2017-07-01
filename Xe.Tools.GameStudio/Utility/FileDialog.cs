@@ -1,58 +1,115 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Xe.Tools.GameStudio.Utility
 {
-	public static class FileDialog
+    public class FileDialog
 	{
 		public enum Behavior
 		{
-			Open, Save
+			Open, Save, Folder
 		}
 		public enum Type
 		{
             Any,
+            Executable,
 			XeGameProject
 		}
 
-		public static Microsoft.Win32.FileDialog Factory(Behavior behavior, Type type, bool multipleSelection = false) {
-			Microsoft.Win32.FileDialog fd;
+        private CommonFileDialog _fd;
+        public Behavior CurrentBehavior { get; private set; }
+        public Type CurrentType { get; private set; }
+        public string FileName
+        {
+            get => _fd.FileName;
+        }
+        public IEnumerable<string> FileNames
+        {
+            get => (_fd as CommonOpenFileDialog)?.FileNames ?? new string[] { FileName };
+        }
+
+        private FileDialog(CommonFileDialog commonFileDialog, Behavior behavior, Type type)
+        {
+            _fd = commonFileDialog;
+            CurrentBehavior = behavior;
+            CurrentType = type;
+        }
+
+        public bool? ShowDialog()
+        {
+            switch (_fd.ShowDialog())
+            {
+                case CommonFileDialogResult.Ok: return true;
+                case CommonFileDialogResult.None: return false;
+                case CommonFileDialogResult.Cancel: return null;
+                default: return null;
+            }
+        }
+
+		public static FileDialog Factory(Behavior behavior, Type type = Type.Any, bool multipleSelection = false) {
+            CommonFileDialog fd;
 			switch (behavior)
 			{
 				case Behavior.Open:
-                    fd = new Microsoft.Win32.OpenFileDialog()
+                    fd = new CommonOpenFileDialog()
                     {
-                        CheckFileExists = true,
+                        EnsureFileExists = true,
                         Multiselect = multipleSelection
                     };
                     break;
 				case Behavior.Save:
-					fd = new Microsoft.Win32.SaveFileDialog();
+                    fd = new CommonSaveFileDialog()
+                    {
+
+                    };
 					break;
+                case Behavior.Folder:
+                    fd = new CommonOpenFileDialog()
+                    {
+                        IsFolderPicker = true,
+                        Multiselect = multipleSelection
+                    };
+                    break;
 				default:
 					throw new ArgumentException("Invalid parameter", nameof(behavior));
-			}
-			fd.CheckPathExists = true;
+            }
+            fd.AddToMostRecentlyUsedList = true;
+			fd.EnsurePathExists = true;
+            
+            if (behavior != Behavior.Folder)
+            {
+                switch (type)
+                {
+                    case Type.Any:
+                        fd.Filters.Add(CreateFilter("All files",
+                            new string[] { "*" }));
+                        break;
+                    case Type.Executable:
+                        fd.Filters.Add(CreateFilter("Application",
+                            new string[] { "exe" }));
+                        break;
+                    case Type.XeGameProject:
+                        fd.Filters.Add(CreateFilter("XeEngine project",
+                            new string[] { "proj.json" }));
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-            string filter;
-			switch (type)
-			{
-                case Type.Any:
-                    filter = "Any file|*.*";
-                    break;
-				case Type.XeGameProject:
-					filter = "XeEngine game project|*.game.proj.json";
-					break;
-                default:
-                    filter = null;
-                    break;
-			}
-            fd.Filter = filter;
-
-			return fd;
+            return new FileDialog(fd, behavior, type);
 		}
+
+        private static CommonFileDialogFilter CreateFilter(string name, string[] filters)
+        {
+            var filter = new CommonFileDialogFilter()
+            {
+                DisplayName = name
+            };
+            foreach (var item in filters)
+                filter.Extensions.Add(item);
+            return filter;
+        }
 	}
 }

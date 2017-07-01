@@ -1,0 +1,41 @@
+﻿<Window x:Class="Xe.Tools.GameStudio.ProjectSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.GameStudio"
+        mc:Ignorable="d"
+        Title="Project settings" Height="192" Width="384" WindowStyle="ToolWindow">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,-1">
+        <StackPanel Margin="10">
+            <TextBlock Text="Binaries" FontWeight="Bold" Margin="0 0 0 5"/>
+            <TextBlock Text="Game executable" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="22"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="textGameExecutable" Grid.Column="0"/>
+                <Button Grid.Column="1" Content="{StaticResource OpenFileDialog_16x}" Click="ButtonChooseBinary_Click"/>
+            </Grid>
+            <TextBlock Text="Working directory" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="22"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="textWorkingDirectory" Grid.Column="0"/>
+                <Button Grid.Column="1" Content="{StaticResource FolderOpen_16x}" Click="ButtonChooseWorkingDirectory_Click"/>
+            </Grid>
+            <TextBlock Text="Build output directory" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="22"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="textBuildOutputDirectory" Grid.Column="0"/>
+                <Button Grid.Column="1" Content="{StaticResource FolderOpen_16x}" Click="ButtonChooseOutputDirectory_Click"/>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

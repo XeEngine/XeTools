@@ -35,6 +35,12 @@ namespace Xe.Tools.Builder
                 }));
             }
 
+#if DEBUG
+            foreach (var entry in entries)
+            {
+                ProcessEntry(entry, outputFolder);
+            }
+#else
             int maxTasksCount = System.Environment.ProcessorCount * 2;
             var queue = new List<Task>(maxTasksCount);
             while (entries.Count > 0)
@@ -68,6 +74,7 @@ namespace Xe.Tools.Builder
                 task.Start();
             }
             Task.WaitAll(queue.ToArray());
+#endif
         }
 
         private static Task ProcessEntryAsync(Entry entry, string outputFolder)

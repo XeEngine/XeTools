@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BF2DEC2D-55FD-4431-8FE8-E26370764365}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>libTools.Forms</RootNamespace>
+    <AssemblyName>libTools.Forms</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AnimationComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AnimPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BinaryCheckBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BinaryCheckBox.Designer.cs">
+      <DependentUpon>BinaryCheckBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ComboBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DialogItemEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogItemEdit.designer.cs">
+      <DependentUpon>DialogItemEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DialogMessageSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogMessageSelection.Designer.cs">
+      <DependentUpon>DialogMessageSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DialogProjectSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogProjectSelection.Designer.cs">
+      <DependentUpon>DialogProjectSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DoubleBufferedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LangItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LangItem.designer.cs">
+      <DependentUpon>LangItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListBoxEx.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListBoxEx.Designer.cs">
+      <DependentUpon>ListBoxEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BinaryCheckBox.resx">
+      <DependentUpon>BinaryCheckBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogItemEdit.resx">
+      <DependentUpon>DialogItemEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogMessageSelection.resx">
+      <DependentUpon>DialogMessageSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogProjectSelection.resx">
+      <DependentUpon>DialogProjectSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LangItem.resx">
+      <DependentUpon>LangItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListBoxEx.resx">
+      <DependentUpon>ListBoxEx.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libTools.Anim\libTools.Anim.csproj">
+      <Project>{f06e381e-0d73-43fb-92ba-719cf5cc826b}</Project>
+      <Name>libTools.Anim</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools.Language\libTools.Language.csproj">
+      <Project>{a853fb5f-a577-4478-83af-ec65db2bd0c8}</Project>
+      <Name>libTools.Language</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools.Project\libTools.Project.csproj">
+      <Project>{72636dd9-a3ef-4701-b904-602c9a9008d3}</Project>
+      <Name>libTools.Project</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools.Resources\libTools.Resources.csproj">
+      <Project>{b9de8434-335a-465f-a6e6-3b3e996b69d5}</Project>
+      <Name>libTools.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools\libTools.csproj">
+      <Project>{9fcbadf0-ad60-4088-a379-7caca6bd2743}</Project>
+      <Name>libTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
+      <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
+      <Name>Xe.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe\Xe.csproj">
+      <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>
+      <Name>Xe</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

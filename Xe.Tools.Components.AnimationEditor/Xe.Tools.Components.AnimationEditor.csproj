@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4C4EA454-1A72-4D49-9F39-3EA50197D97A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Xe.Tools.Components.AnimationEditor</RootNamespace>
+    <AssemblyName>Xe.Tools.Components.AnimationEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Component.cs" />
+    <Compile Include="DialogAnimationName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogAnimationName.Designer.cs">
+      <DependentUpon>DialogAnimationName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DialogFramesList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogFramesList.Designer.cs">
+      <DependentUpon>DialogFramesList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DialogLinkAnimation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogLinkAnimation.Designer.cs">
+      <DependentUpon>DialogLinkAnimation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAnim.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAnim.Designer.cs">
+      <DependentUpon>FormAnim.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrameList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FrameList.Designer.cs">
+      <DependentUpon>FrameList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrameSet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FrameSet.Designer.cs">
+      <DependentUpon>FrameSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libTools.Anim\libTools.Anim.csproj">
+      <Project>{f06e381e-0d73-43fb-92ba-719cf5cc826b}</Project>
+      <Name>libTools.Anim</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools.Forms\libTools.Forms.csproj">
+      <Project>{bf2dec2d-55fd-4431-8fe8-e26370764365}</Project>
+      <Name>libTools.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools.Project\libTools.Project.csproj">
+      <Project>{72636dd9-a3ef-4701-b904-602c9a9008d3}</Project>
+      <Name>libTools.Project</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools.Resources\libTools.Resources.csproj">
+      <Project>{b9de8434-335a-465f-a6e6-3b3e996b69d5}</Project>
+      <Name>libTools.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools\libTools.csproj">
+      <Project>{9fcbadf0-ad60-4088-a379-7caca6bd2743}</Project>
+      <Name>libTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Game.Animations\Xe.Game.Animations.csproj">
+      <Project>{2a10b8ee-a9b0-4ca3-a17d-39393c2b1b66}</Project>
+      <Name>Xe.Game.Animations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">
+      <Project>{0a9e80cc-c253-47e8-b99a-c211d91291d4}</Project>
+      <Name>Xe.Tools.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Animation\Xe.Tools.Modules.Animation.csproj">
+      <Project>{947776a6-561e-440f-bce8-c38d476ebcb1}</Project>
+      <Name>Xe.Tools.Modules.Animation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
+      <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
+      <Name>Xe.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         mc:Ignorable="d"
-        Title="Project properties" Height="446.467" Width="264.12">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,-1">
+        Title="Project properties" Height="320" Width="272" WindowStyle="ToolWindow">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="10">
-            <TextBlock Text="Identification" FontWeight="Bold"/>
+            <TextBlock Text="Identification" FontWeight="Bold" Margin="0,0,0,5"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
@@ -41,7 +41,7 @@
                     <TextBox x:Name="_year" TextChanged="Year_TextChanged" PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
                 </StackPanel>
             </Grid>
-            <TextBlock Text="Version" FontWeight="Bold" Padding="0 10 0 0"/>
+            <TextBlock Text="Version" FontWeight="Bold" Padding="0 10 0 5"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

@@ -54,11 +54,7 @@ namespace Xe.Tools.GameStudio
         }
 
         private ItemNode _mainNode { get => _resourceManager.MainNode; }
-
-        private TreeViewItem SelectedTreeViewItem
-        {
-            get => _resourceManager.SelectedTreeViewItem;
-        }
+        
         private ItemNode SelectedNode
         {
             get => _resourceManager.SelectedNode;
@@ -114,6 +110,7 @@ namespace Xe.Tools.GameStudio
         private void treeFileView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             bool isItemSelected = SelectedNode != null;
+            ctrlButtonNewItem.IsEnabled = isItemSelected;
             ctrlButtonAddItem.IsEnabled = isItemSelected;
             ctrlButtonRemoveItem.IsEnabled = isItemSelected;
             ctrlButtonAddFolder.IsEnabled = isItemSelected;
@@ -121,6 +118,19 @@ namespace Xe.Tools.GameStudio
 
         private void ctrlButtonNewItem_Click(object sender, RoutedEventArgs e)
         {
+            var dialog = new Dialogs.NewFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                var fileName = dialog.FileName;
+                var component = dialog.SelectedComponent;
+                var module = Globals.Modules
+                    .Where(x => x.Name == component.ComponentInfo.ModuleName)
+                    .FirstOrDefault();
+                if (module != null)
+                    _resourceManager.CreateFile(fileName, module);
+                else
+                    Log.Error($"Module {component.ComponentInfo.ModuleName} from component {component.Name} was not found.");
+            }
         }
         private void ctrlButtonAddItem_Click(object sender, RoutedEventArgs e)
         {
@@ -176,6 +186,35 @@ namespace Xe.Tools.GameStudio
             if (dialog.ShowDialog() ?? false)
             {
                 _resourceManager.CreateDirectory(dialog.Text);
+            }
+        }
+
+        private void treeFileView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var node = SelectedNode;
+            if (!node.IsDirectory)
+            {
+                var moduleName = node.Item.Type;
+                var component = Globals.Components
+                    .Where(x => x.ComponentInfo.ModuleName == moduleName)
+                    .FirstOrDefault();
+
+                bool? result;
+                if (component != null)
+                {
+                    var instance = component.CreateInstance(new Components.ComponentSettings()
+                    {
+                        Project = Project,
+                        Container = Container,
+                        Item = node.Item
+                    });
+                    result = instance.ShowDialog();
+                }
+                else
+                {
+                    var dialog = new Dialogs.EmptyComponentDialog(moduleName);
+                    result = dialog.ShowDialog();
+                }
             }
         }
     }

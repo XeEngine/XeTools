@@ -10,7 +10,7 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem x:Name="_menuFileProperties" Header="_New" Click="MenuItem_FileNewClick"/>
+                    <MenuItem x:Name="_menuFileProperties" Header="_New" Click="MenuItem_FileNewClick" Icon="{StaticResource Add_16x}" />
                     <MenuItem x:Name="_menuFileOpen" Header="_Open..." Click="MenuItem_FileOpenClick"/>
                     <MenuItem x:Name="_menuFileSave" Header="_Save" Click="MenuItem_FileSaveClick"/>
                     <MenuItem x:Name="_menuFileSaveAs" Header="Save _as..." Click="MenuItem_FileSaveAsClick"/>
@@ -27,11 +27,12 @@
                 <MenuItem Header="_View">
                 </MenuItem>
                 <MenuItem Header="_Project">
-                    <MenuItem Header="_Run"/>
-                    <MenuItem Header="_Build"/>
-                    <MenuItem Header="_Clean"/>
+                    <MenuItem Header="_Run" Click="MenuItem_ProjectRun_Click"/>
+                    <MenuItem Header="_Build" Click="MenuItem_ProjectBuild_Click"/>
+                    <MenuItem Header="_Clean" Click="MenuItem_ProjectClean_Click"/>
                     <Separator/>
                     <MenuItem x:Name="_menuProjectProperties" Header="_Properties" Click="MenuItem_ProjectPropertiesClick"/>
+                    <MenuItem x:Name="_menuProjectSettings" Header="C_onfiguration" Click="MenuProjectConfiguration_Click"/>
                 </MenuItem>
             </Menu>
             <DockPanel>

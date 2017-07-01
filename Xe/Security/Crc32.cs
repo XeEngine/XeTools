@@ -50,6 +50,11 @@ namespace Xe.Security
 			_value = uint.MaxValue;
 		}
 
+        public static uint CalculateDigestAscii(string str)
+        {
+            var data = Encoding.ASCII.GetBytes(str);
+            return CalculateDigest(data, 0, (uint)data.Length);
+        }
 		public static uint CalculateDigest(byte[] data, uint offset, uint size)
 		{
 			Instance.Init();

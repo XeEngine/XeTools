@@ -86,7 +86,7 @@ namespace Xe.Tools.GameStudio
 
 		private void TextBoxNumeric_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
-			Utility.Helper.Wpf_NumberValidationTextBox(sender, e);
+			Utility.Helpers.Wpf_NumberValidationTextBox(sender, e);
 		}
 	}
 }

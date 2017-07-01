@@ -13,7 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xe.Tools.Components;
 using Xe.Tools.GameStudio.Utility;
+using Xe.Tools.Modules;
 
 namespace Xe.Tools.GameStudio
 {
@@ -38,6 +40,9 @@ namespace Xe.Tools.GameStudio
 		public MainWindow()
 		{
 			InitializeComponent();
+
+            Globals.Modules = Module.GetModules().ToArray();
+            Globals.Components = Component.GetComponents().ToArray();
 
             var fileLastOpen = Properties.Settings.Default.FileLastOpen;
             if (File.Exists(fileLastOpen))
@@ -96,9 +101,45 @@ namespace Xe.Tools.GameStudio
 			var dialog = new ProjectProperties(_project);
 			var result = dialog.ShowDialog();
 			UpdateWindowName();
-		}
+        }
+        private void MenuProjectConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+            new ProjectSettings(_project).ShowDialog();
+        }
+        private void MenuItem_ProjectRun_Click(object sender, RoutedEventArgs e)
+        {
+            var config = Settings.GetProjectConfiguration(Project);
+            if (string.IsNullOrEmpty(config.Executable) ||
+                string.IsNullOrEmpty(config.WorkingDirectory))
+            {
+                Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
+            }
+            else if (!File.Exists(config.Executable) ||
+                Directory.Exists(config.WorkingDirectory))
+            {
+                Helpers.ShowMessageBoxWarning($"{config.Executable} not found.");
+            }
+            else
+            {
+                Helpers.RunApplication(config.Executable, config.WorkingDirectory);
+            }
+        }
+        private void MenuItem_ProjectBuild_Click(object sender, RoutedEventArgs e)
+        {
+            var config = Settings.GetProjectConfiguration(Project);
+            if (string.IsNullOrEmpty(config.OutputDirectory))
+            {
+                Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
+            }
+            Builder.Program.Build(Project, config.OutputDirectory);
+        }
+        private void MenuItem_ProjectClean_Click(object sender, RoutedEventArgs e)
+        {
+            var config = Settings.GetProjectConfiguration(Project);
+            Builder.Program.Clean(Project, config.OutputDirectory);
+        }
 
-		private void UpdateWindowName()
+        private void UpdateWindowName()
 		{
 			var projectName = _project?.Name ?? "<unknown>";
 			if (string.IsNullOrWhiteSpace(projectName))

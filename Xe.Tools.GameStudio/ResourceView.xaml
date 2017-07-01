@@ -24,7 +24,7 @@
             <ComboBox x:Name="_comboBoxContainers" Width="80" SelectionChanged="ComboBoxContainers_SelectionChanged">
             </ComboBox>
             <Separator/>
-            <Button x:Name="ctrlButtonNewItem" Content="{StaticResource NewFile_16x}" Click="ctrlButtonNewItem_Click" IsEnabled="False"/>
+            <Button x:Name="ctrlButtonNewItem" Content="{StaticResource NewFile_16x}" Click="ctrlButtonNewItem_Click" VerticalAlignment="Bottom" IsEnabled="False"/>
             <Button x:Name="ctrlButtonAddItem" Content="{StaticResource AddFile_16x}" Click="ctrlButtonAddItem_Click" IsEnabled="False"/>
             <Button x:Name="ctrlButtonAddFolder" Content="{StaticResource NewSolutionFolder_16x}" Click="ctrlButtonAddFolder_Click" IsEnabled="False"/>
             <Button x:Name="ctrlButtonRemoveItem" Content="{StaticResource Remove_color_16x}" Click="ctrlButtonRemoveItem_Click" IsEnabled="False"/>
@@ -32,13 +32,20 @@
             <TextBlock>asd</TextBlock>
         </ToolBar>
 
-        <TreeView x:Name="treeFileView" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="2" SelectedItemChanged="treeFileView_SelectedItemChanged">
+        <TreeView x:Name="treeFileView" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="2"
+                  SelectedItemChanged="treeFileView_SelectedItemChanged" MouseDoubleClick="treeFileView_MouseDoubleClick">
             <TreeView.Resources>
+                <ContextMenu x:Key="ScaleCollectionPopup">
+                    <MenuItem Header="Add _new item..." Icon="{StaticResource NewFile_16x}" InputGestureText="ALT+SHIFT+N" Click="ctrlButtonNewItem_Click"/>
+                    <MenuItem Header="Add existin_g item..." Icon="{StaticResource AddFile_16x}" InputGestureText="ALT+SHIFT+A" Click="ctrlButtonAddItem_Click"/>
+                    <MenuItem Header="Create fol_der..." Icon="{StaticResource NewSolutionFolder_16x}" InputGestureText="ALT+SHIFT+D" Click="ctrlButtonAddFolder_Click"/>
+                    <MenuItem Header="_Remove" Icon="{StaticResource Remove_color_16x}" InputGestureText="DEL" Click="ctrlButtonRemoveItem_Click"/>
+                </ContextMenu>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" ContextMenu="{StaticResource ScaleCollectionPopup}">
                                     <ContentControl IsEnabled="False" Content="{Binding Icon}"/>
                                     <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Foreground="{Binding TextColor}"/>
                                 </StackPanel>

@@ -3,26 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Xe.Tools.Modules
 {
-    public class Module
+    public class Module : Plugin<Module>
     {
-        private Type _type;
-        private MethodInfo _methodValdiate;
+        protected MethodInfo _methodValdiate;
 
-        public string Name { get; private set; }
-
-        private Module(Assembly assembly)
+        private Module(Type type) :
+            base(type)
         {
-            var type = assembly.GetTypes().Where(x => x.Namespace == "Xe.Tools.Modules").First();
-            _type = type;
-            Name = type.Name;
-
-            var methods = type.GetMethods();
-            foreach (var method in methods)
+            foreach (var method in _type.GetMethods())
             {
                 if (method.IsStatic)
                 {
@@ -40,56 +31,28 @@ namespace Xe.Tools.Modules
         {
             return Activator.CreateInstance(_type, new object[] { settings }) as IModule;
         }
+
         public bool Validate(string filename)
         {
-            /*if (!File.Exists(filename))
-                throw new FileNotFoundException("File not found", filename);*/
+            if (!File.Exists(filename))
+                throw new FileNotFoundException("File not found", filename);
             if (_methodValdiate == null)
                 throw PrepareMethodNotFoundException(MethodBase.GetCurrentMethod());
             return (bool)_methodValdiate.Invoke(null, new object[] { filename });
         }
 
-        private MethodAccessException PrepareMethodNotFoundException(MethodBase method)
+
+        public static IEnumerable<Module> GetModules(string folder = null)
         {
-            var name = method.Name;
-            var parameters = method.GetParameters();
-            var ret = (method as MethodInfo)?.ReturnType ?? null;
-
-            var strReturn = ret != null ? $"{ret.Name} " : string.Empty;
-            var strParams = string.Join(",", parameters.Select(x => $"{x.ParameterType} {x.Name}"));
-            var contract = $"{strReturn}{name}({strParams})";
-            return new MethodAccessException($"Method {contract} not found.");
-        }
-
-        public static IEnumerable<Module> GetModules(string folder)
-        {
-            var files = Directory.EnumerateFiles(folder);
-            var modules = new List<Module>();
-            foreach (var file in files)
-            {
-                var fullPath = Path.GetFullPath(file);
-                try
+            return GetPlugins(folder,
+                new string[] { ".exe", ".dll", ".module" }, type =>
                 {
-                    var assembly = Assembly.LoadFile(fullPath);
-                    var types = assembly.GetTypes();
-                    bool isValid = false;
-                    foreach (var type in types)
-                    {
-                        if (type.Namespace == "Xe.Tools.Modules")
-                        {
-                            isValid = true;
-                            break;
-                        }
-                    }
-                    if (isValid)
-                        modules.Add(new Module(assembly));
-                }
-                catch (BadImageFormatException)
-                {
-
-                }
-            }
-            return modules;
+                    if (type.Namespace.IndexOf("Xe.Tools.Modules") != 0)
+                        return null;
+                    if (!type.GetInterfaces().Any(x => x.FullName == "Xe.Tools.Modules.IModule"))
+                        return null;
+                    return null;
+                });
         }
     }
 }
