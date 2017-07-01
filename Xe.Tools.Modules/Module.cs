@@ -13,7 +13,7 @@ namespace Xe.Tools.Modules
         private Module(Type type) :
             base(type)
         {
-            foreach (var method in _type.GetMethods())
+            foreach (var method in type.GetMethods())
             {
                 if (method.IsStatic)
                 {
@@ -29,7 +29,7 @@ namespace Xe.Tools.Modules
 
         public IModule CreateInstance(ModuleSettings settings)
         {
-            return Activator.CreateInstance(_type, new object[] { settings }) as IModule;
+            return Activator.CreateInstance(Type, new object[] { settings }) as IModule;
         }
 
         public bool Validate(string filename)
@@ -51,7 +51,7 @@ namespace Xe.Tools.Modules
                         return null;
                     if (!type.GetInterfaces().Any(x => x.FullName == "Xe.Tools.Modules.IModule"))
                         return null;
-                    return null;
+                    return new Module(type);
                 });
         }
     }

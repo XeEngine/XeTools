@@ -44,6 +44,10 @@
       <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
       <Name>Xe.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe\Xe.csproj">
+      <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>
+      <Name>Xe</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,7 +15,7 @@ namespace Xe.Tools.Components
         private Component(Type type) :
             base(type)
         {
-            foreach (var method in _type.GetMethods())
+            foreach (var method in type.GetMethods())
             {
                 if (method.IsStatic)
                 {
@@ -40,7 +40,7 @@ namespace Xe.Tools.Components
 
         public IComponent CreateInstance(ComponentSettings settings)
         {
-            return Activator.CreateInstance(_type, new object[] { settings }) as IComponent;
+            return Activator.CreateInstance(Type, new object[] { settings }) as IComponent;
         }
 
         private ComponentInfo GetComponentInfo()
@@ -51,7 +51,7 @@ namespace Xe.Tools.Components
         }
 
 
-        public static IEnumerable<Component> GetModules(string folder = null)
+        public static IEnumerable<Component> GetComponents(string folder = null)
         {
             return GetPlugins(folder,
                 new string[] { ".exe", ".dll", ".component" }, type =>
@@ -60,7 +60,7 @@ namespace Xe.Tools.Components
                         return null;
                     if (!type.GetInterfaces().Any(x => x.FullName == "Xe.Tools.Components.IComponent"))
                         return null;
-                    return null;
+                    return new Component(type);
                 });
         }
     }

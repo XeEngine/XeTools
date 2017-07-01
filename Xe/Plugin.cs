@@ -15,13 +15,14 @@ namespace Xe.Tools
         private static string _pathAssembly;
         private static string _dirAssembly;
 
-        protected Type _type;
+        protected Type Type { get; private set; }
 
         public string Name { get; protected set; }
 
         protected Plugin(Type type)
         {
-            Name = _type.Name;
+            Type = type;
+            Name = type.Name;
         }
 
         public override string ToString()
