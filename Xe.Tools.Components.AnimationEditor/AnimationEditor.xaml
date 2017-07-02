@@ -1,0 +1,80 @@
+﻿<Window x:Class="Xe.Tools.Components.AnimationEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.Components.AnimationEditor"
+        xmlns:controls="clr-namespace:Xe.Tools.Components.AnimationEditor.Controls"
+        mc:Ignorable="d"
+        Title="Animation editor" Height="400" Width="525" 
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Margin="10 10 5 10">
+            <TextBlock DockPanel.Dock="Top">Animations exported</TextBlock>
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="buttonAddPublicAnimation" Grid.Column="0" Content="Add" Click="buttonAddPublicAnimation_Click"/>
+                <Button x:Name="buttonRemovePublicAnimation" Grid.Column="1" Content="Remove" Click="buttonRemovePublicAnimation_Click"/>
+            </Grid>
+            <ListBox x:Name="listPublicAnimations" Grid.Column="0" Margin="0 5 0 5" SelectionChanged="listPublicAnimations_SelectionChanged"/>
+        </DockPanel>
+
+        <DockPanel Grid.Column="1" Margin="5 10 5 10">
+            <TextBlock DockPanel.Dock="Top">Real animation used</TextBlock>
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="buttonAddPrivateAnimation" Grid.Column="0" Content="Add" Click="buttonAddPrivateAnimation_Click"/>
+                <Button x:Name="buttonRemovePrivateAnimation" Grid.Column="1" Content="Remove" Click="buttonRemovePrivateAnimation_Click"/>
+            </Grid>
+            <ListBox x:Name="listPrivateAnimations" Grid.Column="0" Margin="0 5 0 5"  SelectionChanged="listPrivateAnimations_SelectionChanged"/>
+        </DockPanel>
+
+        <DockPanel Grid.Column="2" Margin="5,10,10,10">
+            <controls:AnimationPanel x:Name="panelAnimation" DockPanel.Dock="Bottom" Height="160"/>
+            <TextBlock DockPanel.Dock="Bottom" Text="Preview"/>
+            <GroupBox Header="Properties" >
+                <ScrollViewer>
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Direction" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <ToggleButton x:Name="buttonDirectionUpLeft" Content="◤" IsEnabled="false" Checked="buttonDirection_Checked" Tag="UpLeft"/>
+                                <ToggleButton x:Name="buttonDirectionLeft" Content="◀" Checked="buttonDirection_Checked" Tag="Left"/>
+                                <ToggleButton x:Name="buttonDirectionDownLeft" Content="◣" IsEnabled="false" Tag="DownLeft"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <ToggleButton x:Name="buttonDirectionUp" Content="▲" Checked="buttonDirection_Checked" Tag="Up"/>
+                                <ToggleButton x:Name="buttonDirectionUndefined" Content="■" Checked="buttonDirectionUndefined_Checked" Tag="Center"/>
+                                <ToggleButton x:Name="buttonDirectionDown" Content="▼" Checked="buttonDirection_Checked" Tag="Down"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <ToggleButton x:Name="buttonDirectionUpRight" Content="◥" IsEnabled="false" Checked="buttonDirection_Checked" Tag="UpRight"/>
+                                <ToggleButton x:Name="buttonDirectionRight" Content="▶" Checked="buttonDirection_Checked" Tag="Right"/>
+                                <ToggleButton x:Name="buttonDirectionDownRight" Content="◢" IsEnabled="false" Checked="buttonDirection_Checked" Tag="DownRight"/>
+                            </StackPanel>
+                        </Grid>
+                        <CheckBox x:Name="checkFlipHorizontally" Content="Flip horizontally" Margin="0 10 0 0" Checked="checkFlipHorizontally_Checked"/>
+                        <CheckBox x:Name="checkFlipVertically" Content="Flip vertically" Margin="0 5 0 5" Checked="checkFlipVertically_Checked"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+        </DockPanel>
+    </Grid>
+</Window>

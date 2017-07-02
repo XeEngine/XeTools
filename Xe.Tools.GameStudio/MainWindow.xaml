@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         mc:Ignorable="d"
         Title="XeEngine Game Studio" Height="350" Width="350" Initialized="Window_Initialized">
@@ -35,14 +36,15 @@
                     <MenuItem x:Name="_menuProjectSettings" Header="C_onfiguration" Click="MenuProjectConfiguration_Click"/>
                 </MenuItem>
             </Menu>
-            <DockPanel>
-                <local:ResourceView x:Name="ctrlResourceView" Width="224">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <local:ResourceView Grid.Column="0" x:Name="ctrlResourceView">
 
                 </local:ResourceView>
-                <StackPanel>
-                    
-                </StackPanel>
-            </DockPanel>
+            </Grid>
         </DockPanel>
 
     </Grid>

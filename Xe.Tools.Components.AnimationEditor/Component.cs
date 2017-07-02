@@ -18,20 +18,8 @@ namespace Xe.Tools.Components.AnimationEditor
 
         public bool? ShowDialog()
         {
-            var dialog = new AnimEditor.FormAnim();
-            var result = dialog.ShowDialog();
-            switch (result)
-            {
-                case System.Windows.Forms.DialogResult.OK:
-                case System.Windows.Forms.DialogResult.Yes:
-                    return true;
-                case System.Windows.Forms.DialogResult.No:
-                    return false;
-                case System.Windows.Forms.DialogResult.Cancel:
-                    return null;
-                default:
-                    return null;
-            }
+            var dialog = new MainWindow();
+            return dialog.ShowDialog();
         }
         
 
