@@ -8,26 +8,30 @@ using System.Threading.Tasks;
 
 namespace Xe.Tools.Modules
 {
-    public class Settings<T> 
+    public class Settings<T> where T : Settings<T>, new()
     {
         private string _fileName;
-        
-        public static async Task<Settings<T>> OpenAsync(string path, string moduleName)
-        {
-            Settings<T> settings = null;
-            var fileName = Path.Combine(path, $"{moduleName}.settings.json");
 
-            if (File.Exists(fileName))
+        public static async Task<T> OpenAsync(Project project, string moduleName)
+        {
+            return await OpenAsync(Path.Combine(project.ProjectPath, ".settings/modules/"), moduleName);
+        }
+        public static async Task<T> OpenAsync(string path, string moduleName)
+        {
+            T settings = null;
+            var _fileName = Path.Combine(path, $"{moduleName}.settings.json");
+
+            if (File.Exists(_fileName))
             {
                 try
                 {
                     string strSettings;
-                    using (var reader = new StreamReader(fileName))
+                    using (var reader = new StreamReader(_fileName))
                     {
                         strSettings = await reader.ReadToEndAsync();
                     }
-                    settings = JsonConvert.DeserializeObject(strSettings) as Settings<T>;
-                    settings._fileName = fileName;
+                    settings = JsonConvert.DeserializeObject<T>(strSettings) as T;
+                    settings._fileName = _fileName;
                 }
                 catch (JsonSerializationException)
                 {
@@ -44,10 +48,11 @@ namespace Xe.Tools.Modules
             }
             if (settings == null)
             {
-                settings = new Settings<T>();
+                settings = new T();
+                settings._fileName = _fileName;
                 settings.Default();
             }
-            return settings;
+            return settings as T;
         }
 
         public virtual void Default()
@@ -60,6 +65,9 @@ namespace Xe.Tools.Modules
 
             try
             {
+                var path = Path.GetDirectoryName(_fileName);
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
                 using (var file = new FileStream(_fileName, FileMode.Create, FileAccess.Write, FileShare.Write))
                 {
                     using (var writer = new StreamWriter(file))

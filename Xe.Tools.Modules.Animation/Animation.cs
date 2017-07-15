@@ -8,20 +8,20 @@ namespace Xe.Tools.Modules
 {
     public partial class Animation : IModule
     {
-        private ModuleSettings Settings { get; }
+        private ModuleInit Init { get; }
         private AnimationsGroup AnimationsGroup { get; }
 
-        public string FileName { get => Settings.FileName; }
-        public Tuple<string, string>[] Parameters { get => Settings.Parameters; }
+        public string FileName { get => Init.FileName; }
+        public Tuple<string, string>[] Parameters { get => Init.Parameters; }
         public bool IsValid { get; private set; }
         public string[] InputFileNames { get; private set; }
         public string[] OutputFileNames { get; private set; }
 
-        public Animation(ModuleSettings settings)
+        public Animation(ModuleInit init)
         {
-            Settings = settings;
+            Init = init;
 
-            var fileName = Path.Combine(Settings.InputPath, FileName);
+            var fileName = Path.Combine(Init.InputPath, FileName);
             using (var file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new StreamReader(file))
@@ -34,8 +34,8 @@ namespace Xe.Tools.Modules
                 AnimationsGroup.Animations != null && 
                 AnimationsGroup.AnimationReferences != null;
 
-            var inputBasePath = Path.Combine(Settings.InputPath, Path.GetDirectoryName(fileName));
-            var outputBasePath = Path.Combine(Settings.OutputPath, Path.GetDirectoryName(fileName));
+            var inputBasePath = Path.Combine(Init.InputPath, Path.GetDirectoryName(fileName));
+            var outputBasePath = Path.Combine(Init.OutputPath, Path.GetDirectoryName(fileName));
 
             var inputFiles = new List<string> { fileName };
             foreach (var spriteFileName in AnimationsGroup.SpriteSheets)

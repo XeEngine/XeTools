@@ -49,26 +49,53 @@
                     <StackPanel Margin="5">
                         <TextBlock Text="Direction" />
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*" MaxWidth="40"/>
+                                <ColumnDefinition Width="*" MaxWidth="40"/>
+                                <ColumnDefinition Width="*" MaxWidth="40"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <ToggleButton x:Name="buttonDirectionUpLeft" Content="◤" IsEnabled="false" Checked="buttonDirection_Checked" Tag="UpLeft"/>
-                                <ToggleButton x:Name="buttonDirectionLeft" Content="◀" Checked="buttonDirection_Checked" Tag="Left"/>
-                                <ToggleButton x:Name="buttonDirectionDownLeft" Content="◣" IsEnabled="false" Tag="DownLeft"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <ToggleButton x:Name="buttonDirectionUp" Content="▲" Checked="buttonDirection_Checked" Tag="Up"/>
-                                <ToggleButton x:Name="buttonDirectionUndefined" Content="■" Checked="buttonDirectionUndefined_Checked" Tag="Center"/>
-                                <ToggleButton x:Name="buttonDirectionDown" Content="▼" Checked="buttonDirection_Checked" Tag="Down"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2">
-                                <ToggleButton x:Name="buttonDirectionUpRight" Content="◥" IsEnabled="false" Checked="buttonDirection_Checked" Tag="UpRight"/>
-                                <ToggleButton x:Name="buttonDirectionRight" Content="▶" Checked="buttonDirection_Checked" Tag="Right"/>
-                                <ToggleButton x:Name="buttonDirectionDownRight" Content="◢" IsEnabled="false" Checked="buttonDirection_Checked" Tag="DownRight"/>
-                            </StackPanel>
+
+                            <RadioButton x:Name="buttonDirectionUndefined" Content="■"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="1" Grid.Column="1"
+                                         Checked="buttonDirectionUndefined_Checked" Tag="Center"/>
+                            <RadioButton x:Name="buttonDirectionUp" Content="▲"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="0" Grid.Column="1"
+                                         Checked="buttonDirection_Checked" Tag="Up"/>
+                            <RadioButton x:Name="buttonDirectionUpRight" Content="◥"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="0" Grid.Column="2"
+                                         Visibility="Hidden"  Checked="buttonDirection_Checked" Tag="UpRight"/>
+                            <RadioButton x:Name="buttonDirectionRight" Content="▶"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="1" Grid.Column="2"
+                                         Checked="buttonDirection_Checked" Tag="Right"/>
+                            <RadioButton x:Name="buttonDirectionDownRight" Content="◢"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="2" Grid.Column="2"
+                                         Visibility="Hidden" Checked="buttonDirection_Checked" Tag="DownRight"/>
+                            <RadioButton x:Name="buttonDirectionDown" Content="▼"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="2" Grid.Column="1"
+                                         Checked="buttonDirection_Checked" Tag="Down"/>
+                            <RadioButton x:Name="buttonDirectionDownLeft" Content="◣"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="2" Grid.Column="0"
+                                         Visibility="Hidden" Tag="DownLeft"/>
+                            <RadioButton x:Name="buttonDirectionLeft" Content="◀"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="1" Grid.Column="0"
+                                         Checked="buttonDirection_Checked" Tag="Left"/>
+                            <RadioButton x:Name="buttonDirectionUpLeft" Content="◤"
+                                         Style="{StaticResource {x:Type ToggleButton}}"
+                                         Grid.Row="0" Grid.Column="0"
+                                         Visibility="Hidden" Checked="buttonDirection_Checked" Tag="UpLeft"/>
                         </Grid>
                         <CheckBox x:Name="checkFlipHorizontally" Content="Flip horizontally" Margin="0 10 0 0" Checked="checkFlipHorizontally_Checked"/>
                         <CheckBox x:Name="checkFlipVertically" Content="Flip vertically" Margin="0 5 0 5" Checked="checkFlipVertically_Checked"/>

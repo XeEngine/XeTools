@@ -27,7 +27,7 @@ namespace Xe.Tools.Modules
             }
         }
 
-        public IModule CreateInstance(ModuleSettings settings)
+        public IModule CreateInstance(ModuleInit settings)
         {
             return Activator.CreateInstance(Type, new object[] { settings }) as IModule;
         }
@@ -47,11 +47,19 @@ namespace Xe.Tools.Modules
             return GetPlugins(folder,
                 new string[] { ".exe", ".dll", ".module" }, type =>
                 {
-                    if (type.Namespace.IndexOf("Xe.Tools.Modules") != 0)
-                        return null;
-                    if (!type.GetInterfaces().Any(x => x.FullName == "Xe.Tools.Modules.IModule"))
-                        return null;
-                    return new Module(type);
+                    try
+                    {
+                        if (type.Namespace == null)
+                            return null;
+                        if (!type.GetInterfaces().Any(x => x.FullName == "Xe.Tools.Modules.IModule"))
+                            return null;
+                        return new Module(type);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e.Message);
+                    }
+                    return null;
                 });
         }
     }

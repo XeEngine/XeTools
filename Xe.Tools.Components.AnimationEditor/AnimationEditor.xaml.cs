@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xe.Tools.Wpf.Dialogs;
 
 namespace Xe.Tools.Components.AnimationEditor
 {
@@ -32,7 +33,10 @@ namespace Xe.Tools.Components.AnimationEditor
         }
         private void buttonAddPublicAnimation_Click(object sender, RoutedEventArgs e)
         {
-
+            /*var dialog = new SingleInputDialog
+            {
+                Title = "New animation to export"
+            };*/
         }
         private void buttonRemovePublicAnimation_Click(object sender, RoutedEventArgs e)
         {

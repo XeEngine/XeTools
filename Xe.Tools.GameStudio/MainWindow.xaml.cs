@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Xe.Tools.Components;
+using Xe.Tools.GameStudio.Models;
 using Xe.Tools.GameStudio.Utility;
+using Xe.Tools.GameStudio.ViewModels;
 using Xe.Tools.Modules;
 
 namespace Xe.Tools.GameStudio
@@ -30,23 +33,45 @@ namespace Xe.Tools.GameStudio
 		{
 			InitializeComponent();
 
-            Globals.Modules = Module.GetModules().ToArray();
-            Globals.Components = Component.GetComponents().ToArray();
-
-            var fileLastOpen = Properties.Settings.Default.FileLastOpen;
-            if (File.Exists(fileLastOpen))
-            {
-                Project = Project.Open(fileLastOpen);
-            }
-            else
-            {
-                Project = new Project();
-            }
+            Common.Initialize();
+            FooterBar.DataContext = new StatusViewModel();
 		}
 
-        private void Window_Initialized(object sender, EventArgs e)
+        private void Window_Loaded(object sender, EventArgs e)
         {
+            Project project = null;
+            var tasks = new Task[] {
+                Task.Run(() =>
+                {
+                    Common.SendMessage(MessageType.Initialization, "Loading modules...");
+                    Globals.Modules = Module.GetModules().ToArray();
+                    Common.SendMessage(MessageType.Initialization, "Loading components...");
+                    Globals.Components = Component.GetComponents().ToArray();
+                }),
+                Task.Run(() =>
+                {
+                    var fileLastOpen = Properties.Settings.Default.FileLastOpen;
+                    if (File.Exists(fileLastOpen))
+                    {
+                        Common.SendMessage(MessageType.Initialization, "Loading most recent project...");
+                        project = Project.Open(fileLastOpen);
+                    }
+                    else
+                    {
+                        project = new Project();
+                    }
+                })
+            };
 
+            Task.Run(() =>
+            {
+                Task.WaitAll(tasks);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Project = project;
+                    Common.SendMessage(MessageType.Idle, "Ready");
+                });
+            });
         }
 
         private void MenuItem_FileNewClick(object sender, RoutedEventArgs e)
@@ -60,9 +85,11 @@ namespace Xe.Tools.GameStudio
 				FileDialog.Type.XeGameProject);
 			if (fd.ShowDialog() ?? false == true)
             {
+                Common.SendMessage(MessageType.Initialization, "Loading most recent project...");
                 Project = Project.Open(fd.FileName);
                 Properties.Settings.Default.FileLastOpen = fd.FileName;
                 Properties.Settings.Default.Save();
+                Common.SendMessage(MessageType.Idle, "Ready");
             }
 		}
 

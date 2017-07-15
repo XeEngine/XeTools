@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Xe.Tools.Components.AnimationEditor</RootNamespace>
     <AssemblyName>Xe.Tools.Components.AnimationEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,19 +28,18 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -53,6 +52,15 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Models\AnimationNameModel.cs" />
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AnimationGroupViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\OutputMessageManagerViewModel.cs" />
+    <Compile Include="ViewModels\OutputMessageViewModel.cs" />
     <Page Include="AnimationEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,6 +78,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\FrameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,6 +111,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -116,6 +129,18 @@
     <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">
       <Project>{0a9e80cc-c253-47e8-b99a-c211d91291d4}</Project>
       <Name>Xe.Tools.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Animation\Xe.Tools.Modules.Animation.csproj">
+      <Project>{947776a6-561e-440f-bce8-c38d476ebcb1}</Project>
+      <Name>Xe.Tools.Modules.Animation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
+      <Project>{19596819-8CDA-40F8-9488-BC75125B977F}</Project>
+      <Name>Xe.Tools.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
+      <Project>{545D863A-CD36-4C79-A07F-CF82B718FC3E}</Project>
+      <Name>Xe.Tools.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
       <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>

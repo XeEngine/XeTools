@@ -38,7 +38,7 @@ namespace Xe.Tools.Components
                 Name = string.Empty;
         }
 
-        public IComponent CreateInstance(ComponentSettings settings)
+        public IComponent CreateInstance(ComponentProperties settings)
         {
             return Activator.CreateInstance(Type, new object[] { settings }) as IComponent;
         }
@@ -56,8 +56,6 @@ namespace Xe.Tools.Components
             return GetPlugins(folder,
                 new string[] { ".exe", ".dll", ".component" }, type =>
                 {
-                    if (type.Namespace.IndexOf("Xe.Tools.Components") != 0)
-                        return null;
                     if (!type.GetInterfaces().Any(x => x.FullName == "Xe.Tools.Components.IComponent"))
                         return null;
                     return new Component(type);

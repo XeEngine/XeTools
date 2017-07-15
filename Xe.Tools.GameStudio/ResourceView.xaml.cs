@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xe.Tools.GameStudio.Utility;
+using Xe.Tools.Wpf.Dialogs;
 using static Xe.Tools.GameStudio.Utility.ResourceManager;
 
 namespace Xe.Tools.GameStudio
@@ -177,7 +178,7 @@ namespace Xe.Tools.GameStudio
 
         private void ctrlButtonAddFolder_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new Dialogs.SingleInputDialog()
+            var dialog = new SingleInputDialog()
             {
                 Title = "Create a new folder",
                 Description = "Please specify the name of the folder that you want to create",
@@ -192,7 +193,7 @@ namespace Xe.Tools.GameStudio
         private void treeFileView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var node = SelectedNode;
-            if (!node.IsDirectory)
+            if (node != null && !node.IsDirectory)
             {
                 var moduleName = node.Item.Type;
                 var component = Globals.Components
@@ -202,13 +203,13 @@ namespace Xe.Tools.GameStudio
                 bool? result;
                 if (component != null)
                 {
-                    var instance = component.CreateInstance(new Components.ComponentSettings()
+                    var instance = component.CreateInstance(new Components.ComponentProperties()
                     {
                         Project = Project,
                         Container = Container,
                         Item = node.Item
                     });
-                    result = instance.ShowDialog();
+                    instance.ShowSettings();
                 }
                 else
                 {

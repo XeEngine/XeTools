@@ -29,7 +29,6 @@
             <Button x:Name="ctrlButtonAddFolder" Content="{StaticResource NewSolutionFolder_16x}" Click="ctrlButtonAddFolder_Click" IsEnabled="False"/>
             <Button x:Name="ctrlButtonRemoveItem" Content="{StaticResource Remove_color_16x}" Click="ctrlButtonRemoveItem_Click" IsEnabled="False"/>
             <Separator/>
-            <TextBlock>asd</TextBlock>
         </ToolBar>
 
         <TreeView x:Name="treeFileView" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="2"
@@ -45,8 +44,8 @@
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" ContextMenu="{StaticResource ScaleCollectionPopup}">
-                                    <ContentControl IsEnabled="False" Content="{Binding Icon}"/>
+                                <StackPanel Orientation="Horizontal" ContextMenu="{StaticResource ScaleCollectionPopup}" Height="20">
+                                    <Image Source="{Binding Icon}" Width="16"/>
                                     <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Foreground="{Binding TextColor}"/>
                                 </StackPanel>
                             </DataTemplate>

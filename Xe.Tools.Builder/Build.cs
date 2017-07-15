@@ -18,11 +18,12 @@ namespace Xe.Tools.Builder
 
         public static void Build(Project project, string outputFolder)
         {
+            Program.OnProgress?.Invoke($"Building {project.FileName}...", 0, 1, false);
             ShowInfo();
 
             Log.Message($"Processing {project.Name} - Developed by {project.Producer}");
             Log.Message($"Version {project.Version}");
-            Log.Message($"{project.Copyright} {project.Company}");
+            Log.Message($"{project.Copyright} {project.Year}");
 
             var entries = new List<Entry>();
             foreach (var container in project.Containers)
@@ -36,9 +37,13 @@ namespace Xe.Tools.Builder
             }
 
 #if DEBUG
+            int filesProcessed = 0;
+            int filesCount = entries.Count;
             foreach (var entry in entries)
             {
+                Program.OnProgress?.Invoke($"Processing {entry.Item.RelativeFileNameInput}...", filesProcessed, filesCount, false);
                 ProcessEntry(entry, outputFolder);
+                Program.OnProgress?.Invoke($"Processed {entry.Item.RelativeFileNameInput}!", filesProcessed, filesCount, false);
             }
 #else
             int maxTasksCount = System.Environment.ProcessorCount * 2;
@@ -75,6 +80,7 @@ namespace Xe.Tools.Builder
             }
             Task.WaitAll(queue.ToArray());
 #endif
+            Program.OnProgress?.Invoke($"Build completed.", 1, 1, true);
         }
 
         private static Task ProcessEntryAsync(Entry entry, string outputFolder)
@@ -93,7 +99,7 @@ namespace Xe.Tools.Builder
                 Log.Error($"Module {type} not found for {item.Input} item.");
                 return;
             }
-            var moduleInstance = module.CreateInstance(new Modules.ModuleSettings()
+            var moduleInstance = module.CreateInstance(new Modules.ModuleInit()
             {
                 FileName = Path.Combine(entry.Container.Name, item.Input),
                 Parameters = item.Parameters.ToArray(),

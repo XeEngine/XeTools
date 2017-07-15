@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Xe.Tools.GameStudio">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Image x:Key="Add_16x" Width="16" Height="16">
         <Image.Source>
             <DrawingImage>
@@ -49,38 +48,30 @@
             </DrawingImage>
         </Image.Source>
     </Image>
-    <Image x:Key="Document_16x" Width="16" Height="16">
-        <Image.Source>
-            <DrawingImage>
-                <DrawingImage.Drawing>
-                    <DrawingGroup>
-                        <DrawingGroup.Children>
-                            <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                            <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M4,15C3.03,15,2,14.299,2,13L2,3C2,1.701,3.03,1,4,1L10.061,1 14,4.556 14,13C14,13.97,13.299,15,12,15z" />
-                            <GeometryDrawing Brush="#FF424242" Geometry="F1M12,13L4,13 4,3 9,3 9,6 12,6z M9.641,2L3.964,2C3.964,2,3,2,3,3L3,13C3,14,3.965,14,3.965,14L11.965,14C12.965,14,13,13,13,13L13,5z" />
-                            <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M4,3L9,3 9,6 12,6 12,13 4,13z" />
-                        </DrawingGroup.Children>
-                    </DrawingGroup>
-                </DrawingImage.Drawing>
-            </DrawingImage>
-        </Image.Source>
-    </Image>
-    <Image x:Key="Folder_16x" Width="16" Height="16">
-        <Image.Source>
-            <DrawingImage>
-                <DrawingImage.Drawing>
-                    <DrawingGroup>
-                        <DrawingGroup.Children>
-                            <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                            <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M16,2.5L16,12.5C16,13.327,15.327,14,14.5,14L2.504,14C1.677,14,1.004,13.327,1.004,12.5L1.004,4.5C1.004,3.673,1.677,3,2.504,3L5.39,3 6.39,1 14.5,1C15.327,1,16,1.673,16,2.5" />
-                            <GeometryDrawing Brush="#FFDCB67A" Geometry="F1M14.0039,4L7.5079,4 8.0079,3 8.0119,3 14.0039,3z M14.4999,2L7.0079,2 6.0079,4 2.5039,4C2.2269,4,2.0039,4.224,2.0039,4.5L2.0039,12.5C2.0039,12.776,2.2269,13,2.5039,13L14.4999,13C14.7749,13,14.9999,12.776,14.9999,12.5L14.9999,2.5C14.9999,2.224,14.7749,2,14.4999,2" />
-                            <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M8.0001,3.0004L7.5001,4.0004 14.0001,4.0004 14.0001,3.0004z" />
-                        </DrawingGroup.Children>
-                    </DrawingGroup>
-                </DrawingImage.Drawing>
-            </DrawingImage>
-        </Image.Source>
-    </Image>
+    <DrawingImage x:Key="Document_16x">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M4,15C3.03,15,2,14.299,2,13L2,3C2,1.701,3.03,1,4,1L10.061,1 14,4.556 14,13C14,13.97,13.299,15,12,15z" />
+                    <GeometryDrawing Brush="#FF424242" Geometry="F1M12,13L4,13 4,3 9,3 9,6 12,6z M9.641,2L3.964,2C3.964,2,3,2,3,3L3,13C3,14,3.965,14,3.965,14L11.965,14C12.965,14,13,13,13,13L13,5z" />
+                    <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M4,3L9,3 9,6 12,6 12,13 4,13z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Folder_16x">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M16,2.5L16,12.5C16,13.327,15.327,14,14.5,14L2.504,14C1.677,14,1.004,13.327,1.004,12.5L1.004,4.5C1.004,3.673,1.677,3,2.504,3L5.39,3 6.39,1 14.5,1C15.327,1,16,1.673,16,2.5" />
+                    <GeometryDrawing Brush="#FFDCB67A" Geometry="F1M14.0039,4L7.5079,4 8.0079,3 8.0119,3 14.0039,3z M14.4999,2L7.0079,2 6.0079,4 2.5039,4C2.2269,4,2.0039,4.224,2.0039,4.5L2.0039,12.5C2.0039,12.776,2.2269,13,2.5039,13L14.4999,13C14.7749,13,14.9999,12.776,14.9999,12.5L14.9999,2.5C14.9999,2.224,14.7749,2,14.4999,2" />
+                    <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M8.0001,3.0004L7.5001,4.0004 14.0001,4.0004 14.0001,3.0004z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
     <Image x:Key="FolderOpen_16x" Width="16" Height="16">
         <Image.Source>
             <DrawingImage>
@@ -161,21 +152,53 @@
             </DrawingImage>
         </Image.Source>
     </Image>
-    <Image x:Key="SpecialFolder_16x" Width="16" Height="16">
-        <Image.Source>
-            <DrawingImage>
-                <DrawingImage.Drawing>
-                    <DrawingGroup>
-                        <DrawingGroup.Children>
-                            <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                            <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M14.5,0L6.39,0 5.39,2 2.504,2C1.677,2,1.004,2.673,1.004,3.5L1.004,8.702C0.385999999999999,9.473 0,10.438 0,11.5 0,13.981 2.019,16 4.5,16 6.453,16 8.103,14.742 8.724,13L14.5,13C15.327,13,16,12.327,16,11.5L16,1.5C16,0.673,15.327,0,14.5,0" />
-                            <GeometryDrawing Brush="#FFDCB67A" Geometry="F1M14.0039,3L7.5079,3 8.0079,2 8.0119,2 14.0039,2z M14.4999,1L7.0079,1 6.0079,3 2.5039,3C2.2269,3,2.0039,3.224,2.0039,3.5L2.0039,7.76C2.7189,7.281 3.5769,7 4.4999,7 6.9819,7 8.9999,9.019 8.9999,11.5 8.9999,11.671 8.9679,11.834 8.9489,12L14.4999,12C14.7749,12,14.9999,11.776,14.9999,11.5L14.9999,1.5C14.9999,1.224,14.7749,1,14.4999,1" />
-                            <GeometryDrawing Brush="#FF424242" Geometry="F1M6,11.5C6,12.328 5.329,13 4.5,13 3.671,13 3,12.328 3,11.5 3,10.672 3.671,10 4.5,10 5.329,10 6,10.672 6,11.5 M7,11.5C7,12.881 5.881,14 4.5,14 3.119,14 2,12.881 2,11.5 2,10.119 3.119,9 4.5,9 5.881,9 7,10.119 7,11.5 M4.5,8C2.567,8 1,9.567 1,11.5 1,13.433 2.567,15 4.5,15 6.433,15 8,13.433 8,11.5 8,9.567 6.433,8 4.5,8" />
-                            <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M8.0001,1.9996L7.5001,3.0006 14.0001,3.0006 14.0001,1.9996z" />
-                        </DrawingGroup.Children>
-                    </DrawingGroup>
-                </DrawingImage.Drawing>
-            </DrawingImage>
-        </Image.Source>
-    </Image>
+    <DrawingImage x:Key="SpecialFolder_16x">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M14.5,0L6.39,0 5.39,2 2.504,2C1.677,2,1.004,2.673,1.004,3.5L1.004,8.702C0.385999999999999,9.473 0,10.438 0,11.5 0,13.981 2.019,16 4.5,16 6.453,16 8.103,14.742 8.724,13L14.5,13C15.327,13,16,12.327,16,11.5L16,1.5C16,0.673,15.327,0,14.5,0" />
+                    <GeometryDrawing Brush="#FFDCB67A" Geometry="F1M14.0039,3L7.5079,3 8.0079,2 8.0119,2 14.0039,2z M14.4999,1L7.0079,1 6.0079,3 2.5039,3C2.2269,3,2.0039,3.224,2.0039,3.5L2.0039,7.76C2.7189,7.281 3.5769,7 4.4999,7 6.9819,7 8.9999,9.019 8.9999,11.5 8.9999,11.671 8.9679,11.834 8.9489,12L14.4999,12C14.7749,12,14.9999,11.776,14.9999,11.5L14.9999,1.5C14.9999,1.224,14.7749,1,14.4999,1" />
+                    <GeometryDrawing Brush="#FF424242" Geometry="F1M6,11.5C6,12.328 5.329,13 4.5,13 3.671,13 3,12.328 3,11.5 3,10.672 3.671,10 4.5,10 5.329,10 6,10.672 6,11.5 M7,11.5C7,12.881 5.881,14 4.5,14 3.119,14 2,12.881 2,11.5 2,10.119 3.119,9 4.5,9 5.881,9 7,10.119 7,11.5 M4.5,8C2.567,8 1,9.567 1,11.5 1,13.433 2.567,15 4.5,15 6.433,15 8,13.433 8,11.5 8,9.567 6.433,8 4.5,8" />
+                    <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M8.0001,1.9996L7.5001,3.0006 14.0001,3.0006 14.0001,1.9996z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="StatusCriticalError_16x">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M16,8C16,12.418 12.418,16 8,16 3.582,16 0,12.418 0,8 0,3.582 3.582,0 8,0 12.418,0 16,3.582 16,8" />
+                    <GeometryDrawing Brush="#FFE41400" Geometry="F1M12.4141,11L11.0001,12.414 8.0001,9.414 5.0001,12.414 3.5861,11 6.5861,8 3.5861,5 5.0001,3.586 8.0001,6.586 11.0001,3.586 12.4141,5 9.4141,8z M8.0001,1C4.1341,1 1.0001,4.135 1.0001,8 1.0001,11.865 4.1341,15 8.0001,15 11.8651,15 15.0001,11.865 15.0001,8 15.0001,4.135 11.8651,1 8.0001,1" />
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1M9.4141,8L12.4141,11 11.0001,12.414 8.0001,9.414 5.0001,12.414 3.5861,11 6.5861,8 3.5861,5 5.0001,3.586 8.0001,6.586 11.0001,3.586 12.4141,5z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="StatusInformation_16x">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0,8.0005C0,3.5825 3.582,0.000499999999998835 8,0.000499999999998835 12.418,0.000499999999998835 16,3.5825 16,8.0005 16,12.4185 12.418,16.0005 8,16.0005 3.582,16.0005 0,12.4185 0,8.0005" />
+                    <GeometryDrawing Brush="#FF1AA1E2" Geometry="F1M9,5L7,5 7,3 9,3z M9,13L7,13 7,6 9,6z M8,1C4.135,1 1,4.135 1,8 1,11.865 4.135,15 8,15 11.865,15 15,11.865 15,8 15,4.135 11.865,1 8,1" />
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1M7,5L9,5 9,3 7,3z M7,6L9,6 9,13 7,13z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="StatusWarning_16x" >
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.0002,-0.000199999999999534L0.000200000000000422,13.9998 2.0002,15.9998 14.0002,15.9998 16.0002,13.9998 9.0002,-0.000199999999999534z" />
+                    <GeometryDrawing Brush="#FFFFCC00" Geometry="F1M9,10L7,10 7,5 9,5z M9,13L7,13 7,11 9,11z M8.382,1L7.618,1 1.217,13.803 2.5,15 13.5,15 14.783,13.803z" />
+                    <GeometryDrawing Brush="#FF000000" Geometry="F1M9,11L7,11 7,13 9,13z M9,10L7,10 7,5 9,5z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
 </ResourceDictionary>

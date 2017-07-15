@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Xe.Tools.Modules
 {
-    public class ModuleSettings
+    public class ModuleInit
     {
         public string FileName { get; set; }
         public string InputPath { get; set; }

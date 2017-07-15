@@ -9,6 +9,10 @@ namespace Xe.Tools.Builder
 {
     public static partial class Program
     {
+        public delegate void ProgressFunc(string message, int filesProcessed, int filesToProcess, bool hasFinish);
+
+        public static event ProgressFunc OnProgress;
+
         private static bool Quiet { get; set; }
 
         private static void Main(string[] args)
@@ -41,7 +45,8 @@ namespace Xe.Tools.Builder
                 if (!failed)
                 {
                     Quiet = quiet;
-                    Log.OnLog += Log_OnLog;
+                    Log.OnLog += Log_Logging;
+                    OnProgress += Program_Progress;
                     try
                     {
                         if (!File.Exists(strInput))
@@ -64,7 +69,13 @@ namespace Xe.Tools.Builder
                 ShowUsage();
         }
 
-        private static void Log_OnLog(Log.Level level, string message)
+        private static void Program_Progress(string message, int filesProcessed, int filesToProcess, bool hasFinish)
+        {
+            var str = string.Format("[{0}/{1}] {2}", filesProcessed.ToString("D03"), filesToProcess.ToString("D03"));
+            Log.Message(str);
+        }
+
+        private static void Log_Logging(Log.Level level, string message, string member, string sourceFile, int sourceLine)
         {
             ConsoleColor color;
             switch (level)

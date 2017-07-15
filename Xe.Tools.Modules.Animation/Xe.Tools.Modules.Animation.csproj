@@ -36,6 +36,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="AnimationExport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe.Game.Animations\Xe.Game.Animations.csproj">
@@ -45,6 +46,10 @@
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>
       <Name>Xe.Tools.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
+      <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
+      <Name>Xe.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
       <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>

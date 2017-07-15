@@ -1,14 +1,19 @@
-﻿<Window x:Class="Xe.Tools.GameStudio.MainWindow"
+﻿<Window xmlns:Controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"  x:Class="Xe.Tools.GameStudio.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
+        xmlns:xe="clr-namespace:Xe.Tools.Wpf"
         mc:Ignorable="d"
-        Title="XeEngine Game Studio" Height="350" Width="350" Initialized="Window_Initialized">
+        Title="XeEngine Game Studio" Height="350" Width="350" Loaded="Window_Loaded">
     <Grid>
-        <DockPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="46*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem x:Name="_menuFileProperties" Header="_New" Click="MenuItem_FileNewClick" Icon="{StaticResource Add_16x}" />
@@ -36,6 +41,8 @@
                     <MenuItem x:Name="_menuProjectSettings" Header="C_onfiguration" Click="MenuProjectConfiguration_Click"/>
                 </MenuItem>
             </Menu>
+            <Controls:FooterBar x:Name="FooterBar" DockPanel.Dock="Bottom" Height="23" Background="DarkGray"/>
+            <Frame DockPanel.Dock="Bottom" Height="200" Source="/Pages/OutputPage.xaml"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

@@ -8,10 +8,12 @@ namespace Xe.Tools.Components.AnimationEditor
 {
     public class Component : IComponent
     {
-        public ComponentSettings Settings { get; private set; }
+        public ComponentProperties Settings { get; private set; }
         public Project Project { get; private set; }
 
-        public Component(ComponentSettings settings)
+        public bool IsSettingsAvailable => true;
+
+        public Component(ComponentProperties settings)
         {
             Settings = settings;
         }
@@ -21,7 +23,11 @@ namespace Xe.Tools.Components.AnimationEditor
             var dialog = new MainWindow();
             return dialog.ShowDialog();
         }
-        
+        public void ShowSettings()
+        {
+            var dialog = new SettingsWindow(Settings.Project);
+            dialog.ShowDialog();
+        }
 
         public static ComponentInfo GetComponentInfo()
         {

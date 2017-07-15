@@ -4,9 +4,11 @@ namespace Xe.Tools.Components.Image
 {
     public class Component : IComponent
     {
-        public ComponentSettings Settings { get; private set; }
+        public ComponentProperties Settings { get; private set; }
 
-        public Component(ComponentSettings settings)
+        public bool IsSettingsAvailable => true;
+
+        public Component(ComponentProperties settings)
         {
             Settings = settings;
         }
@@ -26,6 +28,11 @@ namespace Xe.Tools.Components.Image
                 Editor = "Image properties",
                 Description = "Used to process an image in a specific way."
             };
+        }
+
+        public void ShowSettings()
+        {
+            throw new NotImplementedException();
         }
     }
 }

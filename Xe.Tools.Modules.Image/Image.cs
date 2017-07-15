@@ -6,7 +6,7 @@ namespace Xe.Tools.Modules
 {
     public class Image : IModule
     {
-        private ModuleSettings Settings { get; }
+        private ModuleInit Settings { get; }
 
         public string FileName { get => Settings.FileName; }
         public Tuple<string, string>[] Parameters { get => Settings.Parameters; }
@@ -14,7 +14,7 @@ namespace Xe.Tools.Modules
         public string[] InputFileNames { get; private set; }
         public string[] OutputFileNames { get; private set; }
 
-        public Image(ModuleSettings settings)
+        public Image(ModuleInit settings)
         {
             Settings = settings;
             IsValid = true;
