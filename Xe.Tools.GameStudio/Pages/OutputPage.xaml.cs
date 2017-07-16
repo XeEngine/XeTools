@@ -22,6 +22,11 @@ namespace Xe.Tools.GameStudio.Pages
             DataContext = model;
             ErrorsList.DataContext = model;
         }
+
+        private void CleanLog_Click(object sender, RoutedEventArgs e)
+        {
+            model.Clear();
+        }
     }
 
     public abstract class GenericCountConverter : IValueConverter

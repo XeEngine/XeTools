@@ -24,10 +24,26 @@
             <ComboBox x:Name="_comboBoxContainers" Width="80" SelectionChanged="ComboBoxContainers_SelectionChanged">
             </ComboBox>
             <Separator/>
-            <Button x:Name="ctrlButtonNewItem" Content="{StaticResource NewFile_16x}" Click="ctrlButtonNewItem_Click" VerticalAlignment="Bottom" IsEnabled="False"/>
-            <Button x:Name="ctrlButtonAddItem" Content="{StaticResource AddFile_16x}" Click="ctrlButtonAddItem_Click" IsEnabled="False"/>
-            <Button x:Name="ctrlButtonAddFolder" Content="{StaticResource NewSolutionFolder_16x}" Click="ctrlButtonAddFolder_Click" IsEnabled="False"/>
-            <Button x:Name="ctrlButtonRemoveItem" Content="{StaticResource Remove_color_16x}" Click="ctrlButtonRemoveItem_Click" IsEnabled="False"/>
+            <Button x:Name="ctrlButtonNewItem" Click="ctrlButtonNewItem_Click" VerticalAlignment="Bottom" IsEnabled="False">
+                <Button.Content>
+                    <Image Source="{StaticResource NewFile_16x}"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="ctrlButtonAddItem" Click="ctrlButtonAddItem_Click" IsEnabled="False">
+                <Button.Content>
+                    <Image Source="{StaticResource AddFile_16x}"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="ctrlButtonAddFolder" Click="ctrlButtonAddFolder_Click" IsEnabled="False">
+                <Button.Content>
+                    <Image Source="{StaticResource NewSolutionFolder_16x}"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="ctrlButtonRemoveItem" Click="ctrlButtonRemoveItem_Click" IsEnabled="False">
+                <Button.Content>
+                    <Image Source="{StaticResource Remove_color_16x}"/>
+                </Button.Content>
+            </Button>
             <Separator/>
         </ToolBar>
 

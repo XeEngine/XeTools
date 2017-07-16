@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         mc:Ignorable="d"
-        Title="Project settings" Height="192" Width="384" WindowStyle="ToolWindow">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,-1">
+        Title="Project settings" Height="194" Width="384" WindowStyle="ToolWindow">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="10">
             <TextBlock Text="Binaries" FontWeight="Bold" Margin="0 0 0 5"/>
             <TextBlock Text="Game executable" />
@@ -16,7 +16,11 @@
                     <ColumnDefinition Width="22"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="textGameExecutable" Grid.Column="0"/>
-                <Button Grid.Column="1" Content="{StaticResource OpenFileDialog_16x}" Click="ButtonChooseBinary_Click"/>
+                <Button Grid.Column="1" Click="ButtonChooseBinary_Click">
+                    <Button.Content>
+                        <Image Source="{StaticResource OpenFileDialog_16x}"/>
+                    </Button.Content>
+                </Button>
             </Grid>
             <TextBlock Text="Working directory" />
             <Grid>
@@ -25,7 +29,12 @@
                     <ColumnDefinition Width="22"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="textWorkingDirectory" Grid.Column="0"/>
-                <Button Grid.Column="1" Content="{StaticResource FolderOpen_16x}" Click="ButtonChooseWorkingDirectory_Click"/>
+                <Button Grid.Column="1" Click="ButtonChooseWorkingDirectory_Click"/>
+                <Button Grid.Column="1" Click="ButtonChooseBinary_Click">
+                    <Button.Content>
+                        <Image Source="{StaticResource FolderOpen_16x}"/>
+                    </Button.Content>
+                </Button>
             </Grid>
             <TextBlock Text="Build output directory" />
             <Grid>
@@ -34,7 +43,12 @@
                     <ColumnDefinition Width="22"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="textBuildOutputDirectory" Grid.Column="0"/>
-                <Button Grid.Column="1" Content="{StaticResource FolderOpen_16x}" Click="ButtonChooseOutputDirectory_Click"/>
+                <Button Grid.Column="1" Click="ButtonChooseOutputDirectory_Click"/>
+                <Button Grid.Column="1" Click="ButtonChooseBinary_Click">
+                    <Button.Content>
+                        <Image Source="{StaticResource FolderOpen_16x}"/>
+                    </Button.Content>
+                </Button>
             </Grid>
         </StackPanel>
     </ScrollViewer>
