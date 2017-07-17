@@ -6,8 +6,12 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         xmlns:xe="clr-namespace:Xe.Tools.Wpf"
+        xmlns:utility="clr-namespace:Xe.Tools.GameStudio.Utility"
         mc:Ignorable="d"
-        Title="XeEngine Game Studio" Height="350" Width="350" Loaded="Window_Loaded">
+        Title="XeEngine Game Studio"
+        Width="{Binding Source={x:Static utility:Settings.WindowProperties}, Mode=TwoWay, Path=Width}"
+        Height="{Binding Source={x:Static utility:Settings.WindowProperties}, Mode=TwoWay, Path=Height}"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="11*"/>
@@ -35,7 +39,7 @@
                 <MenuItem Header="_Project">
                     <MenuItem Header="_Run" Click="MenuItem_ProjectRun_Click">
                         <MenuItem.Icon>
-                            <Image Source="{StaticResource Run_16x}"/>
+                            <Image Source="{StaticResource Run_16x}" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="_Build" Click="MenuItem_ProjectBuild_Click">

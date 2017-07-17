@@ -5,5 +5,11 @@
     <Setting Name="FileLastOpen" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="OutputPageHeight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="WindowProperties" Type="Xe.Tools.GameStudio.Models.WindowPropertiesModel" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

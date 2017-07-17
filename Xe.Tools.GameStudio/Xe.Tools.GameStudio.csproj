@@ -45,6 +45,7 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -69,6 +70,7 @@
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\OutputMessageModel.cs" />
     <Compile Include="Models\ProjectConfiguration.cs" />
+    <Compile Include="Models\WindowPropertiesModel.cs" />
     <Compile Include="Pages\OutputPage.xaml.cs">
       <DependentUpon>OutputPage.xaml</DependentUpon>
     </Compile>
@@ -164,10 +166,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xe.Game.Animations\Xe.Game.Animations.csproj">
-      <Project>{2a10b8ee-a9b0-4ca3-a17d-39393c2b1b66}</Project>
-      <Name>Xe.Game.Animations</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Builder\Xe.Tools.Builder.csproj">
       <Project>{27819939-5fca-483f-9eab-889440922046}</Project>
       <Name>Xe.Tools.Builder</Name>
@@ -179,6 +177,22 @@
     <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">
       <Project>{0a9e80cc-c253-47e8-b99a-c211d91291d4}</Project>
       <Name>Xe.Tools.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Animation\Xe.Tools.Modules.Animation.csproj">
+      <Project>{947776a6-561e-440f-bce8-c38d476ebcb1}</Project>
+      <Name>Xe.Tools.Modules.Animation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Copy\Xe.Tools.Modules.Copy.csproj">
+      <Project>{11d5a452-607b-4479-a0e6-b229f129ef86}</Project>
+      <Name>Xe.Tools.Modules.Copy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Font\Xe.Tools.Modules.Font.csproj">
+      <Project>{2bcfc9fe-d961-41d4-bdc3-6fc3b7210db9}</Project>
+      <Name>Xe.Tools.Modules.Font</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Image\Xe.Tools.Modules.Image.csproj">
+      <Project>{8b5d1fec-0f58-40c6-b832-c27d0f44cd1a}</Project>
+      <Name>Xe.Tools.Modules.Image</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>

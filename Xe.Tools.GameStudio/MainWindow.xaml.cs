@@ -96,7 +96,7 @@ namespace Xe.Tools.GameStudio
 		private void MenuItem_FileSaveClick(object sender, RoutedEventArgs e)
 		{
 			if (!string.IsNullOrWhiteSpace(Project.ProjectPath) &&
-				System.IO.Directory.Exists(Project.ProjectPath))
+				Directory.Exists(Project.ProjectPath))
 				Project.Save();
 			else
 				SaveProjectDialog();

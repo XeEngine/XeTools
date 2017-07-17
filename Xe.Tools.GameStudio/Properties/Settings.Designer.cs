@@ -34,5 +34,28 @@ namespace Xe.Tools.GameStudio.Properties {
                 this["FileLastOpen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int OutputPageHeight {
+            get {
+                return ((int)(this["OutputPageHeight"]));
+            }
+            set {
+                this["OutputPageHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Xe.Tools.GameStudio.Models.WindowPropertiesModel WindowProperties {
+            get {
+                return ((global::Xe.Tools.GameStudio.Models.WindowPropertiesModel)(this["WindowProperties"]));
+            }
+            set {
+                this["WindowProperties"] = value;
+            }
+        }
     }
 }

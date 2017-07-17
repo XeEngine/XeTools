@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio.Dialogs"
         mc:Ignorable="d"
-        Title="Options" Height="82" Width="260" WindowStyle="ToolWindow">
+        Title="Options" Height="94" Width="260" WindowStyle="ToolWindow">
     <Grid Margin="10">
         <TextBlock TextWrapping="Wrap">The selected module has no options to set or cannot be loaded.</TextBlock>
     </Grid>

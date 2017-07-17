@@ -99,17 +99,36 @@ namespace Xe.Tools.Builder
                 Log.Error($"Module {type} not found for {item.Input} item.");
                 return;
             }
-            var moduleInstance = module.CreateInstance(new Modules.ModuleInit()
+
+            Modules.IModule moduleInstance;
+            try
             {
-                FileName = Path.Combine(entry.Container.Name, item.Input),
-                Parameters = item.Parameters.ToArray(),
-                InputPath = entry.Project.ProjectPath,
-                OutputPath = outputFolder
-            });
+                moduleInstance = module.CreateInstance(new Modules.ModuleInit()
+                {
+                    FileName = Path.Combine(entry.Container.Name, item.Input),
+                    Parameters = item.Parameters.ToArray(),
+                    InputPath = entry.Project.ProjectPath,
+                    OutputPath = outputFolder
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Module {type} initialization exception on {item.Input}: {e.Message}");
+                return;
+            }
+
             string output = item.Output;
             if (string.IsNullOrEmpty(output))
                 output = Path.Combine(Path.GetDirectoryName(item.Input), Path.GetFileNameWithoutExtension(item.Input));
-             moduleInstance.Export();
+            try
+            {
+                moduleInstance.Export();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Module {type} export exception on {item.Input}: {e.Message}");
+                return;
+            }
         }
     }
 }

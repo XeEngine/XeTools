@@ -40,7 +40,7 @@ namespace Xe.Tools.Modules
         private void Export(Stream stream)
         {
             using (var writer = new BinaryWriter(stream))
-                Export(stream);
+                Export(writer);
         }
 
         private void Export(BinaryWriter writer)

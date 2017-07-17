@@ -1,16 +1,43 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xe.Tools.GameStudio.Models;
 
 namespace Xe.Tools.GameStudio.Utility
 {
     public static class Settings
     {
+        public static WindowPropertiesModel WindowProperties
+        {
+            get
+            {
+                var o = Properties.Settings.Default.WindowProperties;
+                if (o == null)
+                {
+                    o = Properties.Settings.Default.WindowProperties = new WindowPropertiesModel();
+                    Properties.Settings.Default.Save();
+                }
+                return o;
+            }
+            set
+            {
+                Properties.Settings.Default.WindowProperties = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public static int OutputPageHeight
+        {
+            get
+            {
+                var height = Properties.Settings.Default.OutputPageHeight;
+                if (height <= 20)
+                    height = 20;
+                return height;
+            }
+            set => Properties.Settings.Default.OutputPageHeight = value;
+        }
+
         private static string GetProjectConfigurationFileName(Project project)
         {
             return Path.Combine(project.ProjectPath, project.FileName + ".config");

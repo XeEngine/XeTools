@@ -7,6 +7,6 @@ namespace Xe.Tools.Builder
     public static partial class Program
     {
         private static Dictionary<string, Module> Modules { get; } =
-            Module.GetModules("modules").ToDictionary(x => x.Name.ToLower(), x => x);
+            Module.GetModules().ToDictionary(x => x.Name.ToLower(), x => x);
     }
 }
