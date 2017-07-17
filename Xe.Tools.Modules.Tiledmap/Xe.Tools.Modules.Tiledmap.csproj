@@ -4,58 +4,56 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A853FB5F-A577-4478-83AF-EC65DB2BD0C8}</ProjectGuid>
+    <ProjectGuid>{AFF69391-A837-4A84-814B-2637DC185B60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>libTools.Language</RootNamespace>
-    <AssemblyName>libTools.Language</AssemblyName>
+    <RootNamespace>Xe.Tools.Modules</RootNamespace>
+    <AssemblyName>Xe.Tools.Modules.Tiledmap</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Lang.cs" />
-    <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Segment.cs" />
+    <Compile Include="Tiledmap.cs" />
+    <Compile Include="Tiledmap.Exporter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libTools\libTools.csproj">
-      <Project>{9fcbadf0-ad60-4088-a379-7caca6bd2743}</Project>
-      <Name>libTools</Name>
+    <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
+      <Project>{356875b9-86c1-47cb-942f-1e8413eec42d}</Project>
+      <Name>Xe.Game.Drawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>
-      <Name>Xe</Name>
+    <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
+      <Project>{8186cef3-fb20-4bce-a838-80742ccd0eea}</Project>
+      <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
+      <Project>{4F3923B8-ACAF-415A-8971-69ACE86E735A}</Project>
+      <Name>Xe.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
+      <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>
+      <Name>Xe.Tools.Modules</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="TiledSharp, Version=0.15.5889.20321, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

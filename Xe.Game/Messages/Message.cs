@@ -1,38 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xe;
-
-namespace libTools.Language
+﻿namespace Xe.Game.Messages
 {
     public class Message : UniqueObject, IDeepCloneable
     {
-        public static readonly Message Empty = new Message();
+        private static Language CurrentLanguage => MessageContainer.CurrentLanguage;
 
-        public string En, It, Fr, De, Sp;
+        public static readonly Message Empty = new Message();
+        
+        public string En { get; set; }
+        public string It { get; set; }
+        public string Fr { get; set; }
+        public string De { get; set; }
+        public string Sp { get; set; }
 
         public string Text
         {
             get
             {
                 string str;
-                switch (Lang.CurrentLanguage)
+                switch (CurrentLanguage)
                 {
-                    case Languages.English:
+                    case Language.English:
                         str = En;
                         break;
-                    case Languages.Italian:
+                    case Language.Italian:
                         str = It;
                         break;
-                    case Languages.French:
+                    case Language.French:
                         str = Fr;
                         break;
-                    case Languages.German:
+                    case Language.Deutsch:
                         str = De;
                         break;
-                    case Languages.Spanish:
+                    case Language.Spanish:
                         str = Sp;
                         break;
                     default:
@@ -44,21 +43,21 @@ namespace libTools.Language
             {
                 if (value == null)
                     value = "";
-                switch (Lang.CurrentLanguage)
+                switch (CurrentLanguage)
                 {
-                    case Languages.English:
+                    case Language.English:
                         En = value;
                         break;
-                    case Languages.Italian:
+                    case Language.Italian:
                         It = value;
                         break;
-                    case Languages.French:
+                    case Language.French:
                         Fr = value;
                         break;
-                    case Languages.German:
+                    case Language.Deutsch:
                         De = value;
                         break;
-                    case Languages.Spanish:
+                    case Language.Spanish:
                         Sp = value;
                         break;
                 }
@@ -80,13 +79,13 @@ namespace libTools.Language
 
         public override string ToString()
         {
-            switch (Lang.CurrentLanguage)
+            switch (CurrentLanguage)
             {
-                case Languages.English: if (En != null) return En; break;
-                case Languages.Italian: if (It != null) return It; break;
-                case Languages.French: if (Fr != null) return Fr; break;
-                case Languages.German: if (De != null) return De; break;
-                case Languages.Spanish: if (Sp != null) return Sp; break;
+                case Language.English: if (En != null) return En; break;
+                case Language.Italian: if (It != null) return It; break;
+                case Language.French: if (Fr != null) return Fr; break;
+                case Language.Deutsch: if (De != null) return De; break;
+                case Language.Spanish: if (Sp != null) return Sp; break;
             }
             return
                 (En != null && En.Length > 0) ? En :

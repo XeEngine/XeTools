@@ -1,24 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using libTools.Language;
-using System.ComponentModel;
-using System.Collections.Generic;
-using Xe;
 
-namespace libTools
+namespace Xe.Tools.Modules
 {
-    public enum Languages
+    public partial class Message
     {
-        English, Italian, French, German, Spanish
-    }
-
-    public partial class Lang : IO<Lang>
-    {
-        private static readonly uint MagicCode = 0x0147534D;
+        private const uint MagicCode = 0x0147534D;
 
         private class BinaryEntry
         {
@@ -26,36 +17,51 @@ namespace libTools
             public uint Position;
         }
 
-        private List<Segment> _segments = new List<Segment>();
-
-        public static Languages CurrentLanguage { get; set; }
-        public static Lang Instance = new Lang();
-
-        public List<Segment> Segments
+        public Language CurrentLanguage
         {
-            get { return _segments; }
-            set { _segments = value; }
+            get
+            {
+                var str = Parameters.Where(x => x.Item1 == "language")
+                    .Select(x => x.Item2)
+                    .FirstOrDefault();
+                switch (str)
+                {
+                    case "english": return Language.English;
+                    case "italian": return Language.Italian;
+                    case "french": return Language.French;
+                    case "deutsch": return Language.Deutsch;
+                    case "spanish": return Language.Spanish;
+                    case "japanese": return Language.Japanese;
+                    default: return Language.English;
+                }
+            }
         }
 
-        public Lang()
+        public void Export()
         {
-            Instance = this;
+            var outputFileName = OutputFileNames[0];
+            var ouputFilePath = Path.GetDirectoryName(outputFileName);
+            if (!Directory.Exists(ouputFilePath))
+                Directory.CreateDirectory(ouputFilePath);
+            using (var fStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
+            {
+                Export(fStream);
+            }
         }
-        public Lang(string filename) : base(filename)
+
+        private void Export(Stream stream)
         {
-            Instance = this;
+            using (var writer = new BinaryWriter(stream))
+                Export(writer);
         }
-        public Lang(FileStream stream) : base(stream)
-        {
-            Instance = this;
-        }
-        protected override void Export(BinaryWriter writer)
+
+        private void Export(BinaryWriter writer)
         {
             var entries = new List<BinaryEntry>(0x4000);
             using (var memStream = new MemoryStream(0x20000))
             {
                 var w = new BinaryWriter(memStream);
-                foreach (var segment in Segments)
+                foreach (var segment in Messages.Segments)
                 {
                     ushort id = segment.Id;
                     foreach (var message in segment.Messages)
@@ -63,18 +69,20 @@ namespace libTools
                         string str;
                         switch (CurrentLanguage)
                         {
-                            case Languages.English: str = message.En; break;
-                            case Languages.Italian: str = message.It; break;
-                            case Languages.French: str = message.Fr; break;
-                            case Languages.German: str = message.De; break;
-                            case Languages.Spanish: str = message.Sp; break;
+                            case Language.English: str = message.En; break;
+                            case Language.Italian: str = message.It; break;
+                            case Language.French: str = message.Fr; break;
+                            case Language.Deutsch: str = message.De; break;
+                            case Language.Spanish: str = message.Sp; break;
                             default: str = ""; break;
                         }
                         if (str == null) str = "";
                         var bytes = GetBytesFromString(str);
-                        var entry = new BinaryEntry();
-                        entry.Id = id++;
-                        entry.Position = (ushort)w.BaseStream.Position;
+                        var entry = new BinaryEntry()
+                        {
+                            Id = id++,
+                            Position = (ushort)w.BaseStream.Position
+                        };
                         entries.Add(entry);
                         w.Write(bytes);
                         w.Write((byte)0);
@@ -121,8 +129,7 @@ namespace libTools
                                         case "COLOR":
                                             if (cmd.Length == 2)
                                             {
-                                                int hexcolor;
-                                                if (int.TryParse(cmd[1], NumberStyles.HexNumber, null, out hexcolor))
+                                                if (int.TryParse(cmd[1], NumberStyles.HexNumber, null, out int hexcolor))
                                                 {
                                                     hexcolor |= 0xF000;
                                                     data.Add(0x10);
@@ -148,84 +155,6 @@ namespace libTools
                 }
             }
             return data.ToArray();
-        }
-
-        protected override void Import(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void MyLoad(Lang item)
-        {
-            Segments = item.Segments;
-        }
-
-        public Segment GetSegment(string name)
-        {
-            foreach (var segment in Segments)
-            {
-                if (segment.Name.Length == name.Length)
-                {
-                    if (segment.Name.ToLower().CompareTo(name.ToLower()) == 0)
-                        return segment;
-                }
-            }
-            return null;
-        }
-        public ushort GetMessageId(Guid id)
-        {
-            foreach (var item in _segments)
-            {
-                var index = item.GetMessageIndex(id);
-                if (index >= 0)
-                    return (ushort)(item.Id + index);
-            }
-            return 0;
-        }
-        public bool GetMessage(ushort id, out string str)
-        {
-            Message msg;
-            if (GetMessage(id, out msg))
-            {
-                str = msg.ToString();
-                return true;
-            }
-            str = null;
-            return false;
-        }
-        public string GetMessage(ushort id)
-        {
-            string str;
-            return GetMessage(id, out str) ? str : null;
-        }
-        public string GetMessage(Guid id)
-        {
-            Message msg;
-            return GetMessage(id, out msg) ? msg.Text : null;
-        }
-        public bool GetMessage(ushort id, out Message str)
-        {
-            foreach (var segment in Segments)
-            {
-                if (segment.Id >= id ||
-                    segment.Id + segment.Messages.Count < id)
-                {
-                    str = segment.Messages[id - segment.Id];
-                    return true;
-                }
-            }
-            str = null;
-            return false;
-        }
-        public bool GetMessage(Guid id, out Message str)
-        {
-            foreach (var segment in Segments)
-            {
-                if (segment.GetMessage(id, out str))
-                    return true;
-            }
-            str = null;
-            return false;
         }
     }
 }

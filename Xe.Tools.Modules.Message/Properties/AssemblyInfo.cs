@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("libTools.Forms")]
+[assembly: AssemblyTitle("Xe.Tools.Modules.Message")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("libTools.Forms")]
+[assembly: AssemblyProduct("Xe.Tools.Modules.Message")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("bf2dec2d-55fd-4431-8fe8-e26370764365")]
+[assembly: Guid("a875a205-caf0-4bc2-973c-f93dfc3cf066")]
 
 // Version information for an assembly consists of the following four values:
 //

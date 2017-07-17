@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xe;
 
-namespace libTools.Language
+namespace Xe.Game.Messages
 {
     public class Segment : IDeepCloneable
     {
@@ -29,10 +25,12 @@ namespace libTools.Language
 
         public object DeepClone()
         {
-            var item = new Segment();
-            item.Id = Id;
-            item.Name = Name != null ? Name.Clone() as string : null;
-            item.Messages = new List<Message>();
+            var item = new Segment()
+            {
+                Id = Id,
+                Name = Name != null ? Name.Clone() as string : null,
+                Messages = new List<Message>()
+            };
             foreach (var o in Messages) item.Messages.Add(o.DeepClone() as Message);
             return item;
         }
@@ -57,6 +55,7 @@ namespace libTools.Language
             message = Messages[index];
             return true;
         }
+
         public bool GetMessage(Guid id, out Message message)
         {
             foreach (var item in Messages)

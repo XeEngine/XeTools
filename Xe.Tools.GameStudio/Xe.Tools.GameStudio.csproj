@@ -194,6 +194,14 @@
       <Project>{8b5d1fec-0f58-40c6-b832-c27d0f44cd1a}</Project>
       <Name>Xe.Tools.Modules.Image</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Message\Xe.Tools.Modules.Message.csproj">
+      <Project>{a875a205-caf0-4bc2-973c-f93dfc3cf066}</Project>
+      <Name>Xe.Tools.Modules.Message</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Tiledmap\Xe.Tools.Modules.Tiledmap.csproj">
+      <Project>{aff69391-a837-4a84-814b-2637dc185b60}</Project>
+      <Name>Xe.Tools.Modules.Tiledmap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>
       <Name>Xe.Tools.Modules</Name>

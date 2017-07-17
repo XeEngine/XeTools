@@ -40,6 +40,9 @@
     <Compile Include="Fonts\Font.cs" />
     <Compile Include="Fonts\FontCharset.cs" />
     <Compile Include="Fonts\FontTable.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\MessageContainer.cs" />
+    <Compile Include="Messages\Segment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tilemaps\ILayer.cs" />
     <Compile Include="Tilemaps\ITile.cs" />

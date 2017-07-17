@@ -373,7 +373,8 @@ namespace Xe.Tools.GameStudio.Utility
             }
             else if (index < path.Length)
             {
-                AddNodeToNode(node, path[index], item);
+                var name = string.IsNullOrWhiteSpace(item.Alias) ? path[index] : item.Alias;
+                AddNodeToNode(node, name, item);
             }
         }
         private void RemoveNode(ItemNode node)
