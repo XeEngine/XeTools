@@ -41,6 +41,10 @@
     <Compile Include="Fonts\FontCharset.cs" />
     <Compile Include="Fonts\FontTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tilemaps\ILayer.cs" />
+    <Compile Include="Tilemaps\ITile.cs" />
+    <Compile Include="Tilemaps\ITileMap.cs" />
+    <Compile Include="Tilemaps\ITileset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe\Xe.csproj">

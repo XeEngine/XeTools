@@ -63,13 +63,17 @@
       <Project>{69f4f945-9473-476a-a222-0348b91795d5}</Project>
       <Name>Xe.Drawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools.Tilemap.Tiled\Xe.Tools.Tilemap.Tiled.csproj">
-      <Project>{69ca3703-c55d-4bab-b788-ccc5ab501154}</Project>
-      <Name>Xe.Tools.Tilemap.Tiled</Name>
+    <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
+      <Project>{356875b9-86c1-47cb-942f-1e8413eec42d}</Project>
+      <Name>Xe.Game.Drawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools.Tilemap\Xe.Tools.Tilemap.csproj">
-      <Project>{f32882ed-81d3-4b6e-8900-6ce9ff344ecd}</Project>
-      <Name>Xe.Tools.Tilemap</Name>
+    <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
+      <Project>{8186cef3-fb20-4bce-a838-80742ccd0eea}</Project>
+      <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
+      <Project>{4f3923b8-acaf-415a-8971-69ace86e735a}</Project>
+      <Name>Xe.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
       <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>

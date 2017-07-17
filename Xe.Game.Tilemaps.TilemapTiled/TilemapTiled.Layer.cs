@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TiledSharp;
+﻿using TiledSharp;
+using Xe.Tools.Tilemap;
 
-namespace Xe.Tools.Tilemap
+namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled
     {

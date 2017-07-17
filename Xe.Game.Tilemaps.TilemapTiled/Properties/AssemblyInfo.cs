@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Xe.Tools.Tilemap")]
+[assembly: AssemblyTitle("Xe.Game.Tilemaps.TilemapTiled")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Xe.Tools.Tilemap")]
+[assembly: AssemblyProduct("Xe.Game.Tilemaps.TilemapTiled")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f32882ed-81d3-4b6e-8900-6ce9ff344ecd")]
+[assembly: Guid("8186cef3-fb20-4bce-a838-80742ccd0eea")]
 
 // Version information for an assembly consists of the following four values:
 //

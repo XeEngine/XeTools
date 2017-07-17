@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing.Imaging;
+using Xe.Game.Tilemaps;
 using Xe.Tools.Tilemap;
 
 namespace Xe.Tools.MapTest
@@ -18,7 +14,7 @@ namespace Xe.Tools.MapTest
                 map.Size.Height * map.TileSize.Height,
                 PixelFormat.Format32bppArgb))
             {
-                using (var mapDrawer = new MapDrawer(drawing, map))
+                using (var mapDrawer = new TilemapDrawer(drawing, map))
                 {
                     mapDrawer.DrawLayerIndex(drawing, 0);
                     mapDrawer.DrawLayerIndex(drawing, 1);

@@ -8,13 +8,13 @@ using Xe.Drawing;
 
 namespace Xe.Tools.Tilemap
 {
-    public class MapDrawer : IDisposable
+    public class TilemapDrawer : IDisposable
     {
         private IDrawing Drawing;
         private ITileMap Map;
         private ISurface[] Surfaces;
 
-        public MapDrawer(IDrawing drawing, ITileMap map)
+        public TilemapDrawer(IDrawing drawing, ITileMap map)
         {
             Drawing = drawing;
             Map = map;

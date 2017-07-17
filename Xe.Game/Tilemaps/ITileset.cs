@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xe.Drawing;
-
-namespace Xe.Tools.Tilemap
+﻿namespace Xe.Tools.Tilemap
 {
     public interface ITileset
     {

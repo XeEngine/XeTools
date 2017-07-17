@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using TiledSharp;
+﻿using TiledSharp;
+using Xe.Tools.Tilemap;
 
-namespace Xe.Tools.Tilemap
+namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled
     {

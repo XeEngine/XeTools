@@ -1,6 +1,7 @@
 ﻿using TiledSharp;
+using Xe.Tools.Tilemap;
 
-namespace Xe.Tools.Tilemap
+namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled : ITileMap
     {
