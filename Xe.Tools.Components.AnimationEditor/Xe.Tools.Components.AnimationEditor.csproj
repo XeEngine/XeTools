@@ -59,8 +59,13 @@
     </Compile>
     <Compile Include="ViewModels\AnimationGroupViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="ViewModels\OutputMessageManagerViewModel.cs" />
-    <Compile Include="ViewModels\OutputMessageViewModel.cs" />
+    <Compile Include="ViewModels\TextureViewModel.cs" />
+    <Compile Include="Windows\WindowMain.xaml.cs">
+      <DependentUpon>WindowMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WindowTextures.xaml.cs">
+      <DependentUpon>WindowTextures.xaml</DependentUpon>
+    </Compile>
     <Page Include="AnimationEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,6 +87,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WindowMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WindowTextures.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

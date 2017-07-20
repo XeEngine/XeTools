@@ -4,9 +4,9 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 {
     internal class AnimationGroupViewModel
     {
-        private AnimationsGroup _animGroup;
+        private AnimationData _animGroup;
 
-        public AnimationGroupViewModel(AnimationsGroup animGroup)
+        public AnimationGroupViewModel(AnimationData animGroup)
         {
             _animGroup = animGroup;
         }

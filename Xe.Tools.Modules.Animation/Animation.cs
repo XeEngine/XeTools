@@ -9,7 +9,7 @@ namespace Xe.Tools.Modules
     public partial class Animation : IModule
     {
         private ModuleInit Init { get; }
-        private AnimationsGroup AnimationsGroup { get; }
+        private AnimationData AnimationsGroup { get; }
 
         public string FileName { get => Init.FileName; }
         public Tuple<string, string>[] Parameters { get => Init.Parameters; }
@@ -26,25 +26,25 @@ namespace Xe.Tools.Modules
             {
                 using (var reader = new StreamReader(file))
                 {
-                    AnimationsGroup = JsonConvert.DeserializeObject<AnimationsGroup>(reader.ReadToEnd());
+                    AnimationsGroup = JsonConvert.DeserializeObject<AnimationData>(reader.ReadToEnd());
                 }
             }
-            IsValid = AnimationsGroup.SpriteSheets != null &&
+            IsValid = AnimationsGroup.Textures != null &&
                 AnimationsGroup.Frames != null &&
                 AnimationsGroup.Animations != null && 
-                AnimationsGroup.AnimationReferences != null;
+                AnimationsGroup.AnimationGroups != null;
 
             var inputBasePath = Path.Combine(Init.InputPath, Path.GetDirectoryName(fileName));
             var outputBasePath = Path.Combine(Init.OutputPath, Path.GetDirectoryName(fileName));
 
             var inputFiles = new List<string> { fileName };
-            foreach (var spriteFileName in AnimationsGroup.SpriteSheets)
-                inputFiles.Add(Path.Combine(inputBasePath, spriteFileName));
+            foreach (var texture in AnimationsGroup.Textures)
+                inputFiles.Add(Path.Combine(inputBasePath, texture.Name));
             InputFileNames = inputFiles.ToArray();
 
             var outputFiles = new List<string> { fileName };
-            foreach (var spriteFileName in AnimationsGroup.SpriteSheets)
-                outputFiles.Add(Path.Combine(outputBasePath, spriteFileName));
+            foreach (var texture in AnimationsGroup.Textures)
+                outputFiles.Add(Path.Combine(outputBasePath, texture.Name));
             OutputFileNames = outputFiles.ToArray();
         }
 

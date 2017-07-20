@@ -48,7 +48,7 @@ namespace Xe.Tools.Modules
             #region Pick only the used data
             var listAnimationRefs = new List<AnimationRef>();
             var listAnimations = new Dictionary<string, Tuple<int, Game.Animations.Animation>>();
-            foreach (var animRef in AnimationsGroup.AnimationReferences)
+            /*foreach (var animRef in AnimationsGroup.AnimationGroups)
             {
                 if (listAnimations.ContainsKey(animRef.Animation))
                     continue;
@@ -60,7 +60,7 @@ namespace Xe.Tools.Modules
                 listAnimationRefs.Add(animRef);
                 listAnimations.Add(animRef.Animation, new Tuple<int, Game.Animations.Animation>(
                     listAnimations.Keys.Count, anim));
-            }
+            }*/
 
             var listFrames = new Dictionary<string, Tuple<int, Frame>>();
             foreach (var tuple in listAnimations.Values)
@@ -80,9 +80,9 @@ namespace Xe.Tools.Modules
             #region calculate header
             var spriteSheets = new List<byte[]>();
             int spriteSheetSectionLength = 0;
-            foreach (var name in AnimationsGroup.SpriteSheets)
+            foreach (var texture in AnimationsGroup.Textures)
             {
-                var data = Encoding.ASCII.GetBytes(name);
+                var data = Encoding.ASCII.GetBytes(texture.Name);
                 spriteSheets.Add(data);
                 spriteSheetSectionLength += data.Length + 1;
             }
@@ -100,7 +100,7 @@ namespace Xe.Tools.Modules
                     HeaderFlags.AnimationReferences),
 
                 SpriteSheetsLength = (ushort)(spriteSheetSectionLength + spriteSheetPaddingData),
-                SpriteSheetsCount = (ushort)AnimationsGroup.SpriteSheets.Count,
+                SpriteSheetsCount = (ushort)AnimationsGroup.Textures.Count,
                 FramesLength = 12,
                 FramesCount = (ushort)listFrames.Count,
                 FrameExLength = 12,
@@ -154,7 +154,7 @@ namespace Xe.Tools.Modules
                 writer.Write((ushort)anim.Frames.Count);
                 writer.Write((ushort)anim.Speed);
                 writer.Write((byte)anim.Loop);
-                writer.Write((byte)anim.Texture);
+                writer.Write((byte)0);
                 writer.Write((ushort)0);
                 writer.Write((ushort)anim.FieldHitbox.Left);
                 writer.Write((ushort)anim.FieldHitbox.Top);
@@ -185,9 +185,9 @@ namespace Xe.Tools.Modules
             // Write animation reference names
             foreach (var item in listAnimationRefs)
             {
-                var data = Encoding.ASCII.GetBytes(item.Name);
+                /*var data = Encoding.ASCII.GetBytes(item.Name);
                 var hash = Security.Crc32.CalculateDigest(data, 0, (uint)data.Length);
-                writer.Write(hash);
+                writer.Write(hash);*/
             }
 
             // Write animation reference data

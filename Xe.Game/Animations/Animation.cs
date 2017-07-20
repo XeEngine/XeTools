@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Xe.Math;
@@ -29,11 +30,7 @@ namespace Xe.Game.Animations
             set => loop = (byte)Range(value, byte.MinValue, byte.MaxValue);
         }
 
-        public int Texture
-        {
-            get => texture;
-            set => texture = (byte)Range(value, byte.MinValue, byte.MaxValue);
-        }
+        public Guid Texture { get; set; }
 
         public object DeepClone()
         {

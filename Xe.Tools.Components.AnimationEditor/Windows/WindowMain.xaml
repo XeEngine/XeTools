@@ -1,0 +1,21 @@
+﻿<Window x:Class="Xe.Tools.Components.AnimationEditor.Windows.WindowMain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.Components.AnimationEditor.Windows"
+        mc:Ignorable="d"
+        Title="Animation editor" Height="300" Width="300">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="_menuFileSave" Header="_Save" Click="MenuItem_FileSaveClick"/>
+                <Separator/>
+                <MenuItem x:Name="_fileExit" Header="E_xit" Click="MenuItem_ExitClick"/>
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Textures" Click="MenuItem_ExitClick"/>
+            </MenuItem>
+        </Menu>
+    </DockPanel>
+</Window>

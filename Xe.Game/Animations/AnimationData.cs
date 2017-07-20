@@ -2,11 +2,14 @@
 
 namespace Xe.Game.Animations
 {
-    public class AnimationsGroup
+    public class AnimationData
     {
-        public List<string> SpriteSheets { get; set; }
+        public List<Texture> Textures { get; set; }
+
         public Dictionary<string, Frame> Frames { get; set; }
+
         public Dictionary<string, Animation> Animations { get; set; }
-        public List<AnimationRef> AnimationReferences { get; set; }
+
+        public List<AnimationRef> AnimationGroups { get; set; }
     }
 }
