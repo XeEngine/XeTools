@@ -2,20 +2,20 @@
 using System;
 using System.Collections.Generic;
 
-namespace Xe.Tools.GameStudio.Utility
+namespace Xe.Tools.Wpf.Dialogs
 {
     public class FileDialog
-	{
-		public enum Behavior
-		{
-			Open, Save, Folder
-		}
-		public enum Type
-		{
+    {
+        public enum Behavior
+        {
+            Open, Save, Folder
+        }
+        public enum Type
+        {
             Any,
             Executable,
-			XeGameProject
-		}
+            XeGameProject
+        }
 
         private CommonFileDialog _fd;
         public Behavior CurrentBehavior { get; private set; }
@@ -47,23 +47,24 @@ namespace Xe.Tools.GameStudio.Utility
             }
         }
 
-		public static FileDialog Factory(Behavior behavior, Type type = Type.Any, bool multipleSelection = false) {
+        public static FileDialog Factory(Behavior behavior, Type type = Type.Any, bool multipleSelection = false)
+        {
             CommonFileDialog fd;
-			switch (behavior)
-			{
-				case Behavior.Open:
+            switch (behavior)
+            {
+                case Behavior.Open:
                     fd = new CommonOpenFileDialog()
                     {
                         EnsureFileExists = true,
                         Multiselect = multipleSelection
                     };
                     break;
-				case Behavior.Save:
+                case Behavior.Save:
                     fd = new CommonSaveFileDialog()
                     {
 
                     };
-					break;
+                    break;
                 case Behavior.Folder:
                     fd = new CommonOpenFileDialog()
                     {
@@ -71,12 +72,12 @@ namespace Xe.Tools.GameStudio.Utility
                         Multiselect = multipleSelection
                     };
                     break;
-				default:
-					throw new ArgumentException("Invalid parameter", nameof(behavior));
+                default:
+                    throw new ArgumentException("Invalid parameter", nameof(behavior));
             }
             fd.AddToMostRecentlyUsedList = true;
-			fd.EnsurePathExists = true;
-            
+            fd.EnsurePathExists = true;
+
             if (behavior != Behavior.Folder)
             {
                 switch (type)
@@ -99,7 +100,7 @@ namespace Xe.Tools.GameStudio.Utility
             }
 
             return new FileDialog(fd, behavior, type);
-		}
+        }
 
         private static CommonFileDialogFilter CreateFilter(string name, string[] filters)
         {
@@ -111,5 +112,5 @@ namespace Xe.Tools.GameStudio.Utility
                 filter.Extensions.Add(item);
             return filter;
         }
-	}
+    }
 }

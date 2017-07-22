@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Xe.Tools.GameStudio.Models;
 using Xe.Tools.GameStudio.Utility;
+using Xe.Tools.Wpf.Dialogs;
 
 namespace Xe.Tools.GameStudio
 {

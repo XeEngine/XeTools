@@ -8,6 +8,7 @@ using Xe.Tools.GameStudio.Models;
 using Xe.Tools.GameStudio.Utility;
 using Xe.Tools.GameStudio.ViewModels;
 using Xe.Tools.Modules;
+using Xe.Tools.Wpf.Dialogs;
 
 namespace Xe.Tools.GameStudio
 {
