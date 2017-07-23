@@ -55,6 +55,9 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Models\AnimationNameModel.cs" />
     <Compile Include="ViewModels\TexturesViewModel.cs" />
+    <Compile Include="Windows\WindowFrames.xaml.cs">
+      <DependentUpon>WindowFrames.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WindowSettings.xaml.cs">
       <DependentUpon>WindowSettings.xaml</DependentUpon>
     </Compile>
@@ -84,6 +87,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\FrameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WindowFrames.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

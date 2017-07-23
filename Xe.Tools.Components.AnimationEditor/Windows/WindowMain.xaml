@@ -1,4 +1,4 @@
-﻿<Window x:Class="Xe.Tools.Components.AnimationEditor.Windows.WindowMain"
+﻿<Window xmlns:Controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"  x:Class="Xe.Tools.Components.AnimationEditor.Windows.WindowMain"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,6 +15,8 @@
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Textures" Click="MenuViewTextures_Click"/>
+                <MenuItem Header="_Frames" IsEnabled="False" Click="MenuViewFrames_Click"/>
+                <MenuItem Header="_Animation mapping" IsEnabled="False" Click="MenuViewAnimMap_Click"/>
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Animations list" Click="MenuToolsAnimationList_Click"/>

@@ -67,5 +67,15 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         {
             new WindowSettings(Project).ShowDialog();
         }
+
+        private void MenuViewFrames_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuViewAnimMap_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
