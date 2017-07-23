@@ -25,7 +25,7 @@ namespace Xe.Tools.Components.AnimationEditor
         }
         public void ShowSettings()
         {
-            var dialog = new SettingsWindow(Settings.Project);
+            var dialog = new Windows.WindowMain(Settings.Project, Settings.Container, Settings.Item);
             dialog.ShowDialog();
         }
 

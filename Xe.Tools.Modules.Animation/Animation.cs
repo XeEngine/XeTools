@@ -9,7 +9,7 @@ namespace Xe.Tools.Modules
     public partial class Animation : IModule
     {
         private ModuleInit Init { get; }
-        private AnimationData AnimationsGroup { get; }
+        private AnimationData AnimationData { get; }
 
         public string FileName { get => Init.FileName; }
         public Tuple<string, string>[] Parameters { get => Init.Parameters; }
@@ -26,24 +26,24 @@ namespace Xe.Tools.Modules
             {
                 using (var reader = new StreamReader(file))
                 {
-                    AnimationsGroup = JsonConvert.DeserializeObject<AnimationData>(reader.ReadToEnd());
+                    AnimationData = JsonConvert.DeserializeObject<AnimationData>(reader.ReadToEnd());
                 }
             }
-            IsValid = AnimationsGroup.Textures != null &&
-                AnimationsGroup.Frames != null &&
-                AnimationsGroup.Animations != null && 
-                AnimationsGroup.AnimationGroups != null;
+            IsValid = AnimationData.Textures != null &&
+                AnimationData.Frames != null &&
+                AnimationData.Animations != null && 
+                AnimationData.AnimationGroups != null;
 
             var inputBasePath = Path.Combine(Init.InputPath, Path.GetDirectoryName(fileName));
             var outputBasePath = Path.Combine(Init.OutputPath, Path.GetDirectoryName(fileName));
 
             var inputFiles = new List<string> { fileName };
-            foreach (var texture in AnimationsGroup.Textures)
+            foreach (var texture in AnimationData.Textures)
                 inputFiles.Add(Path.Combine(inputBasePath, texture.Name));
             InputFileNames = inputFiles.ToArray();
 
             var outputFiles = new List<string> { fileName };
-            foreach (var texture in AnimationsGroup.Textures)
+            foreach (var texture in AnimationData.Textures)
                 outputFiles.Add(Path.Combine(outputBasePath, texture.Name));
             OutputFileNames = outputFiles.ToArray();
         }

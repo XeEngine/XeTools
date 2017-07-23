@@ -9,12 +9,15 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem x:Name="_menuFileSave" Header="_Save"/>
+                <MenuItem x:Name="_menuFileSave" Header="_Save" Click="MenuFileSave_Click"/>
                 <Separator/>
                 <MenuItem x:Name="_fileExit" Header="E_xit"/>
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="_Textures"/>
+                <MenuItem Header="_Textures" Click="MenuViewTextures_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Animations list" Click="MenuToolsAnimationList_Click"/>
             </MenuItem>
         </Menu>
     </DockPanel>

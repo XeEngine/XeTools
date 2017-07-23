@@ -17,12 +17,12 @@ using System.Windows.Shapes;
 using Xe.Tools.Components.AnimationEditor.Commands;
 using Xe.Tools.Components.AnimationEditor.ViewModels;
 
-namespace Xe.Tools.Components.AnimationEditor
+namespace Xe.Tools.Components.AnimationEditor.Windows
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : Window, INotifyPropertyChanged
+    public partial class WindowSettings : Window, INotifyPropertyChanged
     {
         private SettingsViewModel _settings;
 
@@ -34,15 +34,26 @@ namespace Xe.Tools.Components.AnimationEditor
 
         public string CurrentAnimationName
         {
-            get => ctrlTextAnimationName.Text;
+            get => TextAnimationName.Text;
             set
             {
-                ctrlTextAnimationName.Text = value;
+                TextAnimationName.Text = value;
                 OnPropertyChanged();
+                if (ListAnimations.SelectedIndex >= 0)
+                {
+                    var index = ListAnimations.SelectedIndex;
+                    Settings.AnimationNames[ListAnimations.SelectedIndex] = value;
+                    ListAnimations.SelectedIndex = index;
+                }
+                //var index = ListAnimations.SelectedIndex;
+                //ListAnimations.SelectedIndex = -1;
+                //_settings.AnimationNames.RemoveAt(index);
+                //_settings.AnimationNames.Insert(index, value);
+                //ListAnimations.SelectedIndex = index;
             }
         }
 
-        public SettingsWindow(Project project)
+        public WindowSettings(Project project)
         {
             InitializeComponent();
             DataContext = this;
@@ -51,8 +62,8 @@ namespace Xe.Tools.Components.AnimationEditor
             {
                 Project = project
             };
-            ctrlTextAnimationName.DataContext = this;
-            ctrlListAnimations.DataContext = Settings;
+            TextAnimationName.DataContext = this;
+            ListAnimations.DataContext = Settings;
         }
 
         protected override async void OnClosed(EventArgs e)
@@ -68,20 +79,22 @@ namespace Xe.Tools.Components.AnimationEditor
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void ctrlListAnimations_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListAnimations_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count > 0)
+            if (sender is ListBox listBox && listBox.SelectedIndex >= 0)
             {
-                CurrentAnimationName = e.AddedItems[0].ToString();
-                (sender as ListBox).SelectedValue = Guid.NewGuid().ToString();
+                TextAnimationName.Text = listBox.SelectedValue as string;
             }
         }
 
-        private void ctrlButtonAnimAdd_Click(object sender, RoutedEventArgs e)
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.AnimationNames.Add("<new animation>");
+            ListAnimations.SelectedIndex = Settings.AnimationNames.Count - 1;
+            TextAnimationName.Focus();
+            TextAnimationName.SelectAll();
         }
-        private void ctrlButtonAnimRemove_Click(object sender, RoutedEventArgs e)
+        private void ButtonRemove_Click(object sender, RoutedEventArgs e)
         {
 
         }

@@ -25,6 +25,14 @@ namespace Xe.Tools.GameStudio
 			set
 			{
 				_project = value;
+                foreach (var container in _project.Containers)
+                {
+                    container.Parent = _project;
+                    foreach (var item in container.Items)
+                    {
+                        item.Parent = container;
+                    }
+                }
                 UpdateWindowName();
                 ctrlResourceView.Project = _project;
             }

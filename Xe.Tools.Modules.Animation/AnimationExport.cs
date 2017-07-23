@@ -68,7 +68,7 @@ namespace Xe.Tools.Modules
                 var anim = tuple.Item2;
                 foreach (var frameRef in anim.Frames)
                 {
-                    if (!AnimationsGroup.Frames.TryGetValue(frameRef.Frame, out var frame))
+                    if (!AnimationData.Frames.TryGetValue(frameRef.Frame, out var frame))
                     {
                         Log.Warning($"Frame {frameRef.Frame} not found in {anim.Name}.");
                         continue;
@@ -80,7 +80,7 @@ namespace Xe.Tools.Modules
             #region calculate header
             var spriteSheets = new List<byte[]>();
             int spriteSheetSectionLength = 0;
-            foreach (var texture in AnimationsGroup.Textures)
+            foreach (var texture in AnimationData.Textures)
             {
                 var data = Encoding.ASCII.GetBytes(texture.Name);
                 spriteSheets.Add(data);
@@ -100,7 +100,7 @@ namespace Xe.Tools.Modules
                     HeaderFlags.AnimationReferences),
 
                 SpriteSheetsLength = (ushort)(spriteSheetSectionLength + spriteSheetPaddingData),
-                SpriteSheetsCount = (ushort)AnimationsGroup.Textures.Count,
+                SpriteSheetsCount = (ushort)AnimationData.Textures.Count,
                 FramesLength = 12,
                 FramesCount = (ushort)listFrames.Count,
                 FrameExLength = 12,

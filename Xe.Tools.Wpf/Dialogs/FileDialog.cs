@@ -14,7 +14,8 @@ namespace Xe.Tools.Wpf.Dialogs
         {
             Any,
             Executable,
-            XeGameProject
+            XeGameProject,
+            ImagePng,
         }
 
         private CommonFileDialog _fd;
@@ -93,6 +94,10 @@ namespace Xe.Tools.Wpf.Dialogs
                     case Type.XeGameProject:
                         fd.Filters.Add(CreateFilter("XeEngine project",
                             new string[] { "proj.json" }));
+                        break;
+                    case Type.ImagePng:
+                        fd.Filters.Add(CreateFilter("PNG image file",
+                            new string[] { "png" }));
                         break;
                     default:
                         break;

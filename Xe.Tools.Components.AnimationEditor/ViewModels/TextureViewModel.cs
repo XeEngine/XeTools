@@ -28,7 +28,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             Image = new BitmapImage(uri);
             StrSize = $"{Image.PixelWidth}x{Image.PixelHeight}";
             StrFormat = Image.Format.ToString();
-            if (Image.Palette.Colors.Count > 0)
+            if (Image.Palette?.Colors.Count > 0)
             {
                 StrFormat = $"{Image.Format.BitsPerPixel}bpp, palette {Image.Palette.Colors} colors";
             }
@@ -36,6 +36,11 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             {
                 StrFormat = $"{Image.Format.BitsPerPixel}bpp";
             }
+        }
+
+        public override string ToString()
+        {
+            return Texture?.Name ?? base.ToString();
         }
     }
 }

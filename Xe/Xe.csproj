@@ -56,5 +56,8 @@
     <Compile Include="Security\IHashing.cs" />
     <Compile Include="UniqueObject.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Collections\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

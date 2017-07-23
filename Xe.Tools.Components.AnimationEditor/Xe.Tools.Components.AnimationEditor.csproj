@@ -54,8 +54,9 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Models\AnimationNameModel.cs" />
-    <Compile Include="SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    <Compile Include="ViewModels\TexturesViewModel.cs" />
+    <Compile Include="Windows\WindowSettings.xaml.cs">
+      <DependentUpon>WindowSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AnimationGroupViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -86,7 +87,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="Windows\WindowSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,6 +159,10 @@
     <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
       <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
       <Name>Xe.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe\Xe.csproj">
+      <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>
+      <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

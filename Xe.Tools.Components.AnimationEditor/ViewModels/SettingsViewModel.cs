@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xe.Tools.Components.AnimationEditor.Commands;
@@ -43,6 +45,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
         public async Task SaveChanges()
         {
+            settings.AnimationNames = new List<string>(AnimationNames.Distinct().OrderBy(x => x));
             await settings.SaveAsync();
         }
         
