@@ -5,17 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.AnimationEditor.Windows"
         mc:Ignorable="d"
-        Title="Frames" Height="300" Width="442.806">
+        Title="Frames" Height="489" Width="427">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Column="0"/>
+        <ListView Grid.Column="0" ItemsSource="{Binding Frames}"/>
         <DockPanel Grid.Column="1" Margin="10 0 0 0">
             <TextBlock DockPanel.Dock="Top" Text="Frame name"/>
-            <TextBox DockPanel.Dock="Top" x:Name="TextFrameName"/>
-            <Controls:NumericUpDown DockPanel.Dock="Bottom" />
+            <TextBox DockPanel.Dock="Top" x:Name="TextFrameName" Text="{Binding CurrentFrame.Name}"/>
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="28"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="28"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="28"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Source X" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Source Y" VerticalAlignment="Center"/>
+                <Controls:NumericUpDown x:Name="NumericSourceX" Grid.Row="1" Grid.Column="0" Margin="0 3 3 3" Value="{Binding CurrentFrame.Left}" />
+                <Controls:NumericUpDown x:Name="NumericSourceY" Grid.Row="1" Grid.Column="1" Margin="3 3 0 3" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Width" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Height" VerticalAlignment="Center"/>
+                <Controls:NumericUpDown x:Name="NumericWidth" Grid.Row="3" Grid.Column="0" Margin="0 3 3 3" />
+                <Controls:NumericUpDown x:Name="NumericHeight" Grid.Row="3" Grid.Column="1" Margin="3 3 0 3" />
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Center X" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="Center Y" VerticalAlignment="Center"/>
+                <Controls:NumericUpDown x:Name="NumericCenterX" Grid.Row="5" Grid.Column="0" Margin="0 3 3 3" />
+                <Controls:NumericUpDown x:Name="NumericCenterY" Grid.Row="5" Grid.Column="1" Margin="3 3 0 3" />
+            </Grid>
             <Canvas Margin="0 5 0 5"/>
         </DockPanel>
     </Grid>
