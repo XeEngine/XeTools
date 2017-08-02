@@ -49,5 +49,10 @@ namespace Xe
 		public static float Range(float x, float min, float max) => x > min ? x < max ? x : max : min;
 		public static double Range(double x, double min, double max) => x > min ? x < max ? x : max : min;
 		public static decimal Range(decimal x, decimal min, decimal max) => x > min ? x < max ? x : max : min;
+
+        public static int Round(double x)
+        {
+            return (int)System.Math.Round(x);
+        }
 	}
 }
