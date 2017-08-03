@@ -15,7 +15,7 @@
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Textures" Click="MenuViewTextures_Click"/>
-                <MenuItem Header="_Frames" IsEnabled="False" Click="MenuViewFrames_Click"/>
+                <MenuItem Header="_Frames" Click="MenuViewFrames_Click"/>
                 <MenuItem Header="_Animation mapping" IsEnabled="False" Click="MenuViewAnimMap_Click"/>
             </MenuItem>
             <MenuItem Header="_Tools">

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Xe.Tools.Wpf.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="18" d:DesignWidth="300">
+             d:DesignHeight="18" d:DesignWidth="150">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -16,7 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBox x:Name="TextNumber" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Left"
-                 Text="{Binding Path=Value}" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewKeyUp="TextBox_PreviewKeyUp"
+                 Text="{Binding Path=Value}" PreviewKeyDown="TextBox_PreviewKeyDown"
                  TextChanged="TextBox_TextChanged" PreviewMouseWheel="TextNumber_PreviewMouseWheel"/>
         <RepeatButton x:Name="ButtonUp"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett"
                       VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="ButtonUp_Click">5</RepeatButton>

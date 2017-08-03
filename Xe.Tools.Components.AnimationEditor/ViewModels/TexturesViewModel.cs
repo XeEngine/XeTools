@@ -98,7 +98,6 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             _textures.AddRange(Textures.Select(x => x.Texture));
         }
 
-
         /// <summary>
         /// Create default entry for a texture from the specified file name
         /// </summary>

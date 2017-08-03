@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using Xe.Game;
 using Xe.Game.Animations;
@@ -37,11 +38,33 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 if (AnimationData.Textures == null)
                     AnimationData.Textures = new List<Texture>();
                 if (AnimationData.Frames == null)
+                {
                     AnimationData.Frames = new Dictionary<string, Frame>();
+                }
+                else
+                {
+                    foreach (var pair in AnimationData.Frames)
+                    {
+                        pair.Value.Name = pair.Key;
+                    }
+                }
+
                 if (AnimationData.Animations == null)
+                {
                     AnimationData.Animations = new Dictionary<string, Animation>();
+                }
+                else
+                {
+                    foreach (var pair in AnimationData.Animations)
+                    {
+                        pair.Value.Name = pair.Key;
+                    }
+                }
+
                 if (AnimationData.AnimationGroups == null)
+                {
                     AnimationData.AnimationGroups = new List<AnimationRef>();
+                }
 
                 Log.Message($"Animation file {WorkingFileName} opened.");
             }
@@ -52,7 +75,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         {
             using (var writer = File.CreateText(WorkingFileName))
             {
-                var json = JsonConvert.SerializeObject(AnimationData);
+                var json = JsonConvert.SerializeObject(AnimationData, Formatting.Indented);
                 writer.Write(json);
                 Log.Message($"Animation file {WorkingFileName} saved.");
             }
@@ -70,7 +93,15 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void MenuViewFrames_Click(object sender, RoutedEventArgs e)
         {
-
+            var dialog = new WindowFrames(AnimationData.Frames.Values.ToList(), AnimationData.Textures, BasePath);
+            dialog.ShowDialog();
+            AnimationData.Frames.Clear();
+            foreach (var item in dialog.Frames
+                .Where(x => !string.IsNullOrWhiteSpace(x.Name))
+                .OrderBy(x => x.Name))
+            {
+                AnimationData.Frames.Add(item.Name, item);
+            }
         }
 
         private void MenuViewAnimMap_Click(object sender, RoutedEventArgs e)

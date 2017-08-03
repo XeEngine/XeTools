@@ -44,46 +44,11 @@ namespace Xe.Game.Animations
         }
 
         [JsonIgnore]
-        public Rectangle Rectangle
-        {
-            get => new Rectangle(left, top, right - left, bottom - top);
-            set
-            {
-                Left = value.Left;
-                Top = value.Top;
-                Right = value.Right;
-                Bottom = value.Bottom;
-            }
-        }
-
-        [JsonIgnore]
-        public Point Center
-        {
-            get => new Point(centerx, centery);
-        }
-
-        [JsonIgnore]
-        public Size Size
-        {
-            get => Rectangle.Size;
-        }
-
-        [JsonIgnore]
         public bool IsEmpty
         {
             get => (left == top) || (right == bottom);
         }
 
-        public override int GetHashCode()
-        {
-            return unchecked((int)((uint)centerx ^
-                (((uint)centery << 9) | ((uint)centery >> 4)) ^
-                (((uint)left << 13) | ((uint)left >> 6)) ^
-                (((uint)top << 17) | ((uint)top >> 8)) ^
-                (((uint)right << 21) | ((uint)right >> 10)) ^
-                (((uint)bottom << 25) | ((uint)bottom >> 9))));
-        }
-        
         virtual public object DeepClone()
         {
             return new Frame()
@@ -97,6 +62,9 @@ namespace Xe.Game.Animations
                 centery = centery
             };
         }
+
+
+        public override int GetHashCode() { return base.GetHashCode(); }
 
         public override string ToString() { return Name; }
 

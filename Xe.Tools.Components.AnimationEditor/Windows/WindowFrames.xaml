@@ -5,16 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.AnimationEditor.Windows"
         mc:Ignorable="d"
-        Title="Frames" Height="489" Width="427">
+        Title="Frames" Height="527" Width="427">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Column="0" ItemsSource="{Binding Frames}"/>
-        <DockPanel Grid.Column="1" Margin="10 0 0 0">
+        <DockPanel Grid.Column="0">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="ButtonFrameAdd" Grid.Column="0" Margin="0 0 5 5" Click="ButtonFrameAdd_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Add_16x}" Width="16"/>
+                            <TextBlock Text="Add" Margin="3 0 3 0"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button x:Name="ButtonFrameRemove" Grid.Column="1" DockPanel.Dock="Top" Margin="0 0 0 5" Click="ButtonFrameRemove_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                            <TextBlock Text="Remove" Margin="3 0 3 0"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            <ListView x:Name="ListFramesView" ItemsSource="{Binding}" DisplayMemberPath="Name" SelectionChanged="ListFramesView_SelectionChanged"/>
+        </DockPanel>
+        <DockPanel x:Name="FramePanel" Grid.Column="1" Margin="10 0 0 0" Grid.ColumnSpan="2">
             <TextBlock DockPanel.Dock="Top" Text="Frame name"/>
-            <TextBox DockPanel.Dock="Top" x:Name="TextFrameName" Text="{Binding CurrentFrame.Name}"/>
+            <TextBox DockPanel.Dock="Top" x:Name="TextFrameName" Text="{Binding Name}" LostFocus="TextFrameName_LostFocus"/>
+            <TextBlock DockPanel.Dock="Top" Text="Preview with texture"/>
+            <ComboBox DockPanel.Dock="Top" x:Name="ListTextures" ItemsSource="{Binding Path=Textures}" SelectionChanged="ListTextures_SelectionChanged" />
             <Grid DockPanel.Dock="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -28,20 +54,27 @@
                     <RowDefinition Height="18"/>
                     <RowDefinition Height="28"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Source X" VerticalAlignment="Center"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="Source Y" VerticalAlignment="Center"/>
-                <Controls:NumericUpDown x:Name="NumericSourceX" Grid.Row="1" Grid.Column="0" Margin="0 3 3 3" Value="{Binding CurrentFrame.Left}" />
-                <Controls:NumericUpDown x:Name="NumericSourceY" Grid.Row="1" Grid.Column="1" Margin="3 3 0 3" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Width" VerticalAlignment="Center"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="Height" VerticalAlignment="Center"/>
-                <Controls:NumericUpDown x:Name="NumericWidth" Grid.Row="3" Grid.Column="0" Margin="0 3 3 3" />
-                <Controls:NumericUpDown x:Name="NumericHeight" Grid.Row="3" Grid.Column="1" Margin="3 3 0 3" />
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Left" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Top" VerticalAlignment="Center"/>
+                <Controls:NumericUpDown x:Name="NumericSourceX" Grid.Row="1" Grid.Column="0" Margin="0 3 3 3"
+                                        Value="{Binding Left, Mode=TwoWay}" MinimumValue="0" MaximumValue="{Binding Path=MaximumWidth, Mode=TwoWay}"/>
+                <Controls:NumericUpDown x:Name="NumericSourceY" Grid.Row="1" Grid.Column="1" Margin="3 3 0 3"
+                                    Value="{Binding Top, Mode=TwoWay}" MinimumValue="0" MaximumValue="{Binding Path=MaximumHeight, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Right" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Bottom" VerticalAlignment="Center"/>
+                <Controls:NumericUpDown x:Name="NumericWidth" Grid.Row="3" Grid.Column="0" Margin="0 3 3 3"
+                                        Value="{Binding Right, Mode=TwoWay}" MinimumValue="0" MaximumValue="{Binding Path=MaximumWidth, Mode=TwoWay}"/>
+                <Controls:NumericUpDown x:Name="NumericHeight" Grid.Row="3" Grid.Column="1" Margin="3 3 0 3"
+                                        Value="{Binding Bottom, Mode=TwoWay}" MinimumValue="0" MaximumValue="{Binding Path=MaximumHeight, Mode=TwoWay}"/>
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Center X" VerticalAlignment="Center"/>
                 <TextBlock Grid.Row="4" Grid.Column="1" Text="Center Y" VerticalAlignment="Center"/>
-                <Controls:NumericUpDown x:Name="NumericCenterX" Grid.Row="5" Grid.Column="0" Margin="0 3 3 3" />
-                <Controls:NumericUpDown x:Name="NumericCenterY" Grid.Row="5" Grid.Column="1" Margin="3 3 0 3" />
+                <Controls:NumericUpDown x:Name="NumericCenterX" Grid.Row="5" Grid.Column="0" Margin="0 3 3 3"
+                                        Value="{Binding CenterX, Mode=TwoWay}" MinimumValue="-128" MaximumValue="127"/>
+                <Controls:NumericUpDown x:Name="NumericCenterY" Grid.Row="5" Grid.Column="1" Margin="3 3 0 3"
+                                        Value="{Binding CenterY, Mode=TwoWay}" MinimumValue="-128" MaximumValue="127"/>
             </Grid>
-            <Canvas Margin="0 5 0 5"/>
+            <Canvas x:Name="CanvasFrame"  Margin="0 5 0 5">
+            </Canvas>
         </DockPanel>
     </Grid>
 </Window>
