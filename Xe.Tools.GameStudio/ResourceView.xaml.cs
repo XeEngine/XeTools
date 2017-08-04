@@ -74,6 +74,9 @@ namespace Xe.Tools.GameStudio
             else if (index >= 0)
             {
                 Container = Project.Containers[index];
+#if DEBUG
+                //Test("sprite/ch/dummy.anim.json");
+#endif
             }
         }
 
@@ -205,6 +208,25 @@ namespace Xe.Tools.GameStudio
                 {
                     var dialog = new Dialogs.EmptyComponentDialog(moduleName);
                     result = dialog.ShowDialog();
+                }
+            }
+        }
+        
+        private void Test(string inputFileName)
+        {
+            var item = Container.Items.FirstOrDefault(x => x.Input == inputFileName);
+            if (item != null)
+            {
+                var component = Globals.Components
+                    .FirstOrDefault(x => x.ComponentInfo.ModuleName == item.Type);
+                if (component != null)
+                {
+                    component.CreateInstance(new Components.ComponentProperties()
+                    {
+                        Project = Project,
+                        Container = Container,
+                        Item = item
+                    }).ShowSettings();
                 }
             }
         }

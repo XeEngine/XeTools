@@ -12,29 +12,56 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 {
     public class TextureViewModel
     {
+        private bool _isLoaded = false;
+        private BitmapSource _image;
+        private string _strSize;
+        private string _strFormat;
+
         public Texture Texture { get; private set; }
 
-        public BitmapSource Image { get; private set; }
+        public string FileName { get; private set; }
 
-        public string StrSize { get; private set; }
+        public BitmapSource Image
+        {
+            get
+            {
+                RequireImage();
+                return _image;
+            }
+            private set
+            {
+                _image = value;
+                if (_image != null)
+                {
+                    _strSize = $"{_image.PixelWidth}x{_image.PixelHeight}";
+                    if (_image.Palette?.Colors.Count > 0)
+                    {
+                        _strFormat = $"{_image.Format.BitsPerPixel}bpp, palette {_image.Palette.Colors} colors";
+                    }
+                    else
+                    {
+                        _strFormat = $"{_image.Format.BitsPerPixel}bpp";
+                    }
+                }
+            }
+        }
 
-        public string StrFormat { get; private set; }
+        public string StrSize => _strSize;
+
+        public string StrFormat => _strFormat;
 
         public TextureViewModel(Texture texture, string basePath)
         {
             Texture = texture;
+            FileName = Path.Combine(basePath, texture.Name);
+        }
 
-            var uri = new Uri(Path.Combine(basePath, texture.Name), UriKind.RelativeOrAbsolute);
-            Image = new BitmapImage(uri);
-            StrSize = $"{Image.PixelWidth}x{Image.PixelHeight}";
-            StrFormat = Image.Format.ToString();
-            if (Image.Palette?.Colors.Count > 0)
+        private void RequireImage()
+        {
+            if (!_isLoaded)
             {
-                StrFormat = $"{Image.Format.BitsPerPixel}bpp, palette {Image.Palette.Colors} colors";
-            }
-            else
-            {
-                StrFormat = $"{Image.Format.BitsPerPixel}bpp";
+                _isLoaded = true;
+                Image = new BitmapImage(new Uri(FileName, UriKind.RelativeOrAbsolute));
             }
         }
 
