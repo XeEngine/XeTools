@@ -51,6 +51,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
+    <Compile Include="Controls\TabPlayerGrowth.xaml.cs">
+      <DependentUpon>TabPlayerGrowth.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TabSkillsUsage.xaml.cs">
+      <DependentUpon>TabSkillsUsage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NameEditor.xaml.cs">
       <DependentUpon>NameEditor.xaml</DependentUpon>
     </Compile>
@@ -62,9 +68,15 @@
     <Compile Include="ViewModels\MessagesViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
+    <Compile Include="ViewModels\PlayerViewModel.cs" />
     <Compile Include="ViewModels\SkillsViewModel.cs" />
+    <Compile Include="ViewModels\SkillUsageViewModel.cs" />
     <Compile Include="ViewModels\SkillViewModel.cs" />
     <Page Include="Controls\TabEnemies.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabPlayerGrowth.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -73,6 +85,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TabSkills.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabSkillsUsage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

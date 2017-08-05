@@ -3,10 +3,101 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
              xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="432">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
+        <StackPanel>
+            <DockPanel Margin="0 0 0 5">
+                <Button x:Name="ButtonRemove" DockPanel.Dock="Right"  Click="ButtonAdd_Click">
+                    <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                </Button>
+                <Button x:Name="ButtonAdd" DockPanel.Dock="Right"  Click="ButtonAdd_Click">
+                    <Image Source="{StaticResource Add_16x}" Width="16"/>
+                </Button>
+                <Button x:Name="ButtonEdit" DockPanel.Dock="Right"  Click="ButtonAdd_Click">
+                    <Image Source="{StaticResource EditTitleString_16x}" Width="16"/>
+                </Button>
+                <ComboBox/>
+            </DockPanel>
+
+            <TextBlock Text="{Binding Name}" Height="16"/>
+            <TextBlock TextWrapping="Wrap"
+                           TextTrimming="CharacterEllipsis" Text="{Binding Description}" Height="32"/>
+            <Rectangle Height="1" Fill="Gray"/>
+
+            <Grid Margin="0 5 0 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="22"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Enabled}" Content="Enabled"/>
+                    <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Locked}" Content="Locked"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Level"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="3" Value="{Binding Level}" MinimumValue="1" MaximumValue="255"/>
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="Experience"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="3" Value="{Binding Experience}" MaximumValue="16777216"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Maximum health"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="6" Value="{Binding Health}" MinimumValue="1" MaximumValue="32767"/>
+                    <TextBlock Grid.Column="2" Grid.Row="5" Text="Current health"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="6" Value="{Binding HealthCurrent}" MaximumValue="32767"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="8" Text="Maximum mana"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="9" Value="{Binding Mana}" MinimumValue="1" MaximumValue="32767"/>
+                    <TextBlock Grid.Column="2" Grid.Row="8" Text="Current mana"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="9" Value="{Binding ManaCurrent}" MaximumValue="32767"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="11" Text="Attack"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="12" Value="{Binding Attack}" MinimumValue="1" MaximumValue="255"/>
+                    <TextBlock Grid.Column="2" Grid.Row="11" Text="Defense"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="12" Value="{Binding Defense}" MaximumValue="255"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="14" Text="Special attack"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="15" Value="{Binding AttackSpecial}" MinimumValue="1" MaximumValue="255"/>
+                    <TextBlock Grid.Column="2" Grid.Row="14" Text="Special defense"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="15" Value="{Binding DefenseSpecial}" MaximumValue="255"/>
+                </Grid>
+
+                <TabControl Grid.Column="2">
+                    <TabItem Header="Growth">
+                        <local:TabPlayerGrowth/>
+                    </TabItem>
+                    <TabItem Header="Skills">
+                        <local:TabSkillsUsage/>
+                    </TabItem>
+                    <TabItem Header="Abilities">
+                        <TextBlock Text="Not implemented yet."/>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

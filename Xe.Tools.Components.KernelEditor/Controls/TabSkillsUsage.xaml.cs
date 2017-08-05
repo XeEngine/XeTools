@@ -16,33 +16,13 @@ using System.Windows.Shapes;
 namespace Xe.Tools.Components.KernelEditor.Controls
 {
     /// <summary>
-    /// Interaction logic for TabPlayers.xaml
+    /// Interaction logic for TabSkillsUsage.xaml
     /// </summary>
-    public partial class TabPlayers : UserControl
+    public partial class TabSkillsUsage : UserControl
     {
-        public TabPlayers()
+        public TabSkillsUsage()
         {
             InitializeComponent();
-        }
-
-        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ButtonRemove_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SkillsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void SkillsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

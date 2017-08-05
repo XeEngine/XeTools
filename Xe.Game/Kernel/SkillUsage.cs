@@ -23,5 +23,10 @@ namespace Xe.Game.Kernel
         /// If the skill is enabled / acquired
         /// </summary>
         public bool Enabled { get; set; }
+
+        /// <summary>
+        /// If the skill is visible thorugh the skills menu
+        /// </summary>
+        public bool Visible { get; set; }
     }
 }

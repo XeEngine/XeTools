@@ -203,8 +203,8 @@ namespace Xe.Tools.Modules.Kernel
             byte properties = (byte)((player.Enabled ? 1 : 0) |
                 (player.Locked ? 1 : 0));
 
-            w.Write(player.MsgName.ToInt());                // 0x00
-            w.Write(player.MsgDescription.ToInt());         // 0x04
+            w.Write(player.Name.ToInt());                // 0x00
+            w.Write(player.Description.ToInt());         // 0x04
             w.Write((byte)player.Id);                       // 0x08
             w.Write(properties);                            // 0x09
             w.Write((byte)player.Level);                    // 0x0A

@@ -9,19 +9,19 @@ namespace Xe.Game.Kernel
     public class Player : StatisticsBase
     {
         /// <summary>
+        /// Player id
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
         /// Message id for player's name
         /// </summary>
-        public Guid MsgName { get; set; }
+        public Guid Name { get; set; }
 
         /// <summary>
         /// Message id for player's description
         /// </summary>
-        public Guid MsgDescription { get; set; }
-
-        /// <summary>
-        /// Player id
-        /// </summary>
-        public int Id { get; set; }
+        public Guid Description { get; set; }
 
         /// <summary>
         /// If the player is enabled
