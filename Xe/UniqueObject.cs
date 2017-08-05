@@ -5,12 +5,7 @@ namespace Xe
 
     public class UniqueObject : IComparable, IComparable<UniqueObject>
     {
-        private Guid mUID = Guid.NewGuid();
-        public Guid UID
-        {
-            get { return mUID; }
-            set { mUID = value; }
-        }
+        public Guid UID { get; set; }
 
         public int CompareTo(object obj)
         {

@@ -26,6 +26,12 @@ namespace Xe.Tools.Components.KernelEditor.Controls
 
         public SkillViewModel SelectedItem => SkillsList.SelectedItem as SkillViewModel;
 
+        public int SelectedIndex
+        {
+            get => SkillsList.SelectedIndex;
+            set => SkillsList.SelectedIndex = value;
+        }
+
         public TabSkills()
         {
             InitializeComponent();
@@ -38,18 +44,26 @@ namespace Xe.Tools.Components.KernelEditor.Controls
 
         private void SkillsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectedItem != null)
+            var selectedItem = SelectedItem;
+            if (selectedItem != null)
             {
                 var dialog = new NameEditor()
                 {
-                    ViewModel = new NameViewModel(SelectedItem.Name, SelectedItem.MessageNameId,
-                    SelectedItem.MessageDescriptionId, SelectedItem.Messages)
+                    ViewModel = new NameViewModel(selectedItem.Name, selectedItem.MessageNameId,
+                    selectedItem.MessageDescriptionId, selectedItem.Messages)
                 };
                 if (dialog.ShowDialog() == true)
                 {
-                    SelectedItem.Name = dialog.ViewModel.Id;
-                    SelectedItem.MessageNameId = dialog.ViewModel.Name?.Id ?? Guid.NewGuid();
-                    SelectedItem.MessageDescriptionId = dialog.ViewModel.Description?.Id ?? Guid.NewGuid();
+                    if (selectedItem.Name != dialog.ViewModel.Id)
+                    {
+                        selectedItem.Name = dialog.ViewModel.Id;
+                        var index = SelectedIndex;
+                        ViewModel.Skills.RemoveAt(index);
+                        ViewModel.Skills.Insert(index, selectedItem);
+                        SelectedIndex = index;
+                    }
+                    selectedItem.MessageNameId = dialog.ViewModel.Name?.Id ?? Guid.NewGuid();
+                    selectedItem.MessageDescriptionId = dialog.ViewModel.Description?.Id ?? Guid.NewGuid();
                 }
             }
         }
