@@ -1,4 +1,6 @@
-﻿namespace Xe.Game.Messages
+﻿using System;
+
+namespace Xe.Game.Messages
 {
     public class Message : UniqueObject, IDeepCloneable
     {

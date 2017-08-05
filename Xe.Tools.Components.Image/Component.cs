@@ -4,13 +4,13 @@ namespace Xe.Tools.Components.Image
 {
     public class Component : IComponent
     {
-        public ComponentProperties Settings { get; private set; }
+        public ComponentProperties Properties { get; private set; }
 
         public bool IsSettingsAvailable => true;
 
         public Component(ComponentProperties settings)
         {
-            Settings = settings;
+            Properties = settings;
         }
 
         public bool? ShowDialog()

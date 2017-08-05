@@ -1,0 +1,30 @@
+﻿<Window xmlns:Controls="clr-namespace:Xe.Tools.Components.KernelEditor.Controls"  xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+        x:Class="Xe.Tools.Components.KernelEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="454">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="MenuFileSave" Header="_Save" Click="MenuFileSave_Click"/>
+                <Separator/>
+                <MenuItem x:Name="_fileExit" Header="E_xit"/>
+            </MenuItem>
+        </Menu>
+        <TabControl>
+            <TabItem Header="Skills">
+                <Controls:TabSkills x:Name="TabSkills" DataContext="{Binding Path=Skills}"/>
+            </TabItem>
+            <TabItem Header="Players">
+                <Controls:TabPlayers/>
+            </TabItem>
+            <TabItem Header="Enemies">
+                <Controls:TabEnemies/>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

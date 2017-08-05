@@ -76,5 +76,32 @@ namespace Xe.Game.Messages
             str = null;
             return false;
         }
+
+        public string this[Guid id]
+        {
+            get
+            {
+                if (id != Guid.Empty)
+                {
+                    if (GetMessage(id, out Message str))
+                        return str.En;
+                }
+                return "NOMSG";
+            }
+            set
+            {
+                if (id == Guid.Empty) return;
+                foreach (var segment in Segments)
+                {
+                    foreach (var message in segment.Messages)
+                    {
+                        if (message.UID == id)
+                        {
+                            message.En = value;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IComponent
     {
-        ComponentProperties Settings { get; }
+        ComponentProperties Properties { get; }
         bool IsSettingsAvailable { get; }
 
         bool? ShowDialog();

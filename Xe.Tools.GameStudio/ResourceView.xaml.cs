@@ -202,7 +202,7 @@ namespace Xe.Tools.GameStudio
                         Container = Container,
                         Item = node.Item
                     });
-                    instance.ShowSettings();
+                    instance.ShowDialog();
                 }
                 else
                 {
@@ -226,7 +226,7 @@ namespace Xe.Tools.GameStudio
                         Project = Project,
                         Container = Container,
                         Item = item
-                    }).ShowSettings();
+                    }).ShowDialog();
                 }
             }
         }

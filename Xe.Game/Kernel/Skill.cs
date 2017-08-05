@@ -22,8 +22,8 @@ namespace Xe.Game.Kernel
 
         public DamageFormula DamageFormula { get; set; }
 
-        public int Damage { get; set; }
-
         public TargetType Target { get; set; }
+
+        public int Damage { get; set; }
     }
 }
