@@ -65,8 +65,8 @@ namespace Xe.Tools.Components.AnimationEditor.Controls
             {
                 if (Frame != null)
                 {
-                    float centerX = Frame.CenterX + (float)ActualWidth / 2.0f;
-                    float centerY = Frame.CenterY + (float)ActualHeight / 2.0f;
+                    float centerX = -Frame.CenterX + (float)ActualWidth / 2.0f;
+                    float centerY = -Frame.CenterY + (float)ActualHeight / 2.0f;
                     var src = new RawRectangleF(Frame.Left, Frame.Top, Frame.Right, Frame.Bottom);
                     var dst = new RawRectangleF(centerX, centerY,
                         centerX + Frame.Right - Frame.Left, centerY + Frame.Bottom - Frame.Top);

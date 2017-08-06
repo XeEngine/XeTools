@@ -38,7 +38,8 @@
             <TextBlock DockPanel.Dock="Top" Text="Frame name"/>
             <TextBox DockPanel.Dock="Top" x:Name="TextFrameName" Text="{Binding Name}" LostFocus="TextFrameName_LostFocus"/>
             <TextBlock DockPanel.Dock="Top" Text="Preview with texture"/>
-            <ComboBox DockPanel.Dock="Top" x:Name="ListTextures" ItemsSource="{Binding Textures}" SelectionChanged="ListTextures_SelectionChanged" />
+            <ComboBox DockPanel.Dock="Top" x:Name="ListTextures" ItemsSource="{Binding Textures}"
+                      SelectedIndex="0" SelectionChanged="ListTextures_SelectionChanged" />
             <Grid DockPanel.Dock="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
