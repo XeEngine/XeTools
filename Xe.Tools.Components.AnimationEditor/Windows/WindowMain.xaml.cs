@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using Xe.Game;
 using Xe.Game.Animations;
+using Xe.Tools.Wpf.Dialogs;
 using static Xe.Tools.Project;
 
 namespace Xe.Tools.Components.AnimationEditor.Windows
@@ -38,33 +39,13 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 if (AnimationData.Textures == null)
                     AnimationData.Textures = new List<Texture>();
                 if (AnimationData.Frames == null)
-                {
-                    AnimationData.Frames = new Dictionary<string, Frame>();
-                }
-                else
-                {
-                    foreach (var pair in AnimationData.Frames)
-                    {
-                        pair.Value.Name = pair.Key;
-                    }
-                }
+                    AnimationData.Frames = new List<Frame>();
 
                 if (AnimationData.Animations == null)
-                {
-                    AnimationData.Animations = new Dictionary<string, Animation>();
-                }
-                else
-                {
-                    foreach (var pair in AnimationData.Animations)
-                    {
-                        pair.Value.Name = pair.Key;
-                    }
-                }
+                    AnimationData.Animations = new List<Animation>();
 
                 if (AnimationData.AnimationGroups == null)
-                {
                     AnimationData.AnimationGroups = new List<AnimationRef>();
-                }
 
                 Log.Message($"Animation file {WorkingFileName} opened.");
             }
@@ -93,20 +74,31 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void MenuViewFrames_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new WindowFrames(AnimationData.Frames.Values.ToList(), AnimationData.Textures, BasePath);
+            var dialog = new WindowFrames(AnimationData.Frames.ToList(), AnimationData.Textures, BasePath);
             dialog.ShowDialog();
             AnimationData.Frames.Clear();
             foreach (var item in dialog.Frames
                 .Where(x => !string.IsNullOrWhiteSpace(x.Name))
                 .OrderBy(x => x.Name))
             {
-                AnimationData.Frames.Add(item.Name, item);
+                AnimationData.Frames.Add(item);
             }
         }
 
         private void MenuViewAnimMap_Click(object sender, RoutedEventArgs e)
         {
+            new WindowMapping().ShowDialog();
+        }
 
+        private void MenuFileImportOldAnimation_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.XeAnimation);
+            if (dialog.ShowDialog() == true)
+            {
+                var fileName = dialog.FileName;
+                var oldAnim = new libTools.Anim.AnimationsGroup(fileName);
+                Utilities.ImportOldAnimation(AnimationData, oldAnim);
+            }
         }
     }
 }

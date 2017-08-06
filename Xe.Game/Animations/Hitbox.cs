@@ -6,27 +6,27 @@ namespace Xe.Game.Animations
 {
     public class Hitbox : IDeepCloneable
     {
-        private ushort left, top, right, bottom;
+        private short left, top, right, bottom;
 
         public int Left
         {
             get => left;
-            set => left = (ushort)Range(value, ushort.MinValue, ushort.MaxValue);
+            set => left = (short)Range(value, short.MinValue, short.MaxValue);
         }
         public int Top
         {
             get => top;
-            set => top = (ushort)Range(value, ushort.MinValue, ushort.MaxValue);
+            set => top = (short)Range(value, short.MinValue, short.MaxValue);
         }
         public int Right
         {
             get => right;
-            set => right = (ushort)Range(value, ushort.MinValue, ushort.MaxValue);
+            set => right = (short)Range(value, short.MinValue, short.MaxValue);
         }
         public int Bottom
         {
             get => bottom;
-            set => bottom = (ushort)Range(value, ushort.MinValue, ushort.MaxValue);
+            set => bottom = (short)Range(value, ushort.MinValue, short.MaxValue);
         }
 
         [JsonIgnore]

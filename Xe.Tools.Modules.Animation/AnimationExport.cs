@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Xe.Game.Animations;
 
@@ -62,13 +63,21 @@ namespace Xe.Tools.Modules
                     listAnimations.Keys.Count, anim));
             }*/
 
+            // Make a frame dictionary
+            var dicFrames = AnimationData.Frames
+                .ToDictionary(x => x.Name, x => x);
+
+            // Make an animation dictionary
+            var dicAnimations = AnimationData.Animations
+                .ToDictionary(x => x.Name, x => x);
+
             var listFrames = new Dictionary<string, Tuple<int, Frame>>();
             foreach (var tuple in listAnimations.Values)
             {
                 var anim = tuple.Item2;
                 foreach (var frameRef in anim.Frames)
                 {
-                    if (!AnimationData.Frames.TryGetValue(frameRef.Frame, out var frame))
+                    if (!dicFrames.TryGetValue(frameRef.Frame, out var frame))
                     {
                         Log.Warning($"Frame {frameRef.Frame} not found in {anim.Name}.");
                         continue;

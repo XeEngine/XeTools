@@ -10,8 +10,7 @@ namespace Xe.Game.Animations
     {
         private ushort speed;
         private byte loop, texture;
-
-        [JsonIgnore]
+        
         public string Name { get; set; }
 
         public Hitbox FieldHitbox { get; set; }

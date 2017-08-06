@@ -8,8 +8,7 @@ namespace Xe.Game.Animations
     {
         private ushort left, top, right, bottom;
         private short centerx, centery;
-
-        [JsonIgnore]
+        
         public string Name { get; set; }
 
         public int Left

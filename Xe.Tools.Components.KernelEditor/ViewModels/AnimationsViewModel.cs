@@ -50,10 +50,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                     {
                         _animationData = JsonConvert.DeserializeObject<AnimationData>(reader.ReadToEnd());
                         _animations = _animationData.Animations?
-                            .Select(x => new AnimationViewModel(x.Value)
-                            {
-                                Name = x.Key
-                            })
+                            .Select(x => new AnimationViewModel(x))
                             .ToList();
                         IsValid = true;
                     }

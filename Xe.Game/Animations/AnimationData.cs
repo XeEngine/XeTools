@@ -6,9 +6,9 @@ namespace Xe.Game.Animations
     {
         public List<Texture> Textures { get; set; }
 
-        public Dictionary<string, Frame> Frames { get; set; }
+        public List<Frame> Frames { get; set; }
 
-        public Dictionary<string, Animation> Animations { get; set; }
+        public List<Animation> Animations { get; set; }
 
         public List<AnimationRef> AnimationGroups { get; set; }
     }

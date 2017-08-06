@@ -48,9 +48,6 @@
       <HintPath>..\packages\SharpDX.DXGI.4.0.1\lib\net45\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -65,10 +62,14 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Controls\FramePanel.cs" />
     <Compile Include="Models\AnimationNameModel.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="ViewModels\FrameViewModel.cs" />
     <Compile Include="ViewModels\TexturesViewModel.cs" />
     <Compile Include="Windows\WindowFrames.xaml.cs">
       <DependentUpon>WindowFrames.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WindowMapping.xaml.cs">
+      <DependentUpon>WindowMapping.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WindowSettings.xaml.cs">
       <DependentUpon>WindowSettings.xaml</DependentUpon>
@@ -103,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WindowFrames.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WindowMapping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,6 +160,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\libTools.Anim\libTools.Anim.csproj">
+      <Project>{f06e381e-0d73-43fb-92ba-719cf5cc826b}</Project>
+      <Name>libTools.Anim</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libTools\libTools.csproj">
+      <Project>{9fcbadf0-ad60-4088-a379-7caca6bd2743}</Project>
+      <Name>libTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{4f3923b8-acaf-415a-8971-69ace86e735a}</Project>
       <Name>Xe.Game</Name>

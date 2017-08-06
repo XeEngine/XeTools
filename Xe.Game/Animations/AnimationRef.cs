@@ -7,6 +7,8 @@
     }
     public class AnimationRef
     {
+        public string Name { get; set; }
+
         public string Animation { get; set; }
 
         public Direction Direction { get; set; }

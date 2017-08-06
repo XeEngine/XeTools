@@ -9,7 +9,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem x:Name="_menuFileSave" Header="_Save" Click="MenuFileSave_Click"/>
+                <MenuItem x:Name="MenuFileSave" Header="_Save" Click="MenuFileSave_Click"/>
+                <MenuItem x:Name="MenuFileImportOldAnimation" Header="_Import old animation format..." Click="MenuFileImportOldAnimation_Click"/>
                 <Separator/>
                 <MenuItem x:Name="_fileExit" Header="E_xit"/>
             </MenuItem>

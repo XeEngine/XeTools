@@ -23,9 +23,9 @@ namespace Xe.Game
         public string Name { get; set; }
 
         /// <summary>
-        /// List of colors that will turn into transparency
+        /// List of R8G8B8A8 colors that will turn into transparency
         /// </summary>
-        public Color[] Transparencies { get; set; }
+        public uint[] Transparencies { get; set; }
 
         /// <summary>
         /// If the palette cannot be touched during image processing
