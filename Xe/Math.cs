@@ -54,5 +54,9 @@ namespace Xe
         {
             return (int)System.Math.Round(x);
         }
-	}
+        public static int Floor(double x)
+        {
+            return (int)System.Math.Floor(x);
+        }
+    }
 }

@@ -23,5 +23,15 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         {
             InitializeComponent();
         }
+
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonRemove_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows;
 using Xe.Game;
 using Xe.Game.Animations;
+using Xe.Tools.Components.AnimationEditor.Services;
+using Xe.Tools.Components.AnimationEditor.ViewModels;
 using Xe.Tools.Wpf.Dialogs;
 using static Xe.Tools.Project;
 
@@ -20,14 +22,13 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         public Item Item { get; private set; }
 
         public AnimationData AnimationData { get; private set; }
+        public AnimationViewModel ViewModel => DataContext as AnimationViewModel;
 
         private string WorkingFileName { get; set; }
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
         public WindowMain(Project project, Container container, Item item)
         {
-            InitializeComponent();
-
             Project = project;
             Container = container;
             Item = item;
@@ -49,6 +50,10 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
                 Log.Message($"Animation file {WorkingFileName} opened.");
             }
+            SpriteService.Instance.BasePath = BasePath;
+
+            InitializeComponent();
+            DataContext = new AnimationViewModel(AnimationData, BasePath);
         }
 
 
@@ -85,9 +90,16 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             }
         }
 
-        private void MenuViewAnimMap_Click(object sender, RoutedEventArgs e)
+        private async void MenuViewAnimMap_Click(object sender, RoutedEventArgs e)
         {
-            new WindowMapping().ShowDialog();
+            var settings = await Modules.Animation.Settings.OpenAsync(Project);
+            var dialog = new WindowMapping()
+            {
+                DataContext = new AnimationsMappingViewModel(
+                    AnimationData.AnimationGroups,
+                    AnimationData.Animations,
+                    settings.AnimationNames)
+            }.ShowDialog();
         }
 
         private void MenuFileImportOldAnimation_Click(object sender, RoutedEventArgs e)
@@ -99,6 +111,27 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 var oldAnim = new libTools.Anim.AnimationsGroup(fileName);
                 Utilities.ImportOldAnimation(AnimationData, oldAnim);
             }
+        }
+
+        private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ViewModel.ViewWidth = e.NewSize.Width;
+            ViewModel.ViewHeight = e.NewSize.Height;
+        }
+
+        private void ButtonZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Zoom += 0.25;
+        }
+
+        private void ButtonZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Zoom -= 0.25;
+        }
+
+        private void Canvas_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ViewModel.Zoom += (e.Delta / 120) * 0.25;
         }
     }
 }

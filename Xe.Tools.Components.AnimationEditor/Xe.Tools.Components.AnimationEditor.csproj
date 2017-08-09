@@ -62,7 +62,13 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Controls\FramePanel.cs" />
     <Compile Include="Models\AnimationNameModel.cs" />
+    <Compile Include="Services\AnimationService.cs" />
+    <Compile Include="Services\TextureService.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="ViewModels\AnimationMappingViewModel.cs" />
+    <Compile Include="ViewModels\AnimationsMappingViewModel.cs" />
+    <Compile Include="ViewModels\AnimationViewModel.cs" />
+    <Compile Include="ViewModels\EnumViewModel.cs" />
     <Compile Include="ViewModels\FrameViewModel.cs" />
     <Compile Include="ViewModels\TexturesViewModel.cs" />
     <Compile Include="Windows\WindowFrames.xaml.cs">
@@ -83,16 +89,8 @@
     <Compile Include="Windows\WindowTextures.xaml.cs">
       <DependentUpon>WindowTextures.xaml</DependentUpon>
     </Compile>
-    <Page Include="AnimationEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AnimationEditor.xaml.cs">
-      <DependentUpon>AnimationEditor.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\AnimationPanel.xaml">
