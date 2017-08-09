@@ -60,58 +60,6 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
         public ObservableCollection<Animation> Animations { get; set; }
 
-        /// <summary>
-        /// List of all textures
-        /// </summary>
-        public List<Texture> Textures => AnimationData.Textures;
-
-        /// <summary>
-        /// List of all frames of animation data
-        /// </summary>
-        public List<Frame> Frames => AnimationData.Frames;
-
-        /// <summary>
-        /// List of all frames used from the selected animation
-        /// </summary>
-        public ObservableCollection<FrameRefViewModel> AnimationFrames { get; private set; }
-        
-        /// <summary>
-        /// elected animation
-        /// </summary>
-        public Animation SelectedAnimation
-        {
-            get => _selectedAnimation;
-            set
-            {
-                _selectedAnimation = value;
-                _animService.Animation = value?.Name;
-                OnPropertyChanged(nameof(IsAnimationSelected));
-                OnPropertyChanged(nameof(FramesCount));
-                OnPropertyChanged(nameof(CurrentTexture));
-                OnPropertyChanged(nameof(FramePerSec));
-                OnPropertyChanged(nameof(Loop));
-            }
-        }
-
-        public Frame SelectedFrame
-        {
-            get => _animService.CurrentFrame;
-            set => _animService.SetFrame(_animService.FrameIndex, value);
-        }
-        public int SelectedFrameIndex
-        {
-            get => _animService.FrameIndex;
-            set
-            {
-                _animService.FrameIndex = value;
-                OnPropertyChanged(nameof(Sprite));
-            }
-        }
-        
-        public bool IsAnimationSelected => SelectedAnimation != null;
-
-        public int FramesCount => SelectedAnimation?.Frames.Count ?? 0;
-
         #region current animation view
 
         private double _viewWidth, _viewHeight, _zoom = 1.0;
@@ -172,6 +120,8 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 return new Point(0.5, 0.5);
             }
         }
+        public double SpriteScaleX => SelectedFrameReferenceFlipX ? -Zoom : Zoom;
+        public double SpriteScaleY => SelectedFrameReferenceFlipY ? -Zoom : Zoom;
 
 
         public bool IsRunning
@@ -191,10 +141,155 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
         public bool ShowEntityHitbox { get; set; }
 
-        
         #endregion
 
         #region current animation properties
+
+        /// <summary>
+        /// List of all textures
+        /// </summary>
+        public List<Texture> Textures => AnimationData.Textures;
+
+        /// <summary>
+        /// List of all frames of animation data
+        /// </summary>
+        public IEnumerable<string> Frames => AnimationData.Frames.Select(x => x.Name);
+
+        /// <summary>
+        /// List of all frames used from the selected animation
+        /// </summary>
+        public ObservableCollection<FrameRefViewModel> AnimationFrames { get; set; }
+
+        /// <summary>
+        /// elected animation
+        /// </summary>
+        public Animation SelectedAnimation
+        {
+            get => _selectedAnimation;
+            set
+            {
+                _selectedAnimation = value;
+                _animService.Animation = value?.Name;
+
+                if (_selectedAnimation != null)
+                {
+                    var texture = AnimationData.Textures.FirstOrDefault(x => x.Id == _selectedAnimation.Texture);
+                    AnimationFrames = new ObservableCollection<FrameRefViewModel>(
+                        _selectedAnimation.Frames
+                        .Select(x => new FrameRefViewModel(texture, x,
+                            AnimationData.Frames.FirstOrDefault(f => f.Name == x.Frame)
+                            )
+                        )
+                    );
+                }
+                else
+                {
+                    AnimationFrames = null;
+                }
+                OnPropertyChanged(nameof(AnimationFrames));
+
+                OnPropertyChanged(nameof(IsAnimationSelected));
+                OnPropertyChanged(nameof(FramesCount));
+                OnPropertyChanged(nameof(CurrentTexture));
+                OnPropertyChanged(nameof(FramePerSec));
+                OnPropertyChanged(nameof(Loop));
+            }
+        }
+
+        public int SelectedFrameIndex
+        {
+            get => _animService.FrameIndex;
+            set
+            {
+                if (value >= 0)
+                {
+                    _animService.FrameIndex = value;
+                }
+            }
+        }
+
+        public FrameRef SelectedFrameReference => _animService.CurrentFrameReference;
+
+        public string SelectedFrameReferenceName
+        {
+            get => SelectedFrameReference?.Frame;
+            set
+            {
+                SelectedFrameReference.Frame = value;
+                OnPropertyChanged(nameof(Sprite));
+            }
+        }
+
+        public bool SelectedFrameReferenceFlipX
+        {
+            get => SelectedFrameReference?.FlipX ?? false;
+            set
+            {
+                SelectedFrameReference.FlipX = value;
+                OnPropertyChanged(nameof(Sprite));
+                OnPropertyChanged(nameof(SpriteScaleX));
+            }
+        }
+
+        public bool SelectedFrameReferenceFlipY
+        {
+            get => SelectedFrameReference?.FlipY ?? false;
+            set
+            {
+                SelectedFrameReference.FlipY = value;
+                OnPropertyChanged(nameof(Sprite));
+                OnPropertyChanged(nameof(SpriteScaleY));
+            }
+        }
+
+        public bool SelectedFrameReferenceTrigger
+        {
+            get => SelectedFrameReference?.Trigger ?? false;
+            set
+            {
+                SelectedFrameReference.Trigger = value;
+            }
+        }
+
+        public int SelectedFrameReferenceHitboxLeft
+        {
+            get => SelectedFrameReference?.Hitbox.Left ?? 0;
+            set
+            {
+                SelectedFrameReference.Hitbox.Left = value;
+            }
+        }
+
+        public int SelectedFrameReferenceHitboxTop
+        {
+            get => SelectedFrameReference?.Hitbox.Top ?? 0;
+            set
+            {
+                SelectedFrameReference.Hitbox.Top = value;
+            }
+        }
+
+        public int SelectedFrameReferenceHitboxRight
+        {
+            get => SelectedFrameReference?.Hitbox.Right ?? 0;
+            set
+            {
+                SelectedFrameReference.Hitbox.Right = value;
+            }
+        }
+
+        public int SelectedFrameReferenceHitboxBottom
+        {
+            get => SelectedFrameReference?.Hitbox.Bottom ?? 0;
+            set
+            {
+                SelectedFrameReference.Hitbox.Bottom = value;
+            }
+        }
+
+        public bool IsAnimationSelected => SelectedAnimation != null;
+
+        public int FramesCount => SelectedAnimation?.Frames.Count ?? 0;
 
         /// <summary>
         /// Get or set the texture for the selected animation
@@ -253,7 +348,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
             _animService.OnFrameChanged += (service) =>
             {
-                OnPropertyChanged(nameof(SelectedFrame));
+                //OnPropertyChanged(nameof(SelectedFrame));
                 OnPropertyChanged(nameof(SelectedFrameIndex));
                 OnPropertyChanged(nameof(Sprite));
                 OnPropertyChanged(nameof(SpriteLeft));
@@ -261,6 +356,16 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 OnPropertyChanged(nameof(SpriteRight));
                 OnPropertyChanged(nameof(SpriteBottom));
                 OnPropertyChanged(nameof(SpriteCenter));
+                OnPropertyChanged(nameof(SpriteScaleX));
+                OnPropertyChanged(nameof(SpriteScaleY));
+                OnPropertyChanged(nameof(SelectedFrameReferenceName));
+                OnPropertyChanged(nameof(SelectedFrameReferenceHitboxLeft));
+                OnPropertyChanged(nameof(SelectedFrameReferenceHitboxTop));
+                OnPropertyChanged(nameof(SelectedFrameReferenceHitboxRight));
+                OnPropertyChanged(nameof(SelectedFrameReferenceHitboxBottom));
+                OnPropertyChanged(nameof(SelectedFrameReferenceFlipX));
+                OnPropertyChanged(nameof(SelectedFrameReferenceFlipY));
+                OnPropertyChanged(nameof(SelectedFrameReferenceTrigger));
             };
 
             Animations = new ObservableCollection<Animation>(AnimationData.Animations);

@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.AnimationEditor.Windows"
         mc:Ignorable="d"
-        Title="Animation editor" Height="400" Width="700">
+        Title="Animation editor" Height="420" Width="700">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -59,8 +59,8 @@
             </DockPanel>
             <DockPanel Grid.Column="2"
                        IsEnabled="{Binding IsAnimationSelected}">
-                <ListBox DockPanel.Dock="Bottom"
-                         ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <ListBox DockPanel.Dock="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                         ItemsSource="{Binding AnimationFrames}" SelectedIndex="{Binding SelectedFrameIndex}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
@@ -68,24 +68,10 @@
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Image}" Width="64"/>
+                            <Image Source="{Binding Sprite}" Width="48" Height="48"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                    <ListBoxItem>a</ListBoxItem>
-                    <ListBoxItem>b</ListBoxItem>
-                    <ListBoxItem>c</ListBoxItem>
-                    <ListBoxItem>d</ListBoxItem>
-                    <ListBoxItem>e</ListBoxItem>
-                    <ListBoxItem>a</ListBoxItem>
-                    <ListBoxItem>b</ListBoxItem>
-                    <ListBoxItem>c</ListBoxItem>
-                    <ListBoxItem>d</ListBoxItem>
-                    <ListBoxItem>e</ListBoxItem>
-                    <ListBoxItem>a</ListBoxItem>
-                    <ListBoxItem>b</ListBoxItem>
-                    <ListBoxItem>c</ListBoxItem>
-                    <ListBoxItem>d</ListBoxItem>
-                    <ListBoxItem>e</ListBoxItem>
                 </ListBox>
                 <StackPanel DockPanel.Dock="Bottom" Margin="0 0 0 5" Orientation="Horizontal">
                     <ToggleButton x:Name="ButtonPlay" IsChecked="{Binding IsRunning, Mode=TwoWay}">
@@ -156,7 +142,7 @@
                            RenderTransformOrigin="{Binding SpriteCenter, Mode=OneWay}">
                         <Image.RenderTransform>
                             <TransformGroup>
-                                <ScaleTransform ScaleX="{Binding Zoom}" ScaleY="{Binding Zoom}"/>
+                                <ScaleTransform ScaleX="{Binding SpriteScaleX}" ScaleY="{Binding SpriteScaleY}"/>
                                 <SkewTransform/>
                                 <RotateTransform/>
                                 <TranslateTransform/>
@@ -199,24 +185,26 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="5"/>
                                 <RowDefinition Height="20"/>
+                                <RowDefinition Height="5"/>
                                 <RowDefinition Height="20"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Left"/>
-                            <xc:NumericUpDown Grid.Column="1" Grid.Row="0"/>
-                            <TextBlock Grid.Column="3" Grid.Row="0" Text="Top"/>
-                            <xc:NumericUpDown Grid.Column="4" Grid.Row="0"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Right"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Left"/>
                             <xc:NumericUpDown Grid.Column="1" Grid.Row="1"/>
-                            <TextBlock Grid.Column="3" Grid.Row="1" Text="Bottom"/>
+                            <TextBlock Grid.Column="3" Grid.Row="1" Text="Top"/>
                             <xc:NumericUpDown Grid.Column="4" Grid.Row="1"/>
+                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Right"/>
+                            <xc:NumericUpDown Grid.Column="1" Grid.Row="3"/>
+                            <TextBlock Grid.Column="3" Grid.Row="3" Text="Bottom"/>
+                            <xc:NumericUpDown Grid.Column="4" Grid.Row="3"/>
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="Current frame" IsEnabled="{Binding IsNotRunning}">
                         <StackPanel>
-                            <ComboBox ItemsSource="{Binding Frames}" DisplayMemberPath="Name"
-                                      SelectedItem="{Binding SelectedFrame}"/>
-                            <GroupBox Header="Entity hitbox">
+                            <ComboBox Margin="0 0 0 5" ItemsSource="{Binding Frames}"
+                                      SelectedItem="{Binding SelectedFrameReferenceName}"/>
+                            <GroupBox Header="Entity hitbox" Margin="0 0 0 5">
                                 <Grid Margin="3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="40"/>
@@ -226,22 +214,28 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="5"/>
                                         <RowDefinition Height="20"/>
+                                        <RowDefinition Height="5"/>
                                         <RowDefinition Height="20"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Left"/>
-                                    <xc:NumericUpDown Grid.Column="1" Grid.Row="0"/>
-                                    <TextBlock Grid.Column="3" Grid.Row="0" Text="Top"/>
-                                    <xc:NumericUpDown Grid.Column="4" Grid.Row="0"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Right"/>
-                                    <xc:NumericUpDown Grid.Column="1" Grid.Row="1"/>
-                                    <TextBlock Grid.Column="3" Grid.Row="1" Text="Bottom"/>
-                                    <xc:NumericUpDown Grid.Column="4" Grid.Row="1"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Left"/>
+                                    <xc:NumericUpDown Grid.Column="1" Grid.Row="1" MinimumValue="-128" MaximumValue="127"
+                                                      Value="{Binding SelectedFrameReferenceHitboxLeft, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="3" Grid.Row="1" Text="Top"/>
+                                    <xc:NumericUpDown Grid.Column="4" Grid.Row="1" MinimumValue="-128" MaximumValue="127"
+                                                      Value="{Binding SelectedFrameReferenceHitboxTop, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Right"/>
+                                    <xc:NumericUpDown Grid.Column="1" Grid.Row="3" MinimumValue="-128" MaximumValue="127"
+                                                      Value="{Binding SelectedFrameReferenceHitboxRight, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="3" Grid.Row="3" Text="Bottom"/>
+                                    <xc:NumericUpDown Grid.Column="4" Grid.Row="3" MinimumValue="-128" MaximumValue="127"
+                                                      Value="{Binding SelectedFrameReferenceHitboxBottom, Mode=TwoWay}"/>
                                 </Grid>
                             </GroupBox>
-                            <CheckBox Content="Flip X"/>
-                            <CheckBox Content="Flip Y"/>
-                            <CheckBox Content="Trigger"/>
+                            <CheckBox Margin="0 0 0 5" Content="Flip X" IsChecked="{Binding SelectedFrameReferenceFlipX, Mode=TwoWay}"/>
+                            <CheckBox Margin="0 0 0 5" Content="Flip Y" IsChecked="{Binding SelectedFrameReferenceFlipY, Mode=TwoWay}"/>
+                            <CheckBox Margin="0 0 0 5" Content="Trigger" IsChecked="{Binding SelectedFrameReferenceTrigger, Mode=TwoWay}"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

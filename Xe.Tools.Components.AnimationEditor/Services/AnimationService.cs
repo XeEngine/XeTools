@@ -14,7 +14,6 @@ namespace Xe.Tools.Components.AnimationEditor.Services
         private string _animationName;
         private int _frameIndex;
         private Animation _currentAnimation;
-        private Frame _currentFrame;
         private Dictionary<string, Frame> _dicFrames;
         private Dictionary<string, Animation> _dicAnimations;
 
@@ -25,23 +24,32 @@ namespace Xe.Tools.Components.AnimationEditor.Services
         public Timer Timer { get; private set; }
         public Stopwatch Stopwatch { get; private set; }
 
+        /// <summary>
+        /// Get or set if the animation system is running
+        /// </summary>
         public bool IsRunning
         {
             get => Timer.Enabled;
             set
             {
-                if (value)
+                if (Timer.Enabled != value)
                 {
-                    Stopwatch.Start();
+                    if (value)
+                    {
+                        Stopwatch.Start();
+                    }
+                    else
+                    {
+                        Stopwatch.Stop();
+                    }
+                    Timer.Enabled = value;
                 }
-                else
-                {
-                    Stopwatch.Stop();
-                }
-                Timer.Enabled = value;
             }
         }
 
+        /// <summary>
+        /// Get the number of frames per second of selected animation
+        /// </summary>
         public int FramesPerSecond
         {
             get
@@ -51,15 +59,22 @@ namespace Xe.Tools.Components.AnimationEditor.Services
             }
         }
 
+        /// <summary>
+        /// Get or set the name of current animation
+        /// </summary>
         public string Animation
         {
             get => _animationName;
             set
             {
-                if (value != null)
+                _animationName = value;
+                // Validate the name
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    if (_dicAnimations.TryGetValue(_animationName = value, out _currentAnimation))
+                    // Get the animation object from its name
+                    if (_dicAnimations.TryGetValue(value, out _currentAnimation))
                     {
+                        // Reset the timer
                         if (IsRunning)
                         {
                             Stopwatch.Restart();
@@ -68,10 +83,9 @@ namespace Xe.Tools.Components.AnimationEditor.Services
                         {
                             Stopwatch.Reset();
                         }
-                        var frameRef = CurrentAnimation.Frames[0];
-                        if (frameRef != null)
-                            _dicFrames.TryGetValue(frameRef.Frame, out _currentFrame);
-                        OnFrameChanged?.Invoke(this);
+                        // Reset the frame index
+                        _frameIndex = -1;
+                        FrameIndex = 0;
                     }
                 }
                 else
@@ -81,6 +95,9 @@ namespace Xe.Tools.Components.AnimationEditor.Services
             }
         }
 
+        /// <summary>
+        /// Get or set the current frame index
+        /// </summary>
         public int FrameIndex
         {
             get => _frameIndex;
@@ -89,18 +106,39 @@ namespace Xe.Tools.Components.AnimationEditor.Services
                 if (_frameIndex != value)
                 {
                     _frameIndex = value;
-                    var frameRef = CurrentAnimation.Frames[_frameIndex];
-                    if (frameRef != null)
-                        _dicFrames.TryGetValue(frameRef.Frame, out _currentFrame);
                     OnFrameChanged?.Invoke(this);
                 }
             }
         }
 
+        /// <summary>
+        /// Get the current animation object loaded
+        /// </summary>
         public Animation CurrentAnimation => _currentAnimation;
 
-        public Frame CurrentFrame => _currentFrame;
+        /// <summary>
+        /// Get the current frame reference
+        /// </summary>
+        public FrameRef CurrentFrameReference => CurrentAnimation?.Frames[FrameIndex];
 
+        /// <summary>
+        /// Get the current frame from frame reference
+        /// </summary>
+        public Frame CurrentFrame
+        {
+            get
+            {
+                if (CurrentFrameReference == null)
+                    return null;
+                _dicFrames.TryGetValue(CurrentFrameReference.Frame, out Frame frame);
+                return frame;
+            }
+        }
+
+        /// <summary>
+        /// Initialize a new instance of an animation service
+        /// </summary>
+        /// <param name="animData">Animation data where information are loaded</param>
         public AnimationService(AnimationData animData)
         {
             AnimationData = animData;
@@ -116,17 +154,21 @@ namespace Xe.Tools.Components.AnimationEditor.Services
             Timer.Enabled = true;
         }
 
-        public void SetFrame(int index, Frame frame)
+        /// <summary>
+        /// Change the frame's reference from the specified index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="frame"></param>
+        public void SetFrame(int index, string frameName)
         {
             var framesList = CurrentAnimation?.Frames;
             if (framesList != null)
             {
                 if (index >= 0 && index < framesList.Count)
                 {
-                    framesList[index].Frame = frame.Name;
+                    framesList[index].Frame = frameName;
                     if (FrameIndex == index)
                     {
-                        _currentFrame = frame;
                         OnFrameChanged?.Invoke(this);
                     }
                 }
