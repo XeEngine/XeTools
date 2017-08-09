@@ -65,7 +65,6 @@
     <Compile Include="Services\AnimationService.cs" />
     <Compile Include="Services\TextureService.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="ViewModels\AnimationMappingViewModel.cs" />
     <Compile Include="ViewModels\AnimationsMappingViewModel.cs" />
     <Compile Include="ViewModels\AnimationViewModel.cs" />
     <Compile Include="ViewModels\EnumViewModel.cs" />

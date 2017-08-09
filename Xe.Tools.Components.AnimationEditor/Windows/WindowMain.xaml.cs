@@ -45,8 +45,8 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 if (AnimationData.Animations == null)
                     AnimationData.Animations = new List<Animation>();
 
-                if (AnimationData.AnimationGroups == null)
-                    AnimationData.AnimationGroups = new List<AnimationRef>();
+                if (AnimationData.AnimationDefinitions == null)
+                    AnimationData.AnimationDefinitions = new List<AnimationDefinition>();
 
                 Log.Message($"Animation file {WorkingFileName} opened.");
             }
@@ -96,7 +96,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             var dialog = new WindowMapping()
             {
                 DataContext = new AnimationsMappingViewModel(
-                    AnimationData.AnimationGroups,
+                    AnimationData.AnimationDefinitions,
                     AnimationData.Animations,
                     settings.AnimationNames)
             }.ShowDialog();
@@ -110,6 +110,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 var fileName = dialog.FileName;
                 var oldAnim = new libTools.Anim.AnimationsGroup(fileName);
                 Utilities.ImportOldAnimation(AnimationData, oldAnim);
+                DataContext = new AnimationViewModel(AnimationData, BasePath);
             }
         }
 

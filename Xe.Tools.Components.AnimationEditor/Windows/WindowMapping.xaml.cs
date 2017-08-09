@@ -33,5 +33,10 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         {
 
         }
+
+        private void ButtonEditRef_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -75,7 +75,7 @@ namespace Xe.Tools.GameStudio
             {
                 Container = Project.Containers[index];
 #if DEBUG
-                Test("sprite/ch/lehior.anim.json");
+                //Test("sprite/ch/lehior.anim.json");
                 //Test("kernel.bin.json");
 #endif
             }

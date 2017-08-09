@@ -10,6 +10,8 @@ namespace Xe.Tools.Components.AnimationEditor
 {
     public static class Utilities
     {
+        private enum Direction { Default, Up, Right, Down, Left }
+
         private class TextureNameComparer : IEqualityComparer<Texture>
         {
             public bool Equals(Texture x, Texture y)
@@ -22,9 +24,9 @@ namespace Xe.Tools.Components.AnimationEditor
                 return obj.GetHashCode();
             }
         }
-        private class AnimationRefComparer : IEqualityComparer<AnimationRef>
+        /*private class AnimationRefComparer : IEqualityComparer<AnimationReference>
         {
-            public bool Equals(AnimationRef x, AnimationRef y)
+            public bool Equals(AnimationReference x, AnimationReference y)
             {
                 return x.Animation == y.Animation &&
                     x.Direction == y.Direction &&
@@ -33,7 +35,7 @@ namespace Xe.Tools.Components.AnimationEditor
                     x.FlipY == y.FlipY;
             }
 
-            public int GetHashCode(AnimationRef obj)
+            public int GetHashCode(AnimationReference obj)
             {
                 return obj.Animation.GetHashCode() ^
                     ((int)obj.Direction << 1 | (int)obj.Direction << 21) |
@@ -41,7 +43,7 @@ namespace Xe.Tools.Components.AnimationEditor
                     (obj.FlipX ? (1 << 5) : (1 << 27)) |
                     (obj.FlipY ? (1 << 6) : (1 << 29));
             }
-        }
+        }*/
 
         public static void ImportOldAnimation(AnimationData dst, libTools.Anim.AnimationsGroup src)
         {
@@ -110,31 +112,57 @@ namespace Xe.Tools.Components.AnimationEditor
                 Texture = dst.Textures.Select(t => t.Id).FirstOrDefault()
             }).ToList();
 
-            var animGroups = dst.Animations.Select(x => new AnimationRef()
-            {
-                Name = x.Name.Split('_').First(),
-                Animation = x.Name,
-                Direction = GetDirectionFromAnimationName(x.Name),
-                IsDiagonal = false,
-                FlipX = false,
-                FlipY = false
-            }).ToList();
+            var dicAnims = dst.Animations.ToDictionary(x => x.Name, x => x);
 
-            dst.AnimationGroups = animGroups
-                .Where(x => x.Direction == Direction.Left || x.Direction == Direction.Right)
-                .Select(x => new AnimationRef()
+            var animDefs1 = animations
+                .Where(x => x.Link == null)
+                .GroupBy(x => x.Name.Split('_').First(), x => new
+                {
+                    Reference = x.Name,
+                    Direction = GetDirectionFromAnimationName(x.Name)
+                })
+                .Select(x => new AnimationDefinition()
+                {
+                    Name = x.Key,
+                    Default = x.Where(d => d.Direction == Direction.Default)
+                        .Select(d => new AnimationReference()
+                        { Name = d.Reference }).FirstOrDefault(),
+                    DirectionUp = x.Where(d => d.Direction == Direction.Up)
+                        .Select(d => new AnimationReference()
+                        { Name = d.Reference }).FirstOrDefault(),
+                    DirectionRight = x.Where(d => d.Direction == Direction.Right)
+                        .Select(d => new AnimationReference()
+                        { Name = d.Reference }).FirstOrDefault(),
+                    DirectionDown = x.Where(d => d.Direction == Direction.Down)
+                        .Select(d => new AnimationReference()
+                        { Name = d.Reference }).FirstOrDefault(),
+                    DirectionLeft = x.Where(d => d.Direction == Direction.Right)
+                        .Select(d => new AnimationReference()
+                        { Name = d.Reference, FlipX = true }).FirstOrDefault()
+                });
+            var animDefs2 = animations
+                .Where(x => x.Link != null)
+                .Select(x => new
+                {
+                    Name = x.Name.Split('_').FirstOrDefault(),
+                    Link = x.Link.Split('_').FirstOrDefault()
+                })
+                .Distinct()
+                .Select(x => new AnimationDefinition()
                 {
                     Name = x.Name,
-                    Animation = x.Animation,
-                    Direction = x.Direction == Direction.Left ? Direction.Right : Direction.Left,
-                    IsDiagonal = false,
-                    FlipX = true,
-                    FlipY = false
-                })
-                .Union(animGroups, new AnimationRefComparer())
-                .OrderBy(x => x.Animation)
-                .ThenBy(x => x.Direction)
-                .ToList();
+                    Default = dicAnims.ContainsKey(x.Link) ?
+                        new AnimationReference() { Name = x.Link } : null,
+                    DirectionUp = dicAnims.ContainsKey($"{x.Link}_u") ?
+                        new AnimationReference() { Name = $"{x.Link}_u" } : null,
+                    DirectionRight = dicAnims.ContainsKey($"{x.Link}_r") ?
+                        new AnimationReference() { Name = $"{x.Link}_r" } : null,
+                    DirectionDown = dicAnims.ContainsKey($"{x.Link}_d") ?
+                        new AnimationReference() { Name = $"{x.Link}_d" } : null,
+                    DirectionLeft = dicAnims.ContainsKey($"{x.Link}_r") ?
+                        new AnimationReference() { Name = $"{x.Link}_r", FlipX = false } : null
+                });
+            dst.AnimationDefinitions = animDefs1.Union(animDefs2).OrderBy(x => x.Name).ToList();
         }
 
         private static Direction GetDirectionFromAnimationName(string name)
@@ -145,7 +173,7 @@ namespace Xe.Tools.Components.AnimationEditor
                 case "d": return Direction.Down;
                 case "l": return Direction.Left;
                 case "r": return Direction.Right;
-                default: return Direction.Undefined;
+                default: return Direction.Default;
             }
         }
     }

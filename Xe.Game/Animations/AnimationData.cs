@@ -10,6 +10,6 @@ namespace Xe.Game.Animations
 
         public List<Animation> Animations { get; set; }
 
-        public List<AnimationRef> AnimationGroups { get; set; }
+        public List<AnimationDefinition> AnimationDefinitions { get; set; }
     }
 }

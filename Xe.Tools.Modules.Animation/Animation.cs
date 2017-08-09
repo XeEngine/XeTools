@@ -32,7 +32,7 @@ namespace Xe.Tools.Modules
             IsValid = AnimationData.Textures != null &&
                 AnimationData.Frames != null &&
                 AnimationData.Animations != null && 
-                AnimationData.AnimationGroups != null;
+                AnimationData.AnimationDefinitions != null;
 
             var inputBasePath = Path.Combine(Init.InputPath, Path.GetDirectoryName(fileName));
             var outputBasePath = Path.Combine(Init.OutputPath, Path.GetDirectoryName(fileName));

@@ -32,8 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animations\Animation.cs" />
-    <Compile Include="Animations\AnimationGroup.cs" />
-    <Compile Include="Animations\AnimationRef.cs" />
+    <Compile Include="Animations\AnimationDefinition.cs" />
+    <Compile Include="Animations\AnimationReference.cs" />
     <Compile Include="Animations\AnimationData.cs" />
     <Compile Include="Animations\Frame.cs" />
     <Compile Include="Animations\FrameRef.cs" />

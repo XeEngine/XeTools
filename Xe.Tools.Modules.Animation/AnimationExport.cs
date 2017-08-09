@@ -47,7 +47,7 @@ namespace Xe.Tools.Modules
         private void Export(BinaryWriter writer)
         {
             #region Pick only the used data
-            var listAnimationRefs = new List<AnimationRef>();
+            var listAnimationRefs = new List<AnimationReference>();
             var listAnimations = new Dictionary<string, Tuple<int, Game.Animations.Animation>>();
             /*foreach (var animRef in AnimationsGroup.AnimationGroups)
             {
@@ -200,7 +200,7 @@ namespace Xe.Tools.Modules
             }
 
             // Write animation reference data
-            foreach (var item in listAnimationRefs)
+            /*foreach (var item in listAnimationRefs)
             {
                 var animIndex = listAnimations[item.Animation].Item1;
 
@@ -214,7 +214,7 @@ namespace Xe.Tools.Modules
                 writer.Write((ushort)animIndex);
                 writer.Write((byte)direction);
                 writer.Write((byte)flags);
-            }
+            }*/
             #endregion
         }
     }

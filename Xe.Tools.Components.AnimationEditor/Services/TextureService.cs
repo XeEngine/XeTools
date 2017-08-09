@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xe.Game;
 using Xe.Game.Animations;
@@ -15,8 +16,8 @@ namespace Xe.Tools.Components.AnimationEditor.Services
 
         private Dictionary<Guid, BitmapSource> _textures =
             new Dictionary<Guid, BitmapSource>(16);
-        private Dictionary<Tuple<Guid, string>, CroppedBitmap> _frames =
-            new Dictionary<Tuple<Guid, string>, CroppedBitmap>(1024);
+        private Dictionary<Tuple<Guid, string>, BitmapSource> _frames =
+            new Dictionary<Tuple<Guid, string>, BitmapSource>(1024);
 
         public BitmapSource this[Texture texture]
         {
@@ -37,17 +38,26 @@ namespace Xe.Tools.Components.AnimationEditor.Services
                 if (texture == null) return null;
                 if (frame == null) return null;
                 var tuple = new Tuple<Guid, string>(texture.Id, frame.Name);
-                if (_frames.TryGetValue(tuple, out CroppedBitmap bitmap))
+                if (_frames.TryGetValue(tuple, out BitmapSource bitmap))
                     return bitmap;
-                var textureBitmap = this[texture];
-                return _frames[tuple] = new CroppedBitmap(textureBitmap,
-                    new System.Windows.Int32Rect()
+                
+                if (!frame.IsEmpty)
                 {
+                    var textureBitmap = this[texture];
+                    bitmap = new CroppedBitmap(textureBitmap,
+                    new System.Windows.Int32Rect()
+                    {
                         X = frame.Left,
                         Y = frame.Top,
                         Width = frame.Right - frame.Left,
                         Height = frame.Bottom - frame.Top
-                });
+                    });
+                }
+                else
+                {
+                    bitmap = BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgr24, null, new byte[3] { 0, 0, 0 }, 3);
+                }
+                return _frames[tuple] = bitmap;
             }
         }
 
