@@ -11,7 +11,7 @@ namespace Xe.Tools.Modules
         /// <summary>
         /// File loaded from the current module
         /// </summary>
-        string FileName { get; }
+        string InputFileName { get; }
 
         /// <summary>
         /// Parameters of the module
@@ -27,17 +27,22 @@ namespace Xe.Tools.Modules
         /// Obtain a list of files used from FileName.
         /// FileName itself is included.
         /// </summary>
-        string[] InputFileNames { get; }
+        IEnumerable<string> InputFileNames { get; }
 
         /// <summary>
         /// Obtain a list of output files.
         /// FileName itself is included.
         /// </summary>
-        string[] OutputFileNames { get; }
+        IEnumerable<string> OutputFileNames { get; }
 
         /// <summary>
         /// Process the file and exports it.
         /// </summary>
-        void Export();
+        void Build();
+        
+        /// <summary>
+        /// Clean all the used files
+        /// </summary>
+        void Clean();
     }
 }

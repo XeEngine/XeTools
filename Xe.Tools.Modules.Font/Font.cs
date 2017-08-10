@@ -8,61 +8,65 @@ namespace Xe.Tools.Modules
 {
     using Fonts = Game.Fonts;
 
-    public partial class Font : IModule
+    public partial class Font : ModuleBase
     {
-        private ModuleInit Init { get; }
-        public string FileName { get => Init.FileName; }
-        public Tuple<string, string>[] Parameters { get => Init.Parameters; }
-        public bool IsValid { get; private set; }
-        public string[] InputFileNames { get; private set; }
-        public string[] OutputFileNames { get; private set; }
-        
-        private Fonts.Font MyFont { get; }
+        private Fonts.Font MyFont { get; set; }
 
-        public Font(ModuleInit init)
+        public Font(ModuleInit init) : base(init) { }
+
+        public override bool OpenFileData(FileStream stream)
         {
-            Init = init;
-
-            var inputFileName = Path.Combine(Init.InputPath, FileName);
-            using (var file = new FileStream(inputFileName, FileMode.Open, FileAccess.Read))
+            using (var reader = new StreamReader(stream))
             {
-                using (var reader = new StreamReader(file))
-                {
-                    MyFont = JsonConvert.DeserializeObject<Fonts.Font>(reader.ReadToEnd());
-                }
+                MyFont = JsonConvert.DeserializeObject<Fonts.Font>(reader.ReadToEnd());
             }
-            IsValid = !string.IsNullOrWhiteSpace(MyFont.FontName);
-            CalculateFileNames();
+            return true;
         }
 
-        private void CalculateFileNames()
+        public override string GetOutputFileName()
         {
-            var basePath = Path.GetDirectoryName(FileName);
-            var inputBasePath = Path.Combine(Init.InputPath, basePath);
-            var outputBasePath = Path.Combine(Init.OutputPath, basePath);
-
-            var inputFiles = new List<string>
+            var extIndex = InputFileName.IndexOf(".json");
+            if (extIndex >= 0)
             {
-                Path.Combine(Init.InputPath, FileName)
-            };
-            var outputFiles = new List<string>
-            {
-                Path.Combine(Init.OutputPath, Path.Combine(Path.GetDirectoryName(FileName), Path.GetFileNameWithoutExtension(FileName)))
-            };
+                return InputFileName.Substring(0, extIndex);
+            }
+            return InputFileName;
+        }
 
+        public override IEnumerable<string> GetSecondaryInputFileNames()
+        {
+            var basePath = Path.GetDirectoryName(InputFileName);
+            return MyFont.Tables.Select(x => x.Texture)
+                .Distinct()
+                .Select(x => Path.Combine(basePath, x));
+        }
+
+        public override IEnumerable<string> GetSecondaryOutputFileNames()
+        {
+            var basePath = Path.GetDirectoryName(OutputFileName);
+            return MyFont.Tables.Select(x => x.Texture)
+                .Distinct()
+                .Select(x => Path.Combine(basePath, x));
+        }
+
+        public override void Export()
+        {
+            var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
+            using (var stream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
+            {
+                Export(stream);
+            }
+
+            var inputBasePath = Path.Combine(InputWorkingPath, Path.GetDirectoryName(InputFileName));
+            var outputBasePath = Path.Combine(OutputWorkingPath, Path.GetDirectoryName(OutputFileName));
             foreach (var table in MyFont.Tables)
             {
-                inputFiles.Add(Path.Combine(inputBasePath, table.Texture));
-                outputFiles.Add(Path.Combine(outputBasePath, table.Texture));
+                var input = Path.Combine(inputBasePath, table.Texture);
+                var output = Path.Combine(outputBasePath, table.Texture);
+                if (File.Exists(output))
+                    File.Delete(output);
+                File.Copy(input, output);
             }
-
-            InputFileNames = inputFiles.ToArray();
-            OutputFileNames = outputFiles.ToArray();
-        }
-
-        public static bool Validate(string filename)
-        {
-            return true;
         }
     }
 }

@@ -48,7 +48,6 @@ namespace Xe.Tools.Modules
         {
             #region Pick only the used data
             var listAnimationRefs = new List<AnimationReference>();
-            var listAnimations = new Dictionary<string, Tuple<int, Game.Animations.Animation>>();
             /*foreach (var animRef in AnimationsGroup.AnimationGroups)
             {
                 if (listAnimations.ContainsKey(animRef.Animation))
@@ -62,17 +61,20 @@ namespace Xe.Tools.Modules
                 listAnimations.Add(animRef.Animation, new Tuple<int, Game.Animations.Animation>(
                     listAnimations.Keys.Count, anim));
             }*/
+            
+            int index;
 
-            // Make a frame dictionary
-            var dicFrames = AnimationData.Frames
-                .ToDictionary(x => x.Name, x => x);
+            var dicFrames = new Dictionary<string, Tuple<int, Frame>>();
+            index = 0;
+            foreach (var frame in AnimationData.Frames)
+                dicFrames.Add(frame.Name, new Tuple<int, Frame>(index++, frame));
 
-            // Make an animation dictionary
-            var dicAnimations = AnimationData.Animations
-                .ToDictionary(x => x.Name, x => x);
+            var dicAnimations = new Dictionary<string, Tuple<int, Game.Animations.Animation>>();
+            index = 0;
+            foreach (var anim in AnimationData.Animations)
+                dicAnimations.Add(anim.Name, new Tuple<int, Game.Animations.Animation>(index++, anim));
 
-            var listFrames = new Dictionary<string, Tuple<int, Frame>>();
-            foreach (var tuple in listAnimations.Values)
+            foreach (var tuple in dicAnimations.Values)
             {
                 var anim = tuple.Item2;
                 foreach (var frameRef in anim.Frames)
@@ -96,7 +98,7 @@ namespace Xe.Tools.Modules
                 spriteSheetSectionLength += data.Length + 1;
             }
             var spriteSheetPaddingData = 4 - (spriteSheetSectionLength % 4);
-            
+
             var header = new Header
             {
                 MagicCode = 0x4D494E41U,
@@ -111,17 +113,18 @@ namespace Xe.Tools.Modules
                 SpriteSheetsLength = (ushort)(spriteSheetSectionLength + spriteSheetPaddingData),
                 SpriteSheetsCount = (ushort)AnimationData.Textures.Count,
                 FramesLength = 12,
-                FramesCount = (ushort)listFrames.Count,
+                FramesCount = (ushort)dicFrames.Count,
                 FrameExLength = 12,
                 FrameExCount = 0,
                 AnimationsLength = 16,
-                AnimationsCount = (ushort)listAnimations.Count,
-                AnimationReferencesLength = 0,
-                AnimationReferencesCount = (ushort)listAnimationRefs.Count
+                AnimationsCount = (ushort)dicAnimations.Count,
+                AnimationReferencesLength = 4 * 5,
+                AnimationReferencesCount = (ushort)AnimationData.AnimationDefinitions.Count
             };
             #endregion
 
             #region write data
+
             // Write header
             writer.Write(header.MagicCode);
             writer.Write(header.Reserved);
@@ -145,7 +148,7 @@ namespace Xe.Tools.Modules
                 writer.Write((byte)0);
 
             // Write frames
-            foreach (var item in listFrames.Values)
+            foreach (var item in dicFrames.Values)
             {
                 var frame = item.Item2;
                 writer.Write((ushort)frame.Left);
@@ -157,7 +160,7 @@ namespace Xe.Tools.Modules
             }
 
             // Write animations
-            foreach (var item in listAnimations.Values)
+            foreach (var item in dicAnimations.Values)
             {
                 var anim = item.Item2;
                 writer.Write((ushort)anim.Frames.Count);
@@ -171,8 +174,7 @@ namespace Xe.Tools.Modules
                 writer.Write((ushort)anim.FieldHitbox.Bottom);
                 foreach (var frame in anim.Frames)
                 {
-                    int index;
-                    if (listFrames.TryGetValue(frame.Frame, out var tuple))
+                    if (dicFrames.TryGetValue(frame.Frame, out var tuple))
                         index = tuple.Item1;
                     else
                         index = 0;
@@ -192,30 +194,37 @@ namespace Xe.Tools.Modules
             }
 
             // Write animation reference names
-            foreach (var item in listAnimationRefs)
+            foreach (var item in AnimationData.AnimationDefinitions)
             {
-                /*var data = Encoding.ASCII.GetBytes(item.Name);
-                var hash = Security.Crc32.CalculateDigest(data, 0, (uint)data.Length);
-                writer.Write(hash);*/
+                writer.Write(item.Name.GetXeHash());
             }
 
             // Write animation reference data
-            /*foreach (var item in listAnimationRefs)
+            foreach (var item in AnimationData.AnimationDefinitions)
             {
-                var animIndex = listAnimations[item.Animation].Item1;
-
-                int direction = (int)item.Direction;
-                if (item.IsDiagonal)
-                    direction |= 0x80;
-                int flags = 0;
-                if (item.FlipX) flags |= 1;
-                if (item.FlipY) flags |= 2;
-
-                writer.Write((ushort)animIndex);
-                writer.Write((byte)direction);
-                writer.Write((byte)flags);
-            }*/
+                ExportAnimRef(writer, dicAnimations, item.Default);
+                ExportAnimRef(writer, dicAnimations, item.DirectionUp);
+                ExportAnimRef(writer, dicAnimations, item.DirectionRight);
+                ExportAnimRef(writer, dicAnimations, item.DirectionDown);
+                ExportAnimRef(writer, dicAnimations, item.DirectionLeft);
+            }
             #endregion
+        }
+
+        private void ExportAnimRef(BinaryWriter w, Dictionary<string, Tuple<int, Xe.Game.Animations.Animation>> anims, AnimationReference animationReference)
+        {
+            if (animationReference != null && anims.TryGetValue(animationReference.Name, out var tuple))
+            {
+                var animIndex = (short)tuple.Item1;
+                short flags = (short)((animationReference.FlipX ? 1 : 0) |
+                    (animationReference.FlipY ? 2 : 0));
+                w.Write(animIndex);
+                w.Write(flags);
+            }
+            else
+            {
+                w.Write(0);
+            }
         }
     }
 }

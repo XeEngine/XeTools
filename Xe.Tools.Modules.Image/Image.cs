@@ -1,35 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace Xe.Tools.Modules
 {
-    public class Image : IModule
+    public class Image : ModuleBase
     {
-        private ModuleInit Settings { get; }
+        public Image(ModuleInit init) : base(init) { }
 
-        public string FileName { get => Settings.FileName; }
-        public Tuple<string, string>[] Parameters { get => Settings.Parameters; }
-        public bool IsValid { get; private set; }
-        public string[] InputFileNames { get; private set; }
-        public string[] OutputFileNames { get; private set; }
+        public override bool OpenFileData(string fileName) { return true; }
 
-        public Image(ModuleInit settings)
+        public override bool OpenFileData(FileStream stream) { return true; }
+
+        public override string GetOutputFileName()
         {
-            Settings = settings;
-            IsValid = true;
-            InputFileNames = new string[] { Path.Combine(Settings.InputPath, FileName) };
-            OutputFileNames = new string[] { Path.Combine(Settings.OutputPath, FileName) };
+            return InputFileName;
         }
 
-        public void Export()
+        public override IEnumerable<string> GetSecondaryInputFileNames()
         {
-            var inputFileName = Path.Combine(Settings.InputPath, FileName);
-            var outputFileName = Path.Combine(Settings.OutputPath, FileName);
-            var ouputFilePath = Path.GetDirectoryName(outputFileName);
-            if (!Directory.Exists(ouputFilePath))
-                Directory.CreateDirectory(ouputFilePath);
+            return new string[0];
+        }
 
+        public override IEnumerable<string> GetSecondaryOutputFileNames()
+        {
+            return new string[0];
+        }
+
+        public override void Export()
+        {
+            var inputFileName = Path.Combine(InputWorkingPath, InputFileName);
+            var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
             using (var file = new FileStream(inputFileName, FileMode.Open, FileAccess.Read))
             {
                 var decoder = new PngBitmapDecoder(file, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
@@ -46,11 +48,6 @@ namespace Xe.Tools.Modules
                     encoder.Save(outFile);
                 }
             }
-        }
-
-        public static bool Validate(string filename)
-        {
-            return true;
         }
     }
 }

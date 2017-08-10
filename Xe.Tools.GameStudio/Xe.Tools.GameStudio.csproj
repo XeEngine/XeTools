@@ -192,6 +192,10 @@
       <Project>{8b5d1fec-0f58-40c6-b832-c27d0f44cd1a}</Project>
       <Name>Xe.Tools.Modules.Image</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Kernel\Xe.Tools.Modules.Kernel.csproj">
+      <Project>{8d329e63-5dae-4c92-b417-cc96f601b98c}</Project>
+      <Name>Xe.Tools.Modules.Kernel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Message\Xe.Tools.Modules.Message.csproj">
       <Project>{a875a205-caf0-4bc2-973c-f93dfc3cf066}</Project>
       <Name>Xe.Tools.Modules.Message</Name>

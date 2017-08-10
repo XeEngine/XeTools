@@ -123,7 +123,7 @@ namespace Xe.Tools.Builder
                 output = Path.Combine(Path.GetDirectoryName(item.Input), Path.GetFileNameWithoutExtension(item.Input));
             try
             {
-                moduleInstance.Export();
+                moduleInstance.Build();
             }
             catch (Exception e)
             {

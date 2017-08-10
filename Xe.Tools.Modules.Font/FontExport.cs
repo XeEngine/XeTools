@@ -5,19 +5,7 @@ namespace Xe.Tools.Modules
     public partial class Font
     {
         private const uint MagicCode = 0x544E4F46;
-
-        public void Export()
-        {
-            var outputFileName = OutputFileNames[0];
-            var ouputFilePath = Path.GetDirectoryName(outputFileName);
-            if (!Directory.Exists(ouputFilePath))
-                Directory.CreateDirectory(ouputFilePath);
-            using (var fStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
-            {
-                Export(fStream);
-            }
-        }
-
+        
         private void Export(Stream stream)
         {
             using (var writer = new BinaryWriter(stream))

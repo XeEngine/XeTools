@@ -5,56 +5,49 @@ using Xe.Game.Tilemaps;
 
 namespace Xe.Tools.Modules
 {
-    public partial class Tiledmap : IModule
+    public partial class Tiledmap : ModuleBase
     {
-        private ModuleInit Init { get; }
-        public string FileName { get => Init.FileName; }
-        public Tuple<string, string>[] Parameters { get => Init.Parameters; }
-        public bool IsValid { get; private set; }
-        public string[] InputFileNames { get; private set; }
-        public string[] OutputFileNames { get; private set; }
+        private TilemapTiled MyTiledmap { get; set; }
 
-        private TilemapTiled MyTiledmap { get; }
-
-        public Tiledmap(ModuleInit init)
+        public Tiledmap(ModuleInit init) : base(init) { }
+        
+        public override bool OpenFileData(string fileName)
         {
-            Init = init;
-
-            var inputFileName = Path.Combine(Init.InputPath, FileName);
-            MyTiledmap = new TilemapTiled(inputFileName);
-            IsValid = true;
-            CalculateFileNames();
-        }
-
-        private void CalculateFileNames()
-        {
-            var basePath = Path.GetDirectoryName(FileName);
-            var inputBasePath = Path.Combine(Init.InputPath, basePath);
-            var outputBasePath = Path.Combine(Init.OutputPath, basePath);
-
-            var inputFiles = new List<string>
-            {
-                Path.Combine(Init.InputPath, FileName)
-            };
-            foreach (var tileset in MyTiledmap.Tilesets)
-            {
-                var filePath = Path.Combine(basePath, tileset.ImagePath);
-                var fullPath = Path.Combine(inputBasePath, filePath);
-                inputFiles.Add(fullPath);
-            }
-            InputFileNames = inputFiles.ToArray();
-
-            var outFileNameBase = Path.Combine(Init.OutputPath, Path.Combine(Path.GetDirectoryName(FileName), Path.GetFileNameWithoutExtension(FileName)));
-            OutputFileNames = new string[]
-            {
-                $"{outFileNameBase}.map",
-                $"{outFileNameBase}.png"
-            };
-        }
-
-        public static bool Validate(string filename)
-        {
+            MyTiledmap = new TilemapTiled(fileName);
             return true;
+        }
+        public override bool OpenFileData(FileStream stream) { return true; }
+
+        public override string GetOutputFileName()
+        {
+            var extIndex = InputFileName.IndexOf(".json");
+            if (extIndex >= 0)
+            {
+                return InputFileName.Substring(0, extIndex);
+            }
+            return InputFileName;
+        }
+
+        public override IEnumerable<string> GetSecondaryInputFileNames()
+        {
+            return new string[0];
+        }
+
+        public override IEnumerable<string> GetSecondaryOutputFileNames()
+        {
+            return new string[]
+            {
+                $"{Path.GetFileNameWithoutExtension(OutputFileName)}.png"
+            };
+        }
+
+        public override void Export()
+        {
+            var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
+            using (var fStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
+            {
+                Export(fStream);
+            }
         }
     }
 }

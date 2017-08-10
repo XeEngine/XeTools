@@ -2,65 +2,52 @@
 using System;
 using System.IO;
 using Xe.Game.Messages;
+using System.Collections.Generic;
 
 namespace Xe.Tools.Modules
 {
-    public partial class Message : IModule
+    public partial class Message : ModuleBase
     {
-        private ModuleInit Init { get; }
-        public string FileName { get => Init.FileName; }
-        public Tuple<string, string>[] Parameters { get => Init.Parameters; }
-        public bool IsValid { get; private set; }
-        public string[] InputFileNames { get; private set; }
-        public string[] OutputFileNames { get; private set; }
+        private MessageContainer Messages { get; set; }
 
-        private MessageContainer Messages { get; }
+        public Message(ModuleInit init) : base(init) { }
 
-        public Message(ModuleInit init)
+        public override bool OpenFileData(FileStream stream)
         {
-            Init = init;
-
-            var inputFileName = Path.Combine(Init.InputPath, FileName);
-            using (var file = new FileStream(inputFileName, FileMode.Open, FileAccess.Read))
+            using (var reader = new StreamReader(stream))
             {
-                using (var reader = new StreamReader(file))
-                {
-                    Messages = JsonConvert.DeserializeObject<MessageContainer>(reader.ReadToEnd());
-                }
+                Messages = JsonConvert.DeserializeObject<MessageContainer>(reader.ReadToEnd());
             }
-            IsValid = true;
-            CalculateFileNames();
-        }
-
-        private void CalculateFileNames()
-        {
-            var basePath = Path.GetDirectoryName(FileName);
-            var inputBasePath = Path.Combine(Init.InputPath, basePath);
-
-            InputFileNames = new string[]
-            {
-                Path.Combine(inputBasePath, Path.GetFileName(FileName))
-            };
-
-            string outputFileName;
-            if (Init.OutputFileName != null)
-            {
-                outputFileName = Path.Combine(Init.OutputPath, Init.OutputFileName);
-            }
-            else
-            {
-                var outputBasePath = Path.Combine(Init.OutputPath, basePath);
-                outputFileName = Path.Combine(outputBasePath, Init.OutputFileName ?? Path.GetFileNameWithoutExtension(FileName));
-            }
-            OutputFileNames = new string[]
-            {
-                outputFileName
-            };
-        }
-
-        public static bool Validate(string filename)
-        {
             return true;
+        }
+
+        public override string GetOutputFileName()
+        {
+            var extIndex = InputFileName.IndexOf(".json");
+            if (extIndex >= 0)
+            {
+                return InputFileName.Substring(0, extIndex);
+            }
+            return InputFileName;
+        }
+
+        public override IEnumerable<string> GetSecondaryInputFileNames()
+        {
+            return new string[0];
+        }
+
+        public override IEnumerable<string> GetSecondaryOutputFileNames()
+        {
+            return new string[0];
+        }
+
+        public override void Export()
+        {
+            var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
+            using (var fStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
+            {
+                Export(fStream);
+            }
         }
     }
 }

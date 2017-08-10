@@ -7,37 +7,34 @@ using System.Threading.Tasks;
 
 namespace Xe.Tools.Modules
 {
-    public class Copy : IModule
+    public class Copy : ModuleBase
     {
-        private ModuleInit Settings { get; }
+        public Copy(ModuleInit init) : base(init) { }
 
-        public string FileName { get => Settings.FileName; }
-        public Tuple<string, string>[] Parameters { get => Settings.Parameters; }
-        public bool IsValid { get; private set; }
-        public string[] InputFileNames { get; private set; }
-        public string[] OutputFileNames { get; private set; }
+        public override bool OpenFileData(string fileName) { return true; }
 
-        public Copy(ModuleInit settings)
+        public override bool OpenFileData(FileStream stream) { return true; }
+
+        public override string GetOutputFileName()
         {
-            Settings = settings;
-            IsValid = true;
-            InputFileNames = new string[] { Path.Combine(Settings.InputPath, FileName) };
-            OutputFileNames = new string[] { Path.Combine(Settings.OutputPath, FileName) };
+            return InputFileName;
         }
 
-        public void Export()
+        public override IEnumerable<string> GetSecondaryInputFileNames()
         {
-            var inputFileName = Path.Combine(Settings.InputPath, FileName);
-            var outputFileName = Path.Combine(Settings.OutputPath, FileName);
-            var ouputFilePath = Path.GetDirectoryName(outputFileName);
-            if (!Directory.Exists(ouputFilePath))
-                Directory.CreateDirectory(ouputFilePath);
+            return new string[0];
+        }
+
+        public override IEnumerable<string> GetSecondaryOutputFileNames()
+        {
+            return new string[0];
+        }
+        
+        public override void Export()
+        {
+            var inputFileName = Path.Combine(InputWorkingPath, InputFileName);
+            var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
             File.Copy(inputFileName, outputFileName);
-        }
-
-        public static bool Validate(string filename)
-        {
-            return true;
         }
     }
 }
