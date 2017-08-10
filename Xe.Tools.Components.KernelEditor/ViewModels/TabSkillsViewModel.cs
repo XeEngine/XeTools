@@ -68,10 +68,11 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public bool IsItemSelected => SelectedItem != null;
 
-        public string Name => Messages?[SelectedItem.MsgName]?.English ?? "NOMSG";
+        public string Name => MessageService.GetMessage(SelectedItem.MsgName)?.En ?? "NOMSG";
 
-        public string Description => Messages?[SelectedItem.MsgDescription]?.English ?? "NOMSG";
-        
+        public string Description => MessageService.GetMessage(SelectedItem.MsgDescription)?.En ?? "NOMSG";
+
+
         public string GfxName
         {
             get => SelectedItem.GfxName;

@@ -22,8 +22,8 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
         public AnimationGroupsViewModel AnimationGroups { get; private set; }
-        public MessagesViewModel Messages { get; private set; }
         public TabSkillsViewModel Skills { get; private set; }
+        public TabMessagesViewModel Messages { get; private set; }
 
         public KernelViewModel(Project project, Container container, Item item)
         {
@@ -52,6 +52,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             }
             
             Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
+            Messages = new TabMessagesViewModel(MessageService);
         }
 
         public void SaveChanges()

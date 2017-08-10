@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="454">
+        Title="Kernel editor" Height="350" Width="454">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -17,13 +17,16 @@
         </Menu>
         <TabControl>
             <TabItem Header="Skills">
-                <Controls:TabSkills x:Name="TabSkills" DataContext="{Binding Path=Skills}"/>
+                <Controls:TabSkills x:Name="TabSkills" DataContext="{Binding Skills}"/>
             </TabItem>
             <TabItem Header="Players">
                 <Controls:TabPlayers/>
             </TabItem>
             <TabItem Header="Enemies">
                 <Controls:TabEnemies/>
+            </TabItem>
+            <TabItem Header="Messages">
+                <Controls:TabMessages x:Name="TabMessages" DataContext="{Binding Messages}"/>
             </TabItem>
         </TabControl>
     </DockPanel>

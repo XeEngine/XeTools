@@ -51,6 +51,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
+    <Compile Include="Controls\TabMessages.xaml.cs">
+      <DependentUpon>TabMessages.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabPlayerGrowth.xaml.cs">
       <DependentUpon>TabPlayerGrowth.xaml</DependentUpon>
     </Compile>
@@ -69,9 +72,14 @@
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\TabMessages.cs" />
     <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
     <Page Include="Controls\TabEnemies.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabMessages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

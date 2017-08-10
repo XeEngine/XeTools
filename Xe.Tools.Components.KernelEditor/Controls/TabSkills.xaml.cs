@@ -58,8 +58,8 @@ namespace Xe.Tools.Components.KernelEditor.Controls
                         ViewModel.Skills.Insert(index, selectedItem);
                         SelectedIndex = index;
                     }
-                    selectedItem.MsgName = dialog.ViewModel.Name?.Id ?? Guid.NewGuid();
-                    selectedItem.MsgDescription = dialog.ViewModel.Description?.Id ?? Guid.NewGuid();
+                    selectedItem.MsgName = dialog.ViewModel.Name?.UID ?? Guid.NewGuid();
+                    selectedItem.MsgDescription = dialog.ViewModel.Description?.UID ?? Guid.NewGuid();
                 }
             }
         }

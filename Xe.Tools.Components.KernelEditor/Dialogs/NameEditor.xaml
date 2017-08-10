@@ -12,11 +12,11 @@
             <TextBox Margin="0 0 0 5" Text="{Binding Path=Id}"/>
             <TextBlock Text="Name"/>
             <ComboBox Margin="0 0 0 5" IsEditable="True"
-                      ItemsSource="{Binding Path=Messages.Messages, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="English"
+                      ItemsSource="{Binding Path=Messages, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="En"
                       SelectedItem="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <TextBlock Text="Description"/>
             <ComboBox Margin="0 0 0 5" IsEditable="True"
-                      ItemsSource="{Binding Path=Messages.Messages, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="English"
+                      ItemsSource="{Binding Path=Messages, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="En"
                       SelectedItem="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

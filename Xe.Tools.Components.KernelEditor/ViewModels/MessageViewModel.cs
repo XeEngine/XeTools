@@ -13,7 +13,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public string Category { get; private set; }
 
-        public Guid Id => Message.UID;
+        public Guid Id => Message?.UID ?? Guid.Empty;
 
         public string English
         {

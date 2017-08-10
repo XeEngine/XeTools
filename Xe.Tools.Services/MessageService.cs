@@ -25,9 +25,9 @@ namespace Xe.Tools.Services
 
         public IEnumerable<Item> Items { get; private set; }
 
-        public IEnumerable<MessageContainer> MessageContainers { get; private set; }
+        public IEnumerable<Tuple<Item, MessageContainer>> MessageContainers { get; private set; }
 
-        public IDictionary<Guid, Message> Messages { get; private set; }
+        public IDictionary<Guid, Tuple<Item, string, Message>> Messages { get; private set; }
 
         public IDictionary<string, IDictionary<Guid, string>> Categories { get; private set; }
 
@@ -37,11 +37,15 @@ namespace Xe.Tools.Services
             Items = ProjectService.Items
                 .Where(x => x.Type == "message")
                 .Distinct(new ItemMessageEqualityComparer());
-            MessageContainers = Items.Select(x => ProjectService.DeserializeItem<MessageContainer>(x));
-            Messages = MessageContainers.SelectMany(x => x.Segments
-                .SelectMany(m => m.Messages))
-                .ToDictionary(x => x.UID, x => x);
-            Categories = MessageContainers.SelectMany(x => x.Segments)
+            MessageContainers = Items.Select(x => new Tuple<Item, MessageContainer> (
+                x, ProjectService.DeserializeItem<MessageContainer>(x)
+            ));
+            Messages = MessageContainers.SelectMany(x => x.Item2.Segments
+                .SelectMany(m => m.Messages.Select(mm =>
+                    new Tuple<Item, string, Message>(x.Item1, m.Name, mm))
+                ))
+                .ToDictionary(x => x.Item3.UID, x => x);
+            Categories = MessageContainers.SelectMany(x => x.Item2.Segments)
                 .ToDictionary(x => x.Name, x => x.Messages.ToDictionary(m => m.UID, m => m.En) as IDictionary<Guid, string>);
         }
 
@@ -54,7 +58,7 @@ namespace Xe.Tools.Services
         public Message GetMessage(Guid id)
         {
             Messages.TryGetValue(id, out var message);
-            return message;
+            return message?.Item3;
         }
 
         public string GetString(Guid id)
