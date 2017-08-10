@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xe.Game.Kernel;
 using Xe.Tools.Components.KernelEditor.Dialogs;
 using Xe.Tools.Components.KernelEditor.ViewModels;
 
@@ -22,9 +23,9 @@ namespace Xe.Tools.Components.KernelEditor.Controls
     /// </summary>
     public partial class TabSkills : UserControl
     {
-        private SkillsViewModel ViewModel => DataContext as SkillsViewModel;
+        private TabSkillsViewModel ViewModel => DataContext as TabSkillsViewModel;
 
-        public SkillViewModel SelectedItem => SkillsList.SelectedItem as SkillViewModel;
+        public Skill SelectedItem => ViewModel.SelectedItem;
 
         public int SelectedIndex
         {
@@ -36,11 +37,6 @@ namespace Xe.Tools.Components.KernelEditor.Controls
         {
             InitializeComponent();
         }
-        
-        private void SkillsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         private void SkillsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -49,8 +45,8 @@ namespace Xe.Tools.Components.KernelEditor.Controls
             {
                 var dialog = new NameEditor()
                 {
-                    ViewModel = new NameViewModel(selectedItem.Name, selectedItem.MessageNameId,
-                    selectedItem.MessageDescriptionId, selectedItem.Messages)
+                    ViewModel = new NameViewModel(selectedItem.Name, selectedItem.MsgName,
+                    selectedItem.MsgDescription, ViewModel.MessageService)
                 };
                 if (dialog.ShowDialog() == true)
                 {
@@ -62,8 +58,8 @@ namespace Xe.Tools.Components.KernelEditor.Controls
                         ViewModel.Skills.Insert(index, selectedItem);
                         SelectedIndex = index;
                     }
-                    selectedItem.MessageNameId = dialog.ViewModel.Name?.Id ?? Guid.NewGuid();
-                    selectedItem.MessageDescriptionId = dialog.ViewModel.Description?.Id ?? Guid.NewGuid();
+                    selectedItem.MsgName = dialog.ViewModel.Name?.Id ?? Guid.NewGuid();
+                    selectedItem.MsgDescription = dialog.ViewModel.Description?.Id ?? Guid.NewGuid();
                 }
             }
         }

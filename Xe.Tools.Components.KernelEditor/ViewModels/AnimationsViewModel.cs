@@ -10,7 +10,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
     public class AnimationsViewModel
     {
         private AnimationData _animationData;
-        private List<AnimationViewModel> _animations;
+        private List<AnimationDefinitionViewModel> _animations;
 
         public Project Project { get; private set; }
         public Project.Container Container { get; private set; }
@@ -18,7 +18,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public string Name => Item.Input;
 
-        public List<AnimationViewModel> Animations
+        public List<AnimationDefinitionViewModel> Animations
         {
             get
             {
@@ -49,8 +49,8 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                     using (var reader = new StreamReader(filePath))
                     {
                         _animationData = JsonConvert.DeserializeObject<AnimationData>(reader.ReadToEnd());
-                        _animations = _animationData.Animations?
-                            .Select(x => new AnimationViewModel(x))
+                        _animations = _animationData.AnimationDefinitions?
+                            .Select(x => new AnimationDefinitionViewModel(x))
                             .ToList();
                         IsValid = true;
                     }

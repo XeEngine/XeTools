@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Modules.Kernel", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Components.KernelEditor", "Xe.Tools.Components.KernelEditor\Xe.Tools.Components.KernelEditor.csproj", "{3430912E-5E09-44D7-AE8A-528EBDC1458A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Services", "Xe.Tools.Services\Xe.Tools.Services.csproj", "{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -529,6 +531,22 @@ Global
 		{3430912E-5E09-44D7-AE8A-528EBDC1458A}.Release|x64.Build.0 = Release|Any CPU
 		{3430912E-5E09-44D7-AE8A-528EBDC1458A}.Release|x86.ActiveCfg = Release|Any CPU
 		{3430912E-5E09-44D7-AE8A-528EBDC1458A}.Release|x86.Build.0 = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|ARM.Build.0 = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|x64.Build.0 = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Debug|x86.Build.0 = Debug|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|ARM.Build.0 = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|x64.ActiveCfg = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|x64.Build.0 = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|x86.ActiveCfg = Release|Any CPU
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -563,6 +581,7 @@ Global
 		{A875A205-CAF0-4BC2-973C-F93DFC3CF066} = {8C7381ED-D68B-40D6-8E16-D37D137815FC}
 		{8D329E63-5DAE-4C92-B417-CC96F601B98C} = {8C7381ED-D68B-40D6-8E16-D37D137815FC}
 		{3430912E-5E09-44D7-AE8A-528EBDC1458A} = {BBED2F3B-160B-4A7E-A648-4A261A89D90C}
+		{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5} = {B379A764-9651-4DE0-A880-BC5A22037A5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEC93E46-98D1-4CBA-8ED2-5F80D7A35AE3}

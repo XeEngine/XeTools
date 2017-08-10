@@ -2,13 +2,13 @@
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
-    public class AnimationViewModel
+    public class AnimationDefinitionViewModel
     {
         public string Name { get; set; }
 
-        public AnimationViewModel(Animation animation)
+        public AnimationDefinitionViewModel(AnimationDefinition animationDefinition)
         {
-            Name = animation.Name;
+            Name = animationDefinition.Name;
         }
 
         public override string ToString()

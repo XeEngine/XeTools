@@ -14,7 +14,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public MessagesViewModel Messages { get; private set; }
 
-        public SkillsViewModel SkillsViewModel { get; private set; }
+        public TabSkillsViewModel SkillsViewModel { get; private set; }
 
         public string Id
         {
@@ -84,15 +84,13 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public ObservableCollection<SkillUsageViewModel> SkillsUsage { get; private set; }
 
-        public List<SkillViewModel> Skills { get; set; }
+        public IEnumerable<Skill> Skills { get; set; }
 
         public PlayerViewModel(Player player, IEnumerable<Skill> skills, MessagesViewModel messages)
         {
             Player = player;
             Messages = messages;
-            Skills = skills
-                .Select(x => new SkillViewModel(x, Messages))
-                .ToList();
+            Skills = skills;
         }
 
         public void SaveChanges()

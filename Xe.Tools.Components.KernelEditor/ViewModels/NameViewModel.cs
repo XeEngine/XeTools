@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
@@ -32,14 +33,14 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public MessageViewModel Description { get; set; }
 
-        public MessagesViewModel Messages { get; private set; }
+        public MessageService MessageService { get; private set; }
 
-        public NameViewModel(string id, Guid msgName, Guid msgDescription, MessagesViewModel messages)
+        public NameViewModel(string id, Guid msgName, Guid msgDescription, MessageService messageService)
         {
             Id = id;
-            Name = messages[msgName];
-            Description = messages[msgDescription];
-            Messages = messages;
+            Name = new MessageViewModel("skill", messageService.GetMessage(msgName));
+            Description = new MessageViewModel("skill", messageService.GetMessage(msgDescription));
+            MessageService = messageService;
         }
     }
 }

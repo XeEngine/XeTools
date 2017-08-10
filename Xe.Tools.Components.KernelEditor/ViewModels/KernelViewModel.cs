@@ -5,14 +5,16 @@ using System.IO;
 using System.Linq;
 using Xe.Game.Kernel;
 using Xe.Game.Messages;
+using Xe.Tools.Services;
 using static Xe.Tools.Project;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
     public class KernelViewModel
     {
-        public Project Project { get; private set; }
-        public Container Container { get; private set; }
+        public ProjectService ProjectService { get; private set; }
+        public MessageService MessageService { get; private set; }
+
         public Item Item { get; private set; }
 
         public KernelData Kernel { get; private set; }
@@ -21,15 +23,15 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public AnimationGroupsViewModel AnimationGroups { get; private set; }
         public MessagesViewModel Messages { get; private set; }
-        public SkillsViewModel Skills { get; private set; }
+        public TabSkillsViewModel Skills { get; private set; }
 
         public KernelViewModel(Project project, Container container, Item item)
         {
-            Project = project;
-            Container = container;
+            ProjectService = new ProjectService(project, container);
+            MessageService = new MessageService(ProjectService);
             Item = item;
 
-            WorkingFileName = Path.Combine(Path.Combine(Project.ProjectPath, Container.Name), item.Input);
+            WorkingFileName = Path.Combine(ProjectService.WorkingDirectory, item.Input);
 
             try
             {
@@ -48,15 +50,13 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             {
                 Log.Error($"Error while opening {Item.Input}: {e.Message}");
             }
-
-            AnimationGroups = new AnimationGroupsViewModel(Project, Container);
-            Messages = CreateMessagesViewModel("sys.msg");
-            Skills = new SkillsViewModel(Kernel.Skills, Messages, AnimationGroups);
+            
+            Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
         }
 
         public void SaveChanges()
         {
-            Messages.SaveChanges();
+            MessageService.SaveChanges();
             Skills.SaveChanges();
             try
             {
@@ -71,22 +71,6 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             {
                 Log.Error($"Error while saving changes on {Item.Input}: {e.Message}");
             }
-        }
-
-        private MessagesViewModel CreateMessagesViewModel(string fileName)
-        {
-            MessagesViewModel mvm;
-            var item = Container.Items.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.Input) == fileName);
-            if (item != null)
-            {
-                mvm = new MessagesViewModel(Project, Container, item);
-            }
-            else
-            {
-                mvm = null;
-                Log.Warning($"Unable to find file {fileName} for messages management");
-            }
-            return mvm;
         }
     }
 }

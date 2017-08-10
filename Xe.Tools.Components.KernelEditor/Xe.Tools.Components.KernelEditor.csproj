@@ -69,9 +69,8 @@
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
-    <Compile Include="ViewModels\SkillsViewModel.cs" />
+    <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
-    <Compile Include="ViewModels\SkillViewModel.cs" />
     <Page Include="Controls\TabEnemies.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -153,6 +152,10 @@
     <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">
       <Project>{0a9e80cc-c253-47e8-b99a-c211d91291d4}</Project>
       <Name>Xe.Tools.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
+      <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
+      <Name>Xe.Tools.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
       <Project>{545d863a-cd36-4c79-a07f-cf82b718fc3e}</Project>

@@ -6,7 +6,7 @@
              xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
              xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor.Controls"
              mc:Ignorable="d" d:DesignWidth="440" d:DesignHeight="189">
-    <Grid x:Name="TabPanel">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
@@ -30,11 +30,12 @@
                     </StackPanel>
                 </Button>
             </Grid>
-            <ListBox x:Name="SkillsList" Grid.Column="0" ItemsSource="{Binding Path=Skills}" DisplayMemberPath="Name"
-                     SelectionChanged="SkillsList_SelectionChanged" MouseDoubleClick="SkillsList_MouseDoubleClick"/>
+            <ListBox x:Name="SkillsList" Grid.Column="0" ItemsSource="{Binding Skills}" DisplayMemberPath="Name"
+                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}" MouseDoubleClick="SkillsList_MouseDoubleClick"/>
         </DockPanel>
 
-        <ScrollViewer Grid.Column="1" Margin="5 0 0 5" DataContext="{Binding SelectedItem, ElementName=SkillsList}" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Column="1" Margin="5 0 0 5" VerticalScrollBarVisibility="Auto"
+                      IsEnabled="{Binding IsItemSelected}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -44,7 +45,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="16"/>
-                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="16"/>
                     <RowDefinition Height="22"/>
@@ -56,29 +57,25 @@
                     <RowDefinition Height="18"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Path=MessageName}"/>
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}"/>
                 <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis" Text="{Binding Path=MessageDescription}"/>
+                           TextTrimming="CharacterEllipsis" Text="{Binding Description}"/>
                 <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Height="1" Fill="Gray"/>
 
                 <TextBlock Grid.Column="0" Grid.Row="3" Text="GFX name"/>
-                <ComboBox x:Name="GfxList" Grid.Column="0" Grid.Row="4" DisplayMemberPath="Name" Text="{Binding Path=GfxName}"
-                          ItemsSource="{Binding Path=DataContext.AnimationGroups.AnimationGroups, ElementName=TabPanel}"
-                          SelectedValue="{Binding Path=GfxName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <ComboBox x:Name="GfxList" Grid.Column="0" Grid.Row="4" ItemsSource="{Binding AnimationFileNames}" Text="{Binding GfxName}"
+                          SelectedValue="{Binding GfxName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <TextBlock Grid.Column="2" Grid.Row="3" Text="GFX animation"/>
-                <ComboBox Grid.Column="2" Grid.Row="4" DisplayMemberPath="Name" Text="{Binding Path=GfxAnimation}"
-                          ItemsSource="{Binding Path=SelectedItem.Animations, ElementName=GfxList}"
-                          SelectedValue="{Binding Path=GfxAnimation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <ComboBox Grid.Column="2" Grid.Row="4" ItemsSource="{Binding Animations}" Text="{Binding GfxAnimation}"
+                          SelectedValue="{Binding GfxAnimation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <TextBlock Grid.Column="0" Grid.Row="6" Text="Damage formula"/>
-                <ComboBox Grid.Column="0" Grid.Row="7" DisplayMemberPath="Item2"
-                          ItemsSource="{Binding Path=DataContext.DamageFormula.Values, ElementName=TabPanel}"
-                          SelectedValue="{Binding Path=DamageFormula, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <ComboBox Grid.Column="0" Grid.Row="7" DisplayMemberPath="Item2" ItemsSource="{Binding DamageFormulaType.Values}"
+                          SelectedValue="{Binding DamageFormula, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <TextBlock Grid.Column="2" Grid.Row="6" Text="Target type"/>
-                <ComboBox Grid.Column="2" Grid.Row="7" DisplayMemberPath="Item2"
-                          ItemsSource="{Binding Path=DataContext.TargetType.Values, ElementName=TabPanel}"
-                          SelectedValue="{Binding Path=Target, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <ComboBox Grid.Column="2" Grid.Row="7" DisplayMemberPath="Item2" ItemsSource="{Binding TargetType.Values}"
+                          SelectedValue="{Binding Target, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <TextBlock Grid.Column="0" Grid.Row="9" Text="Strength"/>
-                <xc:NumericUpDown Grid.Column="0" Grid.Row="10" MaximumValue="255" Value="{Binding Path=Damage, Mode=TwoWay}"/>
+                <xc:NumericUpDown Grid.Column="0" Grid.Row="10" MaximumValue="255" Value="{Binding Damage, Mode=TwoWay}"/>
             </Grid>
         </ScrollViewer>
     </Grid>
