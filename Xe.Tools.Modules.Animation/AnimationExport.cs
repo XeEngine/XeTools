@@ -213,7 +213,8 @@ namespace Xe.Tools.Modules
 
         private void ExportAnimRef(BinaryWriter w, Dictionary<string, Tuple<int, Xe.Game.Animations.Animation>> anims, AnimationReference animationReference)
         {
-            if (animationReference != null && anims.TryGetValue(animationReference.Name, out var tuple))
+            if (animationReference != null && animationReference.Name != null &&
+                anims.TryGetValue(animationReference.Name, out var tuple))
             {
                 var animIndex = (short)tuple.Item1;
                 short flags = (short)((animationReference.FlipX ? 1 : 0) |
