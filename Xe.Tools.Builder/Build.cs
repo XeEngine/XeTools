@@ -127,6 +127,7 @@ namespace Xe.Tools.Builder
             }
             catch (Exception e)
             {
+                moduleInstance.Clean();
                 Log.Error($"Module {type} export exception on {item.Input}: {e.Message}");
                 return;
             }
