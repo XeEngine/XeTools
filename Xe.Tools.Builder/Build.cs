@@ -74,11 +74,11 @@ namespace Xe.Tools.Builder
             {
                 moduleInstance = module.CreateInstance(new Modules.ModuleInit()
                 {
-                    FileName = Path.Combine(entry.Container.Name, item.Input),
+                    FileName = item.Input,
                     OutputFileName = item.Output,
-                    Parameters = item.Parameters.ToArray(),
-                    InputPath = entry.Project.ProjectPath,
-                    OutputPath = outputFolder
+                    Parameters = item.Parameters?.ToArray() ?? new Tuple<string, string>[0],
+                    InputPath = Path.Combine(entry.Project.ProjectPath, entry.Container.Name),
+                    OutputPath = Path.Combine(outputFolder, entry.Container.Name)
                 });
             }
             catch (Exception e)
