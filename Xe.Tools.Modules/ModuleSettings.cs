@@ -8,6 +8,8 @@ namespace Xe.Tools.Modules
 {
     public class ModuleInit
     {
+        public Type Type { get; set; }
+
         public string FileName { get; set; }
 
         public string OutputFileName { get; set; }

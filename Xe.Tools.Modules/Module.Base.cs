@@ -94,9 +94,14 @@ namespace Xe.Tools.Modules
             }
         }
 
+        private DateTime GetAssemblyModifyDate()
+        {
+            return File.GetLastWriteTimeUtc(Init.Type.Assembly.Location);
+        }
+
         private DateTime GetLastInputModifyDate()
         {
-            return InputFileNames.Select(x =>
+            var filesLastModifyDate = InputFileNames.Select(x =>
             {
                 string fileName = Path.Combine(InputWorkingPath, x);
                 if (File.Exists(fileName))
@@ -109,6 +114,10 @@ namespace Xe.Tools.Modules
                     return DateTime.MinValue;
                 }
             }).Max();
+            var assemblyModifyDate = GetAssemblyModifyDate();
+            if (assemblyModifyDate.Ticks > filesLastModifyDate.Ticks)
+                return assemblyModifyDate;
+            return filesLastModifyDate;
         }
 
         private DateTime GetLastOutputModifyDate()

@@ -29,6 +29,7 @@ namespace Xe.Tools.Modules
 
         public IModule CreateInstance(ModuleInit settings)
         {
+            settings.Type = Type;
             return Activator.CreateInstance(Type, new object[] { settings }) as IModule;
         }
 
