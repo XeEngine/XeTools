@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Xe.Tools.Builder
@@ -25,15 +25,20 @@ namespace Xe.Tools.Builder
                     Item = item
                 }));
             }
-            
-            int filesCount = entries.Count;
-            foreach (var entry in entries)
-            {
-                CleanEntry(entry, outputFolder);
-            }
-            Program.OnProgress?.Invoke($"Clean completed.", 1, 1, true);
+
+            var dispatcher = new Dispatcher<Entry>(entries);
+            dispatcher.Process((e) => CleanEntryAsync(e, outputFolder));
+
+            Program.OnProgress?.Invoke($"Clean completed in {dispatcher.ElapsedMilliseconds / 1000.0} seconds.", 1, 1, true);
         }
 
+        private static Task CleanEntryAsync(Entry entry, string outputFolder)
+        {
+            return new Task(() =>
+            {
+                CleanEntry(entry, outputFolder);
+            });
+        }
         private static void CleanEntry(Entry entry, string outputFolder)
         {
             var item = entry.Item;

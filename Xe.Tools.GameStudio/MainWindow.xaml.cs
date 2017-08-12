@@ -156,12 +156,28 @@ namespace Xe.Tools.GameStudio
             {
                 Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
             }
-            Builder.Program.Build(Project, config.OutputDirectory);
+            else
+            {
+                Task.Run(() =>
+                {
+                    Builder.Program.Build(Project, config.OutputDirectory);
+                });
+            }
         }
         private void MenuItem_ProjectClean_Click(object sender, RoutedEventArgs e)
         {
             var config = Settings.GetProjectConfiguration(Project);
-            Builder.Program.Clean(Project, config.OutputDirectory);
+            if (string.IsNullOrEmpty(config.OutputDirectory))
+            {
+                Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    Builder.Program.Clean(Project, config.OutputDirectory);
+                });
+            }
         }
 
         private void UpdateWindowName()

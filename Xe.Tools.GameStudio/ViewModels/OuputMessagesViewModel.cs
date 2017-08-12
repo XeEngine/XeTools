@@ -151,10 +151,13 @@ namespace Xe.Tools.GameStudio.ViewModels
             }
             if (canLog)
             {
-                System.Windows.Application.Current.Dispatcher.Invoke((() =>
+                new Thread(() =>
                 {
-                    Log.Add(item);
-                }));
+                    System.Windows.Application.Current.Dispatcher.Invoke((() =>
+                    {
+                        Log.Add(item);
+                    }));
+                }).Start();
             }
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Xe.Tools.Builder
@@ -36,7 +36,7 @@ namespace Xe.Tools.Builder
                 }));
             }
 
-#if DEBUG
+#if !DEBUG
             int filesProcessed = 0;
             int filesCount = entries.Count;
             foreach (var entry in entries)
@@ -46,41 +46,10 @@ namespace Xe.Tools.Builder
                 Program.OnProgress?.Invoke($"Processed {entry.Item.RelativeFileNameInput}!", filesProcessed, filesCount, false);
             }
 #else
-            int maxTasksCount = System.Environment.ProcessorCount * 2;
-            var queue = new List<Task>(maxTasksCount);
-            while (entries.Count > 0)
-            {
-                if (queue.Count >= maxTasksCount)
-                {
-                    if (queue.Count >= maxTasksCount)
-                    {
-                        Task.WaitAny(queue.ToArray());
-                        foreach (var taskItem in queue)
-                        {
-                            if (taskItem.IsCompleted ||
-                                taskItem.IsFaulted ||
-                                taskItem.IsCanceled)
-                            {
-                                queue.Remove(taskItem);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                Task task;
-                lock (queue)
-                {
-                    var entry = entries[0];
-                    entries.RemoveAt(0);
-                    task = ProcessEntryAsync(entry, outputFolder);
-                    queue.Add(task);
-                }
-                task.Start();
-            }
-            Task.WaitAll(queue.ToArray());
+            var dispatcher = new Dispatcher<Entry>(entries);
+            dispatcher.Process((e) => ProcessEntryAsync(e, outputFolder));
 #endif
-            Program.OnProgress?.Invoke($"Build completed.", 1, 1, true);
+            OnProgress?.Invoke($"Build completed in {dispatcher.ElapsedMilliseconds / 1000.0} seconds.", 1, 1, true);
         }
 
         private static Task ProcessEntryAsync(Entry entry, string outputFolder)
