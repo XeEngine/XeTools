@@ -23,6 +23,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public AnimationGroupsViewModel AnimationGroups { get; private set; }
         public TabSkillsViewModel Skills { get; private set; }
+        public TabPlayersViewModel Players { get; private set; }
         public TabMessagesViewModel Messages { get; private set; }
 
         public KernelViewModel(Project project, Container container, Item item)
@@ -52,6 +53,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             }
             
             Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
+            Players = new TabPlayersViewModel(Kernel.Players, Kernel.Skills, MessageService, ProjectService.AnimationService);
             Messages = new TabMessagesViewModel(MessageService);
         }
 
@@ -59,6 +61,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         {
             MessageService.SaveChanges();
             Skills.SaveChanges();
+            Players.SaveChanges();
             try
             {
                 using (var writer = File.CreateText(WorkingFileName))

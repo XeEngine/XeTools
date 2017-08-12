@@ -71,8 +71,9 @@
     <Compile Include="ViewModels\MessagesViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
-    <Compile Include="ViewModels\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\TabPlayersViewModel.cs" />
     <Compile Include="ViewModels\TabMessages.cs" />
+    <Compile Include="ViewModels\TabPlayerSkillsUsage.cs" />
     <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
     <Page Include="Controls\TabEnemies.xaml">

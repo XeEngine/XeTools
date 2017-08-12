@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xe.Tools.Components.KernelEditor.ViewModels;
 
 namespace Xe.Tools.Components.KernelEditor.Controls
 {
@@ -20,6 +21,8 @@ namespace Xe.Tools.Components.KernelEditor.Controls
     /// </summary>
     public partial class TabPlayers : UserControl
     {
+        public TabPlayersViewModel ViewModel => DataContext as TabPlayersViewModel;
+
         public TabPlayers()
         {
             InitializeComponent();
@@ -27,20 +30,23 @@ namespace Xe.Tools.Components.KernelEditor.Controls
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            ViewModel.Players.Add(new Game.Kernel.Player()
+            {
+                Id = "<new player>"
+            });
         }
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Players.Remove(ViewModel.SelectedPlayer);
+        }
+
+        private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
         private void SkillsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void SkillsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

@@ -14,6 +14,11 @@ namespace Xe.Game.Kernel
         public string Id { get; set; }
 
         /// <summary>
+        /// Player's animation file
+        /// </summary>
+        public string Animation { get; set; }
+
+        /// <summary>
         /// Message id for player's name
         /// </summary>
         public Guid Name { get; set; }

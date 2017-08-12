@@ -106,7 +106,7 @@ namespace Xe.Tools.Builder
                 moduleInstance = module.CreateInstance(new Modules.ModuleInit()
                 {
                     FileName = Path.Combine(entry.Container.Name, item.Input),
-                    OutputFileName = item.Output != null ? Path.Combine(entry.Container.Name, item.Output) : null,
+                    OutputFileName = item.Output,
                     Parameters = item.Parameters.ToArray(),
                     InputPath = entry.Project.ProjectPath,
                     OutputPath = outputFolder
