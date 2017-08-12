@@ -36,7 +36,7 @@ namespace Xe.Tools.Builder
                 }));
             }
 
-#if !DEBUG
+#if DEBUG
             int filesProcessed = 0;
             int filesCount = entries.Count;
             foreach (var entry in entries)
@@ -45,11 +45,12 @@ namespace Xe.Tools.Builder
                 ProcessEntry(entry, outputFolder);
                 Program.OnProgress?.Invoke($"Processed {entry.Item.RelativeFileNameInput}!", filesProcessed, filesCount, false);
             }
+            OnProgress?.Invoke($"Build completed.", 1, 1, true);
 #else
             var dispatcher = new Dispatcher<Entry>(entries);
             dispatcher.Process((e) => ProcessEntryAsync(e, outputFolder));
-#endif
             OnProgress?.Invoke($"Build completed in {dispatcher.ElapsedMilliseconds / 1000.0} seconds.", 1, 1, true);
+#endif
         }
 
         private static Task ProcessEntryAsync(Entry entry, string outputFolder)
