@@ -20,8 +20,6 @@ namespace Xe.Tools.Modules
             public ushort SpriteSheetsCount;
             public ushort FramesLength;
             public ushort FramesCount;
-            public ushort FrameExLength;
-            public ushort FrameExCount;
             public ushort AnimationsLength;
             public ushort AnimationsCount;
             public ushort AnimationReferencesLength;
@@ -106,7 +104,6 @@ namespace Xe.Tools.Modules
                 Version = 2,
                 Flags = (ushort)(HeaderFlags.SpriteSheet |
                     HeaderFlags.Frames |
-                    HeaderFlags.FramesEx |
                     HeaderFlags.Animations |
                     HeaderFlags.AnimationReferences),
 
@@ -114,8 +111,6 @@ namespace Xe.Tools.Modules
                 SpriteSheetsCount = (ushort)AnimationData.Textures.Count,
                 FramesLength = 12,
                 FramesCount = (ushort)dicFrames.Count,
-                FrameExLength = 12,
-                FrameExCount = 0,
                 AnimationsLength = 16,
                 AnimationsCount = (ushort)dicAnimations.Count,
                 AnimationReferencesLength = 4 * 5,
@@ -134,8 +129,6 @@ namespace Xe.Tools.Modules
             writer.Write(header.SpriteSheetsCount);
             writer.Write(header.FramesLength);
             writer.Write(header.FramesCount);
-            writer.Write(header.FrameExLength);
-            writer.Write(header.FrameExCount);
             writer.Write(header.AnimationsLength);
             writer.Write(header.AnimationsCount);
             writer.Write(header.AnimationReferencesLength);
@@ -143,7 +136,10 @@ namespace Xe.Tools.Modules
 
             // Write spritesheets
             foreach (var item in spriteSheets)
+            {
+                writer.Write((byte)item.Length);
                 writer.Write(item);
+            }
             for (int i = 0; i < spriteSheetPaddingData; i++)
                 writer.Write((byte)0);
 
@@ -193,20 +189,30 @@ namespace Xe.Tools.Modules
                 }
             }
 
+            // Order animations by hash id
+            var animationDefinitions = AnimationData.AnimationDefinitions
+                .Select(x => new
+                {
+                    Key = x.Name.GetXeHash(),
+                    Value = x
+                })
+                .OrderBy(x => x.Key);
+
             // Write animation reference names
-            foreach (var item in AnimationData.AnimationDefinitions)
+            foreach (var item in animationDefinitions)
             {
-                writer.Write(item.Name.GetXeHash());
+                writer.Write(item.Key);
             }
 
             // Write animation reference data
-            foreach (var item in AnimationData.AnimationDefinitions)
+            foreach (var item in animationDefinitions)
             {
-                ExportAnimRef(writer, dicAnimations, item.Default);
-                ExportAnimRef(writer, dicAnimations, item.DirectionUp);
-                ExportAnimRef(writer, dicAnimations, item.DirectionRight);
-                ExportAnimRef(writer, dicAnimations, item.DirectionDown);
-                ExportAnimRef(writer, dicAnimations, item.DirectionLeft);
+                var value = item.Value;
+                ExportAnimRef(writer, dicAnimations, value.Default);
+                ExportAnimRef(writer, dicAnimations, value.DirectionUp);
+                ExportAnimRef(writer, dicAnimations, value.DirectionRight);
+                ExportAnimRef(writer, dicAnimations, value.DirectionDown);
+                ExportAnimRef(writer, dicAnimations, value.DirectionLeft);
             }
             #endregion
         }
@@ -224,7 +230,8 @@ namespace Xe.Tools.Modules
             }
             else
             {
-                w.Write(0);
+                w.Write((ushort)0xFFFF);
+                w.Write((ushort)0xFFFF);
             }
         }
     }
