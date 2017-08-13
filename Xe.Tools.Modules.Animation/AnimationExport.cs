@@ -96,6 +96,8 @@ namespace Xe.Tools.Modules
                 spriteSheetSectionLength += data.Length + 1;
             }
             var spriteSheetPaddingData = 4 - (spriteSheetSectionLength % 4);
+            if (spriteSheetPaddingData == 4)
+                spriteSheetPaddingData = 0; 
 
             var header = new Header
             {
@@ -137,8 +139,8 @@ namespace Xe.Tools.Modules
             // Write spritesheets
             foreach (var item in spriteSheets)
             {
-                writer.Write((byte)item.Length);
                 writer.Write(item);
+                writer.Write((byte)0x00);
             }
             for (int i = 0; i < spriteSheetPaddingData; i++)
                 writer.Write((byte)0);

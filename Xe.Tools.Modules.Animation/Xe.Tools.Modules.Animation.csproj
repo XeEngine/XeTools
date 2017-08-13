@@ -48,6 +48,10 @@
       <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>
       <Name>Xe.Tools.Modules</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
+      <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
+      <Name>Xe.Tools.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
       <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
       <Name>Xe.Tools</Name>

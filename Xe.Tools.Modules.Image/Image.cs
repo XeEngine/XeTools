@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Modules
 {
@@ -39,6 +40,7 @@ namespace Xe.Tools.Modules
                 {
                     Interlace = PngInterlaceOption.Off,
                 };
+                var frame = decoder.Frames[0];
                 encoder.Frames.Add(decoder.Frames[0]);
                 if (decoder.Palette != null)
                     encoder.Palette = decoder.Palette;

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Modules
 {
@@ -65,7 +66,11 @@ namespace Xe.Tools.Modules
                 var output = Path.Combine(outputBasePath, table.Texture);
                 if (File.Exists(output))
                     File.Delete(output);
-                File.Copy(input, output);
+                ImageService.MakeTransparent(output, input, new Color[]
+                {
+                    new Color() { r = 255, g = 0, b = 255 },
+                    new Color() { r = 255, g = 128, b = 0 },
+                });
             }
         }
     }

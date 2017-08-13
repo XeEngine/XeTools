@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xe.Game.Animations;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Modules
 {
@@ -66,7 +67,21 @@ namespace Xe.Tools.Modules
                 var output = Path.Combine(outputBasePath, texture.Name);
                 if (File.Exists(output))
                     File.Delete(output);
-                File.Copy(input, output);
+
+                if (texture.Transparencies.Length > 0)
+                {
+                    ImageService.MakeTransparent(output, input, texture.Transparencies
+                        .Select(x => new Color()
+                        {
+                            r = (byte)((x >> 24) & 0xFF),
+                            g = (byte)((x >> 16) & 0xFF),
+                            b = (byte)((x >> 8) & 0xFF)
+                        }).ToArray());
+                }
+                else
+                {
+                    File.Copy(input, output);
+                }
             }
         }
     }
