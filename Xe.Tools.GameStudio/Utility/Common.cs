@@ -9,15 +9,20 @@ namespace Xe.Tools.GameStudio.Utility
 
         internal static void Initialize()
         {
-            Builder.Program.OnProgress += (message, filesProcessed, filesToProcess, hasFinish) =>
-            {
-                OnMessage?.Invoke(new MessageModel()
-                {
-                    Message = message,
-                    Type = hasFinish ? MessageType.Idle : MessageType.Processing,
-                    Progress = (float)filesToProcess / filesProcessed
-                });
-            };
+        }
+
+        internal static void ProjectBuild(Project project, string outputFolder)
+        {
+            var builder = new Builder.Builder(project, outputFolder);
+            builder.OnProgress += Asd_OnProgress;
+            builder.Build();
+        }
+
+        internal static void ProjectClean(Project project, string outputFolder)
+        {
+            var builder = new Builder.Builder(project, outputFolder);
+            builder.OnProgress += Asd_OnProgress;
+            builder.Clean();
         }
 
         internal static void SendMessage(MessageModel message)
@@ -30,6 +35,17 @@ namespace Xe.Tools.GameStudio.Utility
             {
                 Type = type,
                 Message = message
+            });
+        }
+
+
+        private static void Asd_OnProgress(string message, int filesProcessed, int filesToProcess, bool hasFinish)
+        {
+            OnMessage?.Invoke(new MessageModel()
+            {
+                Message = message,
+                Type = hasFinish ? MessageType.Idle : MessageType.Processing,
+                Progress = (float)filesToProcess / filesProcessed
             });
         }
     }

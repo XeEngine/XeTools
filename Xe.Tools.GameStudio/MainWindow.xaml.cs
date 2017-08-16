@@ -160,7 +160,7 @@ namespace Xe.Tools.GameStudio
             {
                 Task.Run(() =>
                 {
-                    Builder.Program.Build(Project, config.OutputDirectory);
+                    Common.ProjectBuild(Project, config.OutputDirectory);
                 });
             }
         }
@@ -175,7 +175,7 @@ namespace Xe.Tools.GameStudio
             {
                 Task.Run(() =>
                 {
-                    Builder.Program.Clean(Project, config.OutputDirectory);
+                    Common.ProjectClean(Project, config.OutputDirectory);
                 });
             }
         }

@@ -7,39 +7,37 @@ using System.Threading.Tasks;
 
 namespace Xe.Tools.Builder
 {
-    public static partial class Program
+    public partial class Builder
     {
-
-        public static void Clean(Project project, string outputFolder)
+        public void Clean()
         {
-            Program.OnProgress?.Invoke($"Cleaning {project.FileName}...", 0, 1, false);
-            ShowInfo();
+            OnProgress?.Invoke($"Cleaning {Project.FileName}...", 0, 1, false);
 
             var entries = new List<Entry>();
-            foreach (var container in project.Containers)
+            foreach (var container in Project.Containers)
             {
                 entries.AddRange(container.Items.Select(item => new Entry()
                 {
-                    Project = project,
+                    Project = Project,
                     Container = container,
                     Item = item
                 }));
             }
 
             var dispatcher = new Dispatcher<Entry>(entries);
-            dispatcher.Process((e) => CleanEntryAsync(e, outputFolder));
+            dispatcher.Process((e) => CleanEntryAsync(e, OutputFolder));
 
-            Program.OnProgress?.Invoke($"Clean completed in {dispatcher.ElapsedMilliseconds / 1000.0} seconds.", 1, 1, true);
+            OnProgress?.Invoke($"Clean completed in {dispatcher.ElapsedMilliseconds / 1000.0} seconds.", 1, 1, true);
         }
 
-        private static Task CleanEntryAsync(Entry entry, string outputFolder)
+        private Task CleanEntryAsync(Entry entry, string outputFolder)
         {
             return new Task(() =>
             {
                 CleanEntry(entry, outputFolder);
             });
         }
-        private static void CleanEntry(Entry entry, string outputFolder)
+        private void CleanEntry(Entry entry, string outputFolder)
         {
             var item = entry.Item;
             var type = item.Type;

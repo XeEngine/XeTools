@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Xe.Game.Animations;
 using static Xe.Tools.Project;
@@ -11,7 +12,12 @@ namespace Xe.Tools.Services
 
         public IEnumerable<Item> Items { get; private set; }
 
-        public IEnumerable<string> AnimationData => Items.Select(x => x.Input);
+        public IEnumerable<string> AnimationData => Items.Select(x =>
+        {
+            var strName = x.Input;
+            var extIndex = strName.IndexOf(".json");
+            return strName.Substring(0, extIndex);
+        });
 
         internal AnimationService(ProjectService projectService)
         {

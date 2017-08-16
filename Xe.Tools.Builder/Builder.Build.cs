@@ -7,60 +7,56 @@ using System.Threading.Tasks;
 
 namespace Xe.Tools.Builder
 {
-    public static partial class Program
+    public partial class Builder
     {
-        private class Entry
+        public void Build()
         {
-            public Project Project { get; set; }
-            public Project.Container Container { get; set; }
-            public Project.Item Item { get; set; }
-        }
+            OnProgress?.Invoke($"Building {Project.FileName}...", 0, 1, false);
 
-        public static void Build(Project project, string outputFolder)
-        {
-            Program.OnProgress?.Invoke($"Building {project.FileName}...", 0, 1, false);
-            ShowInfo();
-
-            Log.Message($"Processing {project.Name} - Developed by {project.Producer}");
-            Log.Message($"Version {project.Version}");
-            Log.Message($"{project.Copyright} {project.Year}");
+            Log.Message($"Processing {Project.Name} - Developed by {Project.Producer}");
+            Log.Message($"Version {Project.Version}");
+            Log.Message($"{Project.Copyright} {Project.Year}");
 
             var entries = new List<Entry>();
-            foreach (var container in project.Containers)
+            foreach (var container in Project.Containers)
             {
                 entries.AddRange(container.Items.Select(item => new Entry()
                 {
-                    Project = project,
+                    Project = Project,
                     Container = container,
                     Item = item
                 }));
             }
 
+            FileNames.Clear();
 #if DEBUG
             int filesProcessed = 0;
             int filesCount = entries.Count;
             foreach (var entry in entries)
             {
-                Program.OnProgress?.Invoke($"Processing {entry.Item.RelativeFileNameInput}...", filesProcessed, filesCount, false);
-                ProcessEntry(entry, outputFolder);
-                Program.OnProgress?.Invoke($"Processed {entry.Item.RelativeFileNameInput}!", filesProcessed, filesCount, false);
+                OnProgress?.Invoke($"Processing {entry.Item.RelativeFileNameInput}...", filesProcessed, filesCount, false);
+                ProcessEntry(entry, OutputFolder);
+                OnProgress?.Invoke($"Processed {entry.Item.RelativeFileNameInput}!", filesProcessed, filesCount, false);
             }
             OnProgress?.Invoke($"Build completed.", 1, 1, true);
 #else
             var dispatcher = new Dispatcher<Entry>(entries);
-            dispatcher.Process((e) => ProcessEntryAsync(e, outputFolder));
+            dispatcher.Process((e) => ProcessEntryAsync(e, OutputFolder));
             OnProgress?.Invoke($"Build completed in {dispatcher.ElapsedMilliseconds / 1000.0} seconds.", 1, 1, true);
 #endif
+
+            var fileSystemName = Path.Combine(OutputFolder, Path.Combine("data", "filesystem.bin"));
+            ExportFileSystem(fileSystemName);
         }
 
-        private static Task ProcessEntryAsync(Entry entry, string outputFolder)
+        private Task ProcessEntryAsync(Entry entry, string outputFolder)
         {
             return new Task(() =>
             {
                 ProcessEntry(entry, outputFolder);
             });
         }
-        private static void ProcessEntry(Entry entry, string outputFolder)
+        private void ProcessEntry(Entry entry, string outputFolder)
         {
             var item = entry.Item;
             var type = item.Type;
@@ -88,9 +84,11 @@ namespace Xe.Tools.Builder
                 return;
             }
 
-            string output = item.Output;
-            if (string.IsNullOrEmpty(output))
-                output = Path.Combine(Path.GetDirectoryName(item.Input), Path.GetFileNameWithoutExtension(item.Input));
+            lock (FileNames)
+            {
+                FileNames.AddRange(moduleInstance.OutputFileNames);
+            }
+            
             try
             {
                 moduleInstance.Build();

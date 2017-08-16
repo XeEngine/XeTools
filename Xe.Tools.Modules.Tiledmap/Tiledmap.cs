@@ -35,9 +35,11 @@ namespace Xe.Tools.Modules
 
         public override IEnumerable<string> GetSecondaryOutputFileNames()
         {
+            var basePath = Path.GetDirectoryName(InputFileName);
+            var tilesetImage = $"{Path.GetFileNameWithoutExtension(OutputFileName)}.png";
             return new string[]
             {
-                $"{Path.GetFileNameWithoutExtension(OutputFileName)}.png"
+                Path.Combine(basePath, tilesetImage)
             };
         }
 

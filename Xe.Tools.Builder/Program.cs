@@ -9,10 +9,6 @@ namespace Xe.Tools.Builder
 {
     public static partial class Program
     {
-        public delegate void ProgressFunc(string message, int filesProcessed, int filesToProcess, bool hasFinish);
-
-        public static event ProgressFunc OnProgress;
-
         private static bool Quiet { get; set; }
 
         private static void Main(string[] args)
@@ -46,16 +42,18 @@ namespace Xe.Tools.Builder
                 {
                     Quiet = quiet;
                     Log.OnLog += Log_Logging;
-                    OnProgress += Program_Progress;
                     try
                     {
                         if (!File.Exists(strInput))
                             Log.Error($"Unable to find {strInput} project.");
                         if (!Directory.Exists(strOutput))
                             Directory.CreateDirectory(strOutput);
+
                         var project = Project.Open(strInput);
-                        if (clean) Clean(project, strOutput);
-                        else Build(project, strOutput);
+                        var builder = new Builder(project, strOutput);
+                        builder.OnProgress += Program_Progress;
+                        if (clean) builder.Clean();
+                        else builder.Build();
                     }
                     catch (Exception e)
                     {

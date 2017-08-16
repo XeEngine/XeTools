@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Xe.Tools.Builder
 {
-    public class Dispatcher<T>
+    internal class Dispatcher<T>
     {
         private Stopwatch _stopwatch;
 
