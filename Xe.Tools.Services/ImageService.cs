@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -25,7 +27,7 @@ namespace Xe.Tools.Services
             encoder.Frames.Add(frame);
             if (bitmapImage.Palette != null)
             {
-                encoder.Palette = bitmapImage.Palette;
+                encoder.Palette = new BitmapPalette(bitmapImage.Palette.Colors);
             }
 
             using (var outFile = new FileStream(fileOutput, FileMode.Create, FileAccess.Write))
@@ -42,21 +44,60 @@ namespace Xe.Tools.Services
 
         public static BitmapSource MakeTransparent(this BitmapSource bitmap, Color[] colors)
         {
+            BitmapSource newBitmap = null;
+
             var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
             var stride = bytesPerPixel * bitmap.PixelWidth;
             var length = stride * bitmap.PixelHeight;
+
+            var processPixels = true;
+            var palette = bitmap.Palette;
+            if (bitmap.Format == PixelFormats.Indexed1 ||
+                bitmap.Format == PixelFormats.Indexed2 ||
+                bitmap.Format == PixelFormats.Indexed4 ||
+                bitmap.Format == PixelFormats.Indexed8)
+            {
+                var srcColors = bitmap.Palette.Colors.ToList();
+                for (int i = 0; i < srcColors.Count; i++)
+                {
+                    var color = srcColors[i];
+                    for (int j = 0; j < colors.Length; j++)
+                    {
+                        var c = colors[j];
+                        if (color.R == c.r ||
+                            color.G == c.g ||
+                            color.B == c.b)
+                            color.A = 0;
+                    }
+                    srcColors[i] = color;
+                }
+                palette = new BitmapPalette(srcColors);
+                processPixels = false;
+            }
+
             IntPtr data = Marshal.AllocHGlobal(length);
-            var rect = new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight);
-            bitmap.CopyPixels(rect, data, length, stride);
-            MakeTransparent(data, stride, bitmap.PixelHeight, bitmap.Format, colors);
-            var newBitmap = BitmapSource.Create(bitmap.PixelWidth, bitmap.PixelHeight,
-                bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette, data, length, stride);
-            Marshal.FreeHGlobal(data);
+            try
+            {
+                var rect = new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight);
+                bitmap.CopyPixels(rect, data, length, stride);
+                var pixelFormat = bitmap.Format;
+                if (processPixels)
+                {
+                    MakeTransparent(data, stride, bitmap.PixelHeight, bitmap.Format, colors);
+                }
+                newBitmap = BitmapSource.Create(bitmap.PixelWidth, bitmap.PixelHeight,
+                    bitmap.DpiX, bitmap.DpiY, pixelFormat, palette, data, length, stride);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(data);
+            }
             return newBitmap;
         }
-        public static void MakeTransparent(IntPtr data, int stride, int height, PixelFormat pixelFormat, Color[] colors)
+        public static PixelFormat MakeTransparent(IntPtr data, int stride, int height, PixelFormat pixelFormat, Color[] colors)
         {
-            if (pixelFormat == PixelFormats.Bgra32)
+            if (pixelFormat == PixelFormats.Bgr32 ||
+                pixelFormat == PixelFormats.Bgra32)
             {
                 foreach (var color in colors)
                 {
@@ -64,13 +105,37 @@ namespace Xe.Tools.Services
                     int from = to | (0xFF << 24);
                     MakeTransparent_Bpp32(data, stride, height, from, to);
                 }
+                return PixelFormats.Bgra32;
             }
             else
             {
                 Log.Error($"Unsupported pixel format {pixelFormat}.");
+                return pixelFormat;
             }
         }
 
+        private static unsafe void MakeTransparent_Bpp24(IntPtr data, int stride, int height, int from, int to)
+        {
+            ushort srcab = (ushort)from;
+            byte srcc = (byte)(from >> 16);
+
+            ushort dstab = (ushort)to;
+            byte dstc = (byte)(to >> 16);
+
+            for (int i = 0; i < height; i++)
+            {
+                byte* p = (byte*)(data + i * stride);
+                for (int j = 0; j < stride; j += 3, p += 3)
+                {
+                    if (*(ushort*)p == srcab &&
+                        *(p + 2) == srcc)
+                    {
+                        *(ushort*)p = dstab;
+                        *(p + 2) = dstc;
+                    }
+                }
+            }
+        }
         private static unsafe void MakeTransparent_Bpp32(IntPtr data, int stride, int height, int from, int to)
         {
             for (int i = 0; i < height; i++)

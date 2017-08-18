@@ -33,23 +33,11 @@ namespace Xe.Tools.Modules
         {
             var inputFileName = Path.Combine(InputWorkingPath, InputFileName);
             var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
-            using (var file = new FileStream(inputFileName, FileMode.Open, FileAccess.Read))
+            ImageService.MakeTransparent(outputFileName, inputFileName, new Color[]
             {
-                var decoder = new PngBitmapDecoder(file, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-                var encoder = new PngBitmapEncoder()
-                {
-                    Interlace = PngInterlaceOption.Off,
-                };
-                var frame = decoder.Frames[0];
-                encoder.Frames.Add(decoder.Frames[0]);
-                if (decoder.Palette != null)
-                    encoder.Palette = decoder.Palette;
-
-                using (var outFile = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
-                {
-                    encoder.Save(outFile);
-                }
-            }
+                new Color() { r = 255, g = 0, b = 255 },
+                new Color() { r = 255, g = 128, b = 0 }
+            });
         }
     }
 }
