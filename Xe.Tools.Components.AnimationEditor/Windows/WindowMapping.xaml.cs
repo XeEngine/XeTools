@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Xe.Tools.Components.AnimationEditor.ViewModels;
 
 namespace Xe.Tools.Components.AnimationEditor.Windows
 {
@@ -19,6 +20,8 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
     /// </summary>
     public partial class WindowMapping : Window
     {
+        private AnimationsMappingViewModel ViewModel => DataContext as AnimationsMappingViewModel;
+
         public WindowMapping()
         {
             InitializeComponent();
@@ -26,17 +29,15 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void ButtonEditRef_Click(object sender, RoutedEventArgs e)
-        {
-
+            if (ViewModel.IsAnimationDefSelected)
+            {
+                ViewModel.AnimationDefs.Remove(ViewModel.SelectedAnimationDef);
+            }
         }
     }
 }

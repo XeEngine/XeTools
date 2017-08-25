@@ -4,6 +4,62 @@ using System.Text;
 
 namespace Xe
 {
+    public struct Pointi {
+        public int X, Y;
+    }
+
+    public struct Sizei
+    {
+        public int Width, Height;
+    }
+
+    public struct Recti
+    {
+        public int Left, Top, Right, Bottom;
+
+        public int X
+        {
+            get => Left;
+            set
+            {
+                var diff = value - Left;
+                Left = value;
+                Right += diff;
+            }
+        }
+
+        public int Y
+        {
+            get => Top;
+            set
+            {
+                var diff = value - Top;
+                Top = value;
+                Bottom += diff;
+            }
+        }
+
+        public int Width
+        {
+            get => Right - Left;
+        }
+
+        public int Height
+        {
+            get => Bottom - Top;
+        }
+        
+        public bool IntersectsWith(Recti rect)
+        {
+            return rect.Left < Right && Left < Right && rect.Top < Bottom && Top < Bottom;
+        }
+
+        public static Recti FromSize(int x, int y,  int width, int height)
+        {
+            return new Recti { Left = x, Top = y, Right = width + x, Bottom = height + y };
+        }
+    }
+
     public static partial class Math
 	{
 		public static sbyte Min(sbyte x, sbyte y) => System.Math.Min(x, y);

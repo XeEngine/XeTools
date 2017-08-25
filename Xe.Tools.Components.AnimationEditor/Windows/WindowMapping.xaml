@@ -20,13 +20,15 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0" Click="ButtonAdd_Click">
+                <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0"
+                        IsEnabled="false" Click="ButtonAdd_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource Add_16x}" Width="16"/>
                         <TextBlock Text="Add" Margin="3 0 3 0"/>
                     </StackPanel>
                 </Button>
-                <Button x:Name="ButtonRemove" Grid.Column="1" DockPanel.Dock="Top" Margin="0 5 0 0" Click="ButtonRemove_Click">
+                <Button x:Name="ButtonRemove" Grid.Column="1" DockPanel.Dock="Top" Margin="0 5 0 0"
+                        IsEnabled="{Binding IsAnimationDefSelected}" Click="ButtonRemove_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
                         <TextBlock Text="Remove" Margin="3 0 3 0"/>

@@ -23,6 +23,8 @@
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Animations list" Click="MenuToolsAnimationList_Click"/>
+                <MenuItem Header="_Import frames" Click="MenuToolsImportFrames_Click"/>
+                <MenuItem Header="E_xport frames" Click="MenuToolsExportFrames_Click_1"/>
             </MenuItem>
         </Menu>
         <Grid Margin="5">

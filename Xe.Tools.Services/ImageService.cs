@@ -15,6 +15,19 @@ namespace Xe.Tools.Services
     }
     public static class ImageService
     {
+        public static void Save(this BitmapSource bitmap, string fileName)
+        {
+            using (var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+            {
+                var encoder = new PngBitmapEncoder
+                {
+                    Interlace = PngInterlaceOption.Off
+                };
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                encoder.Save(fStream);
+            }
+        }
+
         public static void MakeTransparent(string fileOutput, string fileInput, Color[] colors)
         {
             var bitmapImage = MakeTransparent(fileInput, colors);

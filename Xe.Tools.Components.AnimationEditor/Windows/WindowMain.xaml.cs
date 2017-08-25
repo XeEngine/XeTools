@@ -134,5 +134,15 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         {
             ViewModel.Zoom += (e.Delta / 120) * 0.25;
         }
+
+        private void MenuToolsImportFrames_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuToolsExportFrames_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
