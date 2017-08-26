@@ -18,8 +18,7 @@
                     </StackPanel>
                 </Button.ToolTip>
             </Button>
-            <Button DockPanel.Dock="Right" Click="ButtonAdd_Click"
-                    IsEnabled="{Binding IsValueSelected}">
+            <Button DockPanel.Dock="Right" Click="ButtonAdd_Click">
                 <Image Width="16" Source="{StaticResource Add_16x}"/>
                 <Button.ToolTip>
                     <StackPanel>

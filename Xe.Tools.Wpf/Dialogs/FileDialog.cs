@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Xe.Tools.Wpf.Dialogs
 {
@@ -20,27 +21,28 @@ namespace Xe.Tools.Wpf.Dialogs
         }
 
         private CommonFileDialog _fd;
-        public Behavior CurrentBehavior { get; private set; }
-        public Type CurrentType { get; private set; }
-        public string FileName
-        {
-            get => _fd.FileName;
-        }
-        public IEnumerable<string> FileNames
-        {
-            get => (_fd as CommonOpenFileDialog)?.FileNames ?? new string[] { FileName };
-        }
 
-        private FileDialog(CommonFileDialog commonFileDialog, Behavior behavior, Type type)
+        private Window WindowParent { get; }
+
+        public Behavior CurrentBehavior { get; }
+
+        public Type CurrentType { get; }
+
+        public string FileName => _fd.FileName;
+
+        public IEnumerable<string> FileNames => (_fd as CommonOpenFileDialog)?.FileNames ?? new string[] { FileName };
+
+        private FileDialog(CommonFileDialog commonFileDialog, Window wndParent, Behavior behavior, Type type)
         {
             _fd = commonFileDialog;
+            WindowParent = wndParent;
             CurrentBehavior = behavior;
             CurrentType = type;
         }
 
         public bool? ShowDialog()
         {
-            switch (_fd.ShowDialog())
+            switch (_fd.ShowDialog(WindowParent))
             {
                 case CommonFileDialogResult.Ok: return true;
                 case CommonFileDialogResult.None: return false;
@@ -49,7 +51,7 @@ namespace Xe.Tools.Wpf.Dialogs
             }
         }
 
-        public static FileDialog Factory(Behavior behavior, Type type = Type.Any, bool multipleSelection = false)
+        public static FileDialog Factory(Window wndParent, Behavior behavior, Type type = Type.Any, bool multipleSelection = false)
         {
             CommonFileDialog fd;
             switch (behavior)
@@ -109,7 +111,7 @@ namespace Xe.Tools.Wpf.Dialogs
                 }
             }
 
-            return new FileDialog(fd, behavior, type);
+            return new FileDialog(fd, wndParent, behavior, type);
         }
 
         private static CommonFileDialogFilter CreateFilter(string name, string[] filters)

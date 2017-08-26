@@ -129,7 +129,8 @@ namespace Xe.Tools.GameStudio
         }
         private void ctrlButtonAddItem_Click(object sender, RoutedEventArgs e)
         {
-            var fd = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.Any, true);
+            var window = Window.GetWindow(this);
+            var fd = FileDialog.Factory(window, FileDialog.Behavior.Open, FileDialog.Type.Any, true);
             if (fd.ShowDialog() ?? false)
             {
                 foreach  (var filename in fd.FileNames)

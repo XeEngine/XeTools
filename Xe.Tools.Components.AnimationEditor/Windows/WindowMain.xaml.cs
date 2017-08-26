@@ -104,7 +104,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void MenuFileImportOldAnimation_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.XeAnimation);
+            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.XeAnimation);
             if (dialog.ShowDialog() == true)
             {
                 var fileName = dialog.FileName;

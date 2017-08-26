@@ -90,7 +90,7 @@ namespace Xe.Tools.GameStudio
 
 		private void MenuItem_FileOpenClick(object sender, RoutedEventArgs e)
 		{
-			var fd = FileDialog.Factory(FileDialog.Behavior.Open,
+			var fd = FileDialog.Factory(this, FileDialog.Behavior.Open,
 				FileDialog.Type.XeGameProject);
 			if (fd.ShowDialog() ?? false == true)
             {
@@ -189,7 +189,7 @@ namespace Xe.Tools.GameStudio
 		}
 		private void SaveProjectDialog()
 		{
-			var fd = FileDialog.Factory(FileDialog.Behavior.Save,
+			var fd = FileDialog.Factory(this, FileDialog.Behavior.Save,
 				FileDialog.Type.XeGameProject);
 			if (fd.ShowDialog() ?? false == true)
 			{

@@ -53,7 +53,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void ButtonChange_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.ImagePng);
+            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.ImagePng);
             if (dialog.ShowDialog() == true)
             {
                 var fileName = AddTextureToDirectory(dialog.FileName);
@@ -68,7 +68,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.ImagePng);
+            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.ImagePng);
             if (dialog.ShowDialog() == true)
             {
                 var fileName = AddTextureToDirectory(dialog.FileName);
@@ -108,7 +108,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void ButtonFramesImport_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.ImagePng, true);
+            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.ImagePng, true);
             if (dialog.ShowDialog() == true)
             {
                 var spriteService = new SpriteService(ViewModel.SelectedValue.Image, _animationData.Frames);
@@ -120,7 +120,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void ButtonFramesExport_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = FileDialog.Factory(FileDialog.Behavior.Folder, FileDialog.Type.ImagePng);
+            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Folder, FileDialog.Type.ImagePng);
             if (dialog.ShowDialog() == true)
             {
                 var spriteService = new SpriteService(ViewModel.SelectedValue.Image, _animationData.Frames);

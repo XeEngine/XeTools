@@ -78,7 +78,7 @@ namespace Xe.Tools.GameStudio
         
         private void ButtonChooseBinary_Click(object sender, RoutedEventArgs e)
         {
-            var fd = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.Executable);
+            var fd = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.Executable);
             if (fd.ShowDialog() ?? false == true)
             {
                 textGameExecutable.Text = fd.FileName;
@@ -87,7 +87,7 @@ namespace Xe.Tools.GameStudio
 
         private void ButtonChooseWorkingDirectory_Click(object sender, RoutedEventArgs e)
         {
-            var fd = FileDialog.Factory(FileDialog.Behavior.Folder);
+            var fd = FileDialog.Factory(this, FileDialog.Behavior.Folder);
             if (fd.ShowDialog() ?? false == true)
             {
                 textWorkingDirectory.Text = fd.FileName;
@@ -96,7 +96,7 @@ namespace Xe.Tools.GameStudio
 
         private void ButtonChooseOutputDirectory_Click(object sender, RoutedEventArgs e)
         {
-            var fd = FileDialog.Factory(FileDialog.Behavior.Folder);
+            var fd = FileDialog.Factory(this, FileDialog.Behavior.Folder);
             if (fd.ShowDialog() ?? false == true)
             {
                 textBuildOutputDirectory.Text = fd.FileName;
