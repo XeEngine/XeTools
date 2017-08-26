@@ -7,7 +7,9 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using Xe.Game;
+using Xe.Game.Animations;
 using Xe.Tools.Components.AnimationEditor.ViewModels;
+using Xe.Tools.Services;
 using Xe.Tools.Wpf.Dialogs;
 
 namespace Xe.Tools.Components.AnimationEditor.Windows
@@ -17,46 +19,36 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
     /// </summary>
     public partial class WindowTextures : Window, INotifyPropertyChanged
     {
+        private AnimationData _animationData { get; }
+
         public string BasePath { get; private set; }
 
-        public TexturesViewModel Textures { get; private set; }
-
-        public TextureViewModel CurrentTexture => SelectedIndex >= 0 ? Textures.Textures[SelectedIndex] : null;
+        public WindowTexturesViewModel ViewModel => DataContext as WindowTexturesViewModel;
 
         public int SelectedIndex
         {
-            get => ListTextures.SelectedIndex;
-            set => ListTextures.SelectedIndex = value;
+            get => ViewModel.SelectedIndex;
+            set => ViewModel.SelectedIndex = value;
         }
 
-        public WindowTextures(List<Texture> textures, string basePath)
+        public WindowTextures(AnimationData animationData, string basePath)
         {
             InitializeComponent();
             BasePath = basePath;
 
-            DataContext = this;
-            Textures = new TexturesViewModel(textures, basePath);
-            ListTextures.DataContext = Textures;
-            SelectedIndex = Textures.Count - 1;
+            _animationData = animationData;
+            DataContext = new WindowTexturesViewModel(animationData.Textures, basePath);
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            Textures.SaveChanges();
+            ViewModel.SaveChanges();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void TexturesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var isValid = SelectedIndex >= 0;
-            ButtonChange.IsEnabled = isValid;
-            ButtonRemove.IsEnabled = isValid;
-            OnPropertyChanged(nameof(CurrentTexture));
         }
 
         private void ButtonChange_Click(object sender, RoutedEventArgs e)
@@ -68,7 +60,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 if (fileName != null)
                 {
                     var index = SelectedIndex;
-                    Textures.ReplaceTexture(SelectedIndex, fileName);
+                    ViewModel.ReplaceTexture(SelectedIndex, fileName);
                     SelectedIndex = index;
                 }
             }
@@ -82,8 +74,8 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 var fileName = AddTextureToDirectory(dialog.FileName);
                 if (fileName != null)
                 {
-                    Textures.AddTexture(fileName);
-                    SelectedIndex = Textures.Count - 1;
+                    ViewModel.AddTexture(fileName);
+                    SelectedIndex = ViewModel.Count - 1;
                 }
             }
         }
@@ -96,10 +88,10 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             switch (MessageBox.Show(message, "Delete confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning))
             {
                 case MessageBoxResult.Yes:
-                    Textures.RemoveTexture(SelectedIndex, true);
+                    ViewModel.RemoveTexture(SelectedIndex, true);
                     break;
                 case MessageBoxResult.No:
-                    Textures.RemoveTexture(SelectedIndex, false);
+                    ViewModel.RemoveTexture(SelectedIndex, false);
                     break;
                 default:
                     // Do nothing.
@@ -108,9 +100,34 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             }
             if (index >= 0)
             {
-                if (index >= Textures.Count)
+                if (index >= ViewModel.Count)
                     index--;
                 SelectedIndex = index;
+            }
+        }
+
+        private void ButtonFramesImport_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = FileDialog.Factory(FileDialog.Behavior.Open, FileDialog.Type.ImagePng, true);
+            if (dialog.ShowDialog() == true)
+            {
+                var spriteService = new SpriteService(ViewModel.SelectedValue.Image, _animationData.Frames);
+                spriteService.ImportFrames(dialog.FileNames, 1);
+                spriteService.Texture.Save(ViewModel.SelectedValue.FileName);
+                ViewModel.SelectedValue.Image = spriteService.Texture;
+            }
+        }
+
+        private void ButtonFramesExport_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = FileDialog.Factory(FileDialog.Behavior.Folder, FileDialog.Type.ImagePng);
+            if (dialog.ShowDialog() == true)
+            {
+                var spriteService = new SpriteService(ViewModel.SelectedValue.Image, _animationData.Frames);
+                spriteService.ExportFrames(dialog.FileName, (frameName, fileName) =>
+                {
+                    return true;
+                });
             }
         }
 

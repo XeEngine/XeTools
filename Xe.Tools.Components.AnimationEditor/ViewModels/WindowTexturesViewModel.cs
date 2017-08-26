@@ -8,16 +8,16 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Xe.Game;
+using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.AnimationEditor.ViewModels
 {
-    public class TexturesViewModel : INotifyPropertyChanged
+    public class WindowTexturesViewModel : BaseNotifyPropertyChanged
     {
         private List<Texture> _textures { get; set; }
         private string BasePath { get; set; }
         private ObservableCollection<TextureViewModel> _textureVm;
-        
-        public event PropertyChangedEventHandler PropertyChanged;
+        private TextureViewModel _selectedValue;
 
         public ObservableCollection<TextureViewModel> Textures
         {
@@ -31,7 +31,22 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
         public int Count => Textures.Count;
 
-        public TexturesViewModel(List<Texture> textures, string basePath)
+        public bool IsValueSelected => SelectedValue != null;
+
+        public TextureViewModel SelectedValue
+        {
+            get => _selectedValue;
+            set
+            {
+                _selectedValue = value;
+                OnPropertyChanged(nameof(SelectedValue));
+                OnPropertyChanged(nameof(IsValueSelected));
+            }
+        }
+
+        public int SelectedIndex { get; set; }
+
+        public WindowTexturesViewModel(List<Texture> textures, string basePath)
         {
             _textures = textures;
             BasePath = basePath;
@@ -41,19 +56,24 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             }));
         }
 
+        #region methods
+
         public int AddTexture(string fileName)
         {
             return AddTexture(GetDefaultTexture(fileName));
         }
+
         public int AddTexture(Texture texture)
         {
             Textures.Add(new TextureViewModel(texture, BasePath));
             return Textures.Count - 1;
         }
+
         public void ReplaceTexture(int index, string fileName)
         {
             ReplaceTexture(index, GetDefaultTexture(fileName));
         }
+
         public void ReplaceTexture(int index, Texture texture)
         {
             if (index >= 0 && index < Count)
@@ -65,6 +85,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 Log.Error($"Unable to insert {texture.Name} because index {index} is invalid");
             }
         }
+
         public void RemoveTexture(int index, bool physicalDelete)
         {
             if (index >= 0 && index < Count)
@@ -98,6 +119,8 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             _textures.AddRange(Textures.Select(x => x.Texture));
         }
 
+        #endregion
+
         /// <summary>
         /// Create default entry for a texture from the specified file name
         /// </summary>
@@ -111,11 +134,6 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 Name = fileName,
                 MaintainPaletteOrder = true
             };
-        }
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

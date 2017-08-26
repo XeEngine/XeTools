@@ -69,7 +69,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void MenuViewTextures_Click(object sender, RoutedEventArgs e)
         {
-            new WindowTextures(AnimationData.Textures, BasePath).ShowDialog();
+            new WindowTextures(AnimationData, BasePath).ShowDialog();
         }
 
         private void MenuToolsAnimationList_Click(object sender, RoutedEventArgs e)

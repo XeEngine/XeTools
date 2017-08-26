@@ -21,7 +21,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         private int _textureMaximumWidth = ushort.MaxValue;
         private int _textureMaximumHeight = ushort.MaxValue;
         private FrameViewModel _frameViewModel = new FrameViewModel(new Game.Animations.Frame());
-        private TexturesViewModel _texturesViewModel;
+        private WindowTexturesViewModel _texturesViewModel;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,7 +37,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         {
             _basePath = basePath;
             _frames = new ObservableCollection<Game.Animations.Frame>(frames);
-            _texturesViewModel = new TexturesViewModel(textures, _basePath);
+            _texturesViewModel = new WindowTexturesViewModel(textures, _basePath);
 
             InitializeComponent();
         }

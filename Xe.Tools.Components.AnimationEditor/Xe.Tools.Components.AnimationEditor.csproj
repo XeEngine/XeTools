@@ -69,7 +69,7 @@
     <Compile Include="ViewModels\AnimationViewModel.cs" />
     <Compile Include="ViewModels\EnumViewModel.cs" />
     <Compile Include="ViewModels\FrameViewModel.cs" />
-    <Compile Include="ViewModels\TexturesViewModel.cs" />
+    <Compile Include="ViewModels\WindowTexturesViewModel.cs" />
     <Compile Include="Windows\WindowFrames.xaml.cs">
       <DependentUpon>WindowFrames.xaml</DependentUpon>
     </Compile>
@@ -180,6 +180,10 @@
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{19596819-8CDA-40F8-9488-BC75125B977F}</Project>
       <Name>Xe.Tools.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
+      <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
+      <Name>Xe.Tools.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
       <Project>{545D863A-CD36-4C79-A07F-CF82B718FC3E}</Project>

@@ -9,7 +9,8 @@
     <DockPanel Margin="10">
         <TextBlock DockPanel.Dock="Top" Text="List of texture files" Margin="5 0 0 5"/>
         <DockPanel DockPanel.Dock="Top" Margin="0 0 0 5">
-            <Button x:Name="ButtonRemove" DockPanel.Dock="Right" IsEnabled="false" Click="ButtonRemove_Click">
+            <Button x:Name="ButtonRemove" DockPanel.Dock="Right" Click="ButtonRemove_Click"
+                    IsEnabled="{Binding IsValueSelected}">
                 <Image Width="16" Source="{StaticResource Remove_color_16x}"/>
                 <Button.ToolTip>
                     <StackPanel>
@@ -17,26 +18,48 @@
                     </StackPanel>
                 </Button.ToolTip>
             </Button>
-            <Button DockPanel.Dock="Right" Click="ButtonAdd_Click">
+            <Button DockPanel.Dock="Right" Click="ButtonAdd_Click"
+                    IsEnabled="{Binding IsValueSelected}">
                 <Image Width="16" Source="{StaticResource Add_16x}"/>
                 <Button.ToolTip>
                     <StackPanel>
-                        <Label>Add a new texture</Label>
+                        <Label>Add a new texture.</Label>
                     </StackPanel>
                 </Button.ToolTip>
             </Button>
-            <Button x:Name="ButtonChange" DockPanel.Dock="Right" IsEnabled="false" Click="ButtonChange_Click">
+            <Button x:Name="ButtonChange" DockPanel.Dock="Right" Click="ButtonChange_Click"
+                    IsEnabled="{Binding IsValueSelected}">
                 <Image Width="16" Source="{StaticResource OpenFileDialog_16x}"/>
                 <Button.ToolTip>
                     <StackPanel>
-                        <Label>Change current texture with a new one</Label>
+                        <Label>Change current texture with a new one.</Label>
                     </StackPanel>
                 </Button.ToolTip>
             </Button>
-            <ComboBox x:Name="ListTextures" ItemsSource="{Binding Path=Textures}" SelectedValuePath="Texture.Name" SelectionChanged="TexturesList_SelectionChanged"/>
+            <Button x:Name="ButtonFramesExport" DockPanel.Dock="Right" Click="ButtonFramesExport_Click"
+                    IsEnabled="{Binding IsValueSelected}">
+                <Image Width="16" Source="{StaticResource AddRowToAbove_16x}"/>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <Label>Export all frames from selected texture.</Label>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+            <Button x:Name="ButtonFramesImport" DockPanel.Dock="Right" Click="ButtonFramesImport_Click"
+                    IsEnabled="{Binding IsValueSelected}">
+                <Image Width="16" Source="{StaticResource AddRowToBelow_16x}"/>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <Label>Import the specified frames into the current texture, packing them and changing existing frames properties.</Label>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+            <ComboBox x:Name="ListTextures" ItemsSource="{Binding Textures}"
+                      SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                      SelectedValue="{Binding SelectedValue, Mode=TwoWay}"/>
         </DockPanel>
-        <TextBlock DockPanel.Dock="Top" Text="{Binding Path=CurrentTexture.StrSize, StringFormat='Size: {0}'}" Margin="5 0 5 5"/>
-        <TextBlock DockPanel.Dock="Top" Text="{Binding Path=CurrentTexture.StrFormat, StringFormat='Format: {0}'}" Margin="5 0 5 5"/>
-        <Image x:Name="ImageTexture" Source="{Binding Path=CurrentTexture.Image}"/>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedValue.StrSize, StringFormat='Size: {0}'}" Margin="5 0 5 5"/>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedValue.StrFormat, StringFormat='Format: {0}'}" Margin="5 0 5 5"/>
+        <Image x:Name="ImageTexture" Source="{Binding SelectedValue.Image}"/>
     </DockPanel>
 </Window>

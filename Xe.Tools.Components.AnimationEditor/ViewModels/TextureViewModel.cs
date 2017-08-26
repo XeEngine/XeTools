@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xe.Game;
+using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.AnimationEditor.ViewModels
 {
-    public class TextureViewModel
+    public class TextureViewModel : BaseNotifyPropertyChanged
     {
         private bool _isLoaded = false;
         private BitmapSource _image;
@@ -28,7 +29,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 RequireImage();
                 return _image;
             }
-            private set
+            set
             {
                 _image = value;
                 if (_image != null)
@@ -43,6 +44,9 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                         _strFormat = $"{_image.Format.BitsPerPixel}bpp";
                     }
                 }
+                OnPropertyChanged(nameof(Image));
+                OnPropertyChanged(nameof(StrSize));
+                OnPropertyChanged(nameof(StrFormat));
             }
         }
 

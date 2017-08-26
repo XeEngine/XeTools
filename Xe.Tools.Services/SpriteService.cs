@@ -32,7 +32,7 @@ namespace Xe.Tools.Services
             Frames = frames;
         }
 
-        public void ImportFrames(string[] fileNames, int padding)
+        public void ImportFrames(IEnumerable<string> fileNames, int padding)
         {
             var sprites = fileNames.Select(x =>
             {
