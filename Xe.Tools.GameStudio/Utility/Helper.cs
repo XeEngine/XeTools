@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows;
+using System.Diagnostics;
 
 namespace Xe.Tools.GameStudio.Utility
 {
@@ -15,10 +16,12 @@ namespace Xe.Tools.GameStudio.Utility
         {
             return ShowMessageBox(message, MessageBoxImage.Error, title, askConfirm);
         }
+
         public static bool? ShowMessageBoxWarning(string message, string title = null, bool askConfirm = false)
         {
             return ShowMessageBox(message, MessageBoxImage.Warning, title, askConfirm);
         }
+
         public static bool? ShowMessageBox(string message, MessageBoxImage image, string title = null, bool askConfirm = false)
         {
             var buttons = askConfirm ? MessageBoxButton.YesNo : MessageBoxButton.OK;
@@ -35,15 +38,36 @@ namespace Xe.Tools.GameStudio.Utility
                     return null;
             }
         }
+
         public static void RunApplication(string executable, string workingDirectory)
         {
+            Task.Run(() =>
+            {
+                var processStartInfo = new ProcessStartInfo(executable)
+                {
+                    WorkingDirectory = workingDirectory,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                };
 
+                using (var proc = Process.Start(processStartInfo))
+                {
+                    /*while (!proc.HasExited)
+                    {
+                        Log.Error(proc.StandardError.ReadLine());
+                        Log.Message(proc.StandardOutput.ReadLine());
+                    }*/
+                }
+            });
         }
+
         public static void Wpf_NumberValidationTextBox(object sender, TextCompositionEventArgs e)
 		{
 			Regex regex = new Regex("[^0-9]+");
 			e.Handled = regex.IsMatch(e.Text);
 		}
+
         /*public static void Wpf_OnDpiChanged(object sender, DpiChangedEventArgs e)
         {
             

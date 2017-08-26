@@ -140,7 +140,7 @@ namespace Xe.Tools.GameStudio
                 Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
             }
             else if (!File.Exists(config.Executable) ||
-                Directory.Exists(config.WorkingDirectory))
+                !Directory.Exists(config.WorkingDirectory))
             {
                 Helpers.ShowMessageBoxWarning($"{config.Executable} not found.");
             }
