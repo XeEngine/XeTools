@@ -79,7 +79,7 @@ namespace Xe.Tools.Modules
                 {
                     if (!dicFrames.TryGetValue(frameRef.Frame, out var frame))
                     {
-                        Log.Warning($"Frame {frameRef.Frame} not found in {anim.Name}.");
+                        Log.Warning($"{Path.GetFileNameWithoutExtension(InputFileName)}: Frame {frameRef.Frame} not found in {anim.Name}.");
                         continue;
                     }
                 }
