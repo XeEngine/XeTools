@@ -6,6 +6,12 @@ namespace Xe
 {
     public struct Pointi {
         public int X, Y;
+
+        public Pointi(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
     }
 
     public struct Sizei
@@ -51,7 +57,7 @@ namespace Xe
         
         public bool IntersectsWith(Recti rect)
         {
-            return rect.Left < Right && Left < Right && rect.Top < Bottom && Top < Bottom;
+            return rect.Left < Right && Left < rect.Right && rect.Top < Bottom && Top < rect.Bottom;
         }
 
         public static Recti FromSize(int x, int y,  int width, int height)

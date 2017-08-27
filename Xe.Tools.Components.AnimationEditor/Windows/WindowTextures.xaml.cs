@@ -113,6 +113,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             {
                 var spriteService = new SpriteService(ViewModel.SelectedValue.Image, _animationData.Frames);
                 spriteService.ImportFrames(dialog.FileNames, 1);
+                _animationData.Frames = spriteService.Frames;
                 spriteService.Texture.Save(ViewModel.SelectedValue.FileName);
                 ViewModel.SelectedValue.Image = spriteService.Texture;
             }

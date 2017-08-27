@@ -68,7 +68,7 @@ namespace Xe.Tools.Services
             /// <summary>Provides a default instance for the anchor rank comparer</summary>
             public static readonly AnchorRankComparer Default = new AnchorRankComparer();
 
-            #region IComparer<Point> Members
+            #region IComparer<Pointi> Members
 
             /// <summary>Compares the rank of two anchors against each other</summary>
             /// <param name="left">Left anchor point that will be compared</param>
@@ -92,7 +92,7 @@ namespace Xe.Tools.Services
         private int actualPackingAreaWidth = 1;
 
         /// <summary>Anchoring points where new rectangles can potentially be placed</summary>
-        private readonly List<Pointi> anchors = new List<Pointi> { new Pointi { X = 0, Y = 0 } };
+        private readonly List<Pointi> anchors = new List<Pointi> { new Pointi(0, 0) };
 
         /// <summary>Rectangles contained in the packing area</summary>
         private readonly List<Recti> packedRectangles = new List<Recti>();
@@ -144,8 +144,8 @@ namespace Xe.Tools.Services
                 anchors.RemoveAt(anchorIndex);
 
             // Add new anchors at the upper right and lower left coordinates of the rectangle
-            InsertAnchor(new Pointi { X = placement.X + rectangleWidth, Y = placement.Y });
-            InsertAnchor(new Pointi { X = placement.X, Y = placement.Y + rectangleHeight });
+            InsertAnchor(new Pointi(placement.X + rectangleWidth, placement.Y));
+            InsertAnchor(new Pointi(placement.X, placement.Y + rectangleHeight));
 
             // Finally, we can add the rectangle to our packed rectangles list
             packedRectangles.Add(Recti.FromSize(placement.X, placement.Y, rectangleWidth, rectangleHeight));
@@ -169,8 +169,8 @@ namespace Xe.Tools.Services
             int leftMost = placement.X;
             while (IsFree(ref rectangle, PackingAreaWidth, PackingAreaHeight))
             {
-                leftMost = rectangle.Left;
-                rectangle.X--;
+                leftMost = rectangle.X;
+                --rectangle.X;
             }
 
             // Reset rectangle to original position
@@ -181,7 +181,7 @@ namespace Xe.Tools.Services
             while (IsFree(ref rectangle, PackingAreaWidth, PackingAreaHeight))
             {
                 topMost = rectangle.Y;
-                rectangle.Y--;
+                --rectangle.Y;
             }
 
             // Use the dimension in which the rectangle could be moved farther

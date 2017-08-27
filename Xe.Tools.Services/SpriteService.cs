@@ -45,6 +45,7 @@ namespace Xe.Tools.Services
                 return item;
             })
             .OrderByDescending(x => x.AreaSize)
+            .ThenByDescending(x => x.Sprite.PixelWidth)
             .ToArray();
 
             int width = 64, height = 64;
@@ -57,19 +58,22 @@ namespace Xe.Tools.Services
                 var packer = new ArevaloRectanglePacker(width, height);
                 foreach (var item in sprites)
                 {
+                    int spriteWidth = item.Sprite.PixelWidth;
+                    int spriteHeight = item.Sprite.PixelHeight;
+
                     Sizei size = new Sizei
                     {
-                        Width = item.Sprite.PixelWidth + padding,
-                        Height = item.Sprite.PixelHeight + padding
+                        Width = spriteWidth + padding,
+                        Height = spriteHeight + padding
                     };
 
-                    if (!packer.TryPack(size.Width, size.Height, out Pointi origin))
+                    if (!packer.TryPack(size.Width, size.Height, out var origin))
                     {
                         failed = true;
                         break;
                     }
 
-                    item.Rectangle = Recti.FromSize(origin.X, origin.Y, size.Width - padding, size.Height - padding);
+                    item.Rectangle = Recti.FromSize(origin.X, origin.Y, spriteWidth, spriteHeight);
                 }
 
                 if (failed)
@@ -127,7 +131,7 @@ namespace Xe.Tools.Services
 
             Texture = renderTargetBitmap;
             Frames.Clear();
-            Frames.AddRange(newFramesList);
+            Frames.AddRange(newFramesList.OrderBy(x => x.Name));
         }
 
         public void ExportFrames(string outputDir, Func<string, string, bool> overwriteCallback)
@@ -156,7 +160,7 @@ namespace Xe.Tools.Services
                         X = frame.Left,
                         Y = frame.Top,
                         Width = frame.Right - frame.Left,
-                        Height = frame.Bottom - frame.Top
+                        Height = frame.Bottom - frame.Top 
                     });
 
                     sprite.Save(outputFileName);
