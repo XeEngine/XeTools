@@ -29,8 +29,7 @@
                     <ColumnDefinition Width="22"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="textWorkingDirectory" Grid.Column="0"/>
-                <Button Grid.Column="1" Click="ButtonChooseWorkingDirectory_Click"/>
-                <Button Grid.Column="1" Click="ButtonChooseBinary_Click">
+                <Button Grid.Column="1" Click="ButtonChooseWorkingDirectory_Click">
                     <Button.Content>
                         <Image Source="{StaticResource FolderOpen_16x}"/>
                     </Button.Content>
@@ -43,8 +42,7 @@
                     <ColumnDefinition Width="22"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="textBuildOutputDirectory" Grid.Column="0"/>
-                <Button Grid.Column="1" Click="ButtonChooseOutputDirectory_Click"/>
-                <Button Grid.Column="1" Click="ButtonChooseBinary_Click">
+                <Button Grid.Column="1" Click="ButtonChooseOutputDirectory_Click">
                     <Button.Content>
                         <Image Source="{StaticResource FolderOpen_16x}"/>
                     </Button.Content>
