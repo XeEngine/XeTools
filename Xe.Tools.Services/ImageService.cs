@@ -15,9 +15,26 @@ namespace Xe.Tools.Services
     }
     public static class ImageService
     {
+        public static BitmapFrame Open(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                using (var fStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    var decoder = new PngBitmapDecoder(fStream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    return decoder.Frames.FirstOrDefault();
+                }
+            }
+            else
+            {
+                Log.Warning($"Texture file {fileName} not found.");
+            }
+            return null;
+        }
+
         public static void Save(this BitmapSource bitmap, string fileName)
         {
-            using (var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+            using (var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
                 var encoder = new PngBitmapEncoder
                 {
@@ -51,7 +68,7 @@ namespace Xe.Tools.Services
 
         public static BitmapSource MakeTransparent(string fileName, Color[] colors)
         {
-            var bitmapImage = new BitmapImage(new System.Uri(fileName));
+            var bitmapImage = Open(fileName);
             return bitmapImage.MakeTransparent(colors);
         }
 

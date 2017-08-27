@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xe.Game;
 using Xe.Game.Animations;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Components.AnimationEditor.Services
 {
@@ -26,8 +27,9 @@ namespace Xe.Tools.Components.AnimationEditor.Services
                 if (texture == null) return null;
                 if (_textures.TryGetValue(texture.Id, out BitmapSource bitmap))
                     return bitmap;
-                var uri = new Uri(Path.Combine(BasePath, texture.Name));
-                return _textures[texture.Id] = new BitmapImage(uri);
+
+                var fileName = Path.Combine(BasePath, texture.Name);
+                return _textures[texture.Id] = ImageService.Open(fileName);
             }
         }
 
@@ -44,14 +46,20 @@ namespace Xe.Tools.Components.AnimationEditor.Services
                 if (!frame.IsEmpty)
                 {
                     var textureBitmap = this[texture];
-                    bitmap = new CroppedBitmap(textureBitmap,
-                    new System.Windows.Int32Rect()
+                    try
                     {
-                        X = frame.Left,
-                        Y = frame.Top,
-                        Width = frame.Right - frame.Left,
-                        Height = frame.Bottom - frame.Top
-                    });
+                        bitmap = new CroppedBitmap(textureBitmap,
+                        new System.Windows.Int32Rect()
+                        {
+                            X = frame.Left,
+                            Y = frame.Top,
+                            Width = frame.Right - frame.Left,
+                            Height = frame.Bottom - frame.Top
+                        });
+                    }
+                    catch (ArgumentException)
+                    {
+                    }
                 }
                 else
                 {

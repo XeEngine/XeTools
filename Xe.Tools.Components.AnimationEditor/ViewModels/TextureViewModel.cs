@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xe.Game;
+using Xe.Tools.Services;
 using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.AnimationEditor.ViewModels
@@ -65,7 +66,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             if (!_isLoaded)
             {
                 _isLoaded = true;
-                Image = new BitmapImage(new Uri(FileName, UriKind.RelativeOrAbsolute));
+                Image = ImageService.Open(FileName);
             }
         }
 

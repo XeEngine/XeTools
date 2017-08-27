@@ -44,7 +44,8 @@ namespace Xe.Tools.Services
                 item.AreaSize = item.Sprite.PixelWidth * item.Sprite.PixelHeight;
                 return item;
             })
-            .OrderByDescending(x => x.AreaSize);
+            .OrderByDescending(x => x.AreaSize)
+            .ToArray();
 
             int width = 64, height = 64;
             bool increaser = false;
@@ -68,7 +69,7 @@ namespace Xe.Tools.Services
                         break;
                     }
 
-                    item.Rectangle = Recti.FromSize(origin.X, origin.Y, size.Width, size.Height);
+                    item.Rectangle = Recti.FromSize(origin.X, origin.Y, size.Width - padding, size.Height - padding);
                 }
 
                 if (failed)
@@ -78,24 +79,6 @@ namespace Xe.Tools.Services
                     increaser = !increaser;
                 }
             } while (failed);
-            
-            var drawingVisual = new DrawingVisual();
-            var drawingContext = drawingVisual.RenderOpen();
-            foreach (var sprite in sprites)
-            {
-                drawingContext.DrawImage(sprite.Sprite, new Rect()
-                    {
-                        X = sprite.Rectangle.X,
-                        Y = sprite.Rectangle.Y,
-                        Width = sprite.Rectangle.Width,
-                        Height = sprite.Rectangle.Height
-                    });
-            }
-            drawingContext.Close();
-
-            var renderTargetBitmap = new RenderTargetBitmap(width, height, 96.0f, 96.0f, PixelFormats.Bgra32);
-            renderTargetBitmap.Render(drawingVisual);
-            Texture = renderTargetBitmap;
 
             var dicFrames = Frames.ToDictionary(x => x.Name, x => x);
             var newFramesList = new List<Frame>(Frames.Capacity);
@@ -112,6 +95,7 @@ namespace Xe.Tools.Services
                 {
                     Frames.Add(new Frame()
                     {
+                        Name = sprite.Name,
                         Left = sprite.Rectangle.Left,
                         Top = sprite.Rectangle.Top,
                         Right = sprite.Rectangle.Right,
@@ -123,6 +107,25 @@ namespace Xe.Tools.Services
                 newFramesList.Add(frame);
             }
 
+            var drawingVisual = new DrawingVisual();
+            using (var drawingContext = drawingVisual.RenderOpen())
+            {
+                foreach (var sprite in sprites)
+                {
+                    drawingContext.DrawImage(sprite.Sprite, new Rect()
+                    {
+                        X = sprite.Rectangle.X,
+                        Y = sprite.Rectangle.Y,
+                        Width = sprite.Rectangle.Width,
+                        Height = sprite.Rectangle.Height
+                    });
+                }
+            }
+
+            var renderTargetBitmap = new RenderTargetBitmap(width, height, 96.0f, 96.0f, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(drawingVisual);
+
+            Texture = renderTargetBitmap;
             Frames.Clear();
             Frames.AddRange(newFramesList);
         }
