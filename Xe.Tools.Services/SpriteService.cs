@@ -97,7 +97,7 @@ namespace Xe.Tools.Services
                 }
                 else
                 {
-                    Frames.Add(new Frame()
+                    frame = new Frame()
                     {
                         Name = sprite.Name,
                         Left = sprite.Rectangle.Left,
@@ -106,7 +106,7 @@ namespace Xe.Tools.Services
                         Bottom = sprite.Rectangle.Bottom,
                         CenterX = sprite.Rectangle.Width / 2,
                         CenterY = sprite.Rectangle.Height / 2
-                    });
+                    };
                 }
                 newFramesList.Add(frame);
             }

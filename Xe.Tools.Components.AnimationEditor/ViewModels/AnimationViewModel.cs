@@ -208,6 +208,8 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             }
         }
 
+        public bool IsFrameSelected => SelectedFrameReference != null;
+
         public FrameRef SelectedFrameReference => _animService.CurrentFrameReference;
 
         public string SelectedFrameReferenceName
@@ -348,7 +350,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
             _animService.OnFrameChanged += (service) =>
             {
-                //OnPropertyChanged(nameof(SelectedFrame));
+                OnPropertyChanged(nameof(IsFrameSelected));
                 OnPropertyChanged(nameof(SelectedFrameIndex));
                 OnPropertyChanged(nameof(Sprite));
                 OnPropertyChanged(nameof(SpriteLeft));

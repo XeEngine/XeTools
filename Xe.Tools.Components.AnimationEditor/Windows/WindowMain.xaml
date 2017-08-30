@@ -23,8 +23,6 @@
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Animations list" Click="MenuToolsAnimationList_Click"/>
-                <MenuItem Header="_Import frames" Click="MenuToolsImportFrames_Click"/>
-                <MenuItem Header="E_xport frames" Click="MenuToolsExportFrames_Click_1"/>
             </MenuItem>
         </Menu>
         <Grid Margin="5">
@@ -42,13 +40,13 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0">
+                    <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0" Click="ButtonAdd_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{StaticResource Add_16x}" Width="16"/>
                             <TextBlock Text="Add" Margin="3 0 3 0"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="ButtonRemove" Grid.Column="1" Margin="0 5 0 0"
+                    <Button x:Name="ButtonRemove" Grid.Column="1" Margin="0 5 0 0" Click="ButtonRemove_Click"
                             IsEnabled="{Binding IsAnimationSelected}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
@@ -57,24 +55,37 @@
                     </Button>
                 </Grid>
                 <ListBox x:Name="List" Grid.Column="0" ItemsSource="{Binding Animations}" DisplayMemberPath="Name"
-                         SelectedItem="{Binding SelectedAnimation, Mode=OneWayToSource}"/>
+                         SelectedItem="{Binding SelectedAnimation, Mode=OneWayToSource}"
+                         MouseDoubleClick="List_MouseDoubleClick"/>
             </DockPanel>
             <DockPanel Grid.Column="2"
                        IsEnabled="{Binding IsAnimationSelected}">
-                <ListBox DockPanel.Dock="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                <DockPanel DockPanel.Dock="Bottom">
+                    <StackPanel DockPanel.Dock="Right" VerticalAlignment="Bottom">
+                        <Button x:Name="ButtonFrameAdd" Grid.Column="1" Margin="0 0 0 5" Click="ButtonFrameAdd_Click"
+                            IsEnabled="{Binding IsAnimationSelected}">
+                            <Image Source="{StaticResource Add_16x}" Width="16"/>
+                        </Button>
+                        <Button x:Name="ButtonFrameRemove" Grid.Column="1" Click="ButtonFrameRemove_Click"
+                            IsEnabled="{Binding IsFrameSelected}">
+                            <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                        </Button>
+                    </StackPanel>
+                    <ListBox x:Name="FramesList" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding AnimationFrames}" SelectedIndex="{Binding SelectedFrameIndex}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding Sprite}" Width="48" Height="48"
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Sprite}" Width="48" Height="48"
                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
                 <StackPanel DockPanel.Dock="Bottom" Margin="0 0 0 5" Orientation="Horizontal">
                     <ToggleButton x:Name="ButtonPlay" IsChecked="{Binding IsRunning, Mode=TwoWay}">
                         <Image Width="16" Source="{StaticResource Run_16x}"/>

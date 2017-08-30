@@ -119,7 +119,16 @@ namespace Xe.Tools.Components.AnimationEditor.Services
         /// <summary>
         /// Get the current frame reference
         /// </summary>
-        public FrameRef CurrentFrameReference => CurrentAnimation?.Frames[FrameIndex];
+        public FrameRef CurrentFrameReference
+        {
+            get
+            {
+                if (FrameIndex >= 0 && _currentAnimation != null &&
+                    FrameIndex < _currentAnimation.Frames.Count)
+                    return _currentAnimation.Frames[FrameIndex];
+                return null;
+            }
+        }
 
         /// <summary>
         /// Get the current frame from frame reference
@@ -128,9 +137,11 @@ namespace Xe.Tools.Components.AnimationEditor.Services
         {
             get
             {
-                if (CurrentFrameReference == null)
+                var currentFrameReference = CurrentFrameReference;
+                if (currentFrameReference == null ||
+                    currentFrameReference.Frame == null) 
                     return null;
-                _dicFrames.TryGetValue(CurrentFrameReference.Frame, out Frame frame);
+                _dicFrames.TryGetValue(currentFrameReference.Frame, out Frame frame);
                 return frame;
             }
         }
