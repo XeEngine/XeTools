@@ -191,47 +191,12 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void ButtonFrameAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (!ViewModel.IsAnimationSelected)
-                return;
-
-            var hb = ViewModel.SelectedAnimation.FieldHitbox;
-            var frameRef = new FrameRef()
-            {
-                Frame = null,
-                Trigger = false,
-                FlipX = false,
-                FlipY = false,
-                Hitbox = new Hitbox()
-                {
-                    Left = hb.Left,
-                    Top = hb.Top,
-                    Right = hb.Right,
-                    Bottom = hb.Bottom
-                }
-            };
-
-            var index = ViewModel.SelectedFrameIndex;
-            if (index >= 0)
-            {
-                ViewModel.SelectedAnimation.Frames.Insert(ViewModel.SelectedFrameIndex, frameRef);
-            }
-            else
-            {
-                ViewModel.SelectedAnimation.Frames.Add(frameRef);
-            }
-            FramesList.Items.Refresh();
+            ViewModel.AddFrame();
         }
 
         private void ButtonFrameRemove_Click(object sender, RoutedEventArgs e)
         {
-            var curAnim = ViewModel.SelectedAnimation;
-            var curFrameIndex = ViewModel.SelectedFrameIndex;
-            if (curAnim != null && curFrameIndex >= 0 &&
-                curFrameIndex < curAnim.Frames.Count)
-            {
-                curAnim.Frames.RemoveAt(curFrameIndex);
-                FramesList.Items.Refresh();
-            }
+            ViewModel.RemoveFrame();
         }
     }
 }

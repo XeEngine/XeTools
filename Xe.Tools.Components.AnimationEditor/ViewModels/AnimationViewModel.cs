@@ -26,7 +26,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
             public FrameRef FrameRef { get; private set; }
 
-            public Frame Frame { get; private set; }
+            public Frame Frame { get; set; }
 
             public string Name => FrameRef.Frame;
 
@@ -174,13 +174,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 if (_selectedAnimation != null)
                 {
                     var texture = AnimationData.Textures.FirstOrDefault(x => x.Id == _selectedAnimation.Texture);
-                    AnimationFrames = new ObservableCollection<FrameRefViewModel>(
-                        _selectedAnimation.Frames
-                        .Select(x => new FrameRefViewModel(texture, x,
-                            AnimationData.Frames.FirstOrDefault(f => f.Name == x.Frame)
-                            )
-                        )
-                    );
+                    ChangeAllFrames(texture);
                 }
                 else
                 {
@@ -193,6 +187,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 OnPropertyChanged(nameof(CurrentTexture));
                 OnPropertyChanged(nameof(FramePerSec));
                 OnPropertyChanged(nameof(Loop));
+                OnPropertyChanged(nameof(IsLoopEnabled));
             }
         }
 
@@ -217,8 +212,11 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             get => SelectedFrameReference?.Frame;
             set
             {
-                SelectedFrameReference.Frame = value;
+                var frameRefVm = AnimationFrames[SelectedFrameIndex];
+                frameRefVm.FrameRef.Frame = value;
+                frameRefVm.Frame = AnimationData.Frames.FirstOrDefault(x => x.Name == value);
                 OnPropertyChanged(nameof(Sprite));
+                CurrentFrameChanged();
             }
         }
 
@@ -303,15 +301,6 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 if (SelectedAnimation == null) return null;
 
                 var id = SelectedAnimation.Texture;
-                if (id == Guid.Empty)
-                {
-                    return new Texture()
-                    {
-                        Id = id,
-                        Name = "<empty>"
-                    };
-                }
-
                 var texture = Textures.FirstOrDefault(x => x.Id == id);
                 if (texture == null)
                 {
@@ -323,7 +312,12 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
                 }
                 return texture;
             }
-            set => SelectedAnimation.Texture = value?.Id ?? Guid.NewGuid();
+            set
+            {
+                SelectedAnimation.Texture = value?.Id ?? Guid.NewGuid();
+                SpriteService.InvalidateAll();
+                ChangeAllFrames(value);
+            }
         }
 
         public int FramePerSec
@@ -336,6 +330,20 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
         {
             get => SelectedAnimation?.Loop ?? 0;
             set => SelectedAnimation.Loop = value;
+        }
+
+        public bool IsLoopEnabled
+        {
+            get => Loop != 255;
+            set
+            {
+                if (!value || Loop == 255)
+                {
+                    Loop = value ? 0 : 255;
+                    OnPropertyChanged(nameof(Loop));
+                    OnPropertyChanged(nameof(IsLoopEnabled));
+                }
+            }
         }
 
         #endregion
@@ -373,11 +381,95 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             Animations = new ObservableCollection<Animation>(AnimationData.Animations);
         }
 
+        public void AddFrame()
+        {
+            if (!IsAnimationSelected)
+                return;
+
+            var selectedAnimation = SelectedAnimation;
+            var hb = selectedAnimation.FieldHitbox;
+            var frameRef = new FrameRef()
+            {
+                Frame = null,
+                Trigger = false,
+                FlipX = false,
+                FlipY = false,
+                Hitbox = new Hitbox()
+                {
+                    Left = hb.Left,
+                    Top = hb.Top,
+                    Right = hb.Right,
+                    Bottom = hb.Bottom
+                }
+            };
+
+            var frameRefVm = new FrameRefViewModel(CurrentTexture, frameRef, null);
+
+            var index = SelectedFrameIndex;
+            if (index >= 0)
+            {
+                selectedAnimation.Frames.Insert(index, frameRef);
+                AnimationFrames.Insert(index, frameRefVm);
+                
+            }
+            else
+            {
+                selectedAnimation.Frames.Add(frameRef);
+                AnimationFrames.Add(frameRefVm);
+            }
+            OnPropertyChanged(nameof(FramesCount));
+        }
+        public void RemoveFrame()
+        {
+            var curAnim = SelectedAnimation;
+            var curFrameIndex = SelectedFrameIndex;
+            if (curAnim != null && curFrameIndex >= 0 &&
+                curFrameIndex < curAnim.Frames.Count)
+            {
+                curAnim.Frames.RemoveAt(curFrameIndex);
+                AnimationFrames.RemoveAt(curFrameIndex);
+                OnPropertyChanged(nameof(FramesCount));
+            }
+        }
+        public void CurrentFrameChanged()
+        {
+            var curAnim = SelectedAnimation;
+            var curFrameIndex = SelectedFrameIndex;
+            if (curAnim != null && curFrameIndex >= 0 &&
+                curFrameIndex < curAnim.Frames.Count)
+            {
+                var animationFrames = AnimationFrames;
+                var item = animationFrames[curFrameIndex];
+                animationFrames.RemoveAt(curFrameIndex);
+                animationFrames.Insert(curFrameIndex, item);
+                SelectedFrameIndex = curFrameIndex;
+                SpriteService.Invalidate(CurrentTexture, item.Frame);
+                OnPropertyChanged(nameof(SelectedFrameIndex));
+            }
+        }
+        private void ChangeAllFrames(Texture texture)
+        {
+            AnimationFrames = new ObservableCollection<FrameRefViewModel>(
+                _selectedAnimation.Frames
+                .Select(x => new FrameRefViewModel(texture, x,
+                    AnimationData.Frames.FirstOrDefault(f => f.Name == x.Frame)
+                    )
+                )
+            );
+            OnPropertyChanged(nameof(AnimationFrames));
+        }
+
+        public void RefreshFramesList()
+        {
+            OnPropertyChanged(nameof(Frames));
+        }
+
         public void SaveChanges()
         {
             AnimationData.Animations =
                 Animations.ToList();
         }
+
 
         #endregion
     }
