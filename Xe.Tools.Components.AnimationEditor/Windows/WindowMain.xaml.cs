@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -61,6 +62,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         {
             using (var writer = File.CreateText(WorkingFileName))
             {
+                ViewModel.SaveChanges();
                 var json = JsonConvert.SerializeObject(AnimationData, Formatting.Indented);
                 writer.Write(json);
                 Log.Message($"Animation file {WorkingFileName} saved.");
@@ -135,14 +137,66 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             ViewModel.Zoom += (e.Delta / 120) * 0.25;
         }
 
-        private void MenuToolsImportFrames_Click(object sender, RoutedEventArgs e)
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            ViewModel.Animations.Add(new Animation()
+            {
+                Name = "<new animation>",
+                FieldHitbox = new Hitbox()
+                {
+                    Left = -8, Top = -8, Right = 8, Bottom = 8
+                },
+                Frames = new List<FrameRef>(),
+                Speed = 0,
+                Loop = 0,
+                Texture = Guid.Empty
+            });
         }
 
-        private void MenuToolsExportFrames_Click_1(object sender, RoutedEventArgs e)
+        private void ButtonRemove_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.Animations.Remove(ViewModel.SelectedAnimation);
+        }
 
+        private void List_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var item = ViewModel.SelectedAnimation;
+            if (item == null)
+                return;
+
+            var dialog = new SingleInputDialog()
+            {
+                Text = item.Name,
+                Description = "Insert a friendly name for selected animation"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var newName = dialog.Text;
+                if (!ViewModel.Animations.Any(x => x.Name == newName))
+                {
+                    var selectedIndex = List.SelectedIndex;
+                    ViewModel.Animations.RemoveAt(selectedIndex);
+                    item.Name = newName;
+                    ViewModel.Animations.Insert(selectedIndex, item);
+                    List.SelectedIndex = selectedIndex;
+                }
+                else
+                {
+                    MessageBox.Show($"An animation called {newName} is already used.",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void ButtonFrameAdd_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AddFrame();
+        }
+
+        private void ButtonFrameRemove_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.RemoveFrame();
         }
     }
 }

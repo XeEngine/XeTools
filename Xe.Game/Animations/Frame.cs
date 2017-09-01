@@ -45,7 +45,7 @@ namespace Xe.Game.Animations
         [JsonIgnore]
         public bool IsEmpty
         {
-            get => (left == top) || (right == bottom);
+            get => (left == right) || (top == bottom);
         }
 
         virtual public object DeepClone()

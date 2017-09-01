@@ -24,7 +24,8 @@ namespace Xe.Tools.Components.AnimationEditor.Services
         {
             get
             {
-                if (texture == null) return null;
+                if (texture == null || texture.Id == Guid.Empty)
+                    return null;
                 if (_textures.TryGetValue(texture.Id, out BitmapSource bitmap))
                     return bitmap;
 
