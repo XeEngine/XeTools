@@ -81,15 +81,8 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void MenuViewFrames_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new WindowFrames(AnimationData.Frames.ToList(), AnimationData.Textures, BasePath);
+            var dialog = new WindowFrames(AnimationData, BasePath);
             dialog.ShowDialog();
-            AnimationData.Frames.Clear();
-            foreach (var item in dialog.Frames
-                .Where(x => !string.IsNullOrWhiteSpace(x.Name))
-                .OrderBy(x => x.Name))
-            {
-                AnimationData.Frames.Add(item);
-            }
         }
 
         private async void MenuViewAnimMap_Click(object sender, RoutedEventArgs e)
@@ -104,6 +97,8 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
                 DataContext = animationMapping
             }.ShowDialog();
             animationMapping.SaveChanges();
+            /*AnimationData.AnimationDefinitions.Clear();
+            AnimationData.AnimationDefinitions.AddRange(animationMapping.AnimationDefs);*/
         }
 
         private void MenuFileImportOldAnimation_Click(object sender, RoutedEventArgs e)

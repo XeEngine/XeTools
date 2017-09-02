@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.AnimationEditor.Windows"
-        xmlns:xc="clr-namespace:Xe.Tools.Components.AnimationEditor.Controls"
         x:Class="Xe.Tools.Components.AnimationEditor.Windows.WindowFrames"
         mc:Ignorable="d"
         Title="Frames" Width="435" Height="535">
@@ -32,14 +31,17 @@
                     </StackPanel>
                 </Button>
             </Grid>
-            <ListView x:Name="ListFramesView" ItemsSource="{Binding}" DisplayMemberPath="Name" SelectionChanged="ListFramesView_SelectionChanged"/>
+            <ListView x:Name="ListFramesView" ItemsSource="{Binding Frames}"
+                      SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                      SelectedValue="{Binding SelectedFrame, Mode=TwoWay}"/>
         </DockPanel>
-        <DockPanel x:Name="FramePanel" Grid.Column="1" Margin="10 0 0 0" Grid.ColumnSpan="2">
+        <DockPanel x:Name="FramePanel" Grid.Column="1" Margin="10 0 0 0" Grid.ColumnSpan="2"
+                   IsEnabled="{Binding IsItemSelected}">
             <TextBlock DockPanel.Dock="Top" Text="Frame name"/>
-            <TextBox DockPanel.Dock="Top" x:Name="TextFrameName" Text="{Binding Name}" LostFocus="TextFrameName_LostFocus"/>
+            <TextBox DockPanel.Dock="Top" x:Name="TextFrameName" Text="{Binding Name, Mode=TwoWay}"/>
             <TextBlock DockPanel.Dock="Top" Text="Preview with texture"/>
             <ComboBox DockPanel.Dock="Top" x:Name="ListTextures" ItemsSource="{Binding Textures}"
-                      SelectedIndex="0" SelectionChanged="ListTextures_SelectionChanged" />
+                      SelectedValue="{Binding SelectedTexture, Mode=TwoWay}" />
             <Grid DockPanel.Dock="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -72,9 +74,37 @@
                 <Controls:NumericUpDown x:Name="NumericCenterY" Grid.Row="5" Grid.Column="1" Margin="3 3 0 3"
                                         Value="{Binding CenterY, Mode=TwoWay}" MinimumValue="-128" MaximumValue="127"/>
             </Grid>
-            <Grid Margin="0 5 0 5">
-                <xc:FramePanel x:Name="CanvasFrame" OnTextureLoaded="CanvasFrame_OnTextureLoaded"/>
-            </Grid>
+            <Canvas Margin="0 5 0 5" SizeChanged="Canvas_SizeChanged"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    ClipToBounds="True" MouseWheel="Canvas_MouseWheel">
+                <Image Source="{Binding Sprite}"
+                           Canvas.Left="{Binding SpriteLeft, Mode=OneWay}"
+                           Canvas.Top="{Binding SpriteTop, Mode=OneWay}"
+                           Canvas.Right="{Binding SpriteRight, Mode=OneWay}"
+                           Canvas.Bottom="{Binding SpriteBottom, Mode=OneWay}"
+                           RenderTransformOrigin="{Binding SpriteCenter, Mode=OneWay}">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="{Binding SpriteScaleX}" ScaleY="{Binding SpriteScaleY}"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+                <Rectangle Fill="#7F0000FF" Width="{Binding RectCenterSize}" Height="{Binding RectCenterSize}"
+                           Canvas.Left="{Binding RectCenterLeft}" Canvas.Top="{Binding RectCenterTop}"
+                           Visibility="Hidden">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="{Binding SpriteScaleX}" ScaleY="{Binding SpriteScaleY}"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Canvas>
         </DockPanel>
     </Grid>
 </Window>

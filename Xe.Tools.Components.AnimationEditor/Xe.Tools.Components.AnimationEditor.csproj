@@ -41,15 +41,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.Direct2D1.4.0.1\lib\net45\SharpDX.Direct2D1.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.DXGI, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.DXGI.4.0.1\lib\net45\SharpDX.DXGI.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -63,10 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Controls\FramePanel.cs" />
     <Compile Include="Models\AnimationNameModel.cs" />
     <Compile Include="Services\AnimationService.cs" />
-    <Compile Include="Services\TextureService.cs" />
+    <Compile Include="Services\SpriteService.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="ViewModels\AnimationsMappingViewModel.cs" />
     <Compile Include="ViewModels\AnimationViewModel.cs" />
@@ -95,10 +85,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Controls\AnimationPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Dialogs\FrameDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,9 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component.cs" />
-    <Compile Include="Controls\AnimationPanel.xaml.cs">
-      <DependentUpon>AnimationPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\FrameDialog.xaml.cs">
       <DependentUpon>FrameDialog.xaml</DependentUpon>
     </Compile>
