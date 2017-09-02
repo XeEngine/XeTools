@@ -95,13 +95,15 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         private async void MenuViewAnimMap_Click(object sender, RoutedEventArgs e)
         {
             var settings = await Modules.Animation.Settings.OpenAsync(Project);
-            var dialog = new WindowMapping()
-            {
-                DataContext = new AnimationsMappingViewModel(
+            var animationMapping = new AnimationsMappingViewModel(
                     AnimationData.AnimationDefinitions,
                     AnimationData.Animations,
-                    settings.AnimationNames)
+                    settings.AnimationNames);
+            var dialog = new WindowMapping()
+            {
+                DataContext = animationMapping
             }.ShowDialog();
+            animationMapping.SaveChanges();
         }
 
         private void MenuFileImportOldAnimation_Click(object sender, RoutedEventArgs e)

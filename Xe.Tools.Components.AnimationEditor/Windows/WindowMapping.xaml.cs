@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Xe.Tools.Components.AnimationEditor.ViewModels;
+using Xe.Tools.Wpf.Dialogs;
 
 namespace Xe.Tools.Components.AnimationEditor.Windows
 {
@@ -29,7 +31,10 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            
+            ViewModel.AnimationDefs.Add(new Game.Animations.AnimationDefinition()
+            {
+                Name = "<new animation>"
+            });
         }
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
@@ -37,6 +42,20 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             if (ViewModel.IsAnimationDefSelected)
             {
                 ViewModel.AnimationDefs.Remove(ViewModel.SelectedAnimationDef);
+            }
+        }
+
+        private void List_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var dialog = new SingleInputDialog()
+            {
+                Text = ViewModel.SelectedAnimationDef.Name,
+                Description = "Insert the animation name"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                ViewModel.ChangeAnimationDefinitionName(dialog.Text);
             }
         }
     }

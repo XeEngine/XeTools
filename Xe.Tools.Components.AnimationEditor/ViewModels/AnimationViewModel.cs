@@ -405,8 +405,9 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
             var frameRefVm = new FrameRefViewModel(CurrentTexture, frameRef, null);
 
+            var animationFrames = AnimationFrames;
             var index = SelectedFrameIndex;
-            if (index >= 0)
+            if (index >= 0 && index < animationFrames.Count)
             {
                 selectedAnimation.Frames.Insert(index, frameRef);
                 AnimationFrames.Insert(index, frameRefVm);

@@ -44,6 +44,8 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             }
         }
 
+        public int SelectedAnimationIndex { get; set; }
+
         public bool IsAnimationDefSelected => SelectedAnimationDef != null;
 
         public AnimationReference AnimRef_Default
@@ -241,6 +243,18 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             AnimationDefs = new ObservableCollection<AnimationDefinition>(_animationsDef);
             Animations = animations.Select(x => x.Name).ToList();
             AllowedAnimations = allowedAnimations;
+        }
+
+        public void ChangeAnimationDefinitionName(string name)
+        {
+            var animDefs = AnimationDefs;
+            var index = SelectedAnimationIndex;
+            var item = animDefs[index];
+            item.Name = name;
+            animDefs.RemoveAt(index);
+            animDefs.Insert(index, item);
+            SelectedAnimationIndex = index;
+            OnPropertyChanged(nameof(SelectedAnimationIndex));
         }
 
         public void SaveChanges()

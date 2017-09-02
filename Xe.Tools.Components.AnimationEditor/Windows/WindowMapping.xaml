@@ -20,8 +20,7 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0"
-                        IsEnabled="false" Click="ButtonAdd_Click">
+                <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0" Click="ButtonAdd_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource Add_16x}" Width="16"/>
                         <TextBlock Text="Add" Margin="3 0 3 0"/>
@@ -36,7 +35,9 @@
                 </Button>
             </Grid>
             <ListBox x:Name="List" Grid.Column="0" ItemsSource="{Binding AnimationDefs}" DisplayMemberPath="Name"
-                     SelectedItem="{Binding SelectedAnimationDef, Mode=TwoWay}"/>
+                     SelectedIndex="{Binding SelectedAnimationIndex, Mode=TwoWay}"
+                     SelectedItem="{Binding SelectedAnimationDef, Mode=TwoWay}"
+                     MouseDoubleClick="List_MouseDoubleClick"/>
         </DockPanel>
 
         <ScrollViewer Grid.Column="1" Grid.ColumnSpan="2" Margin="5 5 10 10" VerticalScrollBarVisibility="Auto"
