@@ -188,10 +188,13 @@ namespace Xe.Tools.Components.AnimationEditor.Services
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var curAnim = CurrentAnimation;
-            if (curAnim == null) return;
             if (IsRunning == false) return;
             if (FramesPerSecond <= 0) return;
+
+            var curAnim = CurrentAnimation;
+            if (curAnim == null) return;
+
+            int framesCount = curAnim.Frames.Count;
             if (curAnim.Frames.Count <= 0) return;
 
             double freq = 1.0 / (CurrentAnimation.Speed / 21600.0);
@@ -199,15 +202,16 @@ namespace Xe.Tools.Components.AnimationEditor.Services
             var index = Math.Floor(timer / (1000.0 / freq));
             if (index >= 0)
             {
-                if (index >= curAnim.Frames.Count)
+                if (index >= framesCount)
                 {
-                    if (curAnim.Loop == 0)
+                    var loop = curAnim.Loop;
+                    if (loop == 0)
                     {
-                        FrameIndex = index % curAnim.Frames.Count;
+                        FrameIndex = index % framesCount;
                     }
-                    else if (curAnim.Loop < curAnim.Frames.Count)
+                    else if (loop < framesCount)
                     {
-                        FrameIndex = index - (curAnim.Frames.Count - curAnim.Loop) % curAnim.Loop;
+                        FrameIndex = index - loop + ((index - loop) % (framesCount - loop));
                     }
                 }
                 else
