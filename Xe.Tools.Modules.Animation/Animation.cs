@@ -68,7 +68,7 @@ namespace Xe.Tools.Modules
                 if (File.Exists(output))
                     File.Delete(output);
 
-                if (texture.Transparencies.Length > 0)
+                if (texture.Transparencies?.Length > 0)
                 {
                     ImageService.MakeTransparent(output, input, texture.Transparencies
                         .Select(x => new Color()
