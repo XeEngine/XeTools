@@ -5,6 +5,7 @@
         ComponentProperties Properties { get; }
         bool IsSettingsAvailable { get; }
 
+        void Show();
         bool? ShowDialog();
         void ShowSettings();
     }

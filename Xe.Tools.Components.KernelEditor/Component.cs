@@ -17,6 +17,11 @@ namespace Xe.Tools.Components.KernelEditor
             Properties = properties;
         }
 
+        public void Show()
+        {
+            var dialog = new MainWindow(Properties.Project, Properties.Container, Properties.Item);
+            dialog.Show();
+        }
         public bool? ShowDialog()
         {
             var dialog = new MainWindow(Properties.Project, Properties.Container, Properties.Item);

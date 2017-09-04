@@ -18,6 +18,11 @@ namespace Xe.Tools.Components.AnimationEditor
             Properties = settings;
         }
 
+        public void Show()
+        {
+            var dialog = new Windows.WindowMain(Properties.Project, Properties.Container, Properties.Item);
+            dialog.Show();
+        }
         public bool? ShowDialog()
         {
             var dialog = new Windows.WindowMain(Properties.Project, Properties.Container, Properties.Item);

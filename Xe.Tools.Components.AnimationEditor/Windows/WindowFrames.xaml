@@ -70,9 +70,9 @@
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Center X" VerticalAlignment="Center"/>
                 <TextBlock Grid.Row="4" Grid.Column="1" Text="Center Y" VerticalAlignment="Center"/>
                 <Controls:NumericUpDown x:Name="NumericCenterX" Grid.Row="5" Grid.Column="0" Margin="0 3 3 3"
-                                        Value="{Binding CenterX, Mode=TwoWay}" MinimumValue="-128" MaximumValue="127"/>
+                                        Value="{Binding CenterX, Mode=TwoWay}" MinimumValue="-32768" MaximumValue="32767"/>
                 <Controls:NumericUpDown x:Name="NumericCenterY" Grid.Row="5" Grid.Column="1" Margin="3 3 0 3"
-                                        Value="{Binding CenterY, Mode=TwoWay}" MinimumValue="-128" MaximumValue="127"/>
+                                        Value="{Binding CenterY, Mode=TwoWay}" MinimumValue="-32768" MaximumValue="32767"/>
             </Grid>
             <Canvas Margin="0 5 0 5" SizeChanged="Canvas_SizeChanged"
                     RenderOptions.BitmapScalingMode="NearestNeighbor"

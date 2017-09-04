@@ -13,6 +13,10 @@ namespace Xe.Tools.Components.Image
             Properties = settings;
         }
 
+        public void Show()
+        {
+            new MainWindow().Show();
+        }
         public bool? ShowDialog()
         {
             return new MainWindow().ShowDialog();
