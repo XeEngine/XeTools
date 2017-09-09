@@ -131,38 +131,12 @@ namespace Xe.Tools.GameStudio
         {
             new ProjectSettings(_project).ShowDialog();
         }
-        private void MenuItem_ProjectRun_Click(object sender, RoutedEventArgs e)
-        {
-            var config = Settings.GetProjectConfiguration(Project);
-            if (string.IsNullOrEmpty(config.Executable) ||
-                string.IsNullOrEmpty(config.WorkingDirectory))
-            {
-                Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
-            }
-            else if (!File.Exists(config.Executable) ||
-                !Directory.Exists(config.WorkingDirectory))
-            {
-                Helpers.ShowMessageBoxWarning($"{config.Executable} not found.");
-            }
-            else
-            {
-                Helpers.RunApplication(config.Executable, config.WorkingDirectory);
-            }
+        private void MenuItem_ProjectRun_Click(object sender, RoutedEventArgs e) {
+            ActionBuild(() => ActionRun());
         }
         private void MenuItem_ProjectBuild_Click(object sender, RoutedEventArgs e)
         {
-            var config = Settings.GetProjectConfiguration(Project);
-            if (string.IsNullOrEmpty(config.OutputDirectory))
-            {
-                Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
-            }
-            else
-            {
-                Task.Run(() =>
-                {
-                    Common.ProjectBuild(Project, config.OutputDirectory);
-                });
-            }
+            ActionBuild();
         }
         private void MenuItem_ProjectClean_Click(object sender, RoutedEventArgs e)
         {
@@ -196,5 +170,40 @@ namespace Xe.Tools.GameStudio
 				Project.Save(fd.FileName);
 			}
 		}
+
+        private void ActionBuild(Action callback = null)
+        {
+            var config = Settings.GetProjectConfiguration(Project);
+            if (string.IsNullOrEmpty(config.OutputDirectory))
+            {
+                Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    Common.ProjectBuild(Project, config.OutputDirectory);
+                    callback?.Invoke();
+                });
+            }
+        }
+        private void ActionRun()
+        {
+            var config = Settings.GetProjectConfiguration(Project);
+            if (string.IsNullOrEmpty(config.Executable) ||
+                string.IsNullOrEmpty(config.WorkingDirectory))
+            {
+                Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
+            }
+            else if (!File.Exists(config.Executable) ||
+                !Directory.Exists(config.WorkingDirectory))
+            {
+                Helpers.ShowMessageBoxWarning($"{config.Executable} not found.");
+            }
+            else
+            {
+                Helpers.RunApplication(config.Executable, config.WorkingDirectory);
+            }
+        }
     }
 }

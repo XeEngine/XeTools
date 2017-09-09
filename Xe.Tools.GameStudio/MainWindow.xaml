@@ -37,7 +37,7 @@
                 <MenuItem Header="_View">
                 </MenuItem>
                 <MenuItem Header="_Project">
-                    <MenuItem Header="_Run" Click="MenuItem_ProjectRun_Click">
+                    <MenuItem Header="Build and _run" Click="MenuItem_ProjectRun_Click">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource Run_16x}" />
                         </MenuItem.Icon>
