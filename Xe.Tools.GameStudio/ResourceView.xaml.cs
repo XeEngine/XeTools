@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -219,7 +220,18 @@ namespace Xe.Tools.GameStudio
                         Container = Container,
                         Item = node.Item
                     });
-                    instance.ShowDialog();
+                    try
+                    {
+                        instance.ShowDialog();
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        Log.Error($"File {ex.FileName} not found.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex.Message);
+                    }
                 }
                 else
                 {
