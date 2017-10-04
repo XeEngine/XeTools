@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xe.Tools.Modules</RootNamespace>
     <AssemblyName>Xe.Tools.Modules.Message</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,7 +46,7 @@
       <Name>Xe.Tools.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>
+      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>

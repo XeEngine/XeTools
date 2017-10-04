@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xe.Tools.Components</RootNamespace>
     <AssemblyName>Xe.Tools.Components</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -42,11 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
-      <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
+      <Project>{ea2c7533-429d-4c2e-a3ce-4c77340e8a40}</Project>
       <Name>Xe.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{ba75a11c-559a-4eaf-a338-b7cfa4dc2dfc}</Project>
+      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>

@@ -8,11 +8,12 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Xe.Tools.Components.KernelEditor</RootNamespace>
     <AssemblyName>Xe.Tools.Components.KernelEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -174,11 +175,11 @@
       <Name>Xe.Tools.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
-      <Project>{84785fa4-63d9-4cce-baf7-6d0a45add89b}</Project>
+      <Project>{ea2c7533-429d-4c2e-a3ce-4c77340e8a40}</Project>
       <Name>Xe.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{BA75A11C-559A-4EAF-A338-B7CFA4DC2DFC}</Project>
+      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>

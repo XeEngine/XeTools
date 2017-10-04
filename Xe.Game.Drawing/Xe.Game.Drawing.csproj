@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xe.Game.Drawing</RootNamespace>
     <AssemblyName>Xe.Game.Drawing</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,7 +42,7 @@
       <Name>Xe.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
-      <Project>{4F3923B8-ACAF-415A-8971-69ACE86E735A}</Project>
+      <Project>{4f3923b8-acaf-415a-8971-69ace86e735a}</Project>
       <Name>Xe.Game</Name>
     </ProjectReference>
   </ItemGroup>
