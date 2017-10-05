@@ -1,0 +1,212 @@
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace Xe.Tools.Projects
+{
+    public class FileSystem : IProjectFactory
+    {
+        public string Name => "File system";
+
+        public bool IsDirectory => true;
+
+        public IEnumerable<string> SupportedExtensions => new string[0];
+
+        public bool TryOpen(Stream stream)
+        {
+            return false;
+        }
+
+        public bool TryOpen(string directory)
+        {
+            return Directory.Exists(directory);
+        }
+
+        public IProject Open(Stream stream)
+        {
+            return null;
+        }
+
+        public IProject Open(string directory)
+        {
+            return new Project(directory);
+        }
+
+        private class Project : IProject
+        {
+            private string _name;
+
+            public string Name { get => Path.GetFileName(_name); set { } }
+            public string ShortName { get => Path.GetFullPath(_name); set { } }
+
+            public Version Version => new Version();
+
+            public string Company { get => null; set { } }
+            public string Producer { get => null; set { } }
+            public string Copyright { get => null; set { } }
+            public int Year { get => 0; set { } }
+
+            public Project(string directory)
+            {
+                _name = directory;
+            }
+
+            public IEnumerable<IProjectEntry> GetEntries()
+            {
+                return FileSystem.GetEntries(_name);
+            }
+
+            public void SaveChanges()
+            {
+
+            }
+
+            public void SaveChanges(Stream stream)
+            {
+
+            }
+        }
+
+        private abstract class ProjectEntry : IProjectEntry
+        {
+            protected string Path { get; set; }
+
+            public string Name
+            {
+                get => System.IO.Path.GetDirectoryName(Path);
+                set
+                {
+                    var newPath = GetPath(value);
+                    Move(Path, newPath);
+                    Path = newPath;
+                }
+            }
+
+            public bool CanRename => true;
+
+            protected ProjectEntry(string path)
+            {
+                Path = path;
+            }
+
+            public abstract bool Remove(bool delete);
+
+            protected abstract void Move(string oldPath, string newPath);
+
+            protected string GetPath(string name)
+            {
+                return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Path), name);
+            }
+        }
+
+        private class ProjectDirectory : ProjectEntry, IProjectDirectory
+        {
+            public ProjectDirectory(string path) : base(path)
+            {
+            }
+
+            public IProjectDirectory AddDirectory(string name)
+            {
+                var entry = GetEntries()
+                    .SingleOrDefault(x => x is IProjectDirectory && string.Compare(x.Name, name, true) == 0)
+                    as IProjectDirectory;
+                if (entry != null)
+                {
+                    var path = GetPath(name);
+                    Directory.CreateDirectory(path);
+                    entry = new ProjectDirectory(path);
+                }
+                return entry;
+            }
+
+            public IProjectFile AddFile(string name)
+            {
+                var entry = GetEntries()
+                    .SingleOrDefault(x => x is IProjectFile && string.Compare(x.Name, name, true) == 0)
+                    as IProjectFile;
+                if (entry != null)
+                {
+                    var path = GetPath(name);
+                    File.Create(path).Dispose();
+                    entry = new ProjectFile(path);
+                }
+                return entry;
+            }
+
+            public IEnumerable<IProjectEntry> GetEntries()
+            {
+                return FileSystem.GetEntries(Path);
+            }
+
+            public override bool Remove(bool delete)
+            {
+                if (delete)
+                {
+                    Directory.Delete(Path, true);
+                }
+                return delete;
+            }
+
+            protected override void Move(string oldPath, string newPath)
+            {
+                Directory.Move(oldPath, newPath);
+            }
+        }
+
+        private class ProjectFile : ProjectEntry, IProjectFile
+        {
+            public ProjectFile(string path) : base(path)
+            {
+            }
+
+            public Stream Open(FileAccess access)
+            {
+                FileMode mode;
+                FileShare share;
+                switch (access)
+                {
+                    case FileAccess.Read:
+                        mode = FileMode.Open;
+                        share = FileShare.Read;
+                        break;
+                    case FileAccess.Write:
+                        mode = FileMode.Create;
+                        share = FileShare.Read;
+                        break;
+                    case FileAccess.ReadWrite:
+                        mode = FileMode.OpenOrCreate;
+                        share = FileShare.Read;
+                        break;
+                    default:
+                        mode = 0;
+                        share = 0;
+                        break;
+                }
+                return new FileStream(Path, mode, access, share);
+            }
+
+            public override bool Remove(bool delete)
+            {
+                if (delete)
+                {
+                    File.Delete(Path);
+                }
+                return delete;
+            }
+
+            protected override void Move(string oldPath, string newPath)
+            {
+                File.Move(oldPath, newPath);
+            }
+        }
+
+        private static IEnumerable<IProjectEntry> GetEntries(string path)
+        {
+            var directories = Directory.GetDirectories(path)
+                .Select(x => new ProjectDirectory(x) as IProjectEntry);
+            var files = Directory.GetFiles(path)
+                .Select(x => new ProjectFile(x) as IProjectEntry);
+            return directories.Concat(files);
+        }
+    }
+}
