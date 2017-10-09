@@ -155,6 +155,12 @@ namespace Xe.Tools.Projects
 
         private class ProjectFile : ProjectEntry, IProjectFile
         {
+            private Dictionary<string, string> _parameters = new Dictionary<string, string>();
+
+            public string Format { get; set; }
+
+            public IEnumerable<KeyValuePair<string, string>> Parameters => _parameters;
+
             public ProjectFile(string path) : base(path)
             {
             }
@@ -192,6 +198,26 @@ namespace Xe.Tools.Projects
                     File.Delete(Path);
                 }
                 return delete;
+            }
+
+            public void CreateParameter(string key, string value)
+            {
+                _parameters.Add(key, value);
+            }
+
+            public string GetParameter(string key)
+            {
+                return _parameters.TryGetValue(key, out var value) ? value : null;
+            }
+
+            public void UpdateParameter(string key, string value)
+            {
+                _parameters[key] = value;
+            }
+
+            public bool RemoveParameter(string key)
+            {
+                return _parameters.Remove(key);
             }
 
             protected override void Move(string oldPath, string newPath)

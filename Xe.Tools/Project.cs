@@ -102,12 +102,16 @@ namespace Xe.Tools
             foreach (var container in Containers)
                 container.Items = container.Items.OrderBy(x => x.Input).ToList();
             Containers = Containers.OrderBy(x => x.Name).ToList();
-            using (var file = new FileStream(filename, FileMode.Create, FileAccess.Write))
+            using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
             {
-                using (var writer = new StreamWriter(file))
-                {
-                    writer.Write(JsonConvert.SerializeObject(this, Formatting.Indented));
-                }
+                Save(stream);
+            }
+        }
+        public void Save(Stream stream)
+        {
+            using (var writer = new StreamWriter(stream))
+            {
+                writer.Write(JsonConvert.SerializeObject(this, Formatting.Indented));
             }
         }
 

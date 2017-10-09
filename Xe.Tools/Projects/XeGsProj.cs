@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,19 @@ namespace Xe.Tools.Projects
 
         public bool TryOpen(Stream stream)
         {
-            return true;
+            try
+            {
+                Project model;
+                using (var reader = new StreamReader(stream))
+                {
+                    model = JsonConvert.DeserializeObject<Project>(reader.ReadToEnd());
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool TryOpen(string directory)
@@ -36,6 +49,15 @@ namespace Xe.Tools.Projects
         public IProject Open(string directory)
         {
             return null;
+        }
+
+        private static Project.Item CreateDefaultItem(string name)
+        {
+            return new Project.Item()
+            {
+                Input = name,
+                Type = "copy"
+            };
         }
 
         private class MyProject : IProject
@@ -70,12 +92,20 @@ namespace Xe.Tools.Projects
 
             public void SaveChanges()
             {
-                throw new System.NotImplementedException();
+                _project.Save();
             }
 
             public void SaveChanges(Stream stream)
             {
-                throw new System.NotImplementedException();
+                _project.Save(stream);
+            }
+
+            private void WriteChanges()
+            {
+                _project.Containers = _root
+                    .Where(x => x is ProjectContainer)
+                    .Select(x => (x as ProjectContainer).AsContainer())
+                    .ToList();
             }
 
             private IProjectEntry ProcessContainer(Project.Container container)
@@ -150,9 +180,7 @@ namespace Xe.Tools.Projects
 
             public IProjectFile AddFile(string name)
             {
-                var entry = new ProjectFile(null, name);
-                _entries.Add(entry);
-                return entry;
+                return AddFile(CreateDefaultItem(name));
             }
 
             public bool Remove(bool delete)
@@ -161,6 +189,33 @@ namespace Xe.Tools.Projects
                 foreach (var entry in _entries)
                     r |= entry.Remove(delete);
                 return r;
+            }
+
+            private IProjectFile AddFile(Project.Item item)
+            {
+                var entry = new ProjectFile(null, item);
+                _entries.Add(entry);
+                return entry;
+            }
+
+            internal Project.Container AsContainer()
+            {
+                _container.Items.Clear();
+                _container.Items.AddRange(GetLeafs()
+                    .Select(x => x.AsItem()));
+                return _container;
+            }
+            internal List<ProjectFile> GetLeafs()
+            {
+                var list = new List<ProjectFile>();
+                foreach (var entry in GetEntries())
+                {
+                    if (entry is ProjectFile)
+                        list.Add(entry as ProjectFile);
+                    else if (entry is ProjectDirectory)
+                        list.AddRange((entry as ProjectContainer).GetLeafs());
+                }
+                return list;
             }
         }
 
@@ -210,9 +265,7 @@ namespace Xe.Tools.Projects
 
             public IProjectFile AddFile(string name)
             {
-                var entry = new ProjectFile(this, name);
-                _entries.Add(entry);
-                return entry;
+                return AddFile(CreateDefaultItem(name));
             }
 
             public override bool Remove(bool delete)
@@ -221,20 +274,36 @@ namespace Xe.Tools.Projects
                     entry.Remove(delete);
                 return false;
             }
+
+            private IProjectFile AddFile(Project.Item item)
+            {
+                var entry = new ProjectFile(this, item);
+                _entries.Add(entry);
+                return entry;
+            }
         }
 
         private class ProjectFile : ProjectEntry, IProjectFile
         {
+            private Project.Item _item;
+            private Dictionary<string, string> _parameters = new Dictionary<string, string>();
             private string _name;
 
             public override string Name { get => _name; set => _name = value; }
 
             public override bool CanRename => true;
 
-            internal ProjectFile(ProjectEntry parent, string name) :
+            public string Format { get; set; }
+
+            public IEnumerable<KeyValuePair<string, string>> Parameters => _parameters;
+
+            internal ProjectFile(ProjectEntry parent, Project.Item item) :
                 base(parent)
             {
-                _name = name;
+                _item = item;
+                _name = System.IO.Path.GetFileName(item.Input);
+                Format = item.Type;
+                _parameters = item.Parameters.ToDictionary(x => x.Item1, x => x.Item2);
             }
 
             public Stream Open(FileAccess access)
@@ -266,6 +335,36 @@ namespace Xe.Tools.Projects
             public override bool Remove(bool delete)
             {
                 return false;
+            }
+
+            public void CreateParameter(string key, string value)
+            {
+                _parameters.Add(key, value);
+            }
+
+            public string GetParameter(string key)
+            {
+                return _parameters.TryGetValue(key, out var value) ? value : null;
+            }
+
+            public void UpdateParameter(string key, string value)
+            {
+                _parameters[key] = value;
+            }
+
+            public bool RemoveParameter(string key)
+            {
+                return _parameters.Remove(key);
+            }
+
+            internal Project.Item AsItem()
+            {
+                _item.Input = Path;
+                _item.Type = Format;
+                _item.Parameters = _parameters
+                    .Select(x => new Tuple<string, string>(x.Key, x.Value))
+                    .ToList();
+                return _item;
             }
         }
     }

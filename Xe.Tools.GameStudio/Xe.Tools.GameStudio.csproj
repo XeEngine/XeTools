@@ -53,8 +53,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ProjectOpenCommand.cs" />
     <Compile Include="ContainersManager.xaml.cs">
       <DependentUpon>ContainersManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProjectTreeView.xaml.cs">
+      <DependentUpon>ProjectTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\EmptyComponentDialog.xaml.cs">
       <DependentUpon>EmptyComponentDialog.xaml</DependentUpon>
@@ -82,9 +86,14 @@
     <Compile Include="Utility\Icons.cs" />
     <Compile Include="Utility\ResourceManager.cs" />
     <Compile Include="Utility\Settings.cs" />
+    <Compile Include="ViewModels\GameStudioViewModel.cs" />
     <Compile Include="ViewModels\OuputMessagesViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Page Include="ContainersManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ProjectTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

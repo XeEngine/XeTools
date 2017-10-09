@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.AnimationEditor.Windows"
         mc:Ignorable="d"
-        Title="Animation editor" Height="420" Width="700">
+        Title="Animation editor" Height="424" Width="700">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">

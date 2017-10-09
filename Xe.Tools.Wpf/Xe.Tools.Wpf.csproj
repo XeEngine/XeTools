@@ -39,6 +39,7 @@
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
     </Reference>
@@ -90,13 +91,53 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\DarkTheme.Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkTheme.ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\DarkTheme.ComboBoxItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkTheme.GroupBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkTheme.Label.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkTheme.ListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkTheme.Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkTheme.ScrollBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DarkTheme.Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Simple Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseModel.cs" />
+    <Compile Include="BaseNotifyPropertyChanged.cs" />
     <Compile Include="Controls\D2DControl.cs" />
     <Compile Include="Controls\D2DControl.DX11ImageSource.cs" />
     <Compile Include="Controls\FooterBar.xaml.cs">
@@ -106,6 +147,7 @@
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\D2DControl.ResourceCache.cs" />
+    <Compile Include="Controls\XeWindow.cs" />
     <Compile Include="Dialogs\FileDialog.cs" />
     <Compile Include="Dialogs\SingleInputDialog.xaml.cs">
       <DependentUpon>SingleInputDialog.xaml</DependentUpon>
