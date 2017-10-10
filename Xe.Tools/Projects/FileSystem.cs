@@ -69,8 +69,6 @@ namespace Xe.Tools.Projects
 
         private abstract class ProjectEntry : IProjectEntry
         {
-            protected string Path { get; set; }
-
             public string Name
             {
                 get => System.IO.Path.GetDirectoryName(Path);
@@ -81,6 +79,8 @@ namespace Xe.Tools.Projects
                     Path = newPath;
                 }
             }
+
+            public string Path { get; private set; }
 
             public bool CanRename => true;
 

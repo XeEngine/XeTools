@@ -46,9 +46,9 @@ namespace Xe.Tools.Projects
             return new MyProject(model);
         }
 
-        public IProject Open(string directory)
+        public IProject Open(string fileName)
         {
-            return null;
+            return new MyProject(Project.Open(fileName));
         }
 
         private static Project.Item CreateDefaultItem(string name)
@@ -110,23 +110,19 @@ namespace Xe.Tools.Projects
 
             private IProjectEntry ProcessContainer(Project.Container container)
             {
-                return null;
+                return new ProjectContainer(container);
             }
         }
 
-        private class ProjectContainer : IProjectDirectory
+        private class ProjectContainer : ProjectDirectory, IProjectContainer
         {
             private Project.Container _container;
 
-            private List<IProjectEntry> _entries = new List<IProjectEntry>();
-
-            public string Name { get => _container.Name; set => _container.Name = value; }
-
-            public bool CanRename => throw new System.NotImplementedException();
-
             internal ProjectContainer(Project.Container container)
+                : base(null, container.Name)
             {
                 _container = container;
+                Populate();
             }
 
             private void Populate()
@@ -138,8 +134,7 @@ namespace Xe.Tools.Projects
                     var strPath = path.Split(split);
                     if (strPath.Length <= 0)
                         continue;
-
-                    int index = 0;
+                    
                     IProjectDirectory projDir = this;
                     for (int i = 0; i < strPath.Length - 1 && projDir != null; i++)
                     {
@@ -160,42 +155,10 @@ namespace Xe.Tools.Projects
 
                     if (projDir != null)
                     {
-                        var fileName = strPath[index];
-                        projDir.AddFile(fileName);
+                        var fileName = strPath[strPath.Length - 1];
+                        (projDir as ProjectDirectory).AddFile(item);
                     }
                 }
-            }
-
-            public IEnumerable<IProjectEntry> GetEntries()
-            {
-                return _entries;
-            }
-
-            public IProjectDirectory AddDirectory(string name)
-            {
-                var entry = new ProjectDirectory(null, name);
-                _entries.Add(entry);
-                return entry;
-            }
-
-            public IProjectFile AddFile(string name)
-            {
-                return AddFile(CreateDefaultItem(name));
-            }
-
-            public bool Remove(bool delete)
-            {
-                bool r = false;
-                foreach (var entry in _entries)
-                    r |= entry.Remove(delete);
-                return r;
-            }
-
-            private IProjectFile AddFile(Project.Item item)
-            {
-                var entry = new ProjectFile(null, item);
-                _entries.Add(entry);
-                return entry;
             }
 
             internal Project.Container AsContainer()
@@ -227,7 +190,7 @@ namespace Xe.Tools.Projects
 
             public abstract bool CanRename { get; }
 
-            public string Path => Parent != null ? System.IO.Path.Combine(Parent.Name, Name) : Name;
+            public string Path => Parent != null ? System.IO.Path.Combine(Parent.Path, Name) : Name;
 
             internal ProjectEntry(ProjectEntry parent)
             {
@@ -243,7 +206,7 @@ namespace Xe.Tools.Projects
 
             public override bool CanRename => true;
 
-            private List<IProjectEntry> _entries = new List<IProjectEntry>();
+            protected List<IProjectEntry> _entries = new List<IProjectEntry>();
 
             internal ProjectDirectory(ProjectEntry parent, string name) :
                 base(parent)
@@ -275,7 +238,7 @@ namespace Xe.Tools.Projects
                 return false;
             }
 
-            private IProjectFile AddFile(Project.Item item)
+            internal IProjectFile AddFile(Project.Item item)
             {
                 var entry = new ProjectFile(this, item);
                 _entries.Add(entry);
@@ -303,7 +266,8 @@ namespace Xe.Tools.Projects
                 _item = item;
                 _name = System.IO.Path.GetFileName(item.Input);
                 Format = item.Type;
-                _parameters = item.Parameters.ToDictionary(x => x.Item1, x => x.Item2);
+                _parameters = item.Parameters?.ToDictionary(x => x.Item1, x => x.Item2)
+                    ?? new Dictionary<string, string>();
             }
 
             public Stream Open(FileAccess access)

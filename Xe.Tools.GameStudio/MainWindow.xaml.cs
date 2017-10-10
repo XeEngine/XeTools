@@ -38,11 +38,15 @@ namespace Xe.Tools.GameStudio
             }
 		}
 
+        public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
+
 		public MainWindow()
 		{
 			InitializeComponent();
 
             Common.Initialize();
+            DataContext = new MainWindowViewModel(GameStudioViewModel.Instance);
+            ViewModel.TitleBase = "XeEngine Game Studio";
             FooterBar.DataContext = new StatusViewModel();
 		}
 
@@ -57,7 +61,7 @@ namespace Xe.Tools.GameStudio
                     Common.SendMessage(MessageType.Initialization, "Loading components...");
                     Globals.Components = Component.GetComponents().ToArray();
                 }),
-                Task.Run(() =>
+                /*Task.Run(() =>
                 {
                     var fileLastOpen = Properties.Settings.Default.FileLastOpen;
                     if (File.Exists(fileLastOpen))
@@ -69,7 +73,7 @@ namespace Xe.Tools.GameStudio
                     {
                         project = new Project();
                     }
-                })
+                })*/
             };
 
             Task.Run(() =>
@@ -77,7 +81,7 @@ namespace Xe.Tools.GameStudio
                 Task.WaitAll(tasks);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Project = project;
+                    //Project = project;
                     Common.SendMessage(MessageType.Idle, "Ready");
                 });
             });

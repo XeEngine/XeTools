@@ -4,14 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Xe.Tools.GameStudio.Controls"
+             xmlns:vm="clr-namespace:Xe.Tools.GameStudio.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <TextBox Width="283"/>
-            <Image Source="{StaticResource Search_16x}" Width="16"/>
-        </StackPanel>
-        <TreeView>
+        <DockPanel DockPanel.Dock="Top" Height="22">
+            <Border BorderThickness="2" BorderBrush="#ABADB3" Background="#FFFFFF">
+                <DockPanel>
+                    <Image DockPanel.Dock="Right" Source="{StaticResource Search_16x}"/>
+                    <TextBox Height="22" Text="{Binding SearchTerms, UpdateSourceTrigger=PropertyChanged}"
+                             BorderBrush="Transparent" Background="Transparent"/>
+                </DockPanel>
+            </Border>
+        </DockPanel>
+        <TreeView Name="treeProject" ItemsSource="{Binding Items}" SelectedItemChanged="TreeProject_SelectedItemChanged">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type vm:ProjectExplorerContainerViewModel}" ItemsSource="{Binding Childs}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource SpecialFolder_16x}" Margin="0 0 5 0" />
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type vm:ProjectExplorerFolderViewModel}" ItemsSource="{Binding Childs}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Folder_16x}" Margin="0 0 5 0" />
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type vm:ProjectExplorerFileViewModel}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Document_16x}" Margin="0 0 5 0" />
+                        <TextBlock Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
         </TreeView>
     </DockPanel>
 </UserControl>

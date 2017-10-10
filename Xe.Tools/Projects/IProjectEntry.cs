@@ -8,6 +8,8 @@ namespace Xe.Tools.Projects
     {
         string Name { get; set; }
 
+        string Path { get; }
+
         bool CanRename { get; }
 
         bool Remove(bool delete);

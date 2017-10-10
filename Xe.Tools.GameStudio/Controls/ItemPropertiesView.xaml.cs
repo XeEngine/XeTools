@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.PlatformUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,17 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xe.Tools.GameStudio.ViewModels;
 
-namespace Xe.Tools.WpfTest
+namespace Xe.Tools.GameStudio.Controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ItemPropertiesView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ItemPropertiesView : UserControl
     {
-        public MainWindow()
+        public ItemPropertiesView()
         {
             InitializeComponent();
+            DataContext = new ItemPropertiesViewModel(GameStudioViewModel.Instance);
         }
     }
 }

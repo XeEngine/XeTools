@@ -54,8 +54,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ProjectOpenCommand.cs" />
+    <Compile Include="Commands\ProjectSaveCommand.cs" />
     <Compile Include="ContainersManager.xaml.cs">
       <DependentUpon>ContainersManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemPropertiesView.xaml.cs">
+      <DependentUpon>ItemPropertiesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProjectTreeView.xaml.cs">
       <DependentUpon>ProjectTreeView.xaml</DependentUpon>
@@ -87,9 +91,19 @@
     <Compile Include="Utility\ResourceManager.cs" />
     <Compile Include="Utility\Settings.cs" />
     <Compile Include="ViewModels\GameStudioViewModel.cs" />
+    <Compile Include="ViewModels\ItemPropertiesViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\OuputMessagesViewModel.cs" />
+    <Compile Include="ViewModels\ProjectExplorerContainerViewModel.cs" />
+    <Compile Include="ViewModels\ProjectExplorerFileViewModel.cs" />
+    <Compile Include="ViewModels\ProjectExplorerFolderViewModel.cs" />
+    <Compile Include="ViewModels\ProjectExplorerViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Page Include="ContainersManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ItemPropertiesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

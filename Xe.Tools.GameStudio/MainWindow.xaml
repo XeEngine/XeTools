@@ -7,8 +7,9 @@
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         xmlns:xe="clr-namespace:Xe.Tools.Wpf"
         xmlns:utility="clr-namespace:Xe.Tools.GameStudio.Utility"
+        xmlns:controls="clr-namespace:Xe.Tools.GameStudio.Controls"
         mc:Ignorable="d"
-        Title="XeEngine Game Studio"
+        Title="{Binding Title, Mode=OneWay}"
         Width="{Binding Source={x:Static utility:Settings.WindowProperties}, Mode=TwoWay, Path=Width}"
         Height="{Binding Source={x:Static utility:Settings.WindowProperties}, Mode=TwoWay, Path=Height}"
         Loaded="Window_Loaded">
@@ -21,7 +22,8 @@
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem x:Name="_menuFileProperties" Header="_New" Click="MenuItem_FileNewClick"/>
-                    <MenuItem x:Name="_menuFileOpen" Header="_Open..." Click="MenuItem_FileOpenClick"/>
+                    <MenuItem x:Name="_menuFileOpen" Header="_Open..."  Command="{Binding ProjectOpen}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
                     <MenuItem x:Name="_menuFileSave" Header="_Save" Click="MenuItem_FileSaveClick"/>
                     <MenuItem x:Name="_menuFileSaveAs" Header="Save _as..." Click="MenuItem_FileSaveAsClick"/>
                     <Separator/>
@@ -57,16 +59,24 @@
                     <MenuItem x:Name="_menuProjectSettings" Header="C_onfiguration" Click="MenuProjectConfiguration_Click"/>
                 </MenuItem>
             </Menu>
-            <Controls:FooterBar x:Name="FooterBar" DockPanel.Dock="Bottom" Height="23" Background="DarkGray"/>
-            <Frame DockPanel.Dock="Bottom" Height="200" Source="/Pages/OutputPage.xaml"/>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="23"/>
+                </Grid.RowDefinitions>
 
-                <local:ResourceView Grid.Column="0" x:Name="ctrlResourceView">
-
-                </local:ResourceView>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:ProjectTreeView Grid.Column="0"/>
+                    <controls:ItemPropertiesView Grid.Column="1" Margin="5 0 5 0"/>
+                    <local:ResourceView  Grid.Column="2" x:Name="ctrlResourceView" Visibility="Collapsed"/>
+                </Grid>
+                <Frame Grid.Row="1" DockPanel.Dock="Bottom" Source="/Pages/OutputPage.xaml"/>
+                <Controls:FooterBar Grid.Row="2" x:Name="FooterBar" DockPanel.Dock="Bottom" Background="DarkGray"/>
             </Grid>
         </DockPanel>
 

@@ -35,9 +35,16 @@ namespace Xe.Tools.GameStudio
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            _configuration.Executable = textGameExecutable.Text;
-            _configuration.WorkingDirectory = textWorkingDirectory.Text;
-            _configuration.OutputDirectory = textBuildOutputDirectory.Text;
+            if (_configuration != null)
+            {
+                _configuration.Executable = textGameExecutable.Text;
+                _configuration.WorkingDirectory = textWorkingDirectory.Text;
+                _configuration.OutputDirectory = textBuildOutputDirectory.Text;
+            }
+            else
+            {
+                MessageBox.Show("Unable to save the configuration", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             base.OnClosing(e);
         }
         protected override void OnClosed(EventArgs e)

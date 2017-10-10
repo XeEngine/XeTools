@@ -79,6 +79,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\XeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\SingleInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,7 +151,9 @@
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\D2DControl.ResourceCache.cs" />
-    <Compile Include="Controls\XeWindow.cs" />
+    <Compile Include="Controls\XeWindow.xaml.cs">
+      <DependentUpon>XeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\FileDialog.cs" />
     <Compile Include="Dialogs\SingleInputDialog.xaml.cs">
       <DependentUpon>SingleInputDialog.xaml</DependentUpon>

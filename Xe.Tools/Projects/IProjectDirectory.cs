@@ -12,4 +12,8 @@ namespace Xe.Tools.Projects
 
         IProjectFile AddFile(string name);
     }
+    public interface IProjectContainer : IProjectDirectory
+    {
+
+    }
 }
