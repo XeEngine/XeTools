@@ -11,22 +11,12 @@ namespace Xe.Tools.Projects
         public bool IsDirectory => true;
 
         public IEnumerable<string> SupportedExtensions => new string[0];
-
-        public bool TryOpen(Stream stream)
-        {
-            return false;
-        }
-
+        
         public bool TryOpen(string directory)
         {
             return Directory.Exists(directory);
         }
-
-        public IProject Open(Stream stream)
-        {
-            return null;
-        }
-
+        
         public IProject Open(string directory)
         {
             return new Project(directory);
@@ -34,10 +24,10 @@ namespace Xe.Tools.Projects
 
         private class Project : IProject
         {
-            private string _name;
+            public string Name { get => System.IO.Path.GetFileName(Path); set { } }
+            public string Path { get; }
 
-            public string Name { get => Path.GetFileName(_name); set { } }
-            public string ShortName { get => Path.GetFullPath(_name); set { } }
+            public string ShortName { get => System.IO.Path.GetFullPath(Path); set { } }
 
             public Version Version => new Version();
 
@@ -48,12 +38,12 @@ namespace Xe.Tools.Projects
 
             public Project(string directory)
             {
-                _name = directory;
+                Path = directory;
             }
 
             public IEnumerable<IProjectEntry> GetEntries()
             {
-                return FileSystem.GetEntries(_name);
+                return FileSystem.GetEntries(Path);
             }
 
             public void SaveChanges()

@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\OpenContainingFolderCommand.cs" />
     <Compile Include="Commands\ProjectOpenCommand.cs" />
     <Compile Include="Commands\ProjectSaveCommand.cs" />
     <Compile Include="ContainersManager.xaml.cs">

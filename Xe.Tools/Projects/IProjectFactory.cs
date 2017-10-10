@@ -11,12 +11,8 @@ namespace Xe.Tools.Projects
 
         IEnumerable<string> SupportedExtensions { get; }
 
-        bool TryOpen(Stream stream);
+        bool TryOpen(string path);
 
-        bool TryOpen(string directory);
-
-        IProject Open(Stream stream);
-
-        IProject Open(string directory);
+        IProject Open(string path);
     }
 }

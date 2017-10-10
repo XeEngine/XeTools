@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Xe.Tools.GameStudio.Commands;
 using Xe.Tools.Projects;
 using Xe.Tools.Wpf;
 
@@ -88,6 +90,10 @@ namespace Xe.Tools.GameStudio.ViewModels
             }
         }
 
+        public string RealPath => Path.Combine(_vm.Project?.Path ?? ".", FilePath ?? DirectoryPath ?? ".");
+
+        public OpenContainingFolderCommand OpenContainingFolderCommand { get; } = new OpenContainingFolderCommand();
+
         public ItemPropertiesViewModel(GameStudioViewModel vm)
         {
             _vm = vm;
@@ -107,6 +113,7 @@ namespace Xe.Tools.GameStudio.ViewModels
         {
             File = project as IProjectFile;
             Directory = project as IProjectDirectory;
+            OnPropertyChanged(nameof(RealPath));
         }
     }
 }

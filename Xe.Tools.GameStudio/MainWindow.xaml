@@ -14,11 +14,15 @@
         Height="{Binding Source={x:Static utility:Settings.WindowProperties}, Mode=TwoWay, Path=Height}"
         Loaded="Window_Loaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="240*"/>
+            <RowDefinition Height="209*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="11*"/>
             <ColumnDefinition Width="46*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.ColumnSpan="2">
+        <DockPanel Grid.ColumnSpan="2" Grid.RowSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem x:Name="_menuFileProperties" Header="_New" Click="MenuItem_FileNewClick"/>

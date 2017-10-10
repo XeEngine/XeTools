@@ -13,6 +13,11 @@ namespace Xe.Tools.Projects
         string Name { get; set; }
 
         /// <summary>
+        /// Where the project is located
+        /// </summary>
+        string Path { get; }
+
+        /// <summary>
         /// Short name of the project
         /// </summary>
         string ShortName { get; set; }

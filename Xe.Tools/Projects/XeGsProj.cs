@@ -13,37 +13,10 @@ namespace Xe.Tools.Projects
         public bool IsDirectory => false;
 
         public IEnumerable<string> SupportedExtensions => new string[] { "*.game.proj.json" };
-
-        public bool TryOpen(Stream stream)
+        
+        public bool TryOpen(string fileName)
         {
-            try
-            {
-                Project model;
-                using (var reader = new StreamReader(stream))
-                {
-                    model = JsonConvert.DeserializeObject<Project>(reader.ReadToEnd());
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public bool TryOpen(string directory)
-        {
-            return false;
-        }
-
-        public IProject Open(Stream stream)
-        {
-            Project model;
-            using (var reader = new StreamReader(stream))
-            {
-                model = JsonConvert.DeserializeObject<Project>(reader.ReadToEnd());
-            }
-            return new MyProject(model);
+            return Project.Open(fileName) != null;
         }
 
         public IProject Open(string fileName)
@@ -66,6 +39,7 @@ namespace Xe.Tools.Projects
             private IEnumerable<IProjectEntry> _root;
 
             public string Name { get => _project.Name; set => _project.Name = value; }
+            public string Path => _project.ProjectPath;
             public string ShortName { get => _project.ShortName; set => _project.ShortName = value; }
             public string Company { get => _project.Company; set => _project.Company = value; }
             public string Producer { get => _project.Producer; set => _project.Producer = value; }
