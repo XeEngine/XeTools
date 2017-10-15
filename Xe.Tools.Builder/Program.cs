@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Builder
 {
@@ -49,7 +50,7 @@ namespace Xe.Tools.Builder
                         if (!Directory.Exists(strOutput))
                             Directory.CreateDirectory(strOutput);
 
-                        var project = Project.Open(strInput);
+                        var project = new XeGsProj().Open(strInput);
                         var builder = new Builder(project, strOutput);
                         builder.OnProgress += Program_Progress;
                         if (clean) builder.Clean();

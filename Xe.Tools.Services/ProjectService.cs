@@ -3,34 +3,32 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static Xe.Tools.Project;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Services
 {
     public class ProjectService
     {
-        public Project Project { get; private set; }
-
-        public Container Container { get; private set; }
+        public IProject Project { get; private set; }
 
         public string WorkingDirectory { get; private set; }
 
-        public IEnumerable<Item> Items => Container.Items;
+        public IEnumerable<IProjectFile> Items { get; private set; }
 
         public AnimationService AnimationService { get; private set; }
 
-        public ProjectService(Project project, Container container)
+        public ProjectService(IProject project)
         {
             Project = project;
-            Container = container;
-            WorkingDirectory = Path.Combine(Project.ProjectPath, Container.Name);
+            WorkingDirectory = Path.GetDirectoryName(Project.WorkingDirectory);
+            Items = project.GetFiles();
 
             AnimationService = new AnimationService(this);
         }
 
-        public T DeserializeItem<T>(Item item)
+        public T DeserializeItem<T>(IProjectFile item)
         {
-            var filePath = Path.Combine(Project.ProjectPath, Path.Combine(Container.Name, item.Input));
+            var filePath = item.FullPath;
             if (File.Exists(filePath))
             {
                 try
@@ -42,7 +40,7 @@ namespace Xe.Tools.Services
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Unable to process item {item.Input}: {e.Message}");
+                    Log.Error($"Unable to process item {item.Path}: {e.Message}");
                 }
             }
             else

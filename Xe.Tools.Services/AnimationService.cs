@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Xe.Game.Animations;
-using static Xe.Tools.Project;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Services
 {
@@ -10,11 +9,11 @@ namespace Xe.Tools.Services
     {
         public ProjectService ProjectService { get; private set; }
 
-        public IEnumerable<Item> Items { get; private set; }
+        public IEnumerable<IProjectFile> ProjectFiles { get; private set; }
 
-        public IEnumerable<string> AnimationData => Items.Select(x =>
+        public IEnumerable<string> AnimationData => ProjectFiles.Select(x =>
         {
-            var strName = x.Input;
+            var strName = x.Name;
             var extIndex = strName.IndexOf(".json");
             return strName.Substring(0, extIndex);
         });
@@ -22,17 +21,17 @@ namespace Xe.Tools.Services
         internal AnimationService(ProjectService projectService)
         {
             ProjectService = projectService;
-            Items = ProjectService.Items.Where(x => x.Type == "animation");
+            ProjectFiles = ProjectService.Items.Where(x => x.Format == "animation");
         }
 
-        public AnimationData GetAnimationData(Item item)
+        public AnimationData GetAnimationData(IProjectFile item)
         {
             return ProjectService.DeserializeItem<AnimationData>(item);
         }
 
         public IEnumerable<string> GetAnimationDefinitions(string animationData)
         {
-            var item = Items.FirstOrDefault(x => x.Input == animationData);
+            var item = ProjectFiles.FirstOrDefault(x => x.Name == animationData);
             if (item != null)
             {
                 return GetAnimationData(item).AnimationDefinitions.Select(x => x.Name);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Xe.Tools.Modules;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Builder
 {
@@ -8,23 +9,22 @@ namespace Xe.Tools.Builder
     {
         private class Entry
         {
-            public Project Project { get; set; }
-            public Project.Container Container { get; set; }
-            public Project.Item Item { get; set; }
+            public IProject Project { get; set; }
+            public IProjectFile ProjectFile { get; set; }
         }
 
         public delegate void ProgressFunc(string message, int filesProcessed, int filesToProcess, bool hasFinish);
 
         public event ProgressFunc OnProgress;
 
-        public Project Project { get; }
+        public IProject Project { get; }
         public string OutputFolder { get; }
 
         private Dictionary<string, Module> Modules { get; }
 
         private List<string> FileNames { get; }
 
-        public Builder(Project project, string outputFolder)
+        public Builder(IProject project, string outputFolder)
         {
             Project = project;
             OutputFolder = outputFolder;

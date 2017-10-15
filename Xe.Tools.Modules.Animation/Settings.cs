@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Modules
 {
@@ -10,7 +11,7 @@ namespace Xe.Tools.Modules
         {
             public List<string> AnimationNames { get; set; } = new List<string>();
 
-            public static async Task<Settings> OpenAsync(Project project)
+            public static async Task<Settings> OpenAsync(IProject project)
             {
                 return await OpenAsync(project, "animation");
             }

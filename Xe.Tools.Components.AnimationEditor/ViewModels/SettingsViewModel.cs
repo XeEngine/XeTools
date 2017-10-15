@@ -8,12 +8,13 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xe.Tools.Components.AnimationEditor.Commands;
 using Xe.Tools.Modules;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Components.AnimationEditor.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-        private Project _project;
+        private IProject _project;
         private Animation.Settings settings;
         private ObservableCollection<string> _animationList;
 
@@ -29,7 +30,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             }
         }
 
-        public Project Project
+        public IProject Project
         {
             get => _project;
             set
@@ -49,7 +50,7 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             await settings.SaveAsync();
         }
         
-        private async Task ReadSettings(Project project)
+        private async Task ReadSettings(IProject project)
         {
             settings = await Animation.Settings.OpenAsync(project);
             AnimationNames = new ObservableCollection<string>(settings.AnimationNames);

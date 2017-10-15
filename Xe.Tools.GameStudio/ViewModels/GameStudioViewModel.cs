@@ -7,12 +7,12 @@ namespace Xe.Tools.GameStudio.ViewModels
     public class GameStudioViewModel : BaseNotifyPropertyChanged
     {
         private IProject _project;
-        private IProjectEntry _selectedProjectEntry;
+        private ProjectEntryViewModel _selectedProjectEntry;
 
         public static GameStudioViewModel Instance = new GameStudioViewModel();
 
         public delegate void ProjectChanged(object sender, IProject project);
-        public delegate void SelectProjectEntry(object sender, IProjectEntry project);
+        public delegate void SelectProjectEntry(object sender, ProjectEntryViewModel project);
         public event ProjectChanged OnProjectChanged;
         public event SelectProjectEntry OnSelectProjectEntry;
 
@@ -31,7 +31,7 @@ namespace Xe.Tools.GameStudio.ViewModels
 
         public bool IsProjectLoaded => Project != null;
 
-        public IProjectEntry SelectedProjectEntry
+        public ProjectEntryViewModel SelectedProjectEntry
         {
             get => _selectedProjectEntry;
             set

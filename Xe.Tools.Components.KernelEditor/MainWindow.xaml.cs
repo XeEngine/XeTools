@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Xe.Tools;
 using Xe.Tools.Components.KernelEditor.ViewModels;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Components.KernelEditor
 {
@@ -11,11 +12,11 @@ namespace Xe.Tools.Components.KernelEditor
     {
         public KernelViewModel Kernel { get; set; }
 
-        public MainWindow(Project project, Project.Container container, Project.Item item)
+        public MainWindow(IProject project, IProjectFile file)
         {
             InitializeComponent();
 
-            Kernel = new KernelViewModel(project, container, item);
+            Kernel = new KernelViewModel(project, file);
             DataContext = Kernel;
         }
 

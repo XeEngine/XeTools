@@ -2,32 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xe.Game.Messages;
+using Xe.Tools.Projects;
 using static Xe.Tools.Project;
 
 namespace Xe.Tools.Services
 {
     public class MessageService
     {
-        private class ItemMessageEqualityComparer : IEqualityComparer<Item>
+        private class ItemMessageEqualityComparer : IEqualityComparer<IProjectFile>
         {
-            public bool Equals(Item x, Item y)
+            public bool Equals(IProjectFile x, IProjectFile y)
             {
-                return x.Input == y.Input;
+                return x.Path == y.Path;
             }
 
-            public int GetHashCode(Item obj)
+            public int GetHashCode(IProjectFile obj)
             {
-                return obj.Input.GetHashCode();
+                return obj.Path.GetHashCode();
             }
         }
 
         public ProjectService ProjectService { get; private set; }
 
-        public IEnumerable<Item> Items { get; private set; }
+        public IEnumerable<IProjectFile> Items { get; private set; }
 
-        public IEnumerable<Tuple<Item, MessageContainer>> MessageContainers { get; private set; }
+        public IEnumerable<Tuple<IProjectFile, MessageContainer>> MessageContainers { get; private set; }
 
-        public IDictionary<Guid, Tuple<Item, string, Message>> Messages { get; private set; }
+        public IDictionary<Guid, Tuple<IProjectFile, string, Message>> Messages { get; private set; }
 
         public IDictionary<string, IDictionary<Guid, string>> Categories { get; private set; }
 
@@ -35,14 +36,14 @@ namespace Xe.Tools.Services
         {
             ProjectService = projectService;
             Items = ProjectService.Items
-                .Where(x => x.Type == "message")
+                .Where(x => x.Format == "message")
                 .Distinct(new ItemMessageEqualityComparer());
-            MessageContainers = Items.Select(x => new Tuple<Item, MessageContainer> (
+            MessageContainers = Items.Select(x => new Tuple<IProjectFile, MessageContainer> (
                 x, ProjectService.DeserializeItem<MessageContainer>(x)
             ));
             Messages = MessageContainers.SelectMany(x => x.Item2.Segments
                 .SelectMany(m => m.Messages.Select(mm =>
-                    new Tuple<Item, string, Message>(x.Item1, m.Name, mm))
+                    new Tuple<IProjectFile, string, Message>(x.Item1, m.Name, mm))
                 ))
                 .ToDictionary(x => x.Item3.UID, x => x);
             Categories = MessageContainers.SelectMany(x => x.Item2.Segments)

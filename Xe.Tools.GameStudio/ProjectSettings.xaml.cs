@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Xe.Tools.GameStudio.Models;
 using Xe.Tools.GameStudio.Utility;
+using Xe.Tools.Projects;
 using Xe.Tools.Wpf.Dialogs;
 
 namespace Xe.Tools.GameStudio
@@ -23,10 +13,10 @@ namespace Xe.Tools.GameStudio
     /// </summary>
     public partial class ProjectSettings : Window
     {
-        private Project _project;
+        private IProject _project;
         private ProjectConfiguration _configuration;
 
-        public ProjectSettings(Project project)
+        public ProjectSettings(IProject project)
         {
             InitializeComponent();
             _project = project;

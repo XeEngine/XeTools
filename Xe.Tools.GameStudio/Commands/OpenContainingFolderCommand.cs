@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Xe.Tools.GameStudio.Commands
@@ -20,7 +16,19 @@ namespace Xe.Tools.GameStudio.Commands
 
         public void Execute(object parameter)
         {
-            Process.Start("explorer.exe", $"/select,\"{parameter as string}\"");
+            var path = parameter as string;
+            var attr = File.GetAttributes(path);
+
+            string param;
+            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                param = path;
+            }
+            else
+            {
+                param = $"/select,\"{path}\"";
+            }
+            Process.Start("explorer.exe", param);
         }
     }
 }

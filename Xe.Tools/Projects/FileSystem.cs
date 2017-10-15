@@ -24,10 +24,12 @@ namespace Xe.Tools.Projects
 
         private class Project : IProject
         {
-            public string Name { get => System.IO.Path.GetFileName(Path); set { } }
-            public string Path { get; }
+            public string Name { get => System.IO.Path.GetFileName(WorkingDirectory); set { } }
+            public string WorkingDirectory { get; }
+            public string FileName => null;
+            public string FullPath => WorkingDirectory;
 
-            public string ShortName { get => System.IO.Path.GetFullPath(Path); set { } }
+            public string ShortName { get => System.IO.Path.GetFullPath(WorkingDirectory); set { } }
 
             public Version Version => new Version();
 
@@ -38,12 +40,12 @@ namespace Xe.Tools.Projects
 
             public Project(string directory)
             {
-                Path = directory;
+                WorkingDirectory = directory;
             }
 
             public IEnumerable<IProjectEntry> GetEntries()
             {
-                return FileSystem.GetEntries(Path);
+                return FileSystem.GetEntries(WorkingDirectory);
             }
 
             public void SaveChanges()
@@ -71,6 +73,8 @@ namespace Xe.Tools.Projects
             }
 
             public string Path { get; private set; }
+
+            public string FullPath => System.IO.Path.GetFullPath(Path);
 
             public bool CanRename => true;
 

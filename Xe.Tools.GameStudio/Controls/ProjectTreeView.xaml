@@ -17,7 +17,8 @@
                 </DockPanel>
             </Border>
         </DockPanel>
-        <TreeView Name="treeProject" ItemsSource="{Binding Items}" SelectedItemChanged="TreeProject_SelectedItemChanged">
+        <TreeView Name="treeProject" ItemsSource="{Binding Items}" SelectedItemChanged="TreeProject_SelectedItemChanged"
+                  MouseDoubleClick="TreeProject_MouseDoubleClick">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type vm:ProjectExplorerContainerViewModel}" ItemsSource="{Binding Childs}">
                     <StackPanel Orientation="Horizontal">
@@ -25,7 +26,7 @@
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type vm:ProjectExplorerFolderViewModel}" ItemsSource="{Binding Childs}">
+                <HierarchicalDataTemplate DataType="{x:Type vm:ProjectFolderViewModel}" ItemsSource="{Binding Childs}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource Folder_16x}" Margin="0 0 5 0" />
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />

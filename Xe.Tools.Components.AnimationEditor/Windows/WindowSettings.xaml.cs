@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Xe.Tools.Components.AnimationEditor.Commands;
 using Xe.Tools.Components.AnimationEditor.ViewModels;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Components.AnimationEditor.Windows
 {
@@ -53,7 +54,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             }
         }
 
-        public WindowSettings(Project project)
+        public WindowSettings(IProject project)
         {
             InitializeComponent();
             DataContext = this;

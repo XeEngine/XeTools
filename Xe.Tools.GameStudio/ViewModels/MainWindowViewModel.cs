@@ -23,9 +23,17 @@ namespace Xe.Tools.GameStudio.ViewModels
             }
         }
 
+        public WindowCloseCommand WindowClose { get; }
         public ProjectOpenCommand ProjectOpen { get; }
         public ProjectSaveCommand ProjectSave { get; }
         public ProjectSaveCommand ProjectSaveAs { get; }
+        public ProjectCreateFileCommand ProjectCreateFile { get; }
+        public ProjectAddFileCommand ProjectAddFile { get; }
+        public ProjectAddFolderCommand ProjectAddFolder { get; }
+        public ProjectRemoveEntryCommand ProjectRemoveEntry { get; }
+        public ProjectRunCommand ProjectRun { get; }
+        public ProjectBuildCommand ProjectBuild { get; }
+        public ProjectCleanCommand ProjectClean { get; }
 
         public string TitleBase
         {
@@ -40,9 +48,17 @@ namespace Xe.Tools.GameStudio.ViewModels
         public MainWindowViewModel(GameStudioViewModel vm)
         {
             _vm = vm;
+            WindowClose = new WindowCloseCommand();
             ProjectOpen = new ProjectOpenCommand(this);
             ProjectSave = new ProjectSaveCommand(this, false);
             ProjectSaveAs = new ProjectSaveCommand(this, true);
+            ProjectCreateFile = new ProjectCreateFileCommand(_vm);
+            ProjectAddFile = new ProjectAddFileCommand(_vm);
+            ProjectAddFolder = new ProjectAddFolderCommand(_vm);
+            ProjectRemoveEntry = new ProjectRemoveEntryCommand(_vm);
+            ProjectRun = new ProjectRunCommand(_vm);
+            ProjectBuild = new ProjectBuildCommand(_vm);
+            ProjectClean = new ProjectCleanCommand(_vm);
             Register();
         }
 

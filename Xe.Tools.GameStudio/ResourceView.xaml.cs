@@ -189,75 +189,14 @@ namespace Xe.Tools.GameStudio
 
         private void ctrlButtonAddFolder_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new SingleInputDialog()
-            {
-                Title = "Create a new folder",
-                Description = "Please specify the name of the folder that you want to create",
-                Text = "new folder"
-            };
-            if (dialog.ShowDialog() ?? false)
-            {
-                _resourceManager.CreateDirectory(dialog.Text);
-            }
         }
 
         private void treeFileView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var node = SelectedNode;
-            if (node != null && !node.IsDirectory)
-            {
-                var moduleName = node.Item.Type;
-                var component = Globals.Components
-                    .Where(x => x.ComponentInfo.ModuleName == moduleName)
-                    .FirstOrDefault();
-
-                bool? result;
-                if (component != null)
-                {
-                    var instance = component.CreateInstance(new Components.ComponentProperties()
-                    {
-                        Project = Project,
-                        Container = Container,
-                        Item = node.Item
-                    });
-                    try
-                    {
-                        instance.ShowDialog();
-                    }
-                    catch (FileNotFoundException ex)
-                    {
-                        Log.Error($"File {ex.FileName} not found.");
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex.Message);
-                    }
-                }
-                else
-                {
-                    var dialog = new Dialogs.EmptyComponentDialog(moduleName);
-                    result = dialog.ShowDialog();
-                }
-            }
         }
         
         private void Test(string inputFileName)
         {
-            var item = Container.Items.FirstOrDefault(x => x.Input == inputFileName);
-            if (item != null)
-            {
-                var component = Globals.Components
-                    .FirstOrDefault(x => x.ComponentInfo.ModuleName == item.Type);
-                if (component != null)
-                {
-                    component.CreateInstance(new Components.ComponentProperties()
-                    {
-                        Project = Project,
-                        Container = Container,
-                        Item = item
-                    }).ShowDialog();
-                }
-            }
         }
     }
 }

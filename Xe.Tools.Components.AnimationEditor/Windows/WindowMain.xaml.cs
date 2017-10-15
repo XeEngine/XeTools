@@ -9,6 +9,7 @@ using Xe.Game;
 using Xe.Game.Animations;
 using Xe.Tools.Components.AnimationEditor.Services;
 using Xe.Tools.Components.AnimationEditor.ViewModels;
+using Xe.Tools.Projects;
 using Xe.Tools.Wpf.Controls;
 using Xe.Tools.Wpf.Dialogs;
 using static Xe.Tools.Project;
@@ -20,9 +21,8 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
     /// </summary>
     public partial class WindowMain : Window
     {
-        public Project Project { get; private set; }
-        public Container Container { get; private set; }
-        public Item Item { get; private set; }
+        public IProject Project { get; private set; }
+        public IProjectFile ProjectFile { get; private set; }
 
         public AnimationData AnimationData { get; private set; }
         public AnimationViewModel ViewModel => DataContext as AnimationViewModel;
@@ -30,13 +30,12 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         private string WorkingFileName { get; set; }
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
-        public WindowMain(Project project, Container container, Item item)
+        public WindowMain(IProject project, IProjectFile file)
         {
             Project = project;
-            Container = container;
-            Item = item;
+            ProjectFile = file;
 
-            WorkingFileName = Path.Combine(Path.Combine(Project.ProjectPath, Container.Name), item.Input);
+            WorkingFileName = ProjectFile.FullPath;
             using (var reader = File.OpenText(WorkingFileName))
             {
                 AnimationData = JsonConvert.DeserializeObject<AnimationData>(reader.ReadToEnd());
@@ -62,7 +61,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void MenuFileSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var writer = File.CreateText(WorkingFileName))
+            using (var writer = System.IO.File.CreateText(WorkingFileName))
             {
                 ViewModel.SaveChanges();
                 var json = JsonConvert.SerializeObject(AnimationData, Formatting.Indented);

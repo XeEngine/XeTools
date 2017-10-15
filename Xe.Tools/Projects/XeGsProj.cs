@@ -39,7 +39,10 @@ namespace Xe.Tools.Projects
             private IEnumerable<IProjectEntry> _root;
 
             public string Name { get => _project.Name; set => _project.Name = value; }
-            public string Path => _project.ProjectPath;
+            public string WorkingDirectory => _project.ProjectPath;
+            public string FileName => _project.FileName;
+            public string FullPath => Path.Combine(WorkingDirectory, FileName);
+
             public string ShortName { get => _project.ShortName; set => _project.ShortName = value; }
             public string Company { get => _project.Company; set => _project.Company = value; }
             public string Producer { get => _project.Producer; set => _project.Producer = value; }
@@ -84,7 +87,7 @@ namespace Xe.Tools.Projects
 
             private IProjectEntry ProcessContainer(Project.Container container)
             {
-                return new ProjectContainer(container);
+                return new ProjectContainer(this, container);
             }
         }
 
@@ -92,8 +95,8 @@ namespace Xe.Tools.Projects
         {
             private Project.Container _container;
 
-            internal ProjectContainer(Project.Container container)
-                : base(null, container.Name)
+            internal ProjectContainer(MyProject project, Project.Container container)
+                : base(project, null, container.Name)
             {
                 _container = container;
                 Populate();
@@ -158,6 +161,8 @@ namespace Xe.Tools.Projects
 
         private abstract class ProjectEntry : IProjectEntry
         {
+            protected MyProject Project { get; }
+
             protected ProjectEntry Parent { get; set; }
 
             public abstract string Name { get; set; }
@@ -166,8 +171,11 @@ namespace Xe.Tools.Projects
 
             public string Path => Parent != null ? System.IO.Path.Combine(Parent.Path, Name) : Name;
 
-            internal ProjectEntry(ProjectEntry parent)
+            public string FullPath => System.IO.Path.Combine(Project.WorkingDirectory, Path);
+
+            internal ProjectEntry(MyProject project, ProjectEntry parent)
             {
+                Project = project;
                 Parent = parent;
             }
 
@@ -182,8 +190,8 @@ namespace Xe.Tools.Projects
 
             protected List<IProjectEntry> _entries = new List<IProjectEntry>();
 
-            internal ProjectDirectory(ProjectEntry parent, string name) :
-                base(parent)
+            internal ProjectDirectory(MyProject project, ProjectEntry parent, string name) :
+                base(project, parent)
             {
                 Name = name;
             }
@@ -195,7 +203,8 @@ namespace Xe.Tools.Projects
 
             public IProjectDirectory AddDirectory(string name)
             {
-                var entry = new ProjectDirectory(this, name);
+                var entry = new ProjectDirectory(Project, this, name);
+                Directory.CreateDirectory(entry.FullPath);
                 _entries.Add(entry);
                 return entry;
             }
@@ -209,12 +218,21 @@ namespace Xe.Tools.Projects
             {
                 foreach (var entry in _entries)
                     entry.Remove(delete);
+                if (Directory.Exists(FullPath))
+                {
+                    Directory.Delete(FullPath, true);
+                }
                 return false;
             }
 
             internal IProjectFile AddFile(Project.Item item)
             {
-                var entry = new ProjectFile(this, item);
+                var entry = new ProjectFile(Project, this, item);
+                var fullPath = entry.FullPath;
+                if (!File.Exists(fullPath))
+                {
+                    File.Create(fullPath, 0, FileOptions.None).Close();
+                }
                 _entries.Add(entry);
                 return entry;
             }
@@ -234,8 +252,8 @@ namespace Xe.Tools.Projects
 
             public IEnumerable<KeyValuePair<string, string>> Parameters => _parameters;
 
-            internal ProjectFile(ProjectEntry parent, Project.Item item) :
-                base(parent)
+            internal ProjectFile(MyProject project, ProjectEntry parent, Project.Item item) :
+                base(project, parent)
             {
                 _item = item;
                 _name = System.IO.Path.GetFileName(item.Input);

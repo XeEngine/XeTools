@@ -18,6 +18,6 @@ namespace Xe.Tools.Modules
 
         public string OutputPath { get; set; }
 
-        public Tuple<string, string>[] Parameters { get; set; }
+        public KeyValuePair<string, string>[] Parameters { get; set; }
     }
 }

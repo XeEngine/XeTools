@@ -10,6 +10,8 @@ namespace Xe.Tools.Projects
 
         string Path { get; }
 
+        string FullPath { get; }
+
         bool CanRename { get; }
 
         bool Remove(bool delete);

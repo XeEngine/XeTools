@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Builder
 {
@@ -11,22 +11,19 @@ namespace Xe.Tools.Builder
     {
         public void Build()
         {
-            OnProgress?.Invoke($"Building {Project.FileName}...", 0, 1, false);
+            OnProgress?.Invoke($"Building {Project.Name}...", 0, 1, false);
 
             Log.Message($"Processing {Project.Name} - Developed by {Project.Producer}");
             Log.Message($"Version {Project.Version}");
             Log.Message($"{Project.Copyright} {Project.Year}");
 
-            var entries = new List<Entry>();
-            foreach (var container in Project.Containers)
-            {
-                entries.AddRange(container.Items.Select(item => new Entry()
+            var entries = Project.GetFiles()
+                .Select(x => new Entry()
                 {
                     Project = Project,
-                    Container = container,
-                    Item = item
-                }));
-            }
+                    ProjectFile = x
+                })
+                .ToList();
 
             FileNames.Clear();
 #if DEBUG
@@ -34,9 +31,9 @@ namespace Xe.Tools.Builder
             int filesCount = entries.Count;
             foreach (var entry in entries)
             {
-                OnProgress?.Invoke($"Processing {entry.Item.RelativeFileNameInput}...", filesProcessed, filesCount, false);
+                OnProgress?.Invoke($"Processing {entry.ProjectFile.Name}...", filesProcessed, filesCount, false);
                 ProcessEntry(entry, OutputFolder);
-                OnProgress?.Invoke($"Processed {entry.Item.RelativeFileNameInput}!", filesProcessed, filesCount, false);
+                OnProgress?.Invoke($"Processed {entry.ProjectFile.Name}!", filesProcessed, filesCount, false);
             }
             OnProgress?.Invoke($"Build completed.", 1, 1, true);
 #else
@@ -58,11 +55,11 @@ namespace Xe.Tools.Builder
         }
         private void ProcessEntry(Entry entry, string outputFolder)
         {
-            var item = entry.Item;
-            var type = item.Type;
+            var file = entry.ProjectFile;
+            var type = file.Format;
             if (!Modules.TryGetValue(type, out var module))
             {
-                Log.Error($"Module {type} not found for {item.Input} item.");
+                Log.Error($"Module {type} not found for {file.Path} item.");
                 return;
             }
 
@@ -71,16 +68,16 @@ namespace Xe.Tools.Builder
             {
                 moduleInstance = module.CreateInstance(new Modules.ModuleInit()
                 {
-                    FileName = item.Input,
-                    OutputFileName = item.Output,
-                    Parameters = item.Parameters?.ToArray() ?? new Tuple<string, string>[0],
-                    InputPath = Path.Combine(entry.Project.ProjectPath, entry.Container.Name),
-                    OutputPath = Path.Combine(outputFolder, entry.Container.Name)
+                    FileName = file.Path,
+                    OutputFileName = null,
+                    Parameters = file.Parameters.ToArray(),
+                    InputPath = Project.WorkingDirectory,
+                    OutputPath = outputFolder
                 });
             }
             catch (Exception e)
             {
-                Log.Error($"Module {type} initialization exception on {item.Input}: {e.Message}");
+                Log.Error($"Module {type} initialization exception on {file.Path}: {e.Message}");
                 return;
             }
 
@@ -96,7 +93,7 @@ namespace Xe.Tools.Builder
             catch (Exception e)
             {
                 moduleInstance.Clean();
-                Log.Error($"Module {type} export exception on {item.Input}: {e.Message}");
+                Log.Error($"Module {type} export exception on {file.Path}: {e.Message}");
                 return;
             }
         }

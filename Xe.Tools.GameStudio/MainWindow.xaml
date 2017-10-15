@@ -25,17 +25,20 @@
         <DockPanel Grid.ColumnSpan="2" Grid.RowSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem x:Name="_menuFileProperties" Header="_New" Click="MenuItem_FileNewClick"/>
-                    <MenuItem x:Name="_menuFileOpen" Header="_Open..."  Command="{Binding ProjectOpen}"
+                    <MenuItem Header="_New" Visibility="Collapsed"/>
+                    <MenuItem Header="_Open..."  Command="{Binding ProjectOpen}"
                               CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-                    <MenuItem x:Name="_menuFileSave" Header="_Save" Click="MenuItem_FileSaveClick"/>
-                    <MenuItem x:Name="_menuFileSaveAs" Header="Save _as..." Click="MenuItem_FileSaveAsClick"/>
+                    <MenuItem Header="_Save" Command="{Binding ProjectSave}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                    <MenuItem Header="Save _as..." Command="{Binding ProjectSaveAs}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
                     <Separator/>
-                    <MenuItem Header="Recent pro_jects">
+                    <MenuItem Header="Recent pro_jects" Visibility="Collapsed">
                         <Separator/>
                     </MenuItem>
                     <Separator/>
-                    <MenuItem x:Name="_fileExit" Header="E_xit" Click="MenuItem_ExitClick"/>
+                    <MenuItem Header="E_xit" Command="{Binding WindowClose}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
                 </MenuItem>
                 <MenuItem Header="_Edit">
                     <MenuItem Header="_Settings"/>
@@ -43,17 +46,17 @@
                 <MenuItem Header="_View">
                 </MenuItem>
                 <MenuItem Header="_Project">
-                    <MenuItem Header="Build and _run" Click="MenuItem_ProjectRun_Click">
+                    <MenuItem Header="Build and _run" Command="{Binding ProjectRun}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource Run_16x}" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="_Build" Click="MenuItem_ProjectBuild_Click">
+                    <MenuItem Header="_Build" Command="{Binding ProjectBuild}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource BuildSelection_16x}"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="_Clean" Click="MenuItem_ProjectClean_Click">
+                    <MenuItem Header="_Clean" Command="{Binding ProjectClean}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource CleanData_16x}"/>
                         </MenuItem.Icon>
@@ -63,14 +66,55 @@
                     <MenuItem x:Name="_menuProjectSettings" Header="C_onfiguration" Click="MenuProjectConfiguration_Click"/>
                 </MenuItem>
             </Menu>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="20" Background="#F0F0F0">
+                <Button BorderThickness="0" Background="Transparent" Command="{Binding ProjectCreateFile}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                    <Button.Content>
+                        <Image Source="{StaticResource NewFile_16x}"/>
+                    </Button.Content>
+                </Button>
+                <Button BorderThickness="0" Background="Transparent" Command="{Binding ProjectAddFile}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                    <Button.Content>
+                        <Image Source="{StaticResource AddFile_16x}"/>
+                    </Button.Content>
+                </Button>
+                <Button BorderThickness="0" Background="Transparent" Command="{Binding ProjectAddFolder}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                    <Button.Content>
+                        <Image Source="{StaticResource NewSolutionFolder_16x}"/>
+                    </Button.Content>
+                </Button>
+                <Button BorderThickness="0" Background="Transparent" Command="{Binding ProjectRemoveEntry}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                    <Button.Content>
+                        <Image Source="{StaticResource Remove_color_16x}"/>
+                    </Button.Content>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <ComboBox Visibility="Collapsed"/>
+                <Button BorderThickness="0" Background="Transparent" Command="{Binding ProjectRun}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Run_16x}"/>
+                            <TextBlock Text="Run" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="117*"/>
+                    <ColumnDefinition Width="515*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="23"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
+                <Grid Grid.Row="0" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -79,8 +123,8 @@
                     <controls:ItemPropertiesView Grid.Column="1" Margin="5 0 5 0"/>
                     <local:ResourceView  Grid.Column="2" x:Name="ctrlResourceView" Visibility="Collapsed"/>
                 </Grid>
-                <Frame Grid.Row="1" DockPanel.Dock="Bottom" Source="/Pages/OutputPage.xaml"/>
-                <Controls:FooterBar Grid.Row="2" x:Name="FooterBar" DockPanel.Dock="Bottom" Background="DarkGray"/>
+                <Frame Grid.Row="1" Source="/Pages/OutputPage.xaml" Grid.ColumnSpan="2"/>
+                <Controls:FooterBar Grid.Row="2" x:Name="FooterBar" Background="DarkGray" Grid.ColumnSpan="2"/>
             </Grid>
         </DockPanel>
 

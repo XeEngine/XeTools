@@ -9,39 +9,19 @@ namespace Xe.Tools.GameStudio.ViewModels
 {
     public class ProjectExplorerViewModel : BaseNotifyPropertyChanged
     {
-        public class ProjectExplorerItemViewModel : BaseNotifyPropertyChanged
-        {
-            public IProjectEntry Entry { get; }
-
-            public string Name
-            {
-                get => Entry.Name;
-                set
-                {
-                    Entry.Name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-
-            public ProjectExplorerItemViewModel(IProjectEntry entry)
-            {
-                Entry = entry;
-            }
-        }
-
         private GameStudioViewModel _vm;
-        private List<ProjectExplorerItemViewModel> _items;
+        private List<ProjectEntryViewModel> _items;
         private string _searchTerms;
 
-        public ObservableCollection<ProjectExplorerItemViewModel> Items
+        public ObservableCollection<ProjectEntryViewModel> Items
         {
             get
             {
                 if (_items == null)
                     return null;
                 if (string.IsNullOrEmpty(_searchTerms))
-                    return new ObservableCollection<ProjectExplorerItemViewModel>(_items);
-                return new ObservableCollection<ProjectExplorerItemViewModel>(SearchEntries());
+                    return new ObservableCollection<ProjectEntryViewModel>(_items);
+                return new ObservableCollection<ProjectEntryViewModel>(SearchEntries());
             }
             set { }
         }
@@ -76,26 +56,26 @@ namespace Xe.Tools.GameStudio.ViewModels
 
         private void ProcessProject()
         {
-            _items = new List<ProjectExplorerItemViewModel>(
+            _items = new List<ProjectEntryViewModel>(
                 _vm.Project.GetEntries()
                 .Select(x =>
                 {
                     if (x is IProjectContainer container)
                         return new ProjectExplorerContainerViewModel(container)
-                        as ProjectExplorerItemViewModel;
+                        as ProjectEntryViewModel;
                     if (x is IProjectDirectory folder)
-                        return new ProjectExplorerFolderViewModel(folder)
-                        as ProjectExplorerItemViewModel;
+                        return new ProjectFolderViewModel(folder)
+                        as ProjectEntryViewModel;
                     if (x is IProjectFile file)
                         return new ProjectExplorerFileViewModel(file)
-                        as ProjectExplorerItemViewModel;
+                        as ProjectEntryViewModel;
                     return null;
                 })
                 .OrderBy(x =>
                 {
                     if (x is ProjectExplorerContainerViewModel)
                         return 0;
-                    if (x is ProjectExplorerFolderViewModel)
+                    if (x is ProjectFolderViewModel)
                         return 1;
                     if (x is ProjectExplorerFileViewModel)
                         return 2;
@@ -110,17 +90,17 @@ namespace Xe.Tools.GameStudio.ViewModels
             _items?.Clear();
             OnPropertyChanged(nameof(Items));
         }
-        private IEnumerable<ProjectExplorerItemViewModel> SearchEntries()
+        private IEnumerable<ProjectEntryViewModel> SearchEntries()
         {
-            return _items.Where(x => x is ProjectExplorerFolderViewModel)
-                .SelectMany(x => SearchEntries(x as ProjectExplorerFolderViewModel))
+            return _items.Where(x => x is ProjectFolderViewModel)
+                .SelectMany(x => SearchEntries(x as ProjectFolderViewModel))
                 .Union(_items.Where(x => x.Name.Contains(SearchTerms)))
                 .OrderBy(x => x.Name.IndexOf(SearchTerms));
         }
-        private IEnumerable<ProjectExplorerItemViewModel> SearchEntries(ProjectExplorerFolderViewModel folder)
+        private IEnumerable<ProjectEntryViewModel> SearchEntries(ProjectFolderViewModel folder)
         {
-            return folder.Childs.Where(x => x is ProjectExplorerFolderViewModel)
-                .SelectMany(x => SearchEntries(x as ProjectExplorerFolderViewModel))
+            return folder.Childs.Where(x => x is ProjectFolderViewModel)
+                .SelectMany(x => SearchEntries(x as ProjectFolderViewModel))
                 .Union(folder.Childs.Where(x => x.Name.Contains(SearchTerms)));
         }
 
@@ -130,6 +110,88 @@ namespace Xe.Tools.GameStudio.ViewModels
                 ProcessProject();
             else
                 CleanTree();
+        }
+    }
+    
+    public class ProjectEntryViewModel : BaseNotifyPropertyChanged
+    {
+        public IProjectEntry Entry { get; }
+
+        public string Name
+        {
+            get => Entry.Name;
+            set
+            {
+                Entry.Name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
+        public ProjectEntryViewModel(IProjectEntry entry)
+        {
+            Entry = entry;
+        }
+    }
+
+    public class ProjectExplorerContainerViewModel : ProjectFolderViewModel
+    {
+        public ProjectExplorerContainerViewModel(IProjectDirectory directory)
+            : base(directory) { }
+    }
+
+    public class ProjectFolderViewModel : ProjectEntryViewModel
+    {
+        private IProjectDirectory _directory;
+
+        public ObservableCollection<ProjectEntryViewModel> Childs { get; set; }
+
+        public ProjectFolderViewModel(IProjectDirectory directory)
+            : base(directory)
+        {
+            _directory = directory;
+            Childs = new ObservableCollection<ProjectEntryViewModel>(
+                directory.GetEntries()
+                .Select(x =>
+                {
+                    if (x is IProjectDirectory folder)
+                        return new ProjectFolderViewModel(folder) as ProjectEntryViewModel;
+                    if (x is IProjectFile file)
+                        return new ProjectExplorerFileViewModel(file) as ProjectEntryViewModel;
+                    return null;
+                })
+                .OrderBy(x =>
+                {
+                    if (x is ProjectExplorerContainerViewModel)
+                        return 0;
+                    if (x is ProjectFolderViewModel)
+                        return 1;
+                    if (x is ProjectExplorerFileViewModel)
+                        return 2;
+                    return int.MaxValue;
+                })
+                .ThenBy(x => x.Name)
+                .Where(x => x != null));
+        }
+
+        public void AddDirectory(IProjectDirectory directory)
+        {
+            Childs.Add(new ProjectFolderViewModel(directory));
+        }
+
+        public void AddFile(IProjectFile file)
+        {
+            Childs.Add(new ProjectExplorerFileViewModel(file));
+        }
+    }
+
+    public class ProjectExplorerFileViewModel : ProjectEntryViewModel
+    {
+        private IProjectFile _file;
+
+        public ProjectExplorerFileViewModel(IProjectFile file)
+            : base(file)
+        {
+            _file = file;
         }
     }
 }

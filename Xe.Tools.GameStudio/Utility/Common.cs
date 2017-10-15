@@ -1,4 +1,5 @@
 ﻿using Xe.Tools.GameStudio.Models;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.GameStudio.Utility
 {
@@ -11,14 +12,14 @@ namespace Xe.Tools.GameStudio.Utility
         {
         }
 
-        internal static void ProjectBuild(Project project, string outputFolder)
+        internal static void ProjectBuild(IProject project, string outputFolder)
         {
             var builder = new Builder.Builder(project, outputFolder);
             builder.OnProgress += Asd_OnProgress;
             builder.Build();
         }
 
-        internal static void ProjectClean(Project project, string outputFolder)
+        internal static void ProjectClean(IProject project, string outputFolder)
         {
             var builder = new Builder.Builder(project, outputFolder);
             builder.OnProgress += Asd_OnProgress;

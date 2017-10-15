@@ -15,7 +15,9 @@ namespace Xe.Tools.Modules
         public string InputWorkingPath => Init.InputPath;
         public string OutputWorkingPath => Init.OutputPath;
 
-        public Tuple<string, string>[] Parameters => Init.Parameters;
+        public Tuple<string, string>[] Parameters => Init.Parameters
+            .Select(x => new Tuple<string, string>(x.Key, x.Value))
+            .ToArray();
         public bool IsValid { get; private set; }
         public IEnumerable<string> InputFileNames { get; private set; }
         public IEnumerable<string> OutputFileNames { get; private set; }

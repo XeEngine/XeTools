@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System.Drawing;
 using System.IO;
 using Xe.Tools.GameStudio.Models;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.GameStudio.Utility
 {
@@ -38,12 +38,12 @@ namespace Xe.Tools.GameStudio.Utility
             set => Properties.Settings.Default.OutputPageHeight = value;
         }
 
-        private static string GetProjectConfigurationFileName(Project project)
+        private static string GetProjectConfigurationFileName(IProject project)
         {
-            return Path.Combine(project.ProjectPath, project.FileName + ".config");
+            return project.FullPath + ".config";
         }
 
-        public static ProjectConfiguration GetProjectConfiguration(Project project)
+        public static ProjectConfiguration GetProjectConfiguration(IProject project)
         {
             var strFile = GetProjectConfigurationFileName(project);
             if (!File.Exists(strFile))
@@ -57,7 +57,7 @@ namespace Xe.Tools.GameStudio.Utility
             }
         }
 
-        public static void SaveProjectConfiguration(Project project, ProjectConfiguration settings)
+        public static void SaveProjectConfiguration(IProject project, ProjectConfiguration settings)
         {
             var strFile = GetProjectConfigurationFileName(project);
             using (var file = new FileStream(strFile, FileMode.Create, FileAccess.Write))

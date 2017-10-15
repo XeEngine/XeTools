@@ -192,46 +192,6 @@ namespace Xe.Tools.GameStudio.Utility
         
         public void CreateFile(string fileName, Module module, bool deleteExisting = false)
         {
-            Delete(GetNodeFromCurrentDirectory(fileName), deleteExisting);
-
-            var treeViewItem = TreeView.GetSelectedItem();
-            var node = SelectedNode;
-            if (!node.IsDirectory)
-            {
-                treeViewItem = treeViewItem.GetParent();
-                node = treeViewItem.GetNode();
-            }
-
-            var fullPath = Path.Combine(node.GetFullPath(Container, Project), fileName);
-            var directoryPath = Path.GetDirectoryName(fullPath);
-            if (!Directory.Exists(directoryPath))
-                Directory.CreateDirectory(directoryPath);
-
-            // TODO create a new file with the structure of specified module
-            using (var writer = new StreamWriter(fullPath))
-                writer.WriteLine("{}");
-
-            // Create the project item
-            var item = new Project.Item()
-            {
-                Type = module.Name,
-                Parent = Container
-            };
-            var newNode = AddNodeToNode(node, fileName, item);
-            item.Input = newNode.Path.Replace('\\', '/');
-            Container.Items.Add(item);
-
-            // Add the item to the tree
-            treeViewItem.Items.Add(new TreeViewItem()
-            {
-                Header = new HeaderModel
-                {
-                    Name = newNode.Name,
-                    Icon = Icons.Document,
-                    TextColor = TreeView.Foreground
-                },
-                Tag = newNode
-            });
         }
 
         public void AddFile(string filePath)

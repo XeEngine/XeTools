@@ -90,7 +90,7 @@ namespace Xe.Tools.GameStudio.ViewModels
             }
         }
 
-        public string RealPath => Path.Combine(_vm.Project?.Path ?? ".", FilePath ?? DirectoryPath ?? ".");
+        public string RealPath => Path.Combine(_vm.Project?.WorkingDirectory ?? ".", FilePath ?? DirectoryPath ?? ".");
 
         public OpenContainingFolderCommand OpenContainingFolderCommand { get; } = new OpenContainingFolderCommand();
 
@@ -109,10 +109,11 @@ namespace Xe.Tools.GameStudio.ViewModels
             _vm.OnSelectProjectEntry -= OnSelectProjectEntry;
         }
 
-        private void OnSelectProjectEntry(object sender, IProjectEntry project)
+        private void OnSelectProjectEntry(object sender, ProjectEntryViewModel projectEntry)
         {
-            File = project as IProjectFile;
-            Directory = project as IProjectDirectory;
+            var entry = projectEntry.Entry;
+            File = entry as IProjectFile;
+            Directory = entry as IProjectDirectory;
             OnPropertyChanged(nameof(RealPath));
         }
     }

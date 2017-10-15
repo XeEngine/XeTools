@@ -13,9 +13,19 @@ namespace Xe.Tools.Projects
         string Name { get; set; }
 
         /// <summary>
+        /// Name of project's file
+        /// </summary>
+        string FileName { get; }
+
+        /// <summary>
         /// Where the project is located
         /// </summary>
-        string Path { get; }
+        string WorkingDirectory { get; }
+
+        /// <summary>
+        /// Full path of project's file
+        /// </summary>
+        string FullPath { get; }
 
         /// <summary>
         /// Short name of the project

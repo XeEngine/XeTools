@@ -53,8 +53,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\OpenContainingFolderCommand.cs" />
+    <Compile Include="Commands\ProjectBuildCommand.cs" />
+    <Compile Include="Commands\ProjectCleanCommand.cs" />
     <Compile Include="Commands\ProjectOpenCommand.cs" />
+    <Compile Include="Commands\ProjectOpenFileCommand.cs" />
+    <Compile Include="Commands\WindowCloseCommand.cs" />
+    <Compile Include="Commands\OpenContainingFolderCommand.cs" />
+    <Compile Include="Commands\ProjectAddFileCommand.cs" />
+    <Compile Include="Commands\ProjectAddFolderCommand.cs" />
+    <Compile Include="Commands\ProjectCreateFileCommand.cs" />
+    <Compile Include="Commands\ProjectRemoveEntryCommand.cs" />
+    <Compile Include="Commands\ProjectRunCommand.cs" />
     <Compile Include="Commands\ProjectSaveCommand.cs" />
     <Compile Include="ContainersManager.xaml.cs">
       <DependentUpon>ContainersManager.xaml</DependentUpon>
@@ -84,20 +93,19 @@
     <Compile Include="ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\RecentProjectSettingsService.cs" />
     <Compile Include="Utility\Brushes.cs" />
     <Compile Include="Utility\Common.cs" />
     <Compile Include="Utility\Globals.cs" />
     <Compile Include="Utility\Helper.cs" />
     <Compile Include="Utility\Icons.cs" />
+    <Compile Include="Utility\ProjectUtility.cs" />
     <Compile Include="Utility\ResourceManager.cs" />
     <Compile Include="Utility\Settings.cs" />
     <Compile Include="ViewModels\GameStudioViewModel.cs" />
     <Compile Include="ViewModels\ItemPropertiesViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\OuputMessagesViewModel.cs" />
-    <Compile Include="ViewModels\ProjectExplorerContainerViewModel.cs" />
-    <Compile Include="ViewModels\ProjectExplorerFileViewModel.cs" />
-    <Compile Include="ViewModels\ProjectExplorerFolderViewModel.cs" />
     <Compile Include="ViewModels\ProjectExplorerViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Page Include="ContainersManager.xaml">

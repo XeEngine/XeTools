@@ -11,5 +11,26 @@
         <ResourceDictionary Source="DarkTheme.GroupBox.xaml"/>
         <ResourceDictionary Source="DarkTheme.ComboBox.xaml"/>
         <ResourceDictionary Source="DarkTheme.ComboBoxItem.xaml"/>-->
+
     </ResourceDictionary.MergedDictionaries>
+    
+    <Style TargetType="Button">
+        <Style.Resources>
+            <Style TargetType="Image">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.5" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.5" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Style.Resources>
+    </Style>
+
 </ResourceDictionary>

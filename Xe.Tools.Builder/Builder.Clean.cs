@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Builder
 {
@@ -11,18 +10,15 @@ namespace Xe.Tools.Builder
     {
         public void Clean()
         {
-            OnProgress?.Invoke($"Cleaning {Project.FileName}...", 0, 1, false);
+            OnProgress?.Invoke($"Cleaning {Project.Name}...", 0, 1, false);
 
-            var entries = new List<Entry>();
-            foreach (var container in Project.Containers)
-            {
-                entries.AddRange(container.Items.Select(item => new Entry()
+            var entries = Project.GetFiles()
+                .Select(x => new Entry()
                 {
                     Project = Project,
-                    Container = container,
-                    Item = item
-                }));
-            }
+                    ProjectFile = x
+                })
+                .ToList();
 
             var dispatcher = new Dispatcher<Entry>(entries);
             dispatcher.Process((e) => CleanEntryAsync(e, OutputFolder));
@@ -39,8 +35,8 @@ namespace Xe.Tools.Builder
         }
         private void CleanEntry(Entry entry, string outputFolder)
         {
-            var item = entry.Item;
-            var type = item.Type;
+            var file = entry.ProjectFile;
+            var type = file.Format;
             if (!Modules.TryGetValue(type, out var module))
                 return;
 
@@ -49,29 +45,26 @@ namespace Xe.Tools.Builder
             {
                 moduleInstance = module.CreateInstance(new Modules.ModuleInit()
                 {
-                    FileName = Path.Combine(entry.Container.Name, item.Input),
-                    OutputFileName = item.Output != null ? Path.Combine(entry.Container.Name, item.Output) : null,
-                    Parameters = item.Parameters.ToArray(),
-                    InputPath = entry.Project.ProjectPath,
-                    OutputPath = outputFolder
+                    FileName = file.Name,
+                    OutputFileName = null,
+                    Parameters = file.Parameters.ToArray(),
+                    InputPath = file.FullPath,
+                    OutputPath = Path.Combine(outputFolder, file.Path)
                 });
             }
             catch (Exception e)
             {
-                Log.Error($"Module {type} initialization exception on {item.Input}: {e.Message}");
+                Log.Error($"Module {type} initialization exception on {file.Path}: {e.Message}");
                 return;
             }
 
-            string output = item.Output;
-            if (string.IsNullOrEmpty(output))
-                output = Path.Combine(Path.GetDirectoryName(item.Input), Path.GetFileNameWithoutExtension(item.Input));
             try
             {
                 moduleInstance.Clean();
             }
             catch (Exception e)
             {
-                Log.Error($"Module {type} export exception on {item.Input}: {e.Message}");
+                Log.Error($"Module {type} export exception on {file.Path}: {e.Message}");
                 return;
             }
         }

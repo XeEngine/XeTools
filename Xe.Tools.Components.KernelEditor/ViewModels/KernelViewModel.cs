@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Xe.Game.Kernel;
 using Xe.Game.Messages;
+using Xe.Tools.Projects;
 using Xe.Tools.Services;
 using static Xe.Tools.Project;
 
@@ -15,7 +16,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         public ProjectService ProjectService { get; private set; }
         public MessageService MessageService { get; private set; }
 
-        public Item Item { get; private set; }
+        public IProjectFile ProjectFile { get; private set; }
 
         public KernelData Kernel { get; private set; }
         private string WorkingFileName { get; set; }
@@ -26,13 +27,13 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         public TabPlayersViewModel Players { get; private set; }
         public TabMessagesViewModel Messages { get; private set; }
 
-        public KernelViewModel(Project project, Container container, Item item)
+        public KernelViewModel(IProject project, IProjectFile file)
         {
-            ProjectService = new ProjectService(project, container);
+            ProjectService = new ProjectService(project);
             MessageService = new MessageService(ProjectService);
-            Item = item;
+            ProjectFile = file;
 
-            WorkingFileName = Path.Combine(ProjectService.WorkingDirectory, item.Input);
+            WorkingFileName = file.FullPath;
 
             try
             {
@@ -49,7 +50,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             }
             catch (Exception e)
             {
-                Log.Error($"Error while opening {Item.Input}: {e.Message}");
+                Log.Error($"Error while opening {ProjectFile.Path}: {e.Message}");
             }
             
             Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
@@ -73,7 +74,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             }
             catch (Exception e)
             {
-                Log.Error($"Error while saving changes on {Item.Input}: {e.Message}");
+                Log.Error($"Error while saving changes on {ProjectFile.Path}: {e.Message}");
             }
         }
     }

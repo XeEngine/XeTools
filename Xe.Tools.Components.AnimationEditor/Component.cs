@@ -20,12 +20,12 @@ namespace Xe.Tools.Components.AnimationEditor
 
         public void Show()
         {
-            var dialog = new Windows.WindowMain(Properties.Project, Properties.Container, Properties.Item);
+            var dialog = new Windows.WindowMain(Properties.Project, Properties.File);
             dialog.Show();
         }
         public bool? ShowDialog()
         {
-            var dialog = new Windows.WindowMain(Properties.Project, Properties.Container, Properties.Item);
+            var dialog = new Windows.WindowMain(Properties.Project, Properties.File);
             return dialog.ShowDialog();
         }
         public void ShowSettings()

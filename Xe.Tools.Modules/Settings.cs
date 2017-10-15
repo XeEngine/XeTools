@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Xe.Tools.Projects;
 
 namespace Xe.Tools.Modules
 {
@@ -12,9 +10,9 @@ namespace Xe.Tools.Modules
     {
         private string _fileName;
 
-        public static async Task<T> OpenAsync(Project project, string moduleName)
+        public static async Task<T> OpenAsync(IProject project, string moduleName)
         {
-            return await OpenAsync(Path.Combine(project.ProjectPath, ".settings/modules/"), moduleName);
+            return await OpenAsync(Path.Combine(project.WorkingDirectory, ".settings/modules/"), moduleName);
         }
         public static async Task<T> OpenAsync(string path, string moduleName)
         {
