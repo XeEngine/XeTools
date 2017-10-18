@@ -1,5 +1,4 @@
-﻿using TiledSharp;
-using Xe.Tools.Tilemap;
+﻿using Xe.Tools.Tilemap;
 
 namespace Xe.Game.Tilemaps
 {
@@ -9,12 +8,12 @@ namespace Xe.Game.Tilemaps
         {
             internal ITile[,] Tiles { get; private set; }
 
-            internal TmxLayer Layer { get; private set; }
+            internal Tiled.Layer Layer { get; private set; }
 
             public string Name => Layer.Name;
             public bool Visible => Layer.Visible;
-            public int Width { get; private set; }
-            public int Height { get; private set; }
+            public int Width => Layer.Width;
+            public int Height => Layer.Height;
             public int Index { get; private set; }
 
             public ITile GetTile(int x, int y)
@@ -22,29 +21,21 @@ namespace Xe.Game.Tilemaps
                 return Tiles[x, y];
             }
 
-            internal CLayer(TilemapTiled map, TmxLayer layer)
+            internal CLayer(TilemapTiled map, Tiled.Layer layer)
             {
                 Layer = layer;
-                Width = map.Size.Width;
-                Height = map.Size.Height;
                 Index = GetIndexFromName(layer.Name);
 
                 Tiles = new Tile[Width, Height];
-                foreach (var tile in Layer.Tiles)
+                var srcData = layer.Data;
+                var dstData = Tiles;
+                for (int y = 0; y < Height; y++)
                 {
-                    int index = -1;
-                    int gid = 0;
-                    var myTile = new Tile(tile);
-                    foreach (var tileset in map.Map.Tilesets)
+                    for (int x = 0; x < Width; x++)
                     {
-                        if (tileset.FirstGid >= tile.Gid)
-                            break;
-                        index++;
-                        gid = tileset.FirstGid;
+                        var gid = srcData[x, y];
+                        dstData[x, y] = new Tile(0, gid);
                     }
-                    myTile.Index = tile.Gid - gid;
-                    myTile.Tileset = index;
-                    Tiles[tile.X, tile.Y] = myTile;
                 }
             }
 

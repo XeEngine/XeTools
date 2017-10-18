@@ -24,7 +24,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public IEnumerable<Skill> Skills { get; private set; }
 
-        public IEnumerable<string> AnimationFileNames => AnimationService.AnimationData;
+        public IEnumerable<string> AnimationFileNames => AnimationService.AnimationFilesData;
 
         public TabPlayerSkillsUsage PlayerSkillUsage { get; private set; }
 

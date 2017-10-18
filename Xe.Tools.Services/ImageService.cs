@@ -13,6 +13,10 @@ namespace Xe.Tools.Services
     {
         public byte r, g, b, a;
     }
+
+    /// <summary>
+    /// Manage opening, saving and operations on images
+    /// </summary>
     public static class ImageService
     {
         public static BitmapFrame Open(string fileName)

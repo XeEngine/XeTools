@@ -66,9 +66,10 @@ namespace Tiled
 
         public PropertiesDictionary Properties { get; }
 
-        public List<Group> Groups { get; }
-        public List<Layer> Layers { get; }
-        public List<ObjectGroup> ObjectGroups { get; }
+        public List<IEntry> Entries { get; }
+        public IEnumerable<Group> Groups => Entries.Where(x => x is Group).Select(x => x as Group);
+        public IEnumerable<Layer> Layers => Entries.Where(x => x is Layer).Select(x => x as Layer);
+        public IEnumerable<ObjectGroup> ObjectGroups => Entries.Where(x => x is ObjectGroup).Select(x => x as ObjectGroup);
 
         public Group(Map map, XElement xElement)
         {
@@ -77,15 +78,23 @@ namespace Tiled
 
             Properties = new PropertiesDictionary(_xElement);
 
-            Groups = xElement.Elements("group")
-                .Select(x => new Group(map, x))
-                .ToList();
-            Layers = xElement.Elements("layer")
-                .Select(x => new Layer(map, x))
-                .ToList();
-            ObjectGroups = xElement.Elements("objectgroup")
-                .Select(x => new ObjectGroup(x))
-                .ToList();
+            var entries = new List<IEntry>();
+            foreach (var element in xElement.Elements())
+            {
+                switch (element.Name.LocalName)
+                {
+                    case "group":
+                        entries.Add(new Group(map, element));
+                        break;
+                    case "layer":
+                        entries.Add(new Layer(map, element));
+                        break;
+                    case "objectgroup":
+                        entries.Add(new ObjectGroup(element));
+                        break;
+                }
+            }
+            Entries = entries;
         }
 
         public void SaveChanges()

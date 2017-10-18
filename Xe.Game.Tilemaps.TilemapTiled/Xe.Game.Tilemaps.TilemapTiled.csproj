@@ -33,9 +33,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Drawing" />
-    <Reference Include="TiledSharp, Version=0.15.5889.20321, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TiledSharp.0.15\lib\TiledSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,9 +43,10 @@
     <Compile Include="TilemapTiled.Tileset.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Tiled\Tiled.csproj">
+      <Project>{2632a519-f583-438e-8568-f055b192a726}</Project>
+      <Name>Tiled</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{4F3923B8-ACAF-415A-8971-69ACE86E735A}</Project>
       <Name>Xe.Game</Name>

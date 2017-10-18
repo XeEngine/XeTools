@@ -1,5 +1,4 @@
-﻿using TiledSharp;
-using Xe.Tools.Tilemap;
+﻿using Xe.Tools.Tilemap;
 
 namespace Xe.Game.Tilemaps
 {
@@ -7,18 +6,20 @@ namespace Xe.Game.Tilemaps
     {
         internal class Tile : ITile
         {
-            private TmxLayerTile _tile;
-
             public int Tileset { get; set; }
             public int Index { get; set; }
             public int PaletteIndex { get; set; }
-            public bool IsFlippedX => _tile.HorizontalFlip;
-            public bool IsFlippedY => _tile.VerticalFlip;
+            public bool IsFlippedX { get; }
+            public bool IsFlippedY { get; }
             public bool IsPriority => false;
 
-            internal Tile(TmxLayerTile tile)
+            internal Tile(int tileset, uint tile)
             {
-                _tile = tile;
+                Tileset = tileset;
+                Index = (int)(tile & Tiled.Layer.INDEX_FLAG);
+                PaletteIndex = 0;
+                IsFlippedX = (tile & Tiled.Layer.FLIPPED_HORIZONTALLY_FLAG) != 0;
+                IsFlippedY = (tile & Tiled.Layer.FLIPPED_VERTICALLY_FLAG) != 0;
             }
         }
     }

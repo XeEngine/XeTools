@@ -67,11 +67,11 @@ namespace Tiled
         public int NextObjectId { get; set; }
 
         public PropertiesDictionary Properties { get; private set; }
-
-
-        public List<Group> Groups { get; }
-        public List<Layer> Layers { get; }
-        public List<ObjectGroup> ObjectGroups { get; }
+        
+        public List<IEntry> Entries { get; }
+        public IEnumerable<Group> Groups => Entries.Where(x => x is Group).Select(x => x as Group);
+        public IEnumerable<Layer> Layers => Entries.Where(x => x is Layer).Select(x => x as Layer);
+        public IEnumerable<ObjectGroup> ObjectGroups => Entries.Where(x => x is ObjectGroup).Select(x => x as ObjectGroup);
 
 
         public Map(string fileName)
@@ -97,16 +97,24 @@ namespace Tiled
                 BackgroundColor = backgroundColor;
 
                 Properties = new PropertiesDictionary(_xMap);
-                
-                Groups = _xMap.Elements("group")
-                    .Select(x => new Group(this, x))
-                    .ToList();
-                Layers = _xMap.Elements("layer")
-                    .Select(x => new Layer(this, x))
-                    .ToList();
-                ObjectGroups = _xMap.Elements("objectgroup")
-                    .Select(x => new ObjectGroup(x))
-                    .ToList();
+
+                var entries = new List<IEntry>();
+                foreach (var element in _xMap.Elements())
+                {
+                    switch (element.Name.LocalName)
+                    {
+                        case "group":
+                            entries.Add(new Group(this, element));
+                            break;
+                        case "layer":
+                            entries.Add(new Layer(this, element));
+                            break;
+                        case "objectgroup":
+                            entries.Add(new ObjectGroup(element));
+                            break;
+                    }
+                }
+                Entries = entries;
             }
         }
 

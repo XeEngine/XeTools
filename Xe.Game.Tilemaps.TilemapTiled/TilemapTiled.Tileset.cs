@@ -1,5 +1,4 @@
-﻿using TiledSharp;
-using Xe.Tools.Tilemap;
+﻿using Xe.Tools.Tilemap;
 
 namespace Xe.Game.Tilemaps
 {
@@ -7,17 +6,21 @@ namespace Xe.Game.Tilemaps
     {
         internal class CTileset : ITileset
         {
-            internal TmxTileset Tileset { get; private set; }
+            //internal TmxTileset Tileset { get; private set; }
             public string ImagePath { get; private set; }
-            public int TileWidth => Tileset.TileWidth;
+            /*public int TileWidth => Tileset.TileWidth;
             public int TileHeight => Tileset.TileHeight;
             public int TilesPerRow => Tileset.Columns ?? 0;
-            public int TilesCount => Tileset.TileCount ?? 0;
+            public int TilesCount => Tileset.TileCount ?? 0;*/
+            public int TileWidth => 16;
+            public int TileHeight => 16;
+            public int TilesPerRow => 0;
+            public int TilesCount => 0;
 
-			internal CTileset(TmxTileset tileset)
+            internal CTileset(/*TmxTileset tileset*/)
             {
-                Tileset = tileset;
-                ImagePath = Tileset?.Image?.Source;
+                /*Tileset = tileset;
+                ImagePath = Tileset?.Image?.Source;*/
             }
         }
     }

@@ -5,28 +5,35 @@ using Xe.Tools.Projects;
 
 namespace Xe.Tools.Services
 {
+    /// <summary>
+    /// Manages animation files from a project
+    /// </summary>
     public class AnimationService
     {
-        public ProjectService ProjectService { get; private set; }
+        public ProjectService ProjectService { get; }
 
-        public IEnumerable<IProjectFile> ProjectFiles { get; private set; }
+        public IEnumerable<IProjectFile> ProjectFiles => ProjectService.Items.Where(x => x.Format == "animation");
 
-        public IEnumerable<string> AnimationData => ProjectFiles.Select(x =>
+        public IEnumerable<string> AnimationFilesData => ProjectFiles.Select(x =>
         {
             var strName = x.Name;
             var extIndex = strName.IndexOf(".json");
             return strName.Substring(0, extIndex);
         });
 
-        internal AnimationService(ProjectService projectService)
+        public AnimationService(ProjectService projectService)
         {
             ProjectService = projectService;
-            ProjectFiles = ProjectService.Items.Where(x => x.Format == "animation");
+        }
+
+        public AnimationData GetAnimationData(string fileName)
+        {
+            return GetAnimationData(ProjectFiles.SingleOrDefault(x => x.Name == fileName));
         }
 
         public AnimationData GetAnimationData(IProjectFile item)
         {
-            return ProjectService.DeserializeItem<AnimationData>(item);
+            return ProjectService?.DeserializeItem<AnimationData>(item);
         }
 
         public IEnumerable<string> GetAnimationDefinitions(string animationData)

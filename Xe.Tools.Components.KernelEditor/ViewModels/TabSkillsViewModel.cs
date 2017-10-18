@@ -32,7 +32,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         /// <summary>
         /// Used to display the animation files's list
         /// </summary>
-        public IEnumerable<string> AnimationFileNames => _animationService.AnimationData;
+        public IEnumerable<string> AnimationFileNames => _animationService.AnimationFilesData;
 
         /// <summary>
         /// Used to display the DamageFormuls enumeration values
