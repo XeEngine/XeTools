@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xe.Game.Drawing</RootNamespace>
     <AssemblyName>Xe.Game.Drawing</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -42,11 +42,12 @@
       <Name>Xe.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
-      <Project>{4f3923b8-acaf-415a-8971-69ace86e735a}</Project>
+      <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

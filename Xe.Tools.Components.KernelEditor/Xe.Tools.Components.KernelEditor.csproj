@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Xe.Tools.Components.KernelEditor</RootNamespace>
     <AssemblyName>Xe.Tools.Components.KernelEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -38,6 +38,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -159,7 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
-      <Project>{4F3923B8-ACAF-415A-8971-69ACE86E735A}</Project>
+      <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">

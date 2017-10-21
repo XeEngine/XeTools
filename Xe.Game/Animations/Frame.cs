@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Drawing;
 using static Xe.Math;
 
 namespace Xe.Game.Animations

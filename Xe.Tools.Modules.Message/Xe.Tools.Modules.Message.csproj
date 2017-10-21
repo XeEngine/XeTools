@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xe.Tools.Modules</RootNamespace>
     <AssemblyName>Xe.Tools.Modules.Message</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
-      <Project>{4f3923b8-acaf-415a-8971-69ace86e735a}</Project>
+      <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
@@ -51,6 +51,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>

@@ -102,18 +102,6 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
             AnimationData.AnimationDefinitions.AddRange(animationMapping.AnimationDefs);*/
         }
 
-        private void MenuFileImportOldAnimation_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.XeAnimation);
-            if (dialog.ShowDialog() == true)
-            {
-                var fileName = dialog.FileName;
-                var oldAnim = new libTools.Anim.AnimationsGroup(fileName);
-                Utilities.ImportOldAnimation(AnimationData, oldAnim);
-                DataContext = new AnimationViewModel(AnimationData, BasePath);
-            }
-        }
-
         private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ViewModel.ViewWidth = e.NewSize.Width;

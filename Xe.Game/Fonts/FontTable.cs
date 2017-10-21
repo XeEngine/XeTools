@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace Xe.Game.Fonts
+﻿namespace Xe.Game.Fonts
 {
     public class FontTable
     {

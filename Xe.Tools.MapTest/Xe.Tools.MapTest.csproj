@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xe.Tools.MapTest</RootNamespace>
     <AssemblyName>Xe.Tools.MapTest</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -35,6 +35,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -71,11 +72,11 @@
       <Name>Xe.Game.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
-      <Project>{8186cef3-fb20-4bce-a838-80742ccd0eea}</Project>
+      <Project>{891aebe7-a248-4ef3-9237-50eb124e74de}</Project>
       <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
-      <Project>{4f3923b8-acaf-415a-8971-69ace86e735a}</Project>
+      <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">

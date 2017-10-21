@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xe.Tools.Modules</RootNamespace>
     <AssemblyName>Xe.Tools.Modules.Tiledmap</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -46,12 +46,8 @@
       <Name>Xe.Game.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
-      <Project>{8186cef3-fb20-4bce-a838-80742ccd0eea}</Project>
+      <Project>{891AEBE7-A248-4EF3-9237-50EB124E74DE}</Project>
       <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
-      <Project>{4F3923B8-ACAF-415A-8971-69ACE86E735A}</Project>
-      <Name>Xe.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>

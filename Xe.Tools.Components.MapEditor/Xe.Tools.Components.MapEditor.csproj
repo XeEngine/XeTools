@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Xe.Tools.Components.MapEditor</RootNamespace>
     <AssemblyName>Xe.Tools.Components.MapEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="System" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -101,11 +102,11 @@
       <Name>Tiled</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
-      <Project>{8186cef3-fb20-4bce-a838-80742ccd0eea}</Project>
+      <Project>{891aebe7-a248-4ef3-9237-50eb124e74de}</Project>
       <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
-      <Project>{4F3923B8-ACAF-415A-8971-69ACE86E735A}</Project>
+      <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">
