@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Tiled
 {
-    public class Layer : IEntry
+    public class Layer : ILayerEntry
     {
         // Bits on the far end of the 32-bit global tile ID are used for tile flags
         public const uint FLIPPED_HORIZONTALLY_FLAG = 0x80000000;

@@ -1,6 +1,4 @@
-﻿using Xe.Tools.Tilemap;
-
-namespace Xe.Game.Tilemaps
+﻿namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled
     {

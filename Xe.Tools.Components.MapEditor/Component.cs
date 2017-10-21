@@ -18,6 +18,7 @@ namespace Xe.Tools.Components.MapEditor
         public MainWindow CreateMainWindow()
         {
             var vm = MapEditorViewModel.Instance;
+            vm.Project = Properties.Project;
             vm.OpenTileMap(Properties.File.FullPath);
             return new MainWindow(vm);
         }

@@ -1,26 +1,26 @@
-﻿using Xe.Tools.Tilemap;
-
-namespace Xe.Game.Tilemaps
+﻿namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled
     {
         internal class CTileset : ITileset
         {
-            //internal TmxTileset Tileset { get; private set; }
-            public string ImagePath { get; private set; }
-            /*public int TileWidth => Tileset.TileWidth;
-            public int TileHeight => Tileset.TileHeight;
-            public int TilesPerRow => Tileset.Columns ?? 0;
-            public int TilesCount => Tileset.TileCount ?? 0;*/
-            public int TileWidth => 16;
-            public int TileHeight => 16;
-            public int TilesPerRow => 0;
-            public int TilesCount => 0;
+            private Tiled.Tileset _tileset;
 
-            internal CTileset(/*TmxTileset tileset*/)
+            public string ImagePath => _tileset.FullImagePath;
+
+            public int StartId => _tileset.FirstGid;
+
+            public int TileWidth => _tileset.TileWidth;
+
+            public int TileHeight => _tileset.TileHeight;
+
+            public int TilesPerRow => _tileset.Columns;
+
+            public int TilesCount => _tileset.TileCount;
+
+            internal CTileset(Tiled.Tileset tileset)
             {
-                /*Tileset = tileset;
-                ImagePath = Tileset?.Image?.Source;*/
+                _tileset = tileset;
             }
         }
     }

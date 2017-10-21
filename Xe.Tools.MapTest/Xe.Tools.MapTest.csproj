@@ -50,6 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tiled\Tiled.csproj">
+      <Project>{2632A519-F583-438E-8568-F055B192A726}</Project>
+      <Name>Tiled</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing.DirectX\Xe.Drawing.DirectX.csproj">
       <Project>{66349c96-4f83-4af1-96f7-56716460ae6e}</Project>
       <Name>Xe.Drawing.DirectX</Name>

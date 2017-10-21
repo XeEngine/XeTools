@@ -36,7 +36,6 @@ namespace Xe.Tools.Components.MapEditor.Windows
         public void Initialize(MapEditorViewModel vm)
         {
             DataContext = new MainWindowViewModel(vm);
-            tileMap = tileMap;
             //tileMap?.DataContext = new TilemapViewModel(ViewModel.MapEditor);
         }
     }

@@ -37,6 +37,10 @@
     <Compile Include="Tiledmap.Exporter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tiled\Tiled.csproj">
+      <Project>{2632A519-F583-438E-8568-F055B192A726}</Project>
+      <Name>Tiled</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
       <Project>{356875b9-86c1-47cb-942f-1e8413eec42d}</Project>
       <Name>Xe.Game.Drawing</Name>

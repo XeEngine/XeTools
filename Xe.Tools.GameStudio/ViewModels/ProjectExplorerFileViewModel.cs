@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xe.Tools.Projects;
+
+namespace Xe.Tools.GameStudio.ViewModels
+{
+    public class ProjectExplorerFileViewModel :
+        ProjectExplorerViewModel.ProjectExplorerItemViewModel
+    {
+        private IProjectFile _file;
+
+        public ProjectExplorerFileViewModel(IProjectFile file)
+            : base(file)
+        {
+            _file = file;
+        }
+    }
+}

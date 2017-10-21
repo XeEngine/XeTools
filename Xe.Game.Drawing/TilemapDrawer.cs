@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xe.Drawing;
+using Xe.Game.Tilemaps;
 
 namespace Xe.Tools.Tilemap
 {
@@ -23,11 +24,8 @@ namespace Xe.Tools.Tilemap
 
         public void DrawLayerIndex(IDrawing drawing, int index)
         {
-            foreach (var layer in Map.Layers)
+            foreach (var layer in Map.Layers.Where(x => x is ILayerTilemap).Select(x => x as ILayerTilemap))
             {
-                if (layer.Index != index)
-                    continue;
-
                 Rectangle src = new Rectangle(0, 0, 0, 0);
                 for (int j = 0; j < layer.Height; j++)
                 {

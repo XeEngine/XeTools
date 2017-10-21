@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Tiled
 {
-    public class ObjectGroup : IEntry
+    public class ObjectGroup : ILayerEntry
     {
         private XElement _xElement;
 

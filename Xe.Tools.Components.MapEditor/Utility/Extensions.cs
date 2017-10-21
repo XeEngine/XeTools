@@ -12,15 +12,13 @@ using Xe.Tools.Services;
 
 namespace Xe.Tools.Components.MapEditor
 {
-    public enum Direction { Unspecified, Up, Right, Down, Left }
-
     namespace Utility
     {
         public static class Extensions
         {
             public static void DrawAnimation(this DrawingContext dc, FramesGroup framesGroup, double x, double y)
             {
-                var frame = framesGroup.Frames.SingleOrDefault();
+                var frame = framesGroup.Frames.FirstOrDefault();
                 if (frame != null)
                 {
                     var src = frame.Source;

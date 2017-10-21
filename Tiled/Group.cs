@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Tiled
 {
-    public class Group : IEntry
+    public class Group : ILayerEntry
     {
         private Map _map;
         private XElement _xElement;
@@ -66,7 +66,7 @@ namespace Tiled
 
         public PropertiesDictionary Properties { get; }
 
-        public List<IEntry> Entries { get; }
+        public List<ILayerEntry> Entries { get; }
         public IEnumerable<Group> Groups => Entries.Where(x => x is Group).Select(x => x as Group);
         public IEnumerable<Layer> Layers => Entries.Where(x => x is Layer).Select(x => x as Layer);
         public IEnumerable<ObjectGroup> ObjectGroups => Entries.Where(x => x is ObjectGroup).Select(x => x as ObjectGroup);
@@ -78,7 +78,7 @@ namespace Tiled
 
             Properties = new PropertiesDictionary(_xElement);
 
-            var entries = new List<IEntry>();
+            var entries = new List<ILayerEntry>();
             foreach (var element in xElement.Elements())
             {
                 switch (element.Name.LocalName)

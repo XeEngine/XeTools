@@ -40,6 +40,7 @@
     <Compile Include="Animations\FrameRef.cs" />
     <Compile Include="Animations\Hitbox.cs" />
     <Compile Include="Animations\HitboxEx.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="Fonts\Font.cs" />
     <Compile Include="Fonts\FontCharset.cs" />
     <Compile Include="Fonts\FontTable.cs" />
@@ -53,13 +54,15 @@
     <Compile Include="Kernel\SkillUsage.cs" />
     <Compile Include="Kernel\StatisticsBase.cs" />
     <Compile Include="Kernel\Enums.cs" />
-    <Compile Include="Maps\Entity.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageContainer.cs" />
     <Compile Include="Messages\Segment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Texture.cs" />
-    <Compile Include="Tilemaps\ILayer.cs" />
+    <Compile Include="Tilemaps\ILayerTilemap.cs" />
+    <Compile Include="Tilemaps\ILayerEntry.cs" />
+    <Compile Include="Tilemaps\ILayerObjects.cs" />
+    <Compile Include="Tilemaps\IObjectEntry.cs" />
     <Compile Include="Tilemaps\ITile.cs" />
     <Compile Include="Tilemaps\ITileMap.cs" />
     <Compile Include="Tilemaps\ITileset.cs" />
@@ -78,6 +81,9 @@
       <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
       <Name>Xe</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Maps\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

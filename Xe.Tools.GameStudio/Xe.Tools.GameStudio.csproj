@@ -208,6 +208,10 @@
       <Project>{3430912e-5e09-44d7-ae8a-528ebdc1458a}</Project>
       <Name>Xe.Tools.Components.KernelEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Components.MapEditor\Xe.Tools.Components.MapEditor.csproj">
+      <Project>{47197a2e-2287-4b30-9adf-ee6921aaf7e9}</Project>
+      <Name>Xe.Tools.Components.MapEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Animation\Xe.Tools.Modules.Animation.csproj">
       <Project>{947776a6-561e-440f-bce8-c38d476ebcb1}</Project>
       <Name>Xe.Tools.Modules.Animation</Name>

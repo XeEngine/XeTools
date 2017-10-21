@@ -1,54 +1,53 @@
-﻿using TiledSharp;
-using Xe.Tools.Tilemap;
-
-namespace Xe.Game.Tilemaps
+﻿namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled
     {
-        internal class CLayer : ILayer
+        internal class CLayerTilemap : ILayerTilemap
         {
             internal ITile[,] Tiles { get; private set; }
 
-            internal TmxLayer Layer { get; private set; }
+            internal Tiled.Layer Layer { get; private set; }
 
-            public string Name => Layer.Name;
-            public bool Visible => Layer.Visible;
-            public int Width { get; private set; }
-            public int Height { get; private set; }
-            public int Index { get; private set; }
+            public string Name
+            {
+                get => Layer.Name;
+                set => Layer.Name = value;
+            }
+
+            public bool Visible
+            {
+                get => Layer.Visible;
+                set => Layer.Visible = value;
+            }
+
+            public int Width => Layer.Width;
+            public int Height => Layer.Height;
+            public int Priority { get; private set; }
 
             public ITile GetTile(int x, int y)
             {
                 return Tiles[x, y];
             }
 
-            internal CLayer(TilemapTiled map, TmxLayer layer)
+            internal CLayerTilemap(TilemapTiled map, Tiled.Layer layer)
             {
                 Layer = layer;
-                Width = map.Size.Width;
-                Height = map.Size.Height;
-                Index = GetIndexFromName(layer.Name);
+                Priority = GetPriorityFromName(layer.Name);
 
                 Tiles = new Tile[Width, Height];
-                foreach (var tile in Layer.Tiles)
+                var srcData = layer.Data;
+                var dstData = Tiles;
+                for (int y = 0; y < Height; y++)
                 {
-                    int index = -1;
-                    int gid = 0;
-                    var myTile = new Tile(tile);
-                    foreach (var tileset in map.Map.Tilesets)
+                    for (int x = 0; x < Width; x++)
                     {
-                        if (tileset.FirstGid >= tile.Gid)
-                            break;
-                        index++;
-                        gid = tileset.FirstGid;
+                        var gid = srcData[x, y];
+                        dstData[x, y] = new Tile(0, gid);
                     }
-                    myTile.Index = tile.Gid - gid;
-                    myTile.Tileset = index;
-                    Tiles[tile.X, tile.Y] = myTile;
                 }
             }
 
-            private int GetIndexFromName(string name)
+            private int GetPriorityFromName(string name)
             {
                 if (name.Length >= 0)
                 {

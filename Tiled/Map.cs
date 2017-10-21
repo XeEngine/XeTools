@@ -68,7 +68,8 @@ namespace Tiled
 
         public PropertiesDictionary Properties { get; private set; }
         
-        public List<IEntry> Entries { get; }
+        public List<Tileset> Tileset { get; }
+        public List<ILayerEntry> Entries { get; }
         public IEnumerable<Group> Groups => Entries.Where(x => x is Group).Select(x => x as Group);
         public IEnumerable<Layer> Layers => Entries.Where(x => x is Layer).Select(x => x as Layer);
         public IEnumerable<ObjectGroup> ObjectGroups => Entries.Where(x => x is ObjectGroup).Select(x => x as ObjectGroup);
@@ -98,11 +99,15 @@ namespace Tiled
 
                 Properties = new PropertiesDictionary(_xMap);
 
-                var entries = new List<IEntry>();
+                var tileset = new List<Tileset>();
+                var entries = new List<ILayerEntry>();
                 foreach (var element in _xMap.Elements())
                 {
                     switch (element.Name.LocalName)
                     {
+                        case "tileset":
+                            tileset.Add(new Tileset(this, element));
+                            break;
                         case "group":
                             entries.Add(new Group(this, element));
                             break;
@@ -114,6 +119,7 @@ namespace Tiled
                             break;
                     }
                 }
+                Tileset = tileset;
                 Entries = entries;
             }
         }

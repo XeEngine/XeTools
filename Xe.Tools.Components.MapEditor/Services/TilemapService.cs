@@ -1,5 +1,4 @@
 ﻿using Xe.Game.Tilemaps;
-using Xe.Tools.Tilemap;
 
 namespace Xe.Tools.Components.MapEditor.Services
 {

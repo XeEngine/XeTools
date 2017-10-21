@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Tiled
 {
-    public interface IEntry
+    public interface ILayerEntry : IEntry
     {
-        string Name { get; set; }
+        bool Visible { get; set; }
     }
 }

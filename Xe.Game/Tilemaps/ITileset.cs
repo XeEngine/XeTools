@@ -1,8 +1,10 @@
-﻿namespace Xe.Tools.Tilemap
+﻿namespace Xe.Game.Tilemaps
 {
     public interface ITileset
     {
         string ImagePath { get; }
+
+        int StartId { get; }
 
         int TileWidth { get; }
 

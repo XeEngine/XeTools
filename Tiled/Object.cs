@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Tiled
 {
-    public class Object : IEntry
+    public class Object : ILayerEntry
     {
         private XElement _xElement;
 
@@ -35,36 +35,36 @@ namespace Tiled
         /// <summary>
         /// The x coordinate of the object in pixels.
         /// </summary>
-        public int X
+        public double X
         {
-            get => (int?)_xElement.Attribute("x") ?? 0;
+            get => (double?)_xElement.Attribute("x") ?? 0;
             set => _xElement.SetAttributeValue("x", value);
         }
 
         /// <summary>
         /// The y coordinate of the object in pixels.
         /// </summary>
-        public int Y
+        public double Y
         {
-            get => (int?)_xElement.Attribute("y") ?? 0;
+            get => (double?)_xElement.Attribute("y") ?? 0;
             set => _xElement.SetAttributeValue("y", value);
         }
 
         /// <summary>
         /// The width of the object in pixels (defaults to 0).
         /// </summary>
-        public int Width
+        public double Width
         {
-            get => (int?)_xElement.Attribute("width") ?? 0;
+            get => (double?)_xElement.Attribute("width") ?? 0;
             set => _xElement.SetAttributeValue("width", value);
         }
 
         /// <summary>
         /// The height of the object in pixels (defaults to 0).
         /// </summary>
-        public int Height
+        public double Height
         {
-            get => (int?)_xElement.Attribute("height") ?? 0;
+            get => (double?)_xElement.Attribute("height") ?? 0;
             set => _xElement.SetAttributeValue("height", value);
         }
 

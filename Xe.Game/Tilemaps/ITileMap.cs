@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Xe.Tools.Tilemap
+namespace Xe.Game.Tilemaps
 {
     public interface ITileMap
     {
@@ -11,6 +11,6 @@ namespace Xe.Tools.Tilemap
 
         List<ITileset> Tilesets { get; }
 
-        List<ILayer> Layers { get; }
+        List<ILayerEntry> Layers { get; }
     }
 }
