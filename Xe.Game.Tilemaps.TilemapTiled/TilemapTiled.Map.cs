@@ -6,10 +6,33 @@ namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled : ITileMap
     {
-        internal Tiled.Map Map { get; }
+        private Tiled.Map Map { get; }
+
+        public string BasePath => Map.BasePath;
 
         public Size Size { get; private set; }
         public Size TileSize { get; private set; }
+
+        public Color BackgroundColor
+        {
+            get
+            {
+                var c = Map.BackgroundColor;
+                return Color.FromArgb(c.a, c.r, c.g, c.b);
+            }
+        }
+
+        public string BgmField
+        {
+            get => GetPropertyValue<string>(Map.Properties);
+            set => SetPropertyValue(Map.Properties, value);
+        }
+
+        public string BgmBattle
+        {
+            get => GetPropertyValue<string>(Map.Properties);
+            set => SetPropertyValue(Map.Properties, value);
+        }
 
         public List<ITileset> Tilesets { get; private set; }
         public List<ILayerEntry> Layers { get; private set; }
@@ -21,7 +44,7 @@ namespace Xe.Game.Tilemaps
             TileSize = new Size(Map.TileWidth, Map.TileHeight);
 
             Tilesets = Map.Tileset
-                .Select(x => (ITileset)new CTileset(x))
+                .Select(x => (ITileset)new Tileset(x))
                 .ToList();
 
             Layers = GetLayers(map.Entries)

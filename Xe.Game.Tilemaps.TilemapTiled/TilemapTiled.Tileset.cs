@@ -2,9 +2,13 @@
 {
     public partial class TilemapTiled
     {
-        internal class CTileset : ITileset
+        public class Tileset : ITileset
         {
             private Tiled.Tileset _tileset;
+
+            public string ExternalTileset => _tileset.Source;
+
+            public string ImageSource => _tileset.Image?.Source ?? null;
 
             public string ImagePath => _tileset.FullImagePath;
 
@@ -18,7 +22,7 @@
 
             public int TilesCount => _tileset.TileCount;
 
-            internal CTileset(Tiled.Tileset tileset)
+            internal Tileset(Tiled.Tileset tileset)
             {
                 _tileset = tileset;
             }

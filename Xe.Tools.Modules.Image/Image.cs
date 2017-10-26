@@ -33,6 +33,8 @@ namespace Xe.Tools.Modules
         {
             var inputFileName = Path.Combine(InputWorkingPath, InputFileName);
             var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
+            if (File.Exists(outputFileName))
+                File.Delete(outputFileName);
             ImageService.MakeTransparent(outputFileName, inputFileName, new Color[]
             {
                 new Color() { r = 255, g = 0, b = 255 },

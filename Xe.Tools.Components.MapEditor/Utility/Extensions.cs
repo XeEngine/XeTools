@@ -22,7 +22,7 @@ namespace Xe.Tools.Components.MapEditor
                 if (frame != null)
                 {
                     var src = frame.Source;
-                    var dstRect = new Rect(x/* - frame.Pivot.X*/, y/* - frame.Pivot.Y*/, src.Width, src.Height);
+                    var dstRect = new Rect(x - frame.Pivot.X, y - frame.Pivot.Y, src.Width, src.Height);
                     var sprite = new CroppedBitmap(framesGroup.Texture,
                         new Int32Rect()
                         {

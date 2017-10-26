@@ -9,6 +9,12 @@ namespace Xe.Game.Tilemaps
 
         Size TileSize { get; }
 
+        Color BackgroundColor { get; }
+
+        string BgmField { get; set; }
+
+        string BgmBattle { get; set; }
+
         List<ITileset> Tilesets { get; }
 
         List<ILayerEntry> Layers { get; }

@@ -37,9 +37,13 @@
   <ItemGroup>
     <Reference Include="netstandard" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -55,6 +59,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Component.cs" />
+    <Compile Include="Controls\LayerTilemapProperties.xaml.cs">
+      <DependentUpon>LayerTilemapProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MapProperties.xaml.cs">
+      <DependentUpon>MapProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ObjectProperties.xaml.cs">
+      <DependentUpon>ObjectProperties.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Tilemap.cs" />
     <Compile Include="Models\AnimationDataEntry.cs" />
     <Compile Include="Models\BitmapFrame.cs" />
@@ -62,9 +75,11 @@
     <Compile Include="Models\FramesGroup.cs" />
     <Compile Include="Services\TilemapService.cs" />
     <Compile Include="Utility\Extensions.cs" />
+    <Compile Include="ViewModels\LayerTilemapPropertiesViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MapEditorViewModel.cs" />
-    <Compile Include="ViewModels\ObjectViewModel.cs" />
+    <Compile Include="ViewModels\MapPropertiesViewModel.cs" />
+    <Compile Include="ViewModels\ObjectPropertiesViewModel.cs" />
     <Compile Include="ViewModels\TilemapViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -121,8 +136,24 @@
       <Project>{545d863a-cd36-4c79-a07f-cf82b718fc3e}</Project>
       <Name>Xe.Tools.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe\Xe.csproj">
+      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
+      <Name>Xe</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\LayerTilemapProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MapProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

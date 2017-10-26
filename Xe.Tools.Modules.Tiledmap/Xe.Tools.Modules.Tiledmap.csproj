@@ -49,13 +49,18 @@
       <Project>{891AEBE7-A248-4EF3-9237-50EB124E74DE}</Project>
       <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
+      <Project>{B5A0BF08-18E7-406E-82E7-DF72EB113B1B}</Project>
+      <Name>Xe.Game</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>
       <Name>Xe.Tools.Modules</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="TiledSharp, Version=0.15.5889.20321, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="netstandard" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

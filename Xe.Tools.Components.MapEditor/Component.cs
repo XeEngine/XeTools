@@ -38,7 +38,7 @@ namespace Xe.Tools.Components.MapEditor
             return new ComponentInfo()
             {
                 Name = "Tilemap",
-                ModuleName = "tilemap",
+                ModuleName = "tiledmap",
                 Editor = "Tile map editor",
                 Description = "Map composed by fixed-size tiles."
             };

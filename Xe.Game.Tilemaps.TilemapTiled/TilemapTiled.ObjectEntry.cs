@@ -12,6 +12,8 @@ namespace Xe.Game.Tilemaps
         {
             private Tiled.Object _objectEntry;
 
+            #region Basic properties
+
             public string Name
             {
                 get => _objectEntry.Name;
@@ -24,11 +26,43 @@ namespace Xe.Game.Tilemaps
                 set => _objectEntry.Type = value;
             }
 
+            #endregion
+
+            #region Appearance
+
+            public string AnimationData
+            {
+                get => GetPropertyValue<string>(_objectEntry.Properties);
+                set => SetPropertyValue(_objectEntry.Properties, value);
+            }
+
+            public string AnimationName
+            {
+                get => GetPropertyValue<string>(_objectEntry.Properties);
+                set => SetPropertyValue(_objectEntry.Properties, value);
+            }
+
+            public Direction Direction
+            {
+                get => GetPropertyValue(_objectEntry.Properties, Direction.Undefined);
+                set => SetPropertyValue(_objectEntry.Properties, value);
+            }
+
             public bool Visible
             {
                 get => _objectEntry.Visible;
                 set => _objectEntry.Visible = value;
             }
+
+            public bool HasShadow
+            {
+                get => GetPropertyValue(_objectEntry.Properties, false);
+                set => SetPropertyValue(_objectEntry.Properties, value);
+            }
+
+            #endregion
+
+            #region Layout
 
             public double X
             {
@@ -40,6 +74,12 @@ namespace Xe.Game.Tilemaps
             {
                 get => _objectEntry.Y;
                 set => _objectEntry.Y = value;
+            }
+
+            public double Z
+            {
+                get => GetPropertyValue<double>(_objectEntry.Properties);
+                set => SetPropertyValue(_objectEntry.Properties, value);
             }
 
             public double Width
@@ -60,12 +100,7 @@ namespace Xe.Game.Tilemaps
                 set => SetPropertyValue(_objectEntry.Properties, value);
             }
 
-            public Direction Direction
-            {
-                get => GetPropertyValue(_objectEntry.Properties, Direction.Undefined);
-                set => SetPropertyValue(_objectEntry.Properties, value);
-            }
-
+            #endregion
 
             internal ObjectEntry(Tiled.Object objectEntry)
             {

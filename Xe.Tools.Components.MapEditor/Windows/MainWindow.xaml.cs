@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Xe.Tools.Components.MapEditor.ViewModels;
 
 namespace Xe.Tools.Components.MapEditor.Windows
@@ -20,6 +10,11 @@ namespace Xe.Tools.Components.MapEditor.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
+        const double FPS = 15.0;
+
+        private bool _isInvalidated;
+        private object _isInvalidatedLock = new object();
+
         public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
 
         public MainWindow()
@@ -36,7 +31,60 @@ namespace Xe.Tools.Components.MapEditor.Windows
         public void Initialize(MapEditorViewModel vm)
         {
             DataContext = new MainWindowViewModel(vm);
-            //tileMap?.DataContext = new TilemapViewModel(ViewModel.MapEditor);
+            ViewModel.ObjectPropertiesViewModel.OnInvalidateEntry += (s, e) =>
+            {
+                Invalidate();
+            };
+            var timer = new System.Timers.Timer
+            {
+                Interval = 1000.0 / FPS
+            };
+            timer.Elapsed += (s, e) =>
+            {
+                bool isInvalidated;
+                lock(_isInvalidatedLock)
+                {
+                    isInvalidated = _isInvalidated;
+                    _isInvalidated = false;
+                }
+                if (isInvalidated)
+                {
+                    // Returns to the main thread
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        var stopWatch = new Stopwatch();
+                        stopWatch.Start();
+                        tileMap.Render();
+                        stopWatch.Stop();
+                        ViewModel.LastRenderingTime = stopWatch.Elapsed.TotalMilliseconds; 
+                    }));
+                }
+            };
+            timer.Enabled = true;
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            tileMap.OnSelectedEntity += (o, entity) =>
+            {
+                ViewModel.SelectedObjectEntry = entity;
+            };
+            tileMap.OnMoveEntry += (o, entity, x, y) =>
+            {
+                var vm = ViewModel.ObjectPropertiesViewModel;
+                vm.X = (int)x;
+                vm.Y = (int)y;
+            };
+        }
+
+        private void Invalidate()
+        {
+            lock (_isInvalidatedLock)
+            {
+                _isInvalidated = true;
+            }
         }
     }
 }

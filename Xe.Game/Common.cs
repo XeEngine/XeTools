@@ -8,11 +8,10 @@ namespace Xe.Game
 {
     public enum Direction
     {
-        Undefined, Up, Right, Down, Left
-    }
-
-    public enum Flip
-    {
-        None, X, Y, XY
+        Undefined = 0,
+        Up = 1,
+        Right = 2,
+        Down = 3,
+        Left = 4
     }
 }

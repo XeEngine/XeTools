@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Xe.Game.Tilemaps
@@ -22,7 +23,17 @@ namespace Xe.Game.Tilemaps
             {
                 try
                 {
-                    result = (T)Convert.ChangeType(str, typeof(T), null);
+                    var type = typeof(T);
+                    if (type.IsEnum)
+                    {
+                        foreach (var value in type.GetEnumValues())
+                        {
+                            if (str.Equals(value.ToString(), StringComparison.OrdinalIgnoreCase))
+                                return (T)value;
+                        }
+                        return int.TryParse(str, out int r) ? (T)(object)r : defaultValue;
+                    }
+                    result = (T)Convert.ChangeType(str, type, null);
                 }
                 catch
                 {

@@ -80,6 +80,17 @@ namespace Xe.Tools.Services
         {
             BitmapSource newBitmap = null;
 
+            // patch for 24-bit bitmaps
+            if (bitmap.Format == PixelFormats.Bgr32)
+            {
+                var formatter = new FormatConvertedBitmap();
+                formatter.BeginInit();
+                formatter.Source = bitmap;
+                formatter.DestinationFormat = PixelFormats.Bgra32;
+                formatter.EndInit();
+                bitmap = formatter;
+            }
+
             var bytesPerPixel = (bitmap.Format.BitsPerPixel + 7) / 8;
             var stride = bytesPerPixel * bitmap.PixelWidth;
             var length = stride * bitmap.PixelHeight;

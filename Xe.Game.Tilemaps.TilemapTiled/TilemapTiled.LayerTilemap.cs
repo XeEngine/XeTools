@@ -24,6 +24,12 @@
             public int Height => Layer.Height;
             public int Priority { get; private set; }
 
+            public double Opacity
+            {
+                get => Layer.Opacity;
+                set => Layer.Opacity = value;
+            }
+
             public ITile GetTile(int x, int y)
             {
                 return Tiles[x, y];

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 #if DEBUG
         private MapEditorViewModel()
         {
-            /*var projPath = @"D:\Xe\Repo\vladya\soc\data\soc.game.proj.json";
+            var projPath = @"C:\Users\xeeynamo\Desktop\repo\vladya\soc\data\soc.game.proj.json";
             Project = new XeGsProj().Open(projPath);
             if (Project != null)
             {
@@ -61,7 +62,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 {
                     OpenTileMap(file.FullPath);
                 }
-            }*/
+            }
         }
 #endif
     }

@@ -6,6 +6,8 @@
 
         int Height { get; }
 
+        double Opacity { get; set; }
+
         ITile GetTile(int x, int y);
     }
 }
