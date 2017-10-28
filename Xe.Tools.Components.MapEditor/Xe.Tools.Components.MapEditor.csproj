@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -115,6 +116,14 @@
     <ProjectReference Include="..\Tiled\Tiled.csproj">
       <Project>{2632a519-f583-438e-8568-f055b192a726}</Project>
       <Name>Tiled</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Drawing.DirectX\Xe.Drawing.DirectX.csproj">
+      <Project>{66349c96-4f83-4af1-96f7-56716460ae6e}</Project>
+      <Name>Xe.Drawing.DirectX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
+      <Project>{69f4f945-9473-476a-a222-0348b91795d5}</Project>
+      <Name>Xe.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
       <Project>{891aebe7-a248-4ef3-9237-50eb124e74de}</Project>

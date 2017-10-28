@@ -52,6 +52,7 @@ namespace Xe.Drawing
             var g = color.G / 255.0f;
             var b = color.B / 255.0f;
             var a = color.A / 255.0f;
+            Invalidate();
             d2dContext.Clear(new RawColor4(r, g, b, a));
         }
 
@@ -89,7 +90,6 @@ namespace Xe.Drawing
         public override void Dispose()
         {
             _surface?.Dispose();
-            d2dDevice?.Dispose();
             d2dContext?.Dispose();
         }
 
@@ -102,10 +102,10 @@ namespace Xe.Drawing
             }
         }
 
-        private DrawingDirectX(int width, int height, PixelFormat pixelFormat)
+        private DrawingDirectX(int width, int height)
         {
             CommonInit();
-            CreateRenderTarget(width, height, pixelFormat);
+            ResizeRenderTarget(width, height);
         }
         private DrawingDirectX(ISurface surface)
         {
@@ -120,7 +120,7 @@ namespace Xe.Drawing
 
         public static DrawingDirectX Factory(int width, int height, PixelFormat pixelFormat)
         {
-            return new DrawingDirectX(width, height, pixelFormat);
+            return new DrawingDirectX(width, height);
         }
         public static DrawingDirectX Factory(ISurface surface)
         {

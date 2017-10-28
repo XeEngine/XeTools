@@ -89,7 +89,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                     OnPropertyChanged(nameof(MaxRenderingTime));
                 }
                 _rendersCount++;
-                _avgRenderingTime -= (_avgRenderingTime / _rendersCount) + (value / _rendersCount);
+                _avgRenderingTime += -(_avgRenderingTime / _rendersCount) + (value / _rendersCount);
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(AvgRenderingTime));
             }

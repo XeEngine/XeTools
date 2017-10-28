@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Imaging;
+using System.Linq;
 using static Xe.Drawing.Helpers;
 
 namespace Xe.Drawing
@@ -14,13 +15,39 @@ namespace Xe.Drawing
     using System.Drawing;
     using SharpDX.Win32;
     using System;
+    using System.Runtime.InteropServices;
 
     public partial class DrawingDirectX
     {
+        public class MappedResource : IMappedResource
+        {
+            public MappedResource(d2.Bitmap1 bitmap)
+            {
+                var data = bitmap.Map(d2.MapOptions.Read);
+                Bitmap = bitmap;
+                Stride = data.Pitch;
+                Data = data.DataPointer;
+                Length = Stride * bitmap.PixelSize.Height;
+            }
+
+            public d2.Bitmap1 Bitmap { get; }
+
+            public IntPtr Data { get; }
+
+            public int Stride { get; }
+
+            public int Length { get; }
+
+            public void Dispose()
+            {
+                Bitmap.Unmap();
+            }
+        }
+
         public class CSurface : ISurface
         {
             private DrawingDirectX _drawing;
-            private SharpDX.Direct2D1.Bitmap1 _bitmap;
+            private d2.Bitmap1 _bitmap;
             private PixelFormat _pixelFormat;
 
             public int Width => _bitmap.PixelSize.Width;
@@ -31,7 +58,21 @@ namespace Xe.Drawing
 
             public PixelFormat PixelFormat => _pixelFormat;
 
-            internal SharpDX.Direct2D1.Bitmap1 Bitmap => _bitmap;
+            internal d2.Bitmap1 Bitmap => _bitmap;
+
+            private d2.Bitmap1 _tmpBitmap;
+
+            public IMappedResource Map()
+            {
+                if (_tmpBitmap == null)
+                {
+                    _tmpBitmap = _drawing.CreateBitmap(Width, Height,
+                        d2.BitmapOptions.CpuRead | d2.BitmapOptions.CannotDraw,
+                        d2PixelFormat);
+                }
+                _tmpBitmap.CopyFromBitmap(_bitmap);
+                return new MappedResource(_tmpBitmap);
+            }
 
             public void Save(string filename)
             {
@@ -40,10 +81,11 @@ namespace Xe.Drawing
 
             public void Dispose()
             {
+                _tmpBitmap?.Dispose();
                 _bitmap.Dispose();
             }
 
-            internal CSurface(DrawingDirectX drawing, SharpDX.Direct2D1.Bitmap1 bitmap)
+            internal CSurface(DrawingDirectX drawing, d2.Bitmap1 bitmap)
             {
                 _drawing = drawing;
                 _bitmap = bitmap;
@@ -53,15 +95,14 @@ namespace Xe.Drawing
 
         public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat)
         {
-            return CreateSurface(width, height, pixelFormat, d2.BitmapOptions.None);
+            return CreateSurface(width, height, d2.BitmapOptions.None);
         }
-        internal ISurface CreateSurfaceAsRenderTarget(int width, int height, PixelFormat pixelFormat)
+        internal CSurface CreateSurfaceAsRenderTarget(int width, int height)
         {
-            return CreateSurface(width, height, pixelFormat,
-                d2.BitmapOptions.Target | d2.BitmapOptions.CannotDraw);
+            return CreateSurface(width, height, d2.BitmapOptions.Target | d2.BitmapOptions.CannotDraw) as CSurface;
         }
 
-        public override ISurface CreateSurface(string filename)
+        public override ISurface CreateSurface(string filename, Color[] filterColors)
         {
             var imagingFactory = device.ImagingFactory;
             using (var inputStream = new wic.WICStream(imagingFactory, filename, NativeFileAccess.Read))
@@ -74,45 +115,64 @@ namespace Xe.Drawing
                     using (var formatConverter = new wic.FormatConverter(imagingFactory))
                     {
                         var frame = pngDecoder.GetFrame(0);
-                        formatConverter.Initialize(frame, wicPixelFormat);
+                        wic.BitmapSource bmpSource;
+                        if (frame.PixelFormat != wicPixelFormat)
+                        {
+                            formatConverter.Initialize(frame, wicPixelFormat);
+                            bmpSource = formatConverter;
+                        }
+                        else
+                        {
+                            bmpSource = frame;
+                        }
 
                         // load the base image into a D2D Bitmap
+                        d2.Bitmap1 inputBitmap;
                         var bitmapProperties = new d2.BitmapProperties1(d2PixelFormat);
-                        var inputBitmap = d2.Bitmap1.FromWicBitmap(d2dContext, formatConverter, bitmapProperties);
-                        //MakeTransparent(inputBitmap, new Color[] { Color.Magenta });
+                        if (filterColors == null || filterColors.Length <= 0)
+                        {
+                            inputBitmap = d2.Bitmap1.FromWicBitmap(d2dContext, bmpSource, bitmapProperties);
+                        }
+                        else
+                        {
+                            var bmpSize = bmpSource.Size;
+                            var stride = bmpSize.Width * 32 / 8;
+                            var memSize = stride * bmpSize.Height;
+                            var ptr = Marshal.AllocHGlobal(memSize);
+                            bmpSource.CopyPixels(stride, ptr, memSize);
+                            Xe.Tools.Services.ImageService.MakeTransparent_Bgra32(ptr, stride, bmpSize.Height,
+                                filterColors
+                                .Select(x => new Xe.Tools.Services.Color()
+                                {
+                                    a = x.A, r = x.R,
+                                    g = x.G, b = x.B
+                                })
+                                .ToArray()
+                            );
 
+                            inputBitmap = new d2.Bitmap1(d2dContext, new Size2()
+                            {
+                                Width = bmpSize.Width,
+                                Height = bmpSize.Height
+                            }, new DataStream(ptr, memSize, true, false), stride, bitmapProperties);
+                            Marshal.FreeHGlobal(ptr);
+                        }
                         return new CSurface(this, inputBitmap);
                     }
                 }
             }
         }
 
-        private void MakeTransparent(d2.Bitmap1 bitmap, Color[] colors)
-        {
-            var data = bitmap.Map(d2.MapOptions.Read);
-            foreach (var color in colors)
-                MakeTransparent(bitmap, data, color);
-            bitmap.Unmap();
-        }
-        private unsafe void MakeTransparent(d2.Bitmap1 bitmap, DataRectangle data, Color color)
-        {
-            for (int j = 0; j < bitmap.Size.Height; j++)
-            {
-                int* p = (int*)(data.DataPointer + data.Pitch * j);
-                for (int i = 0; i < bitmap.Size.Width; i++)
-                {
-                    if ((*p & 0x00FF00FF) == 0x00FF00FF)
-                        *p = 0;
-                    p++;
-                }
-            }
-        }
-
-        private ISurface CreateSurface(int width, int height, PixelFormat pixelFormat, d2.BitmapOptions options)
+        private d2.Bitmap1 CreateBitmap(int width, int height, d2.BitmapOptions options, d2.PixelFormat? pixelFormat = null)
         {
             // create the d2d bitmap description and 96 DPI
-            var d2dBitmapProps = new d2.BitmapProperties1(d2PixelFormat, 96, 96, options);
-            var bitmap = new d2.Bitmap1(d2dContext, new Size2(width, height), d2dBitmapProps);
+            var d2dBitmapProps = new d2.BitmapProperties1(pixelFormat ?? d2PixelFormat, 96, 96, options);
+            return new d2.Bitmap1(d2dContext, new Size2(width, height), d2dBitmapProps);
+        }
+
+        private ISurface CreateSurface(int width, int height, d2.BitmapOptions options)
+        {
+            var bitmap = CreateBitmap(width, height, options);
             return new CSurface(this, bitmap);
         }
 

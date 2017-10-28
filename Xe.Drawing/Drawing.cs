@@ -1,6 +1,4 @@
-﻿
-
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace Xe.Drawing
@@ -12,7 +10,7 @@ namespace Xe.Drawing
 
         public abstract void Clear(Color color);
         public abstract ISurface CreateSurface(int width, int height, PixelFormat pixelFormat);
-        public abstract ISurface CreateSurface(string filename);
+        public abstract ISurface CreateSurface(string filename, Color[] filterColors = null);
         public abstract void Dispose();
         
         public void DrawSurface(ISurface surface, int x, int y, Flip flip)

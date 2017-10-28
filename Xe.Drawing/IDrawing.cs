@@ -26,7 +26,7 @@ namespace Xe.Drawing
         Filter Filter { get; set; }
 
         ISurface CreateSurface(int width, int height, PixelFormat pixelFormat);
-        ISurface CreateSurface(string filename);
+        ISurface CreateSurface(string filename, Color[] filterColors = null);
 
         void Clear(Color color);
         void DrawSurface(ISurface surface, int x, int y, Flip flip = Flip.None);

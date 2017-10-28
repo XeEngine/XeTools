@@ -15,25 +15,22 @@ namespace Xe.Drawing
 
     public partial class DrawingDirectX
     {
+        private static d2.PixelFormat d2PixelFormat = new d2.PixelFormat(dxgi.Format.B8G8R8A8_UNorm, d2.AlphaMode.Premultiplied);
+        private static Guid wicPixelFormat = wic.PixelFormat.Format32bppPBGRA;
+
         private d2.Device d2dDevice;
         private d2.DeviceContext d2dContext;
-        private d2.PixelFormat d2PixelFormat;
-        private Guid wicPixelFormat;
 
         private void Initialize()
         {
-            d2dDevice = device.Create2dDevice();
+            d2dDevice = device.GetD2DDevice();
             d2dContext = new d2.DeviceContext(d2dDevice, d2.DeviceContextOptions.None);
-            
-            // specify a pixel format that is supported by both D2D and WIC
-            d2PixelFormat = new d2.PixelFormat(dxgi.Format.R8G8B8A8_UNorm, d2.AlphaMode.Premultiplied);
-            // if in D2D was specified an R-G-B-A format - use the same for wic
-            wicPixelFormat = wic.PixelFormat.Format32bppPRGBA;
         }
-        private void CreateRenderTarget(int width, int height, PixelFormat pixelFormat)
+
+        public void ResizeRenderTarget(int width, int height)
         {
             _surface?.Dispose();
-            _surface = CreateSurfaceAsRenderTarget(width, height, pixelFormat) as CSurface;
+            _surface = CreateSurfaceAsRenderTarget(width, height);
             d2dContext.Target = _surface.Bitmap;
         }
     }

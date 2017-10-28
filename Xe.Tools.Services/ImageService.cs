@@ -158,6 +158,16 @@ namespace Xe.Tools.Services
                 return pixelFormat;
             }
         }
+        public static void MakeTransparent_Bgra32(IntPtr data, int stride, int height, Color[] colors)
+        {
+            foreach (var color in colors)
+            {
+                int to = color.b | (color.g << 8) | (color.r << 16);
+                int from = to | (0xFF << 24);
+                to = 0; // HACK
+                MakeTransparent_Bpp32(data, stride, height, from, to);
+            }
+        }
 
         private static unsafe void MakeTransparent_Bpp24(IntPtr data, int stride, int height, int from, int to)
         {

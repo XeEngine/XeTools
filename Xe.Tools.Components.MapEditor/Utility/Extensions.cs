@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Xe.Drawing;
 using Xe.Game.Animations;
 using Xe.Tools.Components.MapEditor.Models;
 using Xe.Tools.Services;
@@ -16,24 +17,19 @@ namespace Xe.Tools.Components.MapEditor
     {
         public static class Extensions
         {
-            public static void DrawAnimation(this DrawingContext dc, FramesGroup framesGroup, double x, double y)
+            public static void DrawAnimation(this IDrawing drawing, FramesGroup framesGroup, double x, double y)
             {
                 var frame = framesGroup.Frames.FirstOrDefault();
                 if (frame != null)
                 {
                     var src = frame.Source;
-                    var dstRect = new Rect(x - frame.Pivot.X, y - frame.Pivot.Y, src.Width, src.Height);
-                    var sprite = new CroppedBitmap(framesGroup.Texture,
-                        new Int32Rect()
-                        {
-                            X = (int)src.Left,
-                            Y = (int)src.Top,
-                            Width = (int)src.Width,
-                            Height = (int)src.Height
-                        });
-                    dc.DrawImage(sprite, dstRect);
+                    drawing.DrawSurface(framesGroup.Texture,
+                        new System.Drawing.Rectangle((int)src.Left, (int)src.Top, (int)src.Width, (int)src.Height),
+                        new System.Drawing.Rectangle((int)x - (int)frame.Pivot.X, (int)y - (int)frame.Pivot.Y, (int)src.Width, (int)src.Height),
+                        Drawing.Flip.None);
                 }
             }
+
         }
     }
 }

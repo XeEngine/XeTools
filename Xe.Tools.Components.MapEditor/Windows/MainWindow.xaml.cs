@@ -10,7 +10,7 @@ namespace Xe.Tools.Components.MapEditor.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
-        const double FPS = 15.0;
+        const double FPS = 60.0;
 
         private bool _isInvalidated;
         private object _isInvalidatedLock = new object();

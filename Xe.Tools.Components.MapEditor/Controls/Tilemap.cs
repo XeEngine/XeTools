@@ -1,21 +1,27 @@
 ﻿using System;
 using System.ComponentModel;
+using drawing = System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Xe.Drawing;
 using Xe.Game;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Components.MapEditor.Models;
 using Xe.Tools.Components.MapEditor.Utility;
 using Xe.Tools.Components.MapEditor.ViewModels;
 using Xe.Tools.Services;
+using System.Runtime.InteropServices;
 
 namespace Xe.Tools.Components.MapEditor.Controls
 {
     public class Tilemap : FrameworkElement
     {
+        [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
+        private static extern void CopyMemory(IntPtr dest, IntPtr src, int count);
+
         private class AnimKeyEntry : IEquatable<AnimKeyEntry>
         {
             public string AnimationData { get; }
@@ -37,6 +43,18 @@ namespace Xe.Tools.Components.MapEditor.Controls
             }
         }
 
+        private class TileEntry
+        {
+            public ISurface Surface { get; }
+            public drawing.Rectangle Rectangle { get; }
+
+            public TileEntry(ISurface surface, drawing.Rectangle rectangle)
+            {
+                Surface = surface;
+                Rectangle = rectangle;
+            }
+        }
+
         #region Delegates and events
 
         public delegate void SelectedEntity(object sender, IObjectEntry objectEntry);
@@ -51,6 +69,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         public ProjectService ProjectService => AnimationService?.ProjectService;
         public AnimationService AnimationService => MapEditorViewModel.Instance.AnimationService;
+        private IDrawing _drawingService;
 
         #endregion
 
@@ -61,8 +80,9 @@ namespace Xe.Tools.Components.MapEditor.Controls
         private ITileMap _tileMap => MapEditorViewModel.Instance.TileMap;
         private ResourceService<string, AnimationDataEntry> _resAnimationData;
         private ResourceService<AnimKeyEntry, FramesGroup> _resAnimations;
-        private ResourceService<string, BitmapSource> _resTileset;
-        private ResourceService<int, CroppedBitmap> _resTile;
+        private ResourceService<string, ISurface> _resTileset;
+        private ResourceService<int, TileEntry> _resTile;
+        private WriteableBitmap _writeableBitmap;
 
         #endregion
 
@@ -101,10 +121,10 @@ namespace Xe.Tools.Components.MapEditor.Controls
             _resAnimations = new ResourceService<AnimKeyEntry, FramesGroup>(
                 OnResourceAnimationsLoad,
                 OnResourceAnimationsUnload);
-            _resTileset = new ResourceService<string, BitmapSource>(
+            _resTileset = new ResourceService<string, ISurface>(
                 OnResourceTilesetLoad,
                 OnResourceTilesetUnload);
-            _resTile = new ResourceService<int, CroppedBitmap>(
+            _resTile = new ResourceService<int, TileEntry>(
                 OnResourceTileLoad,
                 OnResourceTileUnload);
 
@@ -119,17 +139,16 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
             _visual = new DrawingVisual();
             _children.Add(_visual);
-
-            Render();
         }
 
         #region Public methods
 
         public void Render()
         {
+            RenderMap(TileMap);
             using (var dc = _visual.RenderOpen())
             {
-                Render(dc);
+                Flush(dc, _drawingService.Surface);
             }
         }
 
@@ -150,46 +169,91 @@ namespace Xe.Tools.Components.MapEditor.Controls
             return _children[index];
         }
 
+        #region Event handler
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            var size = sizeInfo.NewSize;
+            base.OnRenderSizeChanged(sizeInfo);
+            ResizeRenderingEngine((int)size.Width, (int)size.Height);
+        }
+
+        #endregion
+
         #region Rendering
 
-        private void Render(DrawingContext dc)
+        private void ResizeRenderingEngine(int width, int height)
         {
-            if (TileMap != null)
+            if (_drawingService == null)
             {
-                var color = TileMap.BackgroundColor;
-                var size = TileMap.Size;
-                var tileSize = TileMap.TileSize;
-                var brush = new SolidColorBrush(new System.Windows.Media.Color()
-                {
-                    A = color.A,
-                    R = color.R,
-                    G = color.G,
-                    B = color.B
-                });
-                dc.DrawRectangle(brush, new Pen(brush, 1.0), new Rect()
-                {
-                    X = 0, Y = 0,
-                    Width = size.Width * tileSize.Width,
-                    Height = size.Height * tileSize.Height
-                });
-                foreach (var layer in TileMap.Layers)
-                    RenderLayer(dc, layer);
+                _drawingService = DrawingDirectX.Factory(width, height, drawing.Imaging.PixelFormat.Format32bppArgb);
             }
+            else if (_drawingService is DrawingDirectX dx)
+            {
+                dx.ResizeRenderTarget(width, height);
+            }
+            Render();
         }
 
-        private void RenderLayer(DrawingContext dc, ILayerEntry layer)
+        private void RenderMap(ITileMap tileMap)
         {
-            if (layer is ILayerTilemap tilemap) RenderLayer(dc, tilemap);
-            else if (layer is ILayerObjects objects) RenderLayer(dc, objects);
+            var size = tileMap.Size;
+            var tileSize = tileMap.TileSize;
+
+            var backColor = tileMap.BackgroundColor;
+            var color = drawing.Color.FromArgb(backColor.A, backColor.R, backColor.G, backColor.B);
+            _drawingService.Clear(backColor);
+            foreach (var layer in tileMap.Layers)
+                RenderLayer(layer);
         }
 
-        private void RenderLayer(DrawingContext dc, ILayerTilemap layer)
+        private void Flush(DrawingContext dc, ISurface surface)
+        {
+            using (var map = surface.Map())
+            {
+                if (_writeableBitmap == null ||
+                    surface.Width != _writeableBitmap.Width ||
+                    surface.Height != _writeableBitmap.Height ||
+                    map.Stride / 4 != _writeableBitmap.Width)
+                {
+                    _writeableBitmap = new WriteableBitmap(map.Stride / 4, surface.Height, 96.0, 96.0, PixelFormats.Bgra32, null);
+                }
+
+                _writeableBitmap.Lock();
+                CopyMemory(_writeableBitmap.BackBuffer, map.Data, map.Length);
+                _writeableBitmap.AddDirtyRect(new Int32Rect()
+                {
+                    X = 0,
+                    Y = 0,
+                    Width = surface.Width,
+                    Height = surface.Height
+                });
+                _writeableBitmap.Unlock();
+            }
+
+            dc.DrawImage(_writeableBitmap, new Rect()
+            {
+                X = 0,
+                Y = 0,
+                Width = _writeableBitmap.Width,
+                Height = _writeableBitmap.Height
+            });
+        }
+
+        private void RenderLayer(ILayerEntry layer)
+        {
+            if (layer is ILayerTilemap tilemap) RenderLayer(tilemap);
+            else if (layer is ILayerObjects objects) RenderLayer(objects);
+        }
+
+        private void RenderLayer(ILayerTilemap layer)
         {
             if (!layer.Visible)
                 return;
-            /*int width = Math.Min((int)ActualWidth / TileMap.TileSize.Width, layer.Width);
-            int height = Math.Min((int)ActualHeight / TileMap.TileSize.Height, layer.Height);
-            var rect = new Rect
+            var tileSize = TileMap.TileSize;
+            int width = Math.Min((int)(ActualWidth + tileSize.Width - 1) / tileSize.Width, layer.Width);
+            int height = Math.Min((int)(ActualHeight + tileSize.Height - 1) / tileSize.Height, layer.Height);
+            var rect = new drawing.Rectangle
             {
                 Width = TileMap.TileSize.Width,
                 Height = TileMap.TileSize.Height
@@ -204,19 +268,19 @@ namespace Xe.Tools.Components.MapEditor.Controls
                     {
                         rect.X = x * rect.Height;
                         var imgTile = _resTile[tile.Index];
-                        dc.DrawImage(imgTile, rect);
+                        _drawingService.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect);
                     }
                 }
-            }*/
+            }
         }
 
-        private void RenderLayer(DrawingContext dc, ILayerObjects layer)
+        private void RenderLayer(ILayerObjects layer)
         {
             foreach (var entry in layer.Objects)
-                RenderObject(dc, entry);
+                RenderObject(entry);
         }
 
-        private void RenderObject(DrawingContext dc, IObjectEntry entry)
+        private void RenderObject(IObjectEntry entry)
         {
             var framesGroup = GetFramesGroup(entry.Name, "Stand", entry.Direction);
             if (framesGroup != null)
@@ -226,7 +290,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 if (realX > ActualWidth ||
                     realY > ActualHeight)
                     return;
-                dc.DrawAnimation(framesGroup, realX, realY);
+                _drawingService.DrawAnimation(framesGroup, realX, realY);
             }
             else
             {
@@ -234,9 +298,9 @@ namespace Xe.Tools.Components.MapEditor.Controls
             }
         }
 
-        #endregion
+#endregion
 
-        #region Event handler
+#region Event handler
 
         private bool _isMouseDown;
         private IObjectEntry _objEntrySelected;
@@ -276,9 +340,9 @@ namespace Xe.Tools.Components.MapEditor.Controls
             base.OnMouseUp(e);
         }
 
-        #endregion
+#endregion
         
-        #region Resource events and utilities
+#region Resource events and utilities
 
         private IObjectEntry GetObjectEntry(double x, double y)
         {
@@ -322,7 +386,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
         private bool OnResourceAnimationDataLoad(string name, out AnimationDataEntry entry)
         {
             var fileName = $"{name}.anim.json";
-            entry = AnimationDataEntry.Create(AnimationService, fileName);
+            entry = AnimationDataEntry.Create(AnimationService, _drawingService, fileName);
             return entry != null;
         }
 
@@ -350,52 +414,52 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         }
 
-        private bool OnResourceTilesetLoad(string fileName, out BitmapSource bitmap)
+        private bool OnResourceTilesetLoad(string fileName, out ISurface surface)
         {
-            bitmap = ImageService.Open(fileName);
-            bitmap = ImageService.MakeTransparent(bitmap, new Tools.Services.Color[]
-            {
-                new Tools.Services.Color() { r = 255, g = 0, b = 255, a = 0 }
-            });
-            return bitmap != null;
+            surface = _drawingService.CreateSurface(fileName,
+                new drawing.Color[]
+                {
+                    drawing.Color.FromArgb(255, 255, 0, 255)
+                });
+            return surface != null;
         }
 
-        private void OnResourceTilesetUnload(string fileName, BitmapSource bitmap)
+        private void OnResourceTilesetUnload(string fileName, ISurface surface)
         {
-
+            surface?.Dispose();
         }
 
-        private bool OnResourceTileLoad(int index, out CroppedBitmap bitmap)
+        private bool OnResourceTileLoad(int index, out TileEntry tileEntry)
         {
             var tileset = TileMap.Tilesets
                 .LastOrDefault(x => index >= x.StartId);
-            bitmap = null;
+            tileEntry = null;
             if (tileset != null)
             {
-                var texture = _resTileset[tileset.ImagePath];
-                if (texture != null)
+                var surface = _resTileset[tileset.ImagePath];
+                if (surface != null)
                 {
                     var realIndex = index - tileset.StartId;
                     var width = TileMap.TileSize.Width;
                     var height = TileMap.TileSize.Height;
-                    bitmap = new CroppedBitmap(texture,
-                        new Int32Rect()
-                        {
-                            X = (realIndex % tileset.TilesPerRow) * width,
-                            Y = (realIndex / tileset.TilesPerRow) * height,
-                            Width = width,
-                            Height = height
-                        });
+                    var rectangle = new drawing.Rectangle()
+                    {
+                        X = (realIndex % tileset.TilesPerRow) * width,
+                        Y = (realIndex / tileset.TilesPerRow) * height,
+                        Width = width,
+                        Height = height
+                    };
+                    tileEntry = new TileEntry(surface, rectangle);
                 }
             }
-            return bitmap != null;
+            return tileEntry != null;
         }
 
-        private void OnResourceTileUnload(int index, CroppedBitmap bitmap)
+        private void OnResourceTileUnload(int index, TileEntry tileEntry)
         {
 
         }
 
-        #endregion
+#endregion
     }
 }

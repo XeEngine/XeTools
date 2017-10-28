@@ -11,6 +11,7 @@ namespace Xe.Drawing
         Size Size { get; }
         PixelFormat PixelFormat { get; }
 
+        IMappedResource Map();
         void Save(string filename);
     }
 }
