@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
-      <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>
+      <Project>{E718E2C4-6C6D-4300-8F96-CEEFAA85E722}</Project>
       <Name>Xe.Tools.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">

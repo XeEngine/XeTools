@@ -186,7 +186,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
         {
             if (_drawingService == null)
             {
-                _drawingService = DrawingDirectX.Factory(width, height, drawing.Imaging.PixelFormat.Format32bppArgb);
+                _drawingService = DrawingDirectX.Factory(width, height, Drawing.PixelFormat.Format32bppArgb);
             }
             else if (_drawingService is DrawingDirectX dx)
             {
@@ -268,7 +268,12 @@ namespace Xe.Tools.Components.MapEditor.Controls
                     {
                         rect.X = x * rect.Height;
                         var imgTile = _resTile[tile.Index];
-                        _drawingService.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect);
+                        Drawing.Flip flip = Drawing.Flip.None;
+                        if (tile.IsFlippedX)
+                            flip |= Drawing.Flip.FlipHorizontal;
+                        if (tile.IsFlippedY)
+                            flip |= Drawing.Flip.FlipVertical;
+                        _drawingService.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect, flip);
                     }
                 }
             }

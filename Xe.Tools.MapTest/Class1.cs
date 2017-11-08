@@ -1,4 +1,4 @@
-﻿using System.Drawing.Imaging;
+﻿using Xe.Drawing;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Tilemap;
 
@@ -9,7 +9,8 @@ namespace Xe.Tools.MapTest
         static void Main(string[] args)
         {
             var map = new TilemapTiled(@"D:\Xe\Repo\vladya\soc\data\data\map\island_03.tmx");
-            using (var drawing = Drawing.DrawingDirectX.Factory(
+            using (var drawing = Drawing.DrawingDirectX.
+                Factory(
                 map.Size.Width * map.TileSize.Width,
                 map.Size.Height * map.TileSize.Height,
                 PixelFormat.Format32bppArgb))

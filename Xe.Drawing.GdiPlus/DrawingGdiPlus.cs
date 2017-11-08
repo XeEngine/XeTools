@@ -53,8 +53,13 @@ namespace Xe.Drawing
 
         public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat)
         {
-            using (var bitmap = new Bitmap(width, height, pixelFormat))
-                return new CSurface(bitmap);
+            using (var bitmap = new Bitmap(width, height, GetPixelFormat(pixelFormat)))
+            {
+                return new CSurface(bitmap)
+                {
+                    PixelFormat = pixelFormat
+                };
+            }
         }
 
         public override void Clear(Color color)
@@ -106,9 +111,10 @@ namespace Xe.Drawing
 
         private DrawingGdiPlus(int width, int height, PixelFormat pixelFormat)
         {
-            using (var bitmap = new Bitmap(width, height, pixelFormat))
+            using (var bitmap = new Bitmap(width, height, GetPixelFormat(pixelFormat)))
             {
                 _surface = CreateSurface(bitmap) as CSurface;
+                _surface.PixelFormat = pixelFormat;
                 _graphics = Graphics.FromImage(_surface.Bitmap);
             }
         }
@@ -121,6 +127,28 @@ namespace Xe.Drawing
         private void Invalidate()
         {
             _invalidated = true;
+        }
+
+        private static System.Drawing.Imaging.PixelFormat GetPixelFormat(PixelFormat pixelFormat)
+        {
+            switch (pixelFormat)
+            {
+                case PixelFormat.Format16bppRgb555: return System.Drawing.Imaging.PixelFormat.Format16bppRgb555;
+                case PixelFormat.Format16bppRgb565: return System.Drawing.Imaging.PixelFormat.Format16bppRgb565;
+                case PixelFormat.Format24bppRgb: return System.Drawing.Imaging.PixelFormat.Format24bppRgb;
+                case PixelFormat.Format32bppRgb: return System.Drawing.Imaging.PixelFormat.Format32bppRgb;
+                case PixelFormat.Format1bppIndexed: return System.Drawing.Imaging.PixelFormat.Format1bppIndexed;
+                case PixelFormat.Format4bppIndexed: return System.Drawing.Imaging.PixelFormat.Format4bppIndexed;
+                case PixelFormat.Format8bppIndexed: return System.Drawing.Imaging.PixelFormat.Format8bppIndexed;
+                case PixelFormat.Format16bppArgb1555: return System.Drawing.Imaging.PixelFormat.Format16bppArgb1555;
+                case PixelFormat.Format32bppPArgb: return System.Drawing.Imaging.PixelFormat.Format32bppPArgb;
+                case PixelFormat.Format16bppGrayScale: return System.Drawing.Imaging.PixelFormat.Format16bppGrayScale;
+                case PixelFormat.Format48bppRgb: return System.Drawing.Imaging.PixelFormat.Format48bppRgb;
+                case PixelFormat.Format64bppPArgb: return System.Drawing.Imaging.PixelFormat.Format64bppPArgb;
+                case PixelFormat.Format32bppArgb: return System.Drawing.Imaging.PixelFormat.Format32bppArgb;
+                case PixelFormat.Format64bppArgb: return System.Drawing.Imaging.PixelFormat.Format64bppArgb;
+                default: return System.Drawing.Imaging.PixelFormat.Undefined;
+            }
         }
 
         public static DrawingGdiPlus Factory(int width, int height, PixelFormat pixelFormat)

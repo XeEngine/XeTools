@@ -16,6 +16,7 @@ namespace Xe.Drawing
             if (guid == SharpDX.WIC.PixelFormat.Format24bppBGR) return PixelFormat.Format24bppRgb;
             if (guid == SharpDX.WIC.PixelFormat.Format32bppBGR) return PixelFormat.Format32bppRgb;
             if (guid == SharpDX.WIC.PixelFormat.Format1bppIndexed) return PixelFormat.Format1bppIndexed;
+            if (guid == SharpDX.WIC.PixelFormat.Format2bppIndexed) return PixelFormat.Format2bppIndexed;
             if (guid == SharpDX.WIC.PixelFormat.Format4bppIndexed) return PixelFormat.Format4bppIndexed;
             if (guid == SharpDX.WIC.PixelFormat.Format8bppIndexed) return PixelFormat.Format8bppIndexed;
             if (guid == SharpDX.WIC.PixelFormat.Format16bppBGRA5551) return PixelFormat.Format16bppArgb1555;
@@ -26,7 +27,7 @@ namespace Xe.Drawing
             if (guid == SharpDX.WIC.PixelFormat.Format32bppBGRA) return PixelFormat.Format32bppArgb;
             if (guid == SharpDX.WIC.PixelFormat.Format64bppBGRA) return PixelFormat.Format64bppArgb;
 
-            if (guid == SharpDX.WIC.PixelFormat.Format2bppGray) return PixelFormat.Indexed;
+            if (guid == SharpDX.WIC.PixelFormat.Format2bppGray) return PixelFormat.Format2bppIndexed;
             if (guid == SharpDX.WIC.PixelFormat.Format4bppGray) return PixelFormat.Format4bppIndexed;
             if (guid == SharpDX.WIC.PixelFormat.Format8bppGray) return PixelFormat.Format8bppIndexed;
             if (guid == SharpDX.WIC.PixelFormat.Format8bppAlpha) return PixelFormat.Format8bppIndexed;

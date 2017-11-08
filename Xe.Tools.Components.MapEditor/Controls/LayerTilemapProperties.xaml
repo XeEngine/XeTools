@@ -8,6 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="200">
     <StackPanel Background="White">
+        <TextBlock Text="Layer name"/>
+        <TextBox Margin="0 0 0 5" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <TextBlock Text="Priority"/>
         <ComboBox Margin="0 0 0 5">
             <ComboBoxItem Content="Programmable"/>

@@ -218,7 +218,7 @@
       <Name>Xe.Tools.Modules.Animation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Copy\Xe.Tools.Modules.Copy.csproj">
-      <Project>{11d5a452-607b-4479-a0e6-b229f129ef86}</Project>
+      <Project>{a66be615-b569-45a2-889f-c3d194600b0d}</Project>
       <Name>Xe.Tools.Modules.Copy</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Font\Xe.Tools.Modules.Font.csproj">
@@ -230,11 +230,11 @@
       <Name>Xe.Tools.Modules.Image</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Kernel\Xe.Tools.Modules.Kernel.csproj">
-      <Project>{8d329e63-5dae-4c92-b417-cc96f601b98c}</Project>
+      <Project>{d94fc3a2-f773-4bf5-a92f-baf2ae73bca8}</Project>
       <Name>Xe.Tools.Modules.Kernel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Message\Xe.Tools.Modules.Message.csproj">
-      <Project>{a875a205-caf0-4bc2-973c-f93dfc3cf066}</Project>
+      <Project>{31b99465-ae01-4694-90cb-2def7dc30764}</Project>
       <Name>Xe.Tools.Modules.Message</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Tiledmap\Xe.Tools.Modules.Tiledmap.csproj">
@@ -242,7 +242,7 @@
       <Name>Xe.Tools.Modules.Tiledmap</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
-      <Project>{19596819-8cda-40f8-9488-bc75125b977f}</Project>
+      <Project>{e718e2c4-6c6d-4300-8f96-ceefaa85e722}</Project>
       <Name>Xe.Tools.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">

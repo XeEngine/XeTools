@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Wpf;
@@ -22,7 +23,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public LayerTilemapPropertiesViewModel LayerTilemapPropertiesViewModel { get; }
         public ObjectPropertiesViewModel ObjectPropertiesViewModel { get; }
 
-        public List<ILayerEntry> Layers { get; }
+        public IEnumerable<ILayerEntry> Layers => MapEditor.TileMap.Layers.Reverse<ILayerEntry>();
 
         private ILayerEntry _selectedLayerEntry;
         public ILayerEntry SelectedLayerEntry
@@ -106,7 +107,6 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             MapPropertiesViewModel = new MapPropertiesViewModel(this);
             LayerTilemapPropertiesViewModel = new LayerTilemapPropertiesViewModel();
             ObjectPropertiesViewModel = new ObjectPropertiesViewModel();
-            Layers = vm.TileMap.Layers;
             SetPropertyBar(PropertyBar.None);
         }
 

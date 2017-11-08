@@ -64,7 +64,7 @@
       <Name>Xe.Drawing.GdiPlus</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
-      <Project>{69f4f945-9473-476a-a222-0348b91795d5}</Project>
+      <Project>{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}</Project>
       <Name>Xe.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">

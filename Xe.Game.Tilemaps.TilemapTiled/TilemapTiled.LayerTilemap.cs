@@ -43,9 +43,11 @@
                 Tiles = new Tile[Width, Height];
                 var srcData = layer.Data;
                 var dstData = Tiles;
-                for (int y = 0; y < Height; y++)
+                var width = Width;
+                var height = Height;
+                for (int y = 0; y < height; y++)
                 {
-                    for (int x = 0; x < Width; x++)
+                    for (int x = 0; x < width; x++)
                     {
                         var gid = srcData[x, y];
                         dstData[x, y] = new Tile(0, gid);

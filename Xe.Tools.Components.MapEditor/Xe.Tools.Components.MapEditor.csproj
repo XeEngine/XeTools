@@ -122,8 +122,12 @@
       <Name>Xe.Drawing.DirectX</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
-      <Project>{69f4f945-9473-476a-a222-0348b91795d5}</Project>
+      <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>
       <Name>Xe.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
+      <Project>{356875b9-86c1-47cb-942f-1e8413eec42d}</Project>
+      <Name>Xe.Game.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
       <Project>{891aebe7-a248-4ef3-9237-50eb124e74de}</Project>

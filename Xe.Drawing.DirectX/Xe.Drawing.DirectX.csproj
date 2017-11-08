@@ -34,6 +34,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
     </Reference>
@@ -61,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
-      <Project>{69f4f945-9473-476a-a222-0348b91795d5}</Project>
+      <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>
       <Name>Xe.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">

@@ -38,11 +38,12 @@
     <Compile Include="DrawingGdiPlus.Surface.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
-      <Project>{69f4f945-9473-476a-a222-0348b91795d5}</Project>
+      <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>
       <Name>Xe.Drawing</Name>
     </ProjectReference>
   </ItemGroup>

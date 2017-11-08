@@ -43,7 +43,7 @@ namespace Xe.Drawing
 
             public Size Size => Bitmap.Size;
 
-            public PixelFormat PixelFormat => Bitmap.PixelFormat;
+            public PixelFormat PixelFormat { get; internal set; }
 
 
             public IMappedResource Map()

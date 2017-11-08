@@ -158,7 +158,7 @@
       <Name>Xe.Tools.Modules.Animation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
-      <Project>{19596819-8CDA-40F8-9488-BC75125B977F}</Project>
+      <Project>{e718e2c4-6c6d-4300-8f96-ceefaa85e722}</Project>
       <Name>Xe.Tools.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">

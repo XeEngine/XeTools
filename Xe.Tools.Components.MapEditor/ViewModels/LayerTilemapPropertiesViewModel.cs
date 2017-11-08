@@ -13,10 +13,21 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             set
             {
                 _layerTilemap = value;
+                OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsVisible));
                 OnPropertyChanged(nameof(Opacity));
                 OnPropertyChanged(nameof(MultiplyColor));
                 OnPropertyChanged(nameof(ColorText));
+            }
+        }
+
+        public string Name
+        {
+            get => _layerTilemap?.Name;
+            set
+            {
+                _layerTilemap.Name = value;
+                OnPropertyChanged();
             }
         }
 
@@ -32,7 +43,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public int Opacity
         {
-            get => (int)(_layerTilemap?.Opacity ?? 0 * 255);
+            get => (int)((_layerTilemap?.Opacity ?? 0) * 255.0);
             set
             {
                 if (_layerTilemap == null) return;
@@ -52,10 +63,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 if (_layerTilemap == null) return "N/A";
                 var color = MultiplyColor;
                 return string.Format("{0}, {1}, {2}, {3}",
-                    color.ScR.ToString("N02"),
-                    color.ScG.ToString("N02"),
-                    color.ScB.ToString("N02"),
-                    _layerTilemap.Opacity.ToString("N02"));
+                    color.ScR.ToString("N03"),
+                    color.ScG.ToString("N03"),
+                    color.ScB.ToString("N03"),
+                    _layerTilemap.Opacity.ToString("N03"));
             }
         }
     }
