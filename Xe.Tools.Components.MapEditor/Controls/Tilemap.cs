@@ -287,7 +287,8 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         private void RenderObject(IObjectEntry entry)
         {
-            var framesGroup = GetFramesGroup(entry.Name, "Stand", entry.Direction);
+            var strAnimData = entry.AnimationData ?? "data/sprite/editor.anim.json";
+            var framesGroup = GetFramesGroup(strAnimData, entry.AnimationName, entry.Direction);
             if (framesGroup != null)
             {
                 var realX = entry.X + entry.Width / 2;
@@ -368,30 +369,19 @@ namespace Xe.Tools.Components.MapEditor.Controls
             return null;
         }
 
-        private FramesGroup GetFramesGroup(string name, string animation, Direction direction = Direction.Undefined)
+        private FramesGroup GetFramesGroup(string filePath, string animation, Direction direction = Direction.Undefined)
         {
-            switch (name)
-            {
-                case "onipolla":
-                    name = "onip";
-                    break;
-                case "player":
-                    name = "lehior";
-                    break;
-            }
-
-            var desc = new AnimKeyEntry(name, animation, direction);
-            if (!_resAnimationData.Exists(name))
-                _resAnimationData.Add(name);
+            var desc = new AnimKeyEntry(filePath, animation, direction);
+            if (!_resAnimationData.Exists(filePath))
+                _resAnimationData.Add(filePath);
             if (!_resAnimations.Exists(desc))
                 _resAnimations.Add(desc);
             return _resAnimations[desc];
         }
 
-        private bool OnResourceAnimationDataLoad(string name, out AnimationDataEntry entry)
+        private bool OnResourceAnimationDataLoad(string filePath, out AnimationDataEntry entry)
         {
-            var fileName = $"{name}.anim.json";
-            entry = AnimationDataEntry.Create(AnimationService, _drawingService, fileName);
+            entry = AnimationDataEntry.Create(AnimationService, _drawingService, filePath);
             return entry != null;
         }
 

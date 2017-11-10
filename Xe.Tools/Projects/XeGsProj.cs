@@ -169,9 +169,9 @@ namespace Xe.Tools.Projects
 
             public abstract bool CanRename { get; }
 
-            public string Path => Parent != null ? System.IO.Path.Combine(Parent.Path, Name) : Name;
+            public string Path => Parent != null ? System.IO.Path.Combine(Parent.Path, Name).Replace('\\', '/') : Name;
 
-            public string FullPath => System.IO.Path.Combine(Project.WorkingDirectory, Path);
+            public string FullPath => System.IO.Path.Combine(Project.WorkingDirectory, Path).Replace('\\', '/');
 
             internal ProjectEntry(MyProject project, ProjectEntry parent)
             {

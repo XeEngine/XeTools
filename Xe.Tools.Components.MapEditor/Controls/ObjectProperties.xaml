@@ -36,12 +36,16 @@
             <StackPanel>
                 <TextBlock Text="Animation data"/>
                 <DockPanel Margin="0 0 0 5">
-                    <Button DockPanel.Dock="Right" Width="20" Content="..."/>
+                    <Button DockPanel.Dock="Right" Width="20" Content="..."
+                            Command="{Binding SelectAnimationData}"
+                            CommandParameter="{Binding}"/>
                     <TextBox Text="{Binding AnimationData, Mode=TwoWay}"/>
                 </DockPanel>
                 <TextBlock Text="Animation name"/>
                 <DockPanel Margin="0 0 0 5">
-                    <Button DockPanel.Dock="Right" Width="20" Content="..."/>
+                    <Button DockPanel.Dock="Right" Width="20" Content="..."
+                            Command="{Binding SelectAnimationName}"
+                            CommandParameter="{Binding}"/>
                     <TextBox Text="{Binding AnimationName, Mode=TwoWay}"/>
                 </DockPanel>
                 <TextBlock Text="Orientation"/>

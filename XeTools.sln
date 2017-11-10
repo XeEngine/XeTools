@@ -55,15 +55,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Game", "Xe.Game\Xe.Game.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Game.Tilemaps.TilemapTiled", "Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj", "{891AEBE7-A248-4EF3-9237-50EB124E74DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Modules", "Xe.Tools.Modules\Xe.Tools.Modules.csproj", "{E718E2C4-6C6D-4300-8F96-CEEFAA85E722}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Tools.Modules", "Xe.Tools.Modules\Xe.Tools.Modules.csproj", "{E718E2C4-6C6D-4300-8F96-CEEFAA85E722}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Modules.Copy", "Xe.Tools.Modules.Copy\Xe.Tools.Modules.Copy.csproj", "{A66BE615-B569-45A2-889F-C3D194600B0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Tools.Modules.Copy", "Xe.Tools.Modules.Copy\Xe.Tools.Modules.Copy.csproj", "{A66BE615-B569-45A2-889F-C3D194600B0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Modules.Kernel", "Xe.Tools.Modules.Kernel\Xe.Tools.Modules.Kernel.csproj", "{D94FC3A2-F773-4BF5-A92F-BAF2AE73BCA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Tools.Modules.Kernel", "Xe.Tools.Modules.Kernel\Xe.Tools.Modules.Kernel.csproj", "{D94FC3A2-F773-4BF5-A92F-BAF2AE73BCA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Modules.Message", "Xe.Tools.Modules.Message\Xe.Tools.Modules.Message.csproj", "{31B99465-AE01-4694-90CB-2DEF7DC30764}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Tools.Modules.Message", "Xe.Tools.Modules.Message\Xe.Tools.Modules.Message.csproj", "{31B99465-AE01-4694-90CB-2DEF7DC30764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Drawing", "Xe.Drawing\Xe.Drawing.csproj", "{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Drawing", "Xe.Drawing\Xe.Drawing.csproj", "{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Configurator", "Xe.Tools.Configurator\Xe.Tools.Configurator.csproj", "{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -509,6 +511,22 @@ Global
 		{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}.Release|x64.Build.0 = Release|Any CPU
 		{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}.Release|x86.ActiveCfg = Release|Any CPU
 		{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}.Release|x86.Build.0 = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|x64.Build.0 = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Debug|x86.Build.0 = Debug|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|ARM.Build.0 = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|x64.ActiveCfg = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|x64.Build.0 = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|x86.ActiveCfg = Release|Any CPU
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -542,6 +560,7 @@ Global
 		{D94FC3A2-F773-4BF5-A92F-BAF2AE73BCA8} = {8C7381ED-D68B-40D6-8E16-D37D137815FC}
 		{31B99465-AE01-4694-90CB-2DEF7DC30764} = {8C7381ED-D68B-40D6-8E16-D37D137815FC}
 		{17CE77B7-CAE4-46F1-93B2-BE1809856F4D} = {B379A764-9651-4DE0-A880-BC5A22037A5D}
+		{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1} = {AE87AD43-B265-4AF3-9E4B-81678E259253}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEC93E46-98D1-4CBA-8ED2-5F80D7A35AE3}

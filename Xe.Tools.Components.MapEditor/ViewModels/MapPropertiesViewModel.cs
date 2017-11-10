@@ -26,7 +26,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public string BgmField
         {
-            get => _tileMap.BgmField;
+            get => _tileMap?.BgmField;
             set
             {
                 _tileMap.BgmField = value;
@@ -36,7 +36,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public string BgmBattle
         {
-            get => _tileMap.BgmBattle;
+            get => _tileMap?.BgmBattle;
             set
             {
                 _tileMap.BgmBattle = value;

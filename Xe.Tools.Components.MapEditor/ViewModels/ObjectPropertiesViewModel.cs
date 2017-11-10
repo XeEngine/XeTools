@@ -1,6 +1,9 @@
-﻿using Xe.Game;
+﻿using System.Windows.Input;
+using Xe.Game;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Wpf;
+using Xe.Tools.Wpf.Commands;
+using Xe.Tools.Wpf.Dialogs;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
@@ -8,6 +11,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     {
         public delegate void InvalidateEntry(object sender, IObjectEntry entry);
         public event InvalidateEntry OnInvalidateEntry;
+
+        public MainWindowViewModel MainEditor { get; }
 
         private IObjectEntry _objectEntry;
         public IObjectEntry ObjectEntry
@@ -200,5 +205,50 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         #endregion
 
         #endregion
+
+        #region Commands
+
+        public ICommand SelectAnimationData { get; } = new RelayCommand(o =>
+        {
+            var sender = o as ObjectPropertiesViewModel;
+            var dialog = new ProjectFileDialog(sender.MainEditor.MapEditor.Project,
+                new string[] {
+                    "animation"
+                });
+            if (dialog.ShowDialog() == true)
+            {
+                sender.AnimationData = dialog.SelectedFile?.Path;
+            }
+        });
+
+        public ICommand SelectAnimationName { get; } = new RelayCommand(o =>
+        {
+            var sender = o as ObjectPropertiesViewModel;
+
+            var items = sender.MainEditor.MapEditor.AnimationService
+                    .GetAnimationDefinitions(sender.AnimationData);
+            if (items != null)
+            {
+                var dialog = new SingleSelectionDialog()
+                {
+                    Title = "Select an animation...",
+                    Description = "Animation name",
+                    Items = sender.MainEditor.MapEditor.AnimationService
+                        .GetAnimationDefinitions(sender.AnimationData),
+                    SelectedItem = sender.AnimationName ?? "Stand"
+                };
+                if (dialog.ShowDialog() == true)
+                {
+                    sender.AnimationName = dialog.SelectedItem as string;
+                }
+            }
+        });
+
+        #endregion
+
+        public ObjectPropertiesViewModel(MainWindowViewModel vm)
+        {
+            MainEditor = vm;
+        }
     }
 }

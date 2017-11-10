@@ -18,6 +18,12 @@ namespace Xe.Game.Tilemaps
                 set => _entry.Visible = value;
             }
 
+            public int Priority
+            {
+                get => GetPropertyValue<int>(_entry.Properties);
+                set => SetPropertyValue(_entry.Properties, value);
+            }
+
             public CLayerEntry(Tiled.ILayerEntry entry)
             {
                 _entry = entry;

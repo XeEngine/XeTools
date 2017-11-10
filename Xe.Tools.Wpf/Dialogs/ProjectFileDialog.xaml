@@ -1,0 +1,25 @@
+﻿<Window x:Class="Xe.Tools.Wpf.Dialogs.ProjectFileDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.Wpf.Dialogs"
+        mc:Ignorable="d"
+        Title="Select a file to open..." Height="400" Width="400">
+    <DockPanel Margin="10">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="_Cancel" Width="75" Margin="0,0,10,0" IsCancel="True"/>
+            <Button Content="_Ok" Width="75" IsDefault="True" Click="ButtonOk_Click" />
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Top" Text="File type"/>
+        <ComboBox DockPanel.Dock="Top" Margin="0 0 0 5"
+                  ItemsSource="{Binding FileTypesList}"
+                  SelectedValue="{Binding SelectedFileType}"
+                  SelectedIndex="{Binding SelectedFileTypeIndex}"/>
+        <TextBlock DockPanel.Dock="Top" Text="Files list"/>
+        <ListBox Margin="0 0 0 5" DisplayMemberPath="Path"
+            ItemsSource="{Binding FileItems}"
+            SelectedValue="{Binding SelectedFile}">
+        </ListBox>
+    </DockPanel>
+</Window>

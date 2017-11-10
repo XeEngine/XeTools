@@ -23,10 +23,11 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public LayerTilemapPropertiesViewModel LayerTilemapPropertiesViewModel { get; }
         public ObjectPropertiesViewModel ObjectPropertiesViewModel { get; }
 
-        public IEnumerable<ILayerEntry> Layers => MapEditor.TileMap.Layers.Reverse<ILayerEntry>();
+        public IEnumerable<LayerEntryViewModel> Layers => MapEditor.TileMap.Layers.Reverse<ILayerEntry>()
+            .Select(x => new LayerEntryViewModel(x));
 
-        private ILayerEntry _selectedLayerEntry;
-        public ILayerEntry SelectedLayerEntry
+        private LayerEntryViewModel _selectedLayerEntry;
+        public LayerEntryViewModel SelectedLayerEntry
         {
             get => _selectedLayerEntry;
             set
@@ -34,19 +35,24 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 _selectedLayerEntry = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(SelectedLayerTilemap));
-                if (_selectedLayerEntry is ILayerTilemap tileMap)
+
+                if (value != null)
                 {
-                    LayerTilemapPropertiesViewModel.LayerTilemap = tileMap;
-                    SetPropertyBar(PropertyBar.Tilemap);
-                }
-                else if (_selectedLayerEntry is ILayerObjects)
-                {
-                    SetPropertyBar(PropertyBar.ObjectsGroup);
-                }
-                else
-                {
-                    MapPropertiesViewModel.TileMap = MapEditor.TileMap;
-                    SetPropertyBar(PropertyBar.None);
+                    var layerEntry = value.LayerEntry;
+                    if (layerEntry is ILayerTilemap tileMap)
+                    {
+                        LayerTilemapPropertiesViewModel.LayerTilemap = tileMap;
+                        SetPropertyBar(PropertyBar.Tilemap);
+                    }
+                    else if (layerEntry is ILayerObjects)
+                    {
+                        SetPropertyBar(PropertyBar.ObjectsGroup);
+                    }
+                    else
+                    {
+                        MapPropertiesViewModel.TileMap = MapEditor.TileMap;
+                        SetPropertyBar(PropertyBar.None);
+                    }
                 }
             }
         }
@@ -105,8 +111,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         {
             MapEditor = vm;
             MapPropertiesViewModel = new MapPropertiesViewModel(this);
-            LayerTilemapPropertiesViewModel = new LayerTilemapPropertiesViewModel();
-            ObjectPropertiesViewModel = new ObjectPropertiesViewModel();
+            LayerTilemapPropertiesViewModel = new LayerTilemapPropertiesViewModel(this);
+            ObjectPropertiesViewModel = new ObjectPropertiesViewModel(this);
             SetPropertyBar(PropertyBar.None);
         }
 

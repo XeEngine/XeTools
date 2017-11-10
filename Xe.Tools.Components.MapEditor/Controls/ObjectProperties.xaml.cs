@@ -24,5 +24,15 @@ namespace Xe.Tools.Components.MapEditor.Controls
         {
             InitializeComponent();
         }
+
+        private void ButtonSelectAnimationFile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonSelectAnimation_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

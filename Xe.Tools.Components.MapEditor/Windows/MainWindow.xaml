@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.MapEditor.Windows"
         xmlns:Controls="clr-namespace:Xe.Tools.Components.MapEditor.Controls"
+        xmlns:m="clr-namespace:Xe.Tools.Components.MapEditor.Models"
         x:Class="Xe.Tools.Components.MapEditor.Windows.MainWindow"
         mc:Ignorable="d"
         Title="Tilemap Editor" Height="560" Width="802">
@@ -36,8 +37,25 @@
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Layers"/>
-            <ListBox Grid.Row="1" ItemsSource="{Binding Layers}" DisplayMemberPath="Name"
-                     SelectedValue="{Binding SelectedLayerEntry, Mode=OneWayToSource}"/>
+            <ListBox Grid.Row="1" ItemsSource="{Binding Layers}"
+                     SelectedValue="{Binding SelectedLayerEntry, Mode=OneWayToSource}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Ellipse Width="16" Fill="{Binding IconColor}"/>
+                            <TextBlock Grid.Column="0" FontWeight="Bold" FontSize="9"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Text="{Binding Prefix}" Foreground="White"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Name}" Foreground="{Binding ForeColor}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             <ScrollViewer Grid.Row="2" Margin="0 5 0 0"
                           VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="0 0 5 0">

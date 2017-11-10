@@ -6,6 +6,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 {
     public class LayerTilemapPropertiesViewModel : BaseNotifyPropertyChanged
     {
+        public MainWindowViewModel MainEditor { get; }
+
         private ILayerTilemap _layerTilemap;
         public  ILayerTilemap LayerTilemap
         {
@@ -41,6 +43,16 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
+        public int Priority
+        {
+            get => _layerTilemap?.Priority ?? -1;
+            set
+            {
+                _layerTilemap.Priority = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int Opacity
         {
             get => (int)((_layerTilemap?.Opacity ?? 0) * 255.0);
@@ -68,6 +80,11 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                     color.ScB.ToString("N03"),
                     _layerTilemap.Opacity.ToString("N03"));
             }
+        }
+
+        public LayerTilemapPropertiesViewModel(MainWindowViewModel vm)
+        {
+            MainEditor = vm;
         }
     }
 }

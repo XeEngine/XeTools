@@ -5,5 +5,7 @@
         string Name { get; set; }
 
         bool Visible { get; set; }
+
+        int Priority { get; set; }
     }
 }

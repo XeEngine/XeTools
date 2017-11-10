@@ -56,14 +56,24 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
             }
         }
 
-        public BitmapSource Sprite => SelectedTexture != null ? new CroppedBitmap(SelectedTexture.Image,
-            new Int32Rect()
+        public BitmapSource Sprite
+        {
+            get
             {
-                X = Left,
-                Y = Top,
-                Width = Right - Left,
-                Height = Bottom - Top
-            }) : null;
+                var image = SelectedTexture?.Image;
+                if (image == null || Left < 0 || Top < 0 ||
+                    Right <= Left || Bottom <= Top ||
+                    Right > image.PixelWidth || Bottom > image.PixelHeight)
+                    return null;
+                return new CroppedBitmap(SelectedTexture.Image, new Int32Rect()
+                {
+                    X = Left,
+                    Y = Top,
+                    Width = Right - Left,
+                    Height = Bottom - Top
+                });
+            }
+        }
 
         public double ViewCenterX => ViewWidth / 2.0;
         public double ViewCenterY => ViewHeight / 2.0;

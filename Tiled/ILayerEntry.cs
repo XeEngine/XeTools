@@ -7,5 +7,7 @@ namespace Tiled
     public interface ILayerEntry : IEntry
     {
         bool Visible { get; set; }
+
+        PropertiesDictionary Properties { get; }
     }
 }

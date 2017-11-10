@@ -38,7 +38,7 @@ namespace Xe.Tools.Services
 
         public IEnumerable<string> GetAnimationDefinitions(string animationData)
         {
-            var item = ProjectFiles.FirstOrDefault(x => x.Name == animationData);
+            var item = ProjectFiles.FirstOrDefault(x => x.Path == animationData);
             if (item != null)
             {
                 return GetAnimationData(item).AnimationDefinitions.Select(x => x.Name);

@@ -89,7 +89,7 @@ namespace Xe.Tools.Components.MapEditor.Models
             }
 
             var animation = _animationData.Animations
-                .SingleOrDefault(x => x.Name == animDirectionRef.Name);
+                .SingleOrDefault(x => x.Name == animDirectionRef?.Name);
             if (animation != null)
             {
                 return new FramesGroup()
@@ -146,10 +146,10 @@ namespace Xe.Tools.Components.MapEditor.Models
             surface?.Dispose();
         }
 
-        public static AnimationDataEntry Create(AnimationService animService, IDrawing drawing, string name)
+        public static AnimationDataEntry Create(AnimationService animService, IDrawing drawing, string filePath)
         {
-            var file = animService.ProjectFiles.SingleOrDefault(x => x.Name == name);
-            return file != null ? new AnimationDataEntry(animService, drawing, name, file) : null;
+            var file = animService.ProjectFiles.SingleOrDefault(x => x.Path == filePath);
+            return file != null ? new AnimationDataEntry(animService, drawing, filePath, file) : null;
         }
     }
 }

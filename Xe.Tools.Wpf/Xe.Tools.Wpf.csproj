@@ -88,6 +88,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\ProjectFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\SingleInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseNotifyPropertyChanged.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\D2DControl.cs" />
     <Compile Include="Controls\D2DControl.DX11ImageSource.cs" />
     <Compile Include="Controls\FooterBar.xaml.cs">
@@ -163,6 +168,9 @@
       <DependentUpon>XeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\FileDialog.cs" />
+    <Compile Include="Dialogs\ProjectFileDialog.xaml.cs">
+      <DependentUpon>ProjectFileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\SingleInputDialog.xaml.cs">
       <DependentUpon>SingleInputDialog.xaml</DependentUpon>
     </Compile>
@@ -199,6 +207,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
+      <Project>{EA2C7533-429D-4C2E-A3CE-4C77340E8A40}</Project>
+      <Name>Xe.Tools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
       <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
       <Name>Xe</Name>

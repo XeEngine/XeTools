@@ -40,7 +40,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -72,10 +71,12 @@
     <Compile Include="Controls\Tilemap.cs" />
     <Compile Include="Models\AnimationDataEntry.cs" />
     <Compile Include="Models\BitmapFrame.cs" />
+    <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Frame.cs" />
     <Compile Include="Models\FramesGroup.cs" />
     <Compile Include="Services\TilemapService.cs" />
     <Compile Include="Utility\Extensions.cs" />
+    <Compile Include="ViewModels\LayerEntryViewModel.cs" />
     <Compile Include="ViewModels\LayerTilemapPropertiesViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MapEditorViewModel.cs" />

@@ -20,9 +20,14 @@
                 set => Layer.Visible = value;
             }
 
+            public int Priority
+            {
+                get => GetPropertyValue<int>(Layer.Properties);
+                set => SetPropertyValue(Layer.Properties, value);
+            }
+
             public int Width => Layer.Width;
             public int Height => Layer.Height;
-            public int Priority { get; private set; }
 
             public double Opacity
             {

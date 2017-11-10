@@ -20,38 +20,70 @@ namespace Xe.Tools.Wpf.Dialogs
     /// </summary>
     public partial class SingleSelectionDialog : Window
     {
+        private class ViewModel : BaseNotifyPropertyChanged
+        {
+            private string _description;
+            private IEnumerable<object> _items;
+            private object _selectedItem;
+
+            public string Description
+            {
+                get => _description;
+                set
+                {
+                    _description = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            public IEnumerable<object> Items
+            {
+                get => _items;
+                set
+                {
+                    _items = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            public object SelectedValue
+            {
+                get => _selectedItem;
+                set
+                {
+                    _selectedItem = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private ViewModel _vm;
+
         public string Description
         {
-            get => ctrlLabelDescription.Text;
-            set => ctrlLabelDescription.Text = value;
+            get => _vm.Description;
+            set => _vm.Description = value;
         }
-        public IEnumerable ItemsSource
+
+        public IEnumerable<object> Items
         {
-            get => ctrlListAnimations.ItemsSource;
-            set => ctrlListAnimations.ItemsSource = value;
+            get => _vm.Items;
+            set => _vm.Items = value;
         }
-        public object Value
+
+        public object SelectedItem
         {
-            get => ctrlListAnimations.SelectedValue;
-            set => ctrlListAnimations.SelectedValue = value;
+            get => _vm.SelectedValue;
+            set => _vm.SelectedValue = value;
         }
 
         public SingleSelectionDialog()
         {
             InitializeComponent();
+            DataContext = _vm = new ViewModel();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ctrlListAnimations.Focus();
-        }
-
-        private void ctrlTextboxInput_GotFocus(object sender, RoutedEventArgs e)
-        {
-            (sender as TextBox).SelectAll();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonOk_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
             Close();
