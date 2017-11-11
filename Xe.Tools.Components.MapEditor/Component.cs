@@ -19,7 +19,7 @@ namespace Xe.Tools.Components.MapEditor
         {
             var vm = MapEditorViewModel.Instance;
             vm.Project = Properties.Project;
-            vm.OpenTileMap(Properties.File.FullPath);
+            vm.OpenTileMap(Properties.File);
             return new MainWindow(vm);
         }
 

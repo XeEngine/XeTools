@@ -17,8 +17,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 _layerTilemap = value;
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsVisible));
+                OnPropertyChanged(nameof(Priority));
                 OnPropertyChanged(nameof(Opacity));
                 OnPropertyChanged(nameof(MultiplyColor));
+                OnPropertyChanged(nameof(MultiplyColorBrush));
                 OnPropertyChanged(nameof(ColorText));
             }
         }

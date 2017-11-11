@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Wpf;
+using Xe.Tools.Wpf.Commands;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
@@ -103,6 +105,15 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         }
         public double MaxRenderingTime => _maxRenderingTime;
         public double AvgRenderingTime => _avgRenderingTime;
+
+        #endregion
+
+        #region Commands
+
+        public ICommand CommandSaveMap { get; } = new RelayCommand(o =>
+        {
+            (o as MainWindowViewModel)?.MapEditor.Save();
+        });
 
         #endregion
 

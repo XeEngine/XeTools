@@ -81,5 +81,11 @@ namespace Xe.Game.Tilemaps
             }
             return list;
         }
+
+
+        public void Save(string fileName)
+        {
+            Map.Save(fileName);
+        }
     }
 }

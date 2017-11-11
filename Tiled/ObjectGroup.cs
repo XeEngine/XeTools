@@ -89,6 +89,7 @@ namespace Tiled
         {
             foreach (var item in Objects)
                 item.SaveChanges();
+            Properties.SaveChanges();
         }
 
         public override string ToString()

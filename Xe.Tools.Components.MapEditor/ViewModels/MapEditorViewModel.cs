@@ -16,6 +16,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     {
         public static MapEditorViewModel Instance = new MapEditorViewModel();
         private ITileMap _tileMap;
+        private IProjectFile _file;
 
         public ProjectService ProjectService { get; private set; }
         public AnimationService AnimationService { get; private set; }
@@ -45,23 +46,29 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public bool IsTilemapLoaded => TileMap != null;
 
-        public bool OpenTileMap(string fileName)
+        public bool OpenTileMap(IProjectFile file)
         {
-            return (TileMap = TilemapService.Open(fileName)) != null;
+            var result = (TileMap = TilemapService.Open(file.FullPath)) != null;
+            if (result)
+                _file = file;
+            return result;
+        }
+
+        public void Save()
+        {
+            TileMap.Save(_file.FullPath);
         }
         
 #if DEBUG
         private MapEditorViewModel()
         {
-            var projPath = @"C:\Users\xeeynamo\Desktop\repo\vladya\soc\data\soc.game.proj.json";
+            var projPath = @"D:\Xe\Repo\vladya\soc\data\soc.game.proj.json";
             Project = new XeGsProj().Open(projPath);
             if (Project != null)
             {
                 var file = Project.GetFilesByFormat("tilemap").SingleOrDefault(x => x.Name == "debug_01.tmx");
                 if (file != null)
-                {
-                    OpenTileMap(file.FullPath);
-                }
+                    OpenTileMap(file);
             }
         }
 #endif

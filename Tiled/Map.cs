@@ -147,6 +147,8 @@ namespace Tiled
                 item.SaveChanges();
             foreach (var item in Layers)
                 item.SaveChanges();
+            foreach (var item in ObjectGroups)
+                item.SaveChanges();
         }
 
         #region Utilities

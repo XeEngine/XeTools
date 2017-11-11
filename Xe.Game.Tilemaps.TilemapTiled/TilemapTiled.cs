@@ -10,10 +10,6 @@ namespace Xe.Game.Tilemaps
             this(new Tiled.Map(filename))
         { }
 
-        #region Factory pattern
-        
-        #endregion
-
         #region Utilities
 
         private static T GetPropertyValue<T>(Tiled.PropertiesDictionary properties, T defaultValue = default(T), [CallerMemberName] string key = null)

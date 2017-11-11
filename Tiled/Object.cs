@@ -90,7 +90,7 @@ namespace Tiled
 
         public void SaveChanges()
         {
-
+            Properties.SaveChanges();
         }
     }
 }
