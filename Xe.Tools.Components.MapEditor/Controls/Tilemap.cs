@@ -128,11 +128,6 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 OnResourceTileLoad,
                 OnResourceTileUnload);
 
-            foreach (var item in TileMap.Tilesets)
-                _resTileset.Add(item.ImagePath);
-            for (int i = 0; i < 65536; i++)
-                _resTile.Add(i);
-
             #endregion
 
             _children = new VisualCollection(this);
@@ -145,10 +140,13 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         public void Render()
         {
-            RenderMap(TileMap);
-            using (var dc = _visual.RenderOpen())
+            if (TileMap != null)
             {
-                Flush(dc, _drawingService.Surface);
+                RenderMap(TileMap);
+                using (var dc = _visual.RenderOpen())
+                {
+                    Flush(dc, _drawingService.Surface);
+                }
             }
         }
 
@@ -168,17 +166,6 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
             return _children[index];
         }
-
-        #region Event handler
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            var size = sizeInfo.NewSize;
-            base.OnRenderSizeChanged(sizeInfo);
-            ResizeRenderingEngine((int)size.Width, (int)size.Height);
-        }
-
-        #endregion
 
         #region Rendering
 
@@ -304,14 +291,22 @@ namespace Xe.Tools.Components.MapEditor.Controls
             }
         }
 
-#endregion
+        #endregion
 
-#region Event handler
+        #region Event handler
 
         private bool _isMouseDown;
         private IObjectEntry _objEntrySelected;
         private Point _dragMousePosition;
         private double _dragObjEntryX, _dragObjEntryY;
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            var size = sizeInfo.NewSize;
+            base.OnRenderSizeChanged(sizeInfo);
+            ResizeRenderingEngine((int)size.Width, (int)size.Height);
+        }
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             var position = e.GetPosition(this);
@@ -348,7 +343,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
 #endregion
         
-#region Resource events and utilities
+        #region Resource events and utilities
 
         private IObjectEntry GetObjectEntry(double x, double y)
         {

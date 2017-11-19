@@ -8,6 +8,7 @@ namespace Xe.Tools.Modules
     public partial class Tiledmap : ModuleBase
     {
         private TilemapTiled _tiledmap;
+        private string _outputFileNameTilesetImage;
 
         public Tiledmap(ModuleInit init) : base(init) { }
         
@@ -20,12 +21,7 @@ namespace Xe.Tools.Modules
 
         public override string GetOutputFileName()
         {
-            var extIndex = InputFileName.IndexOf(".json");
-            if (extIndex >= 0)
-            {
-                return InputFileName.Substring(0, extIndex);
-            }
-            return InputFileName;
+            return InputFileName.Replace(".tmx", ".map");
         }
 
         public override IEnumerable<string> GetSecondaryInputFileNames()
@@ -55,18 +51,15 @@ namespace Xe.Tools.Modules
         {
             var basePath = Path.GetDirectoryName(InputFileName);
             var tilesetImage = $"{Path.GetFileNameWithoutExtension(OutputFileName)}.png";
+            _outputFileNameTilesetImage = Path.Combine(OutputWorkingPath, Path.Combine(basePath, tilesetImage));
             return new string[]
             {
-                Path.Combine(basePath, tilesetImage)
+                _outputFileNameTilesetImage
             };
         }
 
         public override void Export()
         {
-            if (_tiledmap.TileSize.Width != 16 ||
-                _tiledmap.TileSize.Height != 16)
-                throw new Exception($"TileSize {_tiledmap.TileSize.Width}x{_tiledmap.TileSize.Height} is unsupported, expected 16x16.");
-
             var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
             using (var fStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
             {

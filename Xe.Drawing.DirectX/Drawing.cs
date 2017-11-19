@@ -23,6 +23,15 @@ namespace Xe.Drawing
                 }
                 return _surface;
             }
+            set
+            {
+                var oldSurface = Surface;
+                if (value is CSurface surface)
+                {
+                    _surface = surface;
+                    d2dContext.Target = surface.Bitmap;
+                }
+            }
         }
 
         public override Filter Filter
@@ -102,14 +111,14 @@ namespace Xe.Drawing
             }
         }
 
-        private DrawingDirectX(int width, int height)
+        public DrawingDirectX()
+        {
+            CommonInit();
+        }
+        public DrawingDirectX(int width, int height)
         {
             CommonInit();
             ResizeRenderTarget(width, height);
-        }
-        private DrawingDirectX(ISurface surface)
-        {
-            CommonInit();
         }
 
         private void CommonInit()
@@ -124,7 +133,10 @@ namespace Xe.Drawing
         }
         public static DrawingDirectX Factory(ISurface surface)
         {
-            return new DrawingDirectX(surface);
+            return new DrawingDirectX()
+            {
+                Surface = surface
+            };
         }
     }
 }

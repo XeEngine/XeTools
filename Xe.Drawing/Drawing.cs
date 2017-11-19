@@ -4,7 +4,7 @@ namespace Xe.Drawing
 {
     public abstract class Drawing : IDrawing
     {
-        public abstract ISurface Surface { get; }
+        public abstract ISurface Surface { get; set; }
         public abstract Filter Filter { get; set; }
 
         public abstract void Clear(Color color);

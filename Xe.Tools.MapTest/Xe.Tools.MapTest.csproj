@@ -55,14 +55,6 @@
       <Project>{2632A519-F583-438E-8568-F055B192A726}</Project>
       <Name>Tiled</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Drawing.DirectX\Xe.Drawing.DirectX.csproj">
-      <Project>{66349c96-4f83-4af1-96f7-56716460ae6e}</Project>
-      <Name>Xe.Drawing.DirectX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Xe.Drawing.GdiPlus\Xe.Drawing.GdiPlus.csproj">
-      <Project>{80ecbd59-d578-4694-9ad2-ea4a7bdc47fa}</Project>
-      <Name>Xe.Drawing.GdiPlus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
       <Project>{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}</Project>
       <Name>Xe.Drawing</Name>
@@ -78,6 +70,10 @@
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Configurator\Xe.Tools.Configurator.csproj">
+      <Project>{6d7658e8-ff4d-4c50-9ba5-e30889cb00d1}</Project>
+      <Name>Xe.Tools.Configurator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
       <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>

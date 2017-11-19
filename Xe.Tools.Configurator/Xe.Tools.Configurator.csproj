@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurator.cs" />
@@ -40,10 +41,6 @@
     <ProjectReference Include="..\Xe.Drawing.DirectX\Xe.Drawing.DirectX.csproj">
       <Project>{66349c96-4f83-4af1-96f7-56716460ae6e}</Project>
       <Name>Xe.Drawing.DirectX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Xe.Drawing.GdiPlus\Xe.Drawing.GdiPlus.csproj">
-      <Project>{80ecbd59-d578-4694-9ad2-ea4a7bdc47fa}</Project>
-      <Name>Xe.Drawing.GdiPlus</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
       <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>

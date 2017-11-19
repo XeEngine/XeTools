@@ -20,6 +20,12 @@
                 set => Layer.Visible = value;
             }
 
+            public int Type
+            {
+                get => GetPropertyValue<int>(Layer.Properties);
+                set => SetPropertyValue(Layer.Properties, value);
+            }
+
             public int Priority
             {
                 get => GetPropertyValue<int>(Layer.Properties);
@@ -66,23 +72,23 @@
                 {
                     switch (name[0])
                     {
-                        case 'B': return 0;
-                        case 'L': return 1;
-                        case 'H': return 3;
-                        case 'X': return 5;
+                        case 'B': return 1;
+                        case 'L': return 3;
+                        case 'H': return 5;
+                        case 'X': return 7;
                         case 'S':
                             if (name.Length > 1)
                             {
                                 switch (name[1])
                                 {
-                                    case 'L': return 2;
-                                    case 'H': return 4;
+                                    case 'L': return 4;
+                                    case 'H': return 6;
                                 }
                             }
-                            return 2;
+                            return 4;
                     }
                 }
-                return -1;
+                return 0;
             }
         }
     }

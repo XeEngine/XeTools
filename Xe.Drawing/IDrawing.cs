@@ -21,7 +21,7 @@ namespace Xe.Drawing
 
     public interface IDrawing : IDisposable
     {
-        ISurface Surface { get; }
+        ISurface Surface { get; set; }
         Filter Filter { get; set; }
 
         ISurface CreateSurface(int width, int height, PixelFormat pixelFormat);

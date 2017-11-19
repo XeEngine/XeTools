@@ -59,8 +59,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Component.cs" />
+    <Compile Include="Controls\LayerProperties.xaml.cs">
+      <DependentUpon>LayerProperties.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LayerTilemapProperties.xaml.cs">
       <DependentUpon>LayerTilemapProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LayerTreeView.xaml.cs">
+      <DependentUpon>LayerTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MapProperties.xaml.cs">
       <DependentUpon>MapProperties.xaml</DependentUpon>
@@ -76,11 +82,13 @@
     <Compile Include="Models\FramesGroup.cs" />
     <Compile Include="Services\TilemapService.cs" />
     <Compile Include="Utility\Extensions.cs" />
-    <Compile Include="ViewModels\LayerEntryViewModel.cs" />
+    <Compile Include="ViewModels\NodeEntryTilemapViewModel.cs" />
+    <Compile Include="ViewModels\NodeLayerEntryViewModel.cs" />
+    <Compile Include="ViewModels\NodeMapViewModel.cs" />
+    <Compile Include="ViewModels\NodeLayerViewModel.cs" />
     <Compile Include="ViewModels\LayerTilemapPropertiesViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MapEditorViewModel.cs" />
-    <Compile Include="ViewModels\MapPropertiesViewModel.cs" />
     <Compile Include="ViewModels\ObjectPropertiesViewModel.cs" />
     <Compile Include="ViewModels\TilemapViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
@@ -156,7 +164,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\LayerProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\LayerTilemapProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LayerTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

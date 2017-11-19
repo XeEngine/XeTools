@@ -2,6 +2,8 @@
 {
     public interface ILayerTilemap : ILayerEntry
     {
+        int Type { get; set; }
+
         int Width { get; }
 
         int Height { get; }

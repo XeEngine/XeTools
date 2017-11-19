@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -30,16 +31,27 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tiledmap.CollisionChunk.cs" />
     <Compile Include="Tiledmap.cs" />
+    <Compile Include="Tiledmap.DrawingContext.cs" />
     <Compile Include="Tiledmap.Exporter.cs" />
+    <Compile Include="Tiledmap.ObjectChunk.cs" />
+    <Compile Include="Tiledmap.PriorityChunk.cs" />
+    <Compile Include="Tiledmap.TilemapChunk.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tiled\Tiled.csproj">
       <Project>{2632A519-F583-438E-8568-F055B192A726}</Project>
       <Name>Tiled</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
+      <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>
+      <Name>Xe.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
       <Project>{356875b9-86c1-47cb-942f-1e8413eec42d}</Project>
@@ -56,6 +68,14 @@
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{e718e2c4-6c6d-4300-8f96-ceefaa85e722}</Project>
       <Name>Xe.Tools.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
+      <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
+      <Name>Xe.Tools.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe\Xe.csproj">
+      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
+      <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -4,27 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Xe.Tools.Components.MapEditor.Controls"
+             xmlns:services="clr-namespace:Xe.Tools.Components.MapEditor.Services"
              xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="200">
     <StackPanel Background="White">
         <TextBlock Text="Layer name"/>
         <TextBox Margin="0 0 0 5" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-        
+
         <TextBlock Text="Priority"/>
-        <ComboBox Margin="0 0 0 5" SelectedIndex="{Binding Priority}">
-            <ComboBoxItem Content="Programmable"/>
-            <ComboBoxItem Content="Background 1"/>
-            <ComboBoxItem Content="Background 2"/>
-            <ComboBoxItem Content="Low tilemap"/>
-            <ComboBoxItem Content="Low shadow"/>
-            <ComboBoxItem Content="High tilemap"/>
-            <ComboBoxItem Content="High shadow"/>
-            <ComboBoxItem Content="Highest tilemap"/>
-            <ComboBoxItem Content="Highest shadow"/>
-            <ComboBoxItem Content="Foreground 1"/>
-            <ComboBoxItem Content="Foreground 2"/>
-        </ComboBox>
+        <ComboBox Margin="0 0 0 5"
+                  ItemsSource="{Binding Source={x:Static services:TilemapService.LayerNames}, Mode=OneTime}"
+                  SelectedIndex="{Binding Priority}"/>
 
         <CheckBox Content="Is visible" Margin="0 0 0 5"
                   IsChecked="{Binding IsVisible}"/>
@@ -37,21 +28,5 @@
                        SmallChange="1" LargeChange="4"
                        Value="{Binding Opacity}"/>
         </DockPanel>
-
-        <controls:SpecialGroupBox Header="Parallax">
-            <StackPanel>
-                <TextBlock Text="Horizontal camera multiplier: 1.0x"/>
-                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
-
-                <TextBlock Text="Vertical camera multiplier: 1.0x"/>
-                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
-
-                <TextBlock Text="Horizontal movement speed: 0.0x"/>
-                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
-
-                <TextBlock Text="Vertical movement multiplier: 0.0x"/>
-                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
-            </StackPanel>
-        </controls:SpecialGroupBox>
     </StackPanel>
 </UserControl>

@@ -6,16 +6,31 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Components.MapEditor.Models;
+using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
-    public class LayerEntryViewModel
+    public class NodeLayerEntryViewModel : NodeBaseViewModel
     {
         public ILayerEntry LayerEntry { get; }
 
-        public string Name => LayerEntry.Name;
+        public string Name
+        {
+            get => LayerEntry.Name;
+            set => LayerEntry.Name = value;
+        }
 
-        public bool IsVisible => LayerEntry.Visible;
+        public int Priority
+        {
+            get => LayerEntry.Priority;
+            set => LayerEntry.Priority = value;
+        }
+
+        public bool IsVisible
+        {
+            get => LayerEntry.Visible;
+            set => LayerEntry.Visible = value;
+        }
 
         public LayerType LayerType { get; }
 
@@ -37,28 +52,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public string Prefix
-        {
-            get
-            {
-                switch (LayerEntry.Priority)
-                {
-                    case 0: return "P";
-                    case 1: return "B1";
-                    case 2: return "B2";
-                    case 3: return "L";
-                    case 4: return "LS";
-                    case 5: return "H";
-                    case 6: return "HS";
-                    case 7: return "X";
-                    case 8: return "F1";
-                    case 9: return "F2";
-                    default: return ((byte)LayerEntry.Priority).ToString("X02");
-                }
-            }
-        }
-
-        public LayerEntryViewModel(ILayerEntry layerEntry)
+        public NodeLayerEntryViewModel(ITileMap tileMap, ILayerEntry layerEntry) :
+            base(tileMap)
         {
             LayerEntry = layerEntry;
             if (layerEntry is ILayerTilemap)

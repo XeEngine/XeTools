@@ -4,10 +4,8 @@ using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
-    public class LayerTilemapPropertiesViewModel : BaseNotifyPropertyChanged
+    public class LayerTilemapPropertiesViewModel : NodeBaseViewModel
     {
-        public MainWindowViewModel MainEditor { get; }
-
         private ILayerTilemap _layerTilemap;
         public  ILayerTilemap LayerTilemap
         {
@@ -35,6 +33,12 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
+        public int Type
+        {
+            get => _layerTilemap?.Type ?? int.MinValue;
+            set => _layerTilemap.Type = value;
+        }
+
         public bool IsVisible
         {
             get => _layerTilemap?.Visible ?? false;
@@ -47,7 +51,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public int Priority
         {
-            get => _layerTilemap?.Priority ?? -1;
+            get => _layerTilemap?.Priority ?? int.MinValue;
             set
             {
                 _layerTilemap.Priority = value;
@@ -84,9 +88,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public LayerTilemapPropertiesViewModel(MainWindowViewModel vm)
+        public LayerTilemapPropertiesViewModel(ITileMap tileMap) :
+            base(tileMap)
         {
-            MainEditor = vm;
+
         }
     }
 }

@@ -10,9 +10,36 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 {
     public class MainWindowViewModel : BaseNotifyPropertyChanged
     {
+        #region Main properties
+
+        /// <summary>
+        /// Main view model
+        /// </summary>
+        public MapEditorViewModel MapEditor { get; }
+
+        private NodeMapViewModel _masterNode;
+        /// <summary>
+        /// Node that contains the map, layers, tilemaps and objects groups
+        /// </summary>
+        public NodeMapViewModel MasterNode
+        {
+            get => _masterNode;
+            set
+            {
+                _masterNode = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Item selection
+
         private enum PropertyBar
         {
             None,
+            Map,
+            Layer,
             Tilemap,
             ObjectsGroup,
             ObjectEntry
@@ -20,44 +47,113 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         private PropertyBar _propertyBar;
 
-        public MapEditorViewModel MapEditor { get; }
-        public MapPropertiesViewModel MapPropertiesViewModel { get; }
-        public LayerTilemapPropertiesViewModel LayerTilemapPropertiesViewModel { get; }
-        public ObjectPropertiesViewModel ObjectPropertiesViewModel { get; }
+        #region Node selection
 
-        public IEnumerable<LayerEntryViewModel> Layers => MapEditor.TileMap.Layers.Reverse<ILayerEntry>()
-            .Select(x => new LayerEntryViewModel(x));
-
-        private LayerEntryViewModel _selectedLayerEntry;
-        public LayerEntryViewModel SelectedLayerEntry
+        private NodeBaseViewModel _selectedNode;
+        public NodeBaseViewModel SelectedNode
         {
-            get => _selectedLayerEntry;
+            get => _selectedNode;
             set
             {
-                _selectedLayerEntry = value;
+                _selectedNode = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(SelectedLayerTilemap));
 
                 if (value != null)
                 {
-                    var layerEntry = value.LayerEntry;
-                    if (layerEntry is ILayerTilemap tileMap)
+                    if (value is NodeMapViewModel mastreNode)
                     {
-                        LayerTilemapPropertiesViewModel.LayerTilemap = tileMap;
-                        SetPropertyBar(PropertyBar.Tilemap);
+                        SetPropertyBar(PropertyBar.Map);
                     }
-                    else if (layerEntry is ILayerObjects)
+                    else if (value is NodeLayerViewModel node)
                     {
-                        SetPropertyBar(PropertyBar.ObjectsGroup);
+                        NodeLayerViewModel = node;
+                        SetPropertyBar(PropertyBar.Layer);
+                    }
+                    else if (value is NodeEntryTilemapViewModel tileMap)
+                    {
+                        NodeEntryTilemapViewModel = tileMap;
+                        SetPropertyBar(PropertyBar.Tilemap);
                     }
                     else
                     {
-                        MapPropertiesViewModel.TileMap = MapEditor.TileMap;
                         SetPropertyBar(PropertyBar.None);
                     }
                 }
             }
         }
+
+        private NodeMapViewModel _nodeMapViewModel;
+        private NodeLayerViewModel _nodeLayerViewModel;
+        private NodeEntryTilemapViewModel _nodeEntryTilemapViewModel;
+        private NodeLayerEntryViewModel _nodeEntryObjectsGroupViewModel;
+
+        public NodeMapViewModel NodeMapViewModel
+        {
+            get => _nodeMapViewModel;
+            set
+            {
+                _nodeMapViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public NodeLayerViewModel NodeLayerViewModel
+        {
+            get => _nodeLayerViewModel;
+            set
+            {
+                _nodeLayerViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public NodeEntryTilemapViewModel NodeEntryTilemapViewModel
+        {
+            get => _nodeEntryTilemapViewModel;
+            set
+            {
+                _nodeEntryTilemapViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public NodeLayerEntryViewModel NodeEntryObjectsGroupViewModel
+        {
+            get => _nodeEntryObjectsGroupViewModel;
+            set
+            {
+                _nodeEntryObjectsGroupViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        public Visibility PropertyMapVisibility => _propertyBar == PropertyBar.Map ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility PropertyLayerVisibility => _propertyBar == PropertyBar.Layer ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility PropertyTilemapVisibility => _propertyBar == PropertyBar.Tilemap ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility PropertyObjectGroupVisibility => _propertyBar == PropertyBar.ObjectsGroup ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility PropertyObjectEntryVisibility => _propertyBar == PropertyBar.ObjectEntry ? Visibility.Visible : Visibility.Collapsed;
+
+        private void SetPropertyBar(PropertyBar propertyBar)
+        {
+            _propertyBar = propertyBar;
+            OnPropertyChanged(nameof(PropertyMapVisibility));
+            OnPropertyChanged(nameof(PropertyLayerVisibility));
+            OnPropertyChanged(nameof(PropertyTilemapVisibility));
+            OnPropertyChanged(nameof(PropertyObjectGroupVisibility));
+            OnPropertyChanged(nameof(PropertyObjectEntryVisibility));
+        }
+
+        #endregion
+        
+        //public ILayerTilemap SelectedLayerTilemap => SelectedLayerEntry as ILayerTilemap;
+        //public ILayerObjects SelectedLayerObjectsGroup => SelectedLayerEntry as ILayerObjects;
+
+        //public LayerTilemapPropertiesViewModel LayerTilemapPropertiesViewModel { get; }
+        public ObjectPropertiesViewModel ObjectPropertiesViewModel { get; }
+        
+
 
         private IObjectEntry _selectedObjectEntry;
         public IObjectEntry SelectedObjectEntry
@@ -71,14 +167,6 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 SetPropertyBar(PropertyBar.ObjectEntry);
             }
         }
-
-        public ILayerTilemap SelectedLayerTilemap => SelectedLayerEntry as ILayerTilemap;
-        public ILayerObjects SelectedLayerObjectsGroup => SelectedLayerEntry as ILayerObjects;
-
-        public Visibility PropertyMapVisibility => _propertyBar == PropertyBar.None ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility PropertyTilemapVisibility => _propertyBar == PropertyBar.Tilemap ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility PropertyObjectGroupVisibility => _propertyBar == PropertyBar.ObjectsGroup ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility PropertyObjectEntryVisibility => _propertyBar == PropertyBar.ObjectEntry ? Visibility.Visible : Visibility.Collapsed;
 
         #region Status bar
 
@@ -121,19 +209,21 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public MainWindowViewModel(MapEditorViewModel vm)
         {
             MapEditor = vm;
-            MapPropertiesViewModel = new MapPropertiesViewModel(this);
-            LayerTilemapPropertiesViewModel = new LayerTilemapPropertiesViewModel(this);
+            MasterNode = new NodeMapViewModel(MapEditor.TileMap, MapEditor.MapName);
+
+            //LayerTilemapPropertiesViewModel = new LayerTilemapPropertiesViewModel(this);
             ObjectPropertiesViewModel = new ObjectPropertiesViewModel(this);
             SetPropertyBar(PropertyBar.None);
+
+            MapEditor.OnTilemapChanged += (sender, tileMap) =>
+            {
+                OnPropertyChanged(nameof(MasterNode));
+            };
         }
 
-        private void SetPropertyBar(PropertyBar propertyBar)
+        public void OnTilemapChanged(object sender, ITileMap tilemap)
         {
-            _propertyBar = propertyBar;
-            OnPropertyChanged(nameof(PropertyMapVisibility));
-            OnPropertyChanged(nameof(PropertyTilemapVisibility));
-            OnPropertyChanged(nameof(PropertyObjectGroupVisibility));
-            OnPropertyChanged(nameof(PropertyObjectEntryVisibility));
+            MasterNode = new NodeMapViewModel(MapEditor.TileMap, MapEditor.MapName);
         }
     }
 }

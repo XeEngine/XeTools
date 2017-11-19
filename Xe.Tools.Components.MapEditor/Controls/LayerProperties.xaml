@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="Xe.Tools.Components.MapEditor.Controls.LayerProperties"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Xe.Tools.Components.MapEditor.Controls"
+             xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="200">
+    <StackPanel Background="White">
+        <TextBlock Text="{Binding Name}" Margin="0 0 0 5"/>
+        
+        <TextBlock Text="Type"/>
+        <ComboBox IsEnabled="False" Margin="0 0 0 5" SelectedIndex="{Binding Type}">
+            <ComboBoxItem Content="Default (faster)"/>
+            <ComboBoxItem Content="Simple Parallax" Visibility="Collapsed"/>
+            <ComboBoxItem Content="Advanced Parallax" Visibility="Collapsed" IsEnabled="False"/>
+            <ComboBoxItem Content="Mode 7" Visibility="Collapsed" IsEnabled="False"/>
+            <ComboBoxItem Content="Shadow"/>
+            <ComboBoxItem Content="Custom #5" Visibility="Collapsed" IsEnabled="False"/>
+            <ComboBoxItem Content="Custom #6" Visibility="Collapsed" IsEnabled="False"/>
+            <ComboBoxItem Content="Custom #7" Visibility="Collapsed" IsEnabled="False"/>
+            <ComboBoxItem Content="Collision"/>
+            <ComboBoxItem Content="Depth"/>
+        </ComboBox>
+
+        <CheckBox IsEnabled="False" Content="Is visible" Margin="0 0 0 5"
+                  IsChecked="{Binding IsVisible}"/>
+
+        <TextBlock Text="{Binding ColorText, StringFormat='Opacity and color: {0}'}"/>
+        <DockPanel IsEnabled="False" Margin="0 0 0 5">
+            <Rectangle DockPanel.Dock="Left" Width="17"
+                       Fill="{Binding MultiplyColorBrush}"/>
+            <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="255"
+                       SmallChange="1" LargeChange="4"
+                       Value="{Binding Opacity}"/>
+        </DockPanel>
+
+        <controls:SpecialGroupBox Header="Parallax" IsEnabled="False">
+            <StackPanel>
+                <TextBlock Text="Horizontal camera multiplier: 1.0x"/>
+                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
+
+                <TextBlock Text="Vertical camera multiplier: 1.0x"/>
+                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
+
+                <TextBlock Text="Horizontal movement speed: 0.0x"/>
+                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
+
+                <TextBlock Text="Vertical movement multiplier: 0.0x"/>
+                <ScrollBar Margin="0 0 0 5" Orientation="Horizontal"/>
+            </StackPanel>
+        </controls:SpecialGroupBox>
+    </StackPanel>
+</UserControl>

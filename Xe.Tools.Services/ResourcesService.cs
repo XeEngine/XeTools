@@ -70,7 +70,21 @@ namespace Xe.Tools.Services
             _resources.Clear();
         }
 
-        public T this[K key] =>_resources.TryGetValue(key, out var value) ? OnLoad(key, value) : default(T);
+        public T this[K key]
+        {
+            get
+            {
+                if (!_resources.TryGetValue(key, out var value))
+                {
+                    _resources.Add(key, value = new Entry()
+                    {
+                        State = State.Uninitialized,
+                        Item = null
+                    });
+                }
+                return OnLoad(key, value);
+            }
+        }
         
         private T OnLoad(K key, Entry entry)
         {

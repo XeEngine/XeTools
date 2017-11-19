@@ -7,5 +7,10 @@ namespace Xe.Tools.GameStudio
 	/// </summary>
 	public partial class App : Application
 	{
-	}
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            Factory.Register<Xe.Drawing.IDrawing, Xe.Drawing.DrawingDirectX>(Factory.Scope.Instance);
+        }
+    }
 }

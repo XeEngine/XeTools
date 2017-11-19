@@ -35,15 +35,21 @@ namespace Xe.Security
 		public void WriteByte(byte b)
 		{
 			_value = _table[(byte)(_value) ^ b] ^ (_value >> 8);
-		}
+        }
 
-		public void Write(byte[] data, uint offset, uint size)
-		{
-			for (uint i = 0; i < size; i++)
-				_value = _table[(((byte)(_value)) ^ data[offset + i])] ^ (_value >> 8);
-		}
+        public void Write(byte[] data, uint offset, uint size)
+        {
+            for (uint i = 0; i < size; i++)
+                _value = _table[(((byte)(_value)) ^ data[offset + i])] ^ (_value >> 8);
+        }
 
-		public ulong GetDigest() { return _value ^ ulong.MaxValue; }
+        public unsafe void Write(byte* data, uint offset, uint size)
+        {
+            for (uint i = 0; i < size; i++)
+                _value = _table[(((byte)(_value)) ^ data[offset + i])] ^ (_value >> 8);
+        }
+
+        public ulong GetDigest() { return _value ^ ulong.MaxValue; }
 
 		private void Init()
 		{
@@ -56,10 +62,16 @@ namespace Xe.Security
             return CalculateDigest(data, 0, (uint)data.Length);
         }
         public static ulong CalculateDigest(byte[] data, uint offset, uint size)
-		{
-			Instance.Init();
-			Instance.Write(data, offset, size);
-			return Instance.GetDigest();
-		}
-	}
+        {
+            Instance.Init();
+            Instance.Write(data, offset, size);
+            return Instance.GetDigest();
+        }
+        public unsafe static ulong CalculateDigest(byte* data, uint offset, uint size)
+        {
+            Instance.Init();
+            Instance.Write(data, offset, size);
+            return Instance.GetDigest();
+        }
+    }
 }

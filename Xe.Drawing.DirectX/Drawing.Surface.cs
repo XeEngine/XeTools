@@ -64,8 +64,9 @@ namespace Xe.Drawing
 
             public IMappedResource Map()
             {
-                if (_tmpBitmap == null)
+                if (_tmpBitmap == null || _tmpBitmap.Size != _bitmap.Size)
                 {
+                    _tmpBitmap?.Dispose();
                     _tmpBitmap = _drawing.CreateBitmap(Width, Height,
                         d2.BitmapOptions.CpuRead | d2.BitmapOptions.CannotDraw,
                         d2PixelFormat);
@@ -95,7 +96,7 @@ namespace Xe.Drawing
 
         public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat)
         {
-            return CreateSurface(width, height, d2.BitmapOptions.None);
+            return CreateSurface(width, height, d2.BitmapOptions.Target);
         }
         internal CSurface CreateSurfaceAsRenderTarget(int width, int height)
         {

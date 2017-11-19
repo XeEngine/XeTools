@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,11 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public static MapEditorViewModel Instance = new MapEditorViewModel();
         private ITileMap _tileMap;
         private IProjectFile _file;
+
+        #region Delegates and events
+        public delegate void TilemapChangedHandler(MapEditorViewModel sender, ITileMap tileMap);
+        public event TilemapChangedHandler OnTilemapChanged;
+        #endregion
 
         public ProjectService ProjectService { get; private set; }
         public AnimationService AnimationService { get; private set; }
@@ -39,10 +45,13 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             set
             {
                 _tileMap = value;
+                OnTilemapChanged?.Invoke(this, _tileMap);
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsTilemapLoaded));
             }
         }
+
+        public string MapName => Path.GetFileNameWithoutExtension(_file?.Name ?? "<unknown>");
 
         public bool IsTilemapLoaded => TileMap != null;
 
