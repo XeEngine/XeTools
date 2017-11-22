@@ -6,6 +6,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 {
     public class LayerTilemapPropertiesViewModel : NodeBaseViewModel
     {
+        MainWindowViewModel _vm;
+
         private ILayerTilemap _layerTilemap;
         public  ILayerTilemap LayerTilemap
         {
@@ -23,7 +25,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public string Name
+        public new string Name
         {
             get => _layerTilemap?.Name;
             set
@@ -55,6 +57,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             set
             {
                 _layerTilemap.Priority = value;
+                _vm.IsRedrawingNeeded = true;
                 OnPropertyChanged();
             }
         }
@@ -88,10 +91,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public LayerTilemapPropertiesViewModel(ITileMap tileMap) :
-            base(tileMap)
+        public LayerTilemapPropertiesViewModel(MainWindowViewModel vm) :
+            base(vm)
         {
-
+            _vm = vm;
         }
     }
 }

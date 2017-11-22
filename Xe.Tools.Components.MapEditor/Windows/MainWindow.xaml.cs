@@ -11,10 +11,7 @@ namespace Xe.Tools.Components.MapEditor.Windows
     public partial class MainWindow : Window
     {
         const double FPS = 60.0;
-
-        private bool _isInvalidated;
-        private object _isInvalidatedLock = new object();
-
+        
         public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
 
         public MainWindow()
@@ -33,7 +30,7 @@ namespace Xe.Tools.Components.MapEditor.Windows
             DataContext = new MainWindowViewModel(vm);
             ViewModel.ObjectPropertiesViewModel.OnInvalidateEntry += (s, e) =>
             {
-                Invalidate();
+                ViewModel.IsRedrawingNeeded = true;
             };
             var timer = new System.Timers.Timer
             {
@@ -41,24 +38,19 @@ namespace Xe.Tools.Components.MapEditor.Windows
             };
             timer.Elapsed += (s, e) =>
             {
-                bool isInvalidated;
-                lock(_isInvalidatedLock)
+                // Returns to the main thread
+                Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
-                    isInvalidated = _isInvalidated;
-                    _isInvalidated = false;
-                }
-                if (isInvalidated)
-                {
-                    // Returns to the main thread
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    if (ViewModel.IsRedrawingNeeded == true)
                     {
+                        ViewModel.IsRedrawingNeeded = false;
                         var stopWatch = new Stopwatch();
                         stopWatch.Start();
                         tileMap.Render();
                         stopWatch.Stop();
-                        ViewModel.LastRenderingTime = stopWatch.Elapsed.TotalMilliseconds; 
-                    }));
-                }
+                        ViewModel.LastRenderingTime = stopWatch.Elapsed.TotalMilliseconds;
+                    }
+                }));
             };
             timer.Enabled = true;
         }
@@ -78,13 +70,6 @@ namespace Xe.Tools.Components.MapEditor.Windows
                 vm.Y = (int)y;
             };
         }
-
-        private void Invalidate()
-        {
-            lock (_isInvalidatedLock)
-            {
-                _isInvalidated = true;
-            }
-        }
+        
     }
 }

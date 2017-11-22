@@ -12,24 +12,50 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 {
     public class NodeLayerEntryViewModel : NodeBaseViewModel
     {
-        public ILayerEntry LayerEntry { get; }
+        public MapEditorViewModel ViewModel { get; }
 
-        public string Name
+        private ILayerEntry _layerEntry;
+        public ILayerEntry LayerEntry
+        {
+            get => _layerEntry;
+            set
+            {
+                _layerEntry = value;
+                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged(nameof(IsVisible));
+                OnPropertyChanged(nameof(Priority));
+            }
+        }
+
+        public new string Name
         {
             get => LayerEntry.Name;
-            set => LayerEntry.Name = value;
+            set
+            {
+                LayerEntry.Name = value;
+                OnPropertyChanged();
+            }
         }
 
         public int Priority
         {
             get => LayerEntry.Priority;
-            set => LayerEntry.Priority = value;
+            set
+            {
+                LayerEntry.Priority = value;
+                MainWindow.IsRedrawingNeeded = true;
+                OnPropertyChanged();
+            }
         }
 
         public bool IsVisible
         {
             get => LayerEntry.Visible;
-            set => LayerEntry.Visible = value;
+            set
+            {
+                LayerEntry.Visible = value;
+                OnPropertyChanged();
+            }
         }
 
         public LayerType LayerType { get; }
@@ -52,8 +78,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public NodeLayerEntryViewModel(ITileMap tileMap, ILayerEntry layerEntry) :
-            base(tileMap)
+        public NodeLayerEntryViewModel(MainWindowViewModel vm, ILayerEntry layerEntry) :
+            base(vm)
         {
             LayerEntry = layerEntry;
             if (layerEntry is ILayerTilemap)

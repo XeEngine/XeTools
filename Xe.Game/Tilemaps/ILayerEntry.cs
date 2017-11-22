@@ -1,11 +1,7 @@
 ﻿namespace Xe.Game.Tilemaps
 {
-    public interface ILayerEntry
+    public interface ILayerEntry : ILayerBase
     {
-        string Name { get; set; }
-
-        bool Visible { get; set; }
-
         int Priority { get; set; }
     }
 }

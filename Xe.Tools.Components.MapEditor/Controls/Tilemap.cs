@@ -14,6 +14,7 @@ using Xe.Tools.Components.MapEditor.Utility;
 using Xe.Tools.Components.MapEditor.ViewModels;
 using Xe.Tools.Services;
 using System.Runtime.InteropServices;
+using Xe.Tools.Components.MapEditor.Services;
 
 namespace Xe.Tools.Components.MapEditor.Controls
 {
@@ -190,8 +191,17 @@ namespace Xe.Tools.Components.MapEditor.Controls
             var backColor = tileMap.BackgroundColor;
             var color = drawing.Color.FromArgb(backColor.A, backColor.R, backColor.G, backColor.B);
             _drawingService.Clear(backColor);
-            foreach (var layer in tileMap.Layers)
-                RenderLayer(layer);
+
+            foreach (var priority in tileMap.Layers
+                .FlatteredLayers()
+                .GroupBy(x => x.Priority)
+                .OrderBy(x => x.Key))
+            {
+                foreach (var layer in priority)
+                {
+                    RenderLayer(layer);
+                }
+            }
         }
 
         private void Flush(DrawingContext dc, ISurface surface)
@@ -225,6 +235,17 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 Width = _writeableBitmap.Width,
                 Height = _writeableBitmap.Height
             });
+        }
+
+        private void RenderLayer(ILayerBase layerBase)
+        {
+            if (layerBase is ILayersGroup group)
+            {
+                foreach (var item in group.Layers)
+                    RenderLayer(item);
+            }
+            else if (layerBase is ILayerEntry entry)
+                RenderLayer(entry);
         }
 
         private void RenderLayer(ILayerEntry layer)

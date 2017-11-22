@@ -119,6 +119,7 @@ namespace Tiled
 
         public void SaveChanges()
         {
+            Properties.SaveChanges();
         }
 
         public override string ToString()

@@ -49,7 +49,9 @@
             internal CLayerTilemap(TilemapTiled map, Tiled.Layer layer)
             {
                 Layer = layer;
-                Priority = GetPriorityFromName(layer.Name);
+                /*var defaultPriority = GetPriorityFromName(layer.Name);
+                if (defaultPriority >= 0)
+                    Priority = defaultPriority;*/
 
                 Tiles = new Tile[Width, Height];
                 var srcData = layer.Data;
@@ -68,27 +70,24 @@
 
             private int GetPriorityFromName(string name)
             {
-                if (name.Length >= 0)
+                var split = name.Split(' ');
+                if (split.Length > 1)
                 {
-                    switch (name[0])
+                    var pre = split[0];
+                    switch (pre)
                     {
-                        case 'B': return 1;
-                        case 'L': return 3;
-                        case 'H': return 5;
-                        case 'X': return 7;
-                        case 'S':
-                            if (name.Length > 1)
-                            {
-                                switch (name[1])
-                                {
-                                    case 'L': return 4;
-                                    case 'H': return 6;
-                                }
-                            }
-                            return 4;
+                        case "B": return 1;
+                        case "B1": return 1;
+                        case "B2": return 2;
+                        case "L": return 3;
+                        case "S": return 4;
+                        case "SL": return 4;
+                        case "H": return 5;
+                        case "SH": return 6;
+                        case "X": return 7;
                     }
                 }
-                return 0;
+                return -1;
             }
         }
     }

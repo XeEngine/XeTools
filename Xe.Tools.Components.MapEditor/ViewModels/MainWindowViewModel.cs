@@ -74,6 +74,11 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                         NodeEntryTilemapViewModel = tileMap;
                         SetPropertyBar(PropertyBar.Tilemap);
                     }
+                    else if (value is NodeObjectsGroupViewModel objGroup)
+                    {
+                        NodeObjectsGroupViewModel = objGroup;
+                        SetPropertyBar(PropertyBar.ObjectsGroup);
+                    }
                     else
                     {
                         SetPropertyBar(PropertyBar.None);
@@ -85,7 +90,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         private NodeMapViewModel _nodeMapViewModel;
         private NodeLayerViewModel _nodeLayerViewModel;
         private NodeEntryTilemapViewModel _nodeEntryTilemapViewModel;
-        private NodeLayerEntryViewModel _nodeEntryObjectsGroupViewModel;
+        private NodeObjectsGroupViewModel _nodeObjectsGroupViewModel;
 
         public NodeMapViewModel NodeMapViewModel
         {
@@ -117,12 +122,12 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public NodeLayerEntryViewModel NodeEntryObjectsGroupViewModel
+        public NodeObjectsGroupViewModel NodeObjectsGroupViewModel
         {
-            get => _nodeEntryObjectsGroupViewModel;
+            get => _nodeObjectsGroupViewModel;
             set
             {
-                _nodeEntryObjectsGroupViewModel = value;
+                _nodeObjectsGroupViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -132,7 +137,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public Visibility PropertyMapVisibility => _propertyBar == PropertyBar.Map ? Visibility.Visible : Visibility.Collapsed;
         public Visibility PropertyLayerVisibility => _propertyBar == PropertyBar.Layer ? Visibility.Visible : Visibility.Collapsed;
         public Visibility PropertyTilemapVisibility => _propertyBar == PropertyBar.Tilemap ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility PropertyObjectGroupVisibility => _propertyBar == PropertyBar.ObjectsGroup ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility PropertyObjectsGroupVisibility => _propertyBar == PropertyBar.ObjectsGroup ? Visibility.Visible : Visibility.Collapsed;
         public Visibility PropertyObjectEntryVisibility => _propertyBar == PropertyBar.ObjectEntry ? Visibility.Visible : Visibility.Collapsed;
 
         private void SetPropertyBar(PropertyBar propertyBar)
@@ -141,19 +146,13 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             OnPropertyChanged(nameof(PropertyMapVisibility));
             OnPropertyChanged(nameof(PropertyLayerVisibility));
             OnPropertyChanged(nameof(PropertyTilemapVisibility));
-            OnPropertyChanged(nameof(PropertyObjectGroupVisibility));
+            OnPropertyChanged(nameof(PropertyObjectsGroupVisibility));
             OnPropertyChanged(nameof(PropertyObjectEntryVisibility));
         }
 
         #endregion
         
-        //public ILayerTilemap SelectedLayerTilemap => SelectedLayerEntry as ILayerTilemap;
-        //public ILayerObjects SelectedLayerObjectsGroup => SelectedLayerEntry as ILayerObjects;
-
-        //public LayerTilemapPropertiesViewModel LayerTilemapPropertiesViewModel { get; }
         public ObjectPropertiesViewModel ObjectPropertiesViewModel { get; }
-        
-
 
         private IObjectEntry _selectedObjectEntry;
         public IObjectEntry SelectedObjectEntry
@@ -203,15 +202,39 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             (o as MainWindowViewModel)?.MapEditor.Save();
         });
 
+        public ICommand GroupLayersByPriorityCommand { get; } = new RelayCommand(o =>
+        {
+            if (o is MainWindowViewModel vm)
+                vm.ChangeLayerOrder(NodeOrderMode.GroupByPriority);
+        });
+
+        public ICommand UngroupLayersCommand { get; } = new RelayCommand(o =>
+        {
+            if (o is MainWindowViewModel vm)
+                vm.ChangeLayerOrder(NodeOrderMode.OriginalOrder);
+        });
+
         #endregion
 
+        private bool _isRedrawingNeeded;
+        private object _lockIsRedrawingNeeded = new object();
+        public bool IsRedrawingNeeded
+        {
+            get => _isRedrawingNeeded;
+            set
+            {
+                lock (_lockIsRedrawingNeeded)
+                {
+                    _isRedrawingNeeded = value;
+                }
+            }
+        }
 
         public MainWindowViewModel(MapEditorViewModel vm)
         {
             MapEditor = vm;
-            MasterNode = new NodeMapViewModel(MapEditor.TileMap, MapEditor.MapName);
-
-            //LayerTilemapPropertiesViewModel = new LayerTilemapPropertiesViewModel(this);
+            MasterNode = new NodeMapViewModel(this, MapEditor.MapName);
+            
             ObjectPropertiesViewModel = new ObjectPropertiesViewModel(this);
             SetPropertyBar(PropertyBar.None);
 
@@ -221,9 +244,20 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             };
         }
 
-        public void OnTilemapChanged(object sender, ITileMap tilemap)
+        private void ChangeLayerOrder(NodeOrderMode order)
         {
-            MasterNode = new NodeMapViewModel(MapEditor.TileMap, MapEditor.MapName);
+            var masterNode = MasterNode;
+            masterNode.NodeOrderMode = order;
+
+            MasterNode = null;
+            OnPropertyChanged(nameof(MasterNode));
+            MasterNode = masterNode;
+            OnPropertyChanged(nameof(MasterNode));
+        }
+
+        private void OnTilemapChanged(object sender, ITileMap tilemap)
+        {
+            MasterNode = new NodeMapViewModel(this, MapEditor.MapName);
         }
     }
 }

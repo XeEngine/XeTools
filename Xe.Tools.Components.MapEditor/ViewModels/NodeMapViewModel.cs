@@ -1,13 +1,32 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Xe.Game.Tilemaps;
+using Xe.Tools.Components.MapEditor.Services;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
+    public enum NodeOrderMode
+    {
+        GroupByPriority,
+        OriginalOrder
+    }
+
     public class NodeMapViewModel : NodeBaseViewModel
     {
-        public ITileMap TileMap { get; }
+        private NodeOrderMode _nodeOrderMode = NodeOrderMode.GroupByPriority;
+        public NodeOrderMode NodeOrderMode
+        {
+            get => NodeOrderMode;
+            set
+            {
+                _nodeOrderMode = value;
+                ReorderLayers();
+                OnPropertyChanged();
+            }
+        }
 
-        public string Name { get; }
+        public override string Name { get; }
 
         public string FriendlyMapName { get; set; }
 
@@ -23,20 +42,50 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             set => TileMap.BgmBattle = value;
         }
 
-        public IEnumerable<NodeLayerViewModel> Childs { get; }
+        public ObservableCollection<NodeBaseViewModel> Childs { get; private set; }
 
-        public NodeMapViewModel(ITileMap tileMap, string mapName) :
-            base(tileMap)
+        public NodeMapViewModel(MainWindowViewModel vm, string mapName) :
+            base(vm)
         {
             Name = mapName;
+            Childs = new ObservableCollection<NodeBaseViewModel>();
+            ReorderLayers();
+        }
 
+        private void ReorderLayers()
+        {
             const int LayersCount = 11;
-            var childs = new NodeLayerViewModel[LayersCount];
-            for (int i = 0; i < childs.Length; i++)
+
+            Childs.Clear();
+            switch (_nodeOrderMode)
             {
-                childs[i] = new NodeLayerViewModel(tileMap, LayersCount - i - 1);
+                case NodeOrderMode.GroupByPriority:
+                    for (int i = 0; i < LayersCount; i++)
+                        Childs.Add(new NodeLayerViewModel(MainWindow, TileMap.Layers.FlatteredLayers(), LayersCount - i - 1));
+                    break;
+                case NodeOrderMode.OriginalOrder:
+                    foreach (var layer in GetLayers(MainWindow, TileMap.Layers))
+                        Childs.Add(layer);
+                    break;
             }
-            Childs = childs;
+            OnPropertyChanged(nameof(Childs));
+        }
+
+        public static IEnumerable<NodeBaseViewModel> GetLayers(MainWindowViewModel vm, IEnumerable<ILayerBase> layers)
+        {
+            return layers
+                .Select(x =>
+                {
+                    if (x is ILayersGroup layerGroup)
+                        return new NodeGroupViewModel(vm, layerGroup);
+                    if (x is ILayerTilemap layerTilemap)
+                        return new NodeEntryTilemapViewModel(vm, layerTilemap);
+                    if (x is ILayerObjects objectsGroup)
+                        return new NodeObjectsGroupViewModel(vm, objectsGroup);
+                    return (NodeBaseViewModel)null;
+                })
+                .Where(x => x != null)
+                .Reverse();
         }
     }
 }

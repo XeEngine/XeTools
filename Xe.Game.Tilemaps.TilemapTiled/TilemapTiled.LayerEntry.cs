@@ -2,9 +2,9 @@ namespace Xe.Game.Tilemaps
 {
     public partial class TilemapTiled
     {
-        internal class CLayerEntry : ILayerEntry
+        internal class CLayerBase : ILayerBase
         {
-            private Tiled.ILayerEntry _entry;
+            protected Tiled.ILayerEntry _entry;
 
             public string Name
             {
@@ -18,13 +18,22 @@ namespace Xe.Game.Tilemaps
                 set => _entry.Visible = value;
             }
 
+            public CLayerBase(Tiled.ILayerEntry entry)
+            {
+                _entry = entry;
+            }
+        }
+
+        internal class CLayerEntry : CLayerBase, ILayerEntry
+        {
             public int Priority
             {
                 get => GetPropertyValue<int>(_entry.Properties);
                 set => SetPropertyValue(_entry.Properties, value);
             }
 
-            public CLayerEntry(Tiled.ILayerEntry entry)
+            public CLayerEntry(Tiled.ILayerEntry entry) :
+                base(entry)
             {
                 _entry = entry;
             }

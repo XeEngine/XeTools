@@ -74,6 +74,9 @@
     <Compile Include="Controls\ObjectProperties.xaml.cs">
       <DependentUpon>ObjectProperties.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ObjectsGroupProperties.xaml.cs">
+      <DependentUpon>ObjectsGroupProperties.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Tilemap.cs" />
     <Compile Include="Models\AnimationDataEntry.cs" />
     <Compile Include="Models\BitmapFrame.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="ViewModels\LayerTilemapPropertiesViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MapEditorViewModel.cs" />
+    <Compile Include="ViewModels\NodeObjectsGroupViewModel.cs" />
     <Compile Include="ViewModels\ObjectPropertiesViewModel.cs" />
     <Compile Include="ViewModels\TilemapViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
@@ -181,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ObjectProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectsGroupProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -143,11 +143,7 @@ namespace Tiled
             _xMap.SetAttributeValue("nextobjectid", NextObjectId);
             Properties.SaveChanges();
 
-            foreach (var item in Groups)
-                item.SaveChanges();
-            foreach (var item in Layers)
-                item.SaveChanges();
-            foreach (var item in ObjectGroups)
+            foreach (var item in Entries)
                 item.SaveChanges();
         }
 

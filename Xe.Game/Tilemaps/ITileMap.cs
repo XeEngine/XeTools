@@ -17,7 +17,7 @@ namespace Xe.Game.Tilemaps
 
         List<ITileset> Tilesets { get; }
 
-        List<ILayerEntry> Layers { get; }
+        List<ILayerBase> Layers { get; }
 
         void Save(string fileName);
     }

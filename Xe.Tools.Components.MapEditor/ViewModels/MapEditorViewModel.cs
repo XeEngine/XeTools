@@ -72,12 +72,15 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         private MapEditorViewModel()
         {
             var projPath = @"D:\Xe\Repo\vladya\soc\data\soc.game.proj.json";
-            Project = new XeGsProj().Open(projPath);
-            if (Project != null)
+            if (File.Exists(projPath))
             {
-                var file = Project.GetFilesByFormat("tilemap").SingleOrDefault(x => x.Name == "debug_01.tmx");
-                if (file != null)
-                    OpenTileMap(file);
+                Project = new XeGsProj().Open(projPath);
+                if (Project != null)
+                {
+                    var file = Project.GetFilesByFormat("tilemap").SingleOrDefault(x => x.Name == "debug_01.tmx");
+                    if (file != null)
+                        OpenTileMap(file);
+                }
             }
         }
 #endif

@@ -7,37 +7,64 @@ using Xe.Tools.Components.MapEditor.Services;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
-    public class NodeBaseViewModel : BaseNotifyPropertyChanged
+    public abstract class NodeBaseViewModel : BaseNotifyPropertyChanged
     {
-        public ITileMap TileMap { get; }
+        public MainWindowViewModel MainWindow { get; }
 
-        public NodeBaseViewModel(ITileMap tileMap)
+        public ITileMap TileMap => MainWindow.MapEditor.TileMap;
+
+        public virtual string Name { get; }
+
+        public NodeBaseViewModel(MainWindowViewModel vm)
         {
-            TileMap = tileMap;
+            MainWindow = vm;
+        }
+    }
+
+    public class NodeGroupViewModel : NodeBaseViewModel
+    {
+        public override string Name { get; }
+
+        public IEnumerable<NodeBaseViewModel> Childs { get; private set; }
+
+        public NodeGroupViewModel(MainWindowViewModel vm, ILayersGroup layersGroup) : base(vm)
+        {
+            Name = layersGroup.Name;
+            Childs = NodeMapViewModel.GetLayers(vm, layersGroup.Layers);
         }
     }
 
     public class NodeLayerViewModel : NodeBaseViewModel
     {
-        public string Name => TilemapService.GetLayerName(Priority);
+        public override string Name => TilemapService.GetLayerName(Priority);
 
         public int Priority { get; }
 
-        public ObservableCollection<NodeLayerEntryViewModel> Childs { get; set; }
+        public ObservableCollection<NodeBaseViewModel> Childs { get; set; }
 
-        public NodeLayerViewModel(ITileMap tileMap, int priority) :
-            base(tileMap)
+        public NodeLayerViewModel(MainWindowViewModel vm,
+            IEnumerable<ILayerEntry> layers, int priority) :
+            base(vm)
         {
             Priority = priority;
-            Childs = new ObservableCollection<NodeLayerEntryViewModel>(
-                tileMap.Layers
-                .Where(x =>
+            Childs = new ObservableCollection<NodeBaseViewModel>(
+                layers.Where(x =>
                 {
                     if (x is ILayerTilemap layerTilemap)
                         return layerTilemap.Priority == priority;
+                    if (x is ILayerObjects objectsGroup)
+                        return objectsGroup.Priority == priority;
                     return false;
                 })
-                .Select(x => new NodeEntryTilemapViewModel(tileMap, x as ILayerTilemap))
+                .Select(x =>
+                {
+                    if (x is ILayerTilemap layerTilemap)
+                        return new NodeEntryTilemapViewModel(vm, layerTilemap);
+                    if (x is ILayerObjects objectsGroup)
+                        return new NodeObjectsGroupViewModel(vm, objectsGroup);
+                    return (NodeBaseViewModel)null;
+                })
+                .Where(x => x != null)
             );
         }
     }

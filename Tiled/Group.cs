@@ -69,7 +69,9 @@ namespace Tiled
         public List<ILayerEntry> Entries { get; }
         public IEnumerable<Group> Groups => Entries.Where(x => x is Group).Select(x => x as Group);
         public IEnumerable<Layer> Layers => Entries.Where(x => x is Layer).Select(x => x as Layer);
-        public IEnumerable<ObjectGroup> ObjectGroups => Entries.Where(x => x is ObjectGroup).Select(x => x as ObjectGroup);
+        public IEnumerable<ObjectGroup> ObjectGroups => Entries
+            .Where(x => x is ObjectGroup)
+            .Select(x => x as ObjectGroup);
 
         public Group(Map map, XElement xElement)
         {

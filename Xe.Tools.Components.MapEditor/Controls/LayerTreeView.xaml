@@ -11,12 +11,15 @@
         <TreeView x:Name="TreeView"
                   SelectedItemChanged="TreeProject_SelectedItemChanged">
             <TreeView.Resources>
+                <!-- Main node -->
                 <HierarchicalDataTemplate DataType="{x:Type vm:NodeMapViewModel}">
                     <StackPanel Orientation="Horizontal" Margin="-16 0 0 0">
                         <Ellipse Width="16" Fill="Black" Margin="0 0 4 0"/>
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
+
+                <!-- Layer priority -->
                 <HierarchicalDataTemplate DataType="{x:Type vm:NodeLayerViewModel}"
                                           ItemsSource="{Binding Childs}">
                     <StackPanel Orientation="Horizontal">
@@ -24,9 +27,28 @@
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
+
+                <!-- Group of tilemaps -->
+                <HierarchicalDataTemplate DataType="{x:Type vm:NodeGroupViewModel}"
+                                          ItemsSource="{Binding Childs}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Folder_16x}" Margin="0 0 4 0" />
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+
+                <!-- Tilemaps -->
                 <DataTemplate DataType="{x:Type vm:NodeLayerEntryViewModel}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource Document_16x}" Margin="0 0 4 0" />
+                        <TextBlock Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+
+                <!-- Objects group -->
+                <DataTemplate DataType="{x:Type vm:NodeObjectsGroupViewModel}">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="16" Fill="Fuchsia" Margin="0 0 4 0"/>
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>

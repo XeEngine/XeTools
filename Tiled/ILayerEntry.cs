@@ -9,5 +9,7 @@ namespace Tiled
         bool Visible { get; set; }
 
         PropertiesDictionary Properties { get; }
+
+        void SaveChanges();
     }
 }

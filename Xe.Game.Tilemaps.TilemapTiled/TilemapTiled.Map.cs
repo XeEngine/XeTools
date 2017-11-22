@@ -35,7 +35,7 @@ namespace Xe.Game.Tilemaps
         }
 
         public List<ITileset> Tilesets { get; private set; }
-        public List<ILayerEntry> Layers { get; private set; }
+        public List<ILayerBase> Layers { get; private set; }
 
         public TilemapTiled(Tiled.Map map)
         {
@@ -47,41 +47,20 @@ namespace Xe.Game.Tilemaps
                 .Select(x => (ITileset)new Tileset(x))
                 .ToList();
 
-            Layers = GetLayers(map.Entries)
+            Layers = map.Entries
                 .Select(x =>
                 {
+                    if (x is Tiled.Group group)
+                        return new CLayerGroup(this, group);
                     if (x is Tiled.Layer tileMap)
                         return new CLayerTilemap(this, tileMap);
                     if (x is Tiled.ObjectGroup objectGroup)
                         return new CLayerObjects(objectGroup);
-                    return (ILayerEntry)null;
+                    return (ILayerBase)null;
                 })
                 .Where(x => x != null)
                 .ToList();
         }
-        
-
-        private IEnumerable<Tiled.ILayerEntry> GetLayers(IEnumerable<Tiled.ILayerEntry> entries)
-        {
-            var list = new List<Tiled.ILayerEntry>();
-            foreach (var entry in entries)
-            {
-                if (entry is Tiled.Layer layer)
-                {
-                    list.Add(layer);
-                }
-                if (entry is Tiled.ObjectGroup objectGroup)
-                {
-                    list.Add(objectGroup);
-                }
-                else if (entry is Tiled.Group group)
-                {
-                    list.AddRange(GetLayers(group.Entries));
-                }
-            }
-            return list;
-        }
-
 
         public void Save(string fileName)
         {
