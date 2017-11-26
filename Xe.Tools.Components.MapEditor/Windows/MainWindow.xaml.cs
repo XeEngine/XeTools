@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 using Xe.Tools.Components.MapEditor.ViewModels;
 
 namespace Xe.Tools.Components.MapEditor.Windows
@@ -13,6 +14,9 @@ namespace Xe.Tools.Components.MapEditor.Windows
         const double FPS = 60.0;
         
         public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
+
+        private Point _mouseMove;
+        private int _scrollX, _scrollY;
 
         public MainWindow()
         {
@@ -70,6 +74,36 @@ namespace Xe.Tools.Components.MapEditor.Windows
                 vm.Y = (int)y;
             };
         }
-        
+
+        private void TileMap_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                _mouseMove = e.GetPosition(this);
+                _scrollX = tileMap.ScrollX;
+                _scrollY = tileMap.ScrollY;
+            }
+        }
+
+        private void TileMap_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                var diff = _mouseMove - e.GetPosition(this);
+                tileMap.ScrollX = (int)(_scrollX + diff.X);
+                tileMap.ScrollY = (int)(_scrollY + diff.Y);
+                ViewModel.IsRedrawingNeeded = true;
+            }
+        }
+
+        private void TileMap_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                var diff = _mouseMove - e.GetPosition(this);
+                tileMap.ScrollX = (int)(_scrollX + diff.X);
+                tileMap.ScrollY = (int)(_scrollY + diff.Y);
+            }
+        }
     }
 }

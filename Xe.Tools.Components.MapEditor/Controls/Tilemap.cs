@@ -143,7 +143,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
         {
             if (TileMap != null)
             {
-                RenderMap(TileMap);
+                RenderMap(TileMap, ScrollX, ScrollY);
                 using (var dc = _visual.RenderOpen())
                 {
                     Flush(dc, _drawingService.Surface);
@@ -183,7 +183,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
             Render();
         }
 
-        private void RenderMap(ITileMap tileMap)
+        private void RenderMap(ITileMap tileMap, int x, int y)
         {
             var size = tileMap.Size;
             var tileSize = tileMap.TileSize;
@@ -194,12 +194,12 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
             foreach (var priority in tileMap.Layers
                 .FlatteredLayers()
-                .GroupBy(x => x.Priority)
-                .OrderBy(x => x.Key))
+                .GroupBy(l => l.Priority)
+                .OrderBy(l => l.Key))
             {
                 foreach (var layer in priority)
                 {
-                    RenderLayer(layer);
+                    RenderLayer(layer, x, y);
                 }
             }
         }
@@ -237,24 +237,24 @@ namespace Xe.Tools.Components.MapEditor.Controls
             });
         }
 
-        private void RenderLayer(ILayerBase layerBase)
+        private void RenderLayer(ILayerBase layerBase, int x, int y)
         {
             if (layerBase is ILayersGroup group)
             {
                 foreach (var item in group.Layers)
-                    RenderLayer(item);
+                    RenderLayer(item, x, y);
             }
             else if (layerBase is ILayerEntry entry)
-                RenderLayer(entry);
+                RenderLayer(entry, x, y);
         }
 
-        private void RenderLayer(ILayerEntry layer)
+        private void RenderLayer(ILayerEntry layer, int x, int y)
         {
-            if (layer is ILayerTilemap tilemap) RenderLayer(tilemap);
-            else if (layer is ILayerObjects objects) RenderLayer(objects);
+            if (layer is ILayerTilemap tilemap) RenderLayer(tilemap, x, y);
+            else if (layer is ILayerObjects objects) RenderLayer(objects, x, y);
         }
 
-        private void RenderLayer(ILayerTilemap layer)
+        private void RenderLayer(ILayerTilemap layer, int x, int y)
         {
             if (!layer.Visible)
                 return;
@@ -266,15 +266,24 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 Width = TileMap.TileSize.Width,
                 Height = TileMap.TileSize.Height
             };
-            for (int y = 0; y < height; y++)
+
+            var smallX = x % tileSize.Width;
+            var smallY = y % tileSize.Height;
+            var tileX = x / tileSize.Width;
+            var tileY = y / tileSize.Height;
+
+            width = Math.Min(width, layer.Width - tileX);
+            height = Math.Min(height, layer.Height - tileY);
+
+            for (int iy = Math.Max(0, -tileY); iy < height; iy++)
             {
-                rect.Y = y * rect.Width;
-                for (int x = 0; x < width; x++)
+                rect.Y = iy * rect.Width - smallY;
+                for (int ix = Math.Max(0, -tileX); ix < width; ix++)
                 {
-                    var tile = layer.GetTile(x, y);
+                    var tile = layer.GetTile(tileX + ix, tileY + iy);
                     if (tile.Index > 0)
                     {
-                        rect.X = x * rect.Height;
+                        rect.X = ix * rect.Height - smallX;
                         var imgTile = _resTile[tile.Index];
                         Drawing.Flip flip = Drawing.Flip.None;
                         if (tile.IsFlippedX)
@@ -287,13 +296,13 @@ namespace Xe.Tools.Components.MapEditor.Controls
             }
         }
 
-        private void RenderLayer(ILayerObjects layer)
+        private void RenderLayer(ILayerObjects layer, int x, int y)
         {
             foreach (var entry in layer.Objects)
-                RenderObject(entry);
+                RenderObject(entry, x, y);
         }
 
-        private void RenderObject(IObjectEntry entry)
+        private void RenderObject(IObjectEntry entry, int x, int y)
         {
             var strAnimData = entry.AnimationData ?? "data/sprite/editor.anim.json";
             var framesGroup = GetFramesGroup(strAnimData, entry.AnimationName, entry.Direction);
@@ -304,7 +313,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 if (realX > ActualWidth ||
                     realY > ActualHeight)
                     return;
-                _drawingService.DrawAnimation(framesGroup, realX, realY);
+                _drawingService.DrawAnimation(framesGroup, realX - x, realY - y);
             }
             else
             {
