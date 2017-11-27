@@ -13,11 +13,12 @@ namespace Xe.Game.Tilemaps
         public Size Size { get; private set; }
         public Size TileSize { get; private set; }
 
-        public Color BackgroundColor
+        public Color? BackgroundColor
         {
             get
             {
                 var c = Map.BackgroundColor;
+                if (c == null) return null;
                 return Color.FromArgb(c.a, c.r, c.g, c.b);
             }
         }
@@ -43,7 +44,7 @@ namespace Xe.Game.Tilemaps
             Size = new Size(Map.Width, Map.Height);
             TileSize = new Size(Map.TileWidth, Map.TileHeight);
 
-            Tilesets = Map.Tileset
+            Tilesets = Map.Tilesets
                 .Select(x => (ITileset)new Tileset(x))
                 .ToList();
 

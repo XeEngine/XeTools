@@ -9,24 +9,18 @@ namespace Tiled
         private XElement _xElement;
         private XDocument _xDocTileset;
 
+        public XElement Element => _xElement;
+
         /// <summary>
         /// The (maximum) width of the tiles in this tileset.
         /// </summary>
-        public int FirstGid
-        {
-            get => (int?)_xElement.Attribute("firstgid") ?? 0;
-            set => _xElement.SetAttributeValue("firstgid", value);
-        }
+        public int FirstGid { get; set; }
 
         /// <summary>
         /// If this tileset is stored in an external TSX (Tile Set XML) file,
         /// this attribute refers to that file.
         /// </summary>
-        public string Source
-        {
-            get => _xElement.Attribute("source")?.Value;
-            set => _xElement.SetAttributeValue("source", value);
-        }
+        public string Source { get; set; }
 
         public string FullImagePath
         {
@@ -84,6 +78,9 @@ namespace Tiled
             _map = map;
             _xElement = xElement;
 
+            FirstGid = (int?)xElement.Attribute("firstgid") ?? 0;
+            Source = xElement.Attribute("source")?.Value;
+
             // Load an external tileset, if necessary
             var fileName = GetExternFileName();
             if (!string.IsNullOrEmpty(fileName))
@@ -102,11 +99,14 @@ namespace Tiled
 
         public void SaveChanges()
         {
+            _xElement.SetAttributeValue("firstgid", FirstGid);
+            _xElement.SetAttributeValue("source", Source);
+
             var fileName = GetExternFileName();
             if (!string.IsNullOrEmpty(fileName))
             {
                 Save(_xDocTileset.Element("tileset"));
-                _xDocTileset.Save(fileName);
+                Map.Save(_xDocTileset, fileName);
             }
             else
             {

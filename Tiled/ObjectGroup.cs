@@ -4,18 +4,15 @@ using System.Xml.Linq;
 
 namespace Tiled
 {
-    public class ObjectGroup : ILayerEntry
+
+    public class ObjectGroup : ILayerEntry, INodeItem
     {
-        private XElement _xElement;
+        private const string ElementName = "objectgroup";
 
         /// <summary>
         /// The name of the object group.
         /// </summary>
-        public string Name
-        {
-            get => _xElement.Attribute("name")?.Value;
-            set => _xElement.SetAttributeValue("name", value);
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// The color used to display the objects in this group.
@@ -25,47 +22,22 @@ namespace Tiled
         /// <summary>
         /// The opacity of the layer as a value from 0 to 1. Defaults to 1.
         /// </summary>
-        public double Opacity
-        {
-            get
-            {
-                var strValue = _xElement.Attribute("opacity")?.Value;
-                if (strValue != null)
-                {
-                    if (double.TryParse(strValue, out var value))
-                        return value;
-                }
-                return 1.0;
-            }
-            set => _xElement?.SetAttributeValue("opacity", value);
-        }
+        public double Opacity { get; set; }
 
         /// <summary>
         /// Whether the layer is shown (1) or hidden (0). Defaults to 1.
         /// </summary>
-        public bool Visible
-        {
-            get => (bool?)_xElement.Attribute("visible") ?? true;
-            set => _xElement.SetAttributeValue("visible", value);
-        }
+        public bool Visible { get; set; }
 
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetX
-        {
-            get => (int?)_xElement.Attribute("offsetx") ?? 0;
-            set => _xElement.SetAttributeValue("offsetx", value);
-        }
+        public int OffsetX { get; set; }
 
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetY
-        {
-            get => (int?)_xElement.Attribute("offsety") ?? 0;
-            set => _xElement.SetAttributeValue("offsety", value);
-        }
+        public int OffsetY { get; set; }
 
         public PropertiesDictionary Properties { get; }
 
@@ -73,23 +45,36 @@ namespace Tiled
 
         public ObjectGroup(XElement xElement)
         {
-            _xElement = xElement;
+            Name = xElement.Attribute("name")?.Value;
+            Color = xElement.Attribute("color")?.AsColor();
+            Opacity = (double?)xElement.Attribute("opacity") ?? 1.0;
+            Visible = (bool?)xElement.Attribute("visible") ?? true;
+            OffsetX = (int?)xElement.Attribute("offsetx") ?? 0;
+            OffsetY = (int?)xElement.Attribute("offsety") ?? 0;
 
-            Color.TryParse((string)xElement.Attribute("color"), out var color);
-            Color = color;
-
-            Properties = new PropertiesDictionary(_xElement);
+            Properties = new PropertiesDictionary(xElement);
 
             Objects = xElement.Elements("object")
                 .Select(x => new Object(x))
                 .ToList();
         }
 
-        public void SaveChanges()
+        public XElement AsNode()
         {
-            foreach (var item in Objects)
-                item.SaveChanges();
-            Properties.SaveChanges();
+            XElement element = new XElement(ElementName);
+            element.SetAttributeValue("name", Name);
+            if (Color != null) element.SetAttributeValue("color", Color);
+            if (Opacity != 1.0) element.SetAttributeValue("opacity", Opacity);
+            if (Visible != true) element.SetAttributeValue("visible", Visible ? 1 : 0);
+            if (OffsetX != 0) element.SetAttributeValue("offsetx", OffsetX);
+            if (OffsetY != 0) element.SetAttributeValue("offsety", OffsetY);
+            if (Properties.Count > 0)
+                element.Add(Properties.AsNode());
+            foreach (var obj in Objects)
+            {
+                element.Add(obj.AsNode());
+            }
+            return element;
         }
 
         public override string ToString()

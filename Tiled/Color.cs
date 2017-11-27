@@ -8,8 +8,8 @@ namespace Tiled
 
         public override string ToString()
         {
-            return a == 255 ? $"{r.ToString("X02")}{g.ToString("X02")}{b.ToString("X02")}" :
-                $"{a.ToString("X02")}{r.ToString("X02")}{g.ToString("X02")}{b.ToString("X02")}";
+            return a == 255 ? $"#{r.ToString("X02")}{g.ToString("X02")}{b.ToString("X02")}" :
+                $"#{a.ToString("X02")}{r.ToString("X02")}{g.ToString("X02")}{b.ToString("X02")}";
         }
 
         public static bool TryParse(string str, out Color color)

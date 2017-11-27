@@ -9,7 +9,7 @@ namespace Xe.Game.Tilemaps
 
         Size TileSize { get; }
 
-        Color BackgroundColor { get; }
+        Color? BackgroundColor { get; }
 
         string BgmField { get; set; }
 

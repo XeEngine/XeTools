@@ -189,8 +189,12 @@ namespace Xe.Tools.Components.MapEditor.Controls
             var tileSize = tileMap.TileSize;
 
             var backColor = tileMap.BackgroundColor;
-            var color = drawing.Color.FromArgb(backColor.A, backColor.R, backColor.G, backColor.B);
-            _drawingService.Clear(backColor);
+            if (backColor != null)
+            {
+                var backColorValue = backColor.Value;
+                var color = drawing.Color.FromArgb(backColorValue.A, backColorValue.R, backColorValue.G, backColorValue.B);
+                _drawingService.Clear(color);
+            }
 
             foreach (var priority in tileMap.Layers
                 .FlatteredLayers()

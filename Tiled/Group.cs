@@ -5,80 +5,51 @@ using System.Xml.Linq;
 
 namespace Tiled
 {
-    public class Group : ILayerEntry
+    public class Group : ILayerEntry, INodeItem
     {
+        private const string ElementName = "group";
+
         private Map _map;
-        private XElement _xElement;
 
         /// <summary>
         /// The name of the layer.
         /// </summary>
-        public string Name
-        {
-            get => _xElement.Attribute("name")?.Value;
-            set => _xElement.SetAttributeValue("name", value);
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetX
-        {
-            get => (int?)_xElement.Attribute("offsetx") ?? 0;
-            set => _xElement.SetAttributeValue("offsetx", value);
-        }
+        public int OffsetX { get; set; }
 
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetY
-        {
-            get => (int?)_xElement.Attribute("offsety") ?? 0;
-            set => _xElement.SetAttributeValue("offsety", value);
-        }
+        public int OffsetY { get; set; }
 
         /// <summary>
         /// The opacity of the layer as a value from 0 to 1. Defaults to 1.
         /// </summary>
-        public double Opacity
-        {
-            get
-            {
-                var strValue = _xElement.Attribute("opacity")?.Value;
-                if (strValue != null)
-                {
-                    if (double.TryParse(strValue, out var value))
-                        return value;
-                }
-                return 1.0;
-            }
-            set => _xElement?.SetAttributeValue("opacity", value);
-        }
+        public double Opacity { get; set; }
 
         /// <summary>
         /// Whether the layer is shown (1) or hidden (0). Defaults to 1.
         /// </summary>
-        public bool Visible
-        {
-            get => (bool?)_xElement.Attribute("visible") ?? true;
-            set => _xElement.SetAttributeValue("visible", value);
-        }
+        public bool Visible { get; set; }
 
         public PropertiesDictionary Properties { get; }
 
         public List<ILayerEntry> Entries { get; }
-        public IEnumerable<Group> Groups => Entries.Where(x => x is Group).Select(x => x as Group);
-        public IEnumerable<Layer> Layers => Entries.Where(x => x is Layer).Select(x => x as Layer);
-        public IEnumerable<ObjectGroup> ObjectGroups => Entries
-            .Where(x => x is ObjectGroup)
-            .Select(x => x as ObjectGroup);
 
         public Group(Map map, XElement xElement)
         {
             _map = map;
-            _xElement = xElement;
 
-            Properties = new PropertiesDictionary(_xElement);
+            Name = xElement.Attribute("name")?.Value;
+            OffsetX = (int?)xElement.Attribute("offsetx") ?? 0;
+            OffsetY = (int?)xElement.Attribute("offsety") ?? 0;
+            Opacity = (double?)xElement.Attribute("opacity") ?? 1.0;
+            Visible = (bool?)xElement.Attribute("visible") ?? true;
+            Properties = new PropertiesDictionary(xElement);
 
             var entries = new List<ILayerEntry>();
             foreach (var element in xElement.Elements())
@@ -99,10 +70,20 @@ namespace Tiled
             Entries = entries;
         }
 
-        public void SaveChanges()
+        public XElement AsNode()
         {
-            foreach (var item in Layers)
-                item.SaveChanges();
+            var element = new XElement(ElementName);
+            element.SetAttributeValue("name", Name);
+            element.SetAttributeValue("offsetx", OffsetX);
+            element.SetAttributeValue("offsety", OffsetY);
+            element.SetAttributeValue("opacity", Opacity);
+            element.SetAttributeValue("visible", Visible ? 1 : 0);
+
+            if (Properties.Count > 0)
+                element.Add(Properties.AsNode());
+            foreach (var entry in Entries)
+                element.Add(entry.AsNode());
+            return element;
         }
 
         public override string ToString()

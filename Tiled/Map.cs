@@ -68,11 +68,8 @@ namespace Tiled
 
         public PropertiesDictionary Properties { get; private set; }
         
-        public List<Tileset> Tileset { get; }
+        public List<Tileset> Tilesets { get; }
         public List<ILayerEntry> Entries { get; }
-        public IEnumerable<Group> Groups => Entries.Where(x => x is Group).Select(x => x as Group);
-        public IEnumerable<Layer> Layers => Entries.Where(x => x is Layer).Select(x => x as Layer);
-        public IEnumerable<ObjectGroup> ObjectGroups => Entries.Where(x => x is ObjectGroup).Select(x => x as ObjectGroup);
 
 
         public Map(string fileName)
@@ -89,24 +86,20 @@ namespace Tiled
                 TileWidth = (int)_xMap.Attribute("tilewidth");
                 TileHeight = (int)_xMap.Attribute("tileheight");
                 NextObjectId = (int)_xMap.Attribute("nextobjectid");
-
-                Version.TryParse((string)_xMap.Attribute("version"), out Version formatVersion);
-                Version.TryParse((string)_xMap.Attribute("tiledversion"), out Version tiledVersion);
-                Color.TryParse((string)_xMap.Attribute("backgroundcolor"), out Color backgroundColor);
-                FormatVersion = formatVersion;
-                TiledVersion = tiledVersion;
-                BackgroundColor = backgroundColor;
+                FormatVersion = _xMap.Attribute("version")?.AsVersion();
+                TiledVersion = _xMap.Attribute("tiledversion")?.AsVersion();
+                BackgroundColor = _xMap.Attribute("backgroundcolor").AsColor();
 
                 Properties = new PropertiesDictionary(_xMap);
 
-                var tileset = new List<Tileset>();
+                var tilesets = new List<Tileset>();
                 var entries = new List<ILayerEntry>();
                 foreach (var element in _xMap.Elements())
                 {
                     switch (element.Name.LocalName)
                     {
                         case "tileset":
-                            tileset.Add(new Tileset(this, element));
+                            tilesets.Add(new Tileset(this, element));
                             break;
                         case "group":
                             entries.Add(new Group(this, element));
@@ -119,7 +112,7 @@ namespace Tiled
                             break;
                     }
                 }
-                Tileset = tileset;
+                Tilesets = tilesets;
                 Entries = entries;
             }
         }
@@ -127,24 +120,36 @@ namespace Tiled
         public void Save(string fileName)
         {
             SaveChanges();
-            _xRoot.Save(fileName);
+            Save(_xRoot, fileName);
         }
 
         private void SaveChanges()
         {
             _xMap.SetAttributeValue("version", FormatVersion.ToString());
-            _xMap.SetAttributeValue("tiledversion", TiledVersion.ToString());
+            if (FormatVersion != null)
+                _xMap.SetAttributeValue("tiledversion", FormatVersion.ToString());
+            if (TiledVersion != null)
+                _xMap.SetAttributeValue("tiledversion", TiledVersion.ToString());
             _xMap.SetAttributeValue("orientation", GetOrientationType(Orientation));
             _xMap.SetAttributeValue("width", Width);
             _xMap.SetAttributeValue("height", Height);
             _xMap.SetAttributeValue("tilewidth", TileWidth);
             _xMap.SetAttributeValue("tileheight", TileHeight);
-            _xMap.SetAttributeValue("backgroundcolor", $"#{BackgroundColor.ToString()}");
+            if (BackgroundColor != null)
+                _xMap.SetAttributeValue("backgroundcolor", $"#{BackgroundColor.ToString()}");
             _xMap.SetAttributeValue("nextobjectid", NextObjectId);
-            Properties.SaveChanges();
 
+            _xMap.RemoveNodes();
+            if (Properties.Count > 0)
+                _xMap.Add(Properties.AsNode());
+            foreach (var tileset in Tilesets)
+            {
+                _xMap.Add(tileset.Element);
+            }
             foreach (var item in Entries)
-                item.SaveChanges();
+            {
+                _xMap.Add(item.AsNode());
+            }
         }
 
         #region Utilities
@@ -159,9 +164,16 @@ namespace Tiled
                 default: return OrientationType.Unknown;
             }
         }
+
         private string GetOrientationType(OrientationType orientationType)
         {
             return orientationType.ToString().ToLower();
+        }
+
+        internal static void Save(XDocument document, string fileName)
+        {
+            using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                document.Save(stream);
         }
         #endregion
     }

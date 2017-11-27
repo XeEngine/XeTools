@@ -7,8 +7,10 @@ using System.Xml.Linq;
 
 namespace Tiled
 {
-    public class Layer : ILayerEntry
+    public class Layer : ILayerEntry, INodeItem
     {
+        private const string ElementName = "layer";
+
         // Bits on the far end of the 32-bit global tile ID are used for tile flags
         public const uint FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
         public const uint FLIPPED_VERTICALLY_FLAG = 0x40000000;
@@ -18,72 +20,42 @@ namespace Tiled
             FLIPPED_DIAGONALLY_FLAG);
 
         private Map _map;
-        private XElement _xElement;
+        private XElement _dataElement;
 
         /// <summary>
         /// The name of the layer.
         /// </summary>
-        public string Name
-        {
-            get => _xElement.Attribute("name")?.Value;
-            set => _xElement.SetAttributeValue("name", value);
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// The width of the layer in tiles. Always the same as the map width for fixed-size maps.
         /// </summary>
-        public int Width => (int?)_xElement.Attribute("height") ?? _map.Width;
+        public int Width { get; set; }
 
         /// <summary>
         /// The height of the layer in tiles. Always the same as the map height for fixed-size maps.
         /// </summary>
-        public int Height => (int?)_xElement.Attribute("height") ?? _map.Height;
+        public int Height { get; set; }
 
         /// <summary>
         /// The opacity of the layer as a value from 0 to 1. Defaults to 1.
         /// </summary>
-        public double Opacity
-        {
-            get
-            {
-                var strValue = _xElement.Attribute("opacity")?.Value;
-                if (strValue != null)
-                {
-                    if (double.TryParse(strValue, out var value))
-                        return value;
-                }
-                return 1.0;
-            }
-            set => _xElement?.SetAttributeValue("opacity", value);
-        }
+        public double Opacity { get; set; }
 
         /// <summary>
         /// Whether the layer is shown (1) or hidden (0). Defaults to 1.
         /// </summary>
-        public bool Visible
-        {
-            get => (bool?)_xElement.Attribute("visible") ?? true;
-            set => _xElement.SetAttributeValue("visible", value);
-        }
-
+        public bool Visible { get; set; }
 
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetX
-        {
-            get => (int?)_xElement.Attribute("offsetx") ?? 0;
-            set => _xElement.SetAttributeValue("offsetx", value);
-        }
+        public int OffsetX { get; set; }
 
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetY
-        {
-            get => (int?)_xElement.Attribute("offsety") ?? 0;
-            set => _xElement.SetAttributeValue("offsety", value);
-        }
+        public int OffsetY { get; set; }
 
         public PropertiesDictionary Properties { get; }
 
@@ -92,11 +64,17 @@ namespace Tiled
         public Layer(Map map, XElement xElement)
         {
             _map = map;
-            _xElement = xElement;
 
-            Properties = new PropertiesDictionary(_xElement);
+            Name = xElement.Attribute("name")?.Value;
+            Width = (int?)xElement.Attribute("width") ?? _map.Width;
+            Height = (int?)xElement.Attribute("height") ?? _map.Height;
+            Visible = (bool?)xElement.Attribute("visible") ?? true;
+            Opacity = (double?)xElement.Attribute("opacity") ?? 1.0;
+            OffsetX = (int?)xElement.Attribute("offsetx") ?? 0;
+            OffsetY = (int?)xElement.Attribute("offsety") ?? 0;
+            Properties = new PropertiesDictionary(xElement);
 
-            var xData = xElement.Element("data");
+            var xData = _dataElement = xElement.Element("data");
             var encoding = (string)xData.Attribute("encoding");
 
             int width = Width, height = Height;
@@ -117,9 +95,22 @@ namespace Tiled
             }
         }
 
-        public void SaveChanges()
+        public XElement AsNode()
         {
-            Properties.SaveChanges();
+            var element = new XElement(ElementName);
+            element.SetAttributeValue("name", Name);
+            element.SetAttributeValue("width", Width);
+            element.SetAttributeValue("height", Height);
+            if (Visible != true) element.SetAttributeValue("visible", Visible ? 1 : 0);
+            if (Opacity != 1.0) element.SetAttributeValue("opacity", Opacity);
+            if (OffsetX != 0) element.SetAttributeValue("offsetx", OffsetX);
+            if (OffsetY != 0) element.SetAttributeValue("offsety", OffsetY);
+            if (Properties.Count > 0)
+                element.Add(Properties.AsNode());
+
+            element.Add(_dataElement);
+
+            return element;
         }
 
         public override string ToString()

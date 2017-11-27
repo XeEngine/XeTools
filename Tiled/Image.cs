@@ -2,64 +2,55 @@
 
 namespace Tiled
 {
-    public class Image
+    public class Image : INodeItem
     {
-        private XElement _xElement;
+        private const string ElementName = "image";
 
         /// <summary>
-        /// 
+        /// Used for embedded images, in combination with a data child element.
+        /// Valid values are file extensions like png, gif, jpg, bmp, etc.
         /// </summary>
-        public string Format
-        {
-            get => _xElement.Attribute("format")?.Value;
-            set => _xElement.SetAttributeValue("format", value);
-        }
+        public string Format { get; set; }
 
         /// <summary>
-        /// 
+        /// The reference to the tileset image file (Tiled supports most common image formats).
         /// </summary>
-        public string Source
-        {
-            get => _xElement.Attribute("source")?.Value;
-            set => _xElement.SetAttributeValue("source", value);
-        }
+        public string Source { get; set; }
 
         /// <summary>
-        /// 
+        /// Defines a specific color that is treated as transparent (example value: “#FF00FF” for magenta).
         /// </summary>
         public Color Transparency { get; set; }
 
         /// <summary>
         /// The image width in pixels.
         /// </summary>
-        public int? TileWidth
-        {
-            get => (int?)_xElement.Attribute("width");
-            set => _xElement.SetAttributeValue("width", value);
-        }
+        public int? Width { get; set; }
 
         /// <summary>
         /// The image height in pixels).
         /// </summary>
-        public int? TileHeight
-        {
-            get => (int?)_xElement.Attribute("height");
-            set => _xElement.SetAttributeValue("height", value);
-        }
+        public int? Height { get; set; }
 
         public Image(XElement xElement)
         {
-            _xElement = xElement;
-            if (Color.TryParse(_xElement.Attribute("trans")?.Value, out Color color))
-                Transparency = color;
+            Format = xElement.Attribute("format")?.Value;
+            Source = xElement.Attribute("source")?.Value;
+            Transparency = xElement.Attribute("trans").AsColor();
+            Width = (int?)xElement.Attribute("width") ?? 0;
+            Height = (int?)xElement.Attribute("height") ?? 0;
         }
 
-        public void SaveChanges()
+        public XElement AsNode()
         {
+            var element = new XElement(ElementName);
+            element.SetAttributeValue("format", Format);
+            element.SetAttributeValue("source", Source);
             if (Transparency != null)
-                _xElement.SetAttributeValue("trans", Transparency);
-            else
-                _xElement.Attribute("trans")?.Remove();
+                element.SetAttributeValue("trans", Transparency);
+            element.SetAttributeValue("width", Width);
+            element.SetAttributeValue("height", Height);
+            return element;
         }
     }
 }
