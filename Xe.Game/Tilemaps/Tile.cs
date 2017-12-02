@@ -1,35 +1,35 @@
 ﻿namespace Xe.Game.Tilemaps
 {
-    public interface ITile
+    public struct Tile
     {
         /// <summary>
         /// Tileset index.
         /// </summary>
-        int Tileset { get; }
+        public int Tileset { get; set; }
 
         /// <summary>
         /// Tile index inside the specified tileset index.
         /// </summary>
-        int Index { get; }
+        public int Index { get; set; }
 
         /// <summary>
         /// Palette index.
         /// </summary>
-        int PaletteIndex { get; }
+        public int PaletteIndex { get; set; }
 
         /// <summary>
         /// If the tile is filipped horizontally
         /// </summary>
-        bool IsFlippedX { get; }
+        public bool IsFlippedX { get; set; }
 
         /// <summary>
         /// If the tile is flipped vertically
         /// </summary>
-        bool IsFlippedY { get; }
+        public bool IsFlippedY { get; set; }
 
         /// <summary>
         /// If the tile is draw on top.
         /// </summary>
-        bool IsPriority { get; }
+        public bool IsPriority { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace Xe.Tools.Modules
 {
     public partial class Tiledmap
     {
-        private static string WritePriorityChunk(ITileMap tileMap, BinaryWriter w)
+        private static string WritePriorityChunk(Map tileMap, BinaryWriter w)
         {
 
             return "PRZ\x01";

@@ -9,9 +9,9 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 {
     public class NodeEntryTilemapViewModel : NodeLayerEntryViewModel
     {
-        public ILayerTilemap LayerTilemap { get; }
+        public LayerTilemap LayerTilemap { get; }
 
-        public NodeEntryTilemapViewModel(MainWindowViewModel vm, ILayerTilemap layerTilemap) :
+        public NodeEntryTilemapViewModel(MainWindowViewModel vm, LayerTilemap layerTilemap) :
             base(vm, layerTilemap)
         {
             LayerTilemap = layerTilemap;

@@ -23,12 +23,12 @@ namespace Xe.Tools.Modules
 
         private class DrawingContext : IDisposable
         {
-            public ITileMap TileMap { get; }
+            public Map TileMap { get; }
             public IDrawing Drawing { get; } = Factory.Resolve<IDrawing>();
             private ResourceService<string, ISurface> ResourceTileset { get; }
             private ResourceService<int, TileEntry> ResourceTiles { get; }
 
-            public DrawingContext(ITileMap tileMap)
+            public DrawingContext(Map tileMap)
             {
                 TileMap = tileMap;
                 ResourceTileset = new ResourceService<string, ISurface>(

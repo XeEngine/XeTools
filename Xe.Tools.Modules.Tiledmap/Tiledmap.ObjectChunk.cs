@@ -8,13 +8,13 @@ namespace Xe.Tools.Modules
 {
     public partial class Tiledmap
     {
-        private static string WriteObjectsChunk(ITileMap tileMap, BinaryWriter w)
+        private static string WriteObjectsChunk(Map tileMap, BinaryWriter w)
         {
             var animDictionary = new Dictionary<string, int>();
 
             var objects = tileMap.Layers
-                .Where(x => x is ILayerObjects)
-                .Select(x => x as ILayerObjects)
+                .Where(x => x is LayerObjects)
+                .Select(x => x as LayerObjects)
                 .SelectMany(x => x.Objects, (x, o) => new
                 {
                     Layer = x,

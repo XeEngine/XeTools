@@ -5,11 +5,9 @@ namespace Tiled
 {
     public class Tileset : IEntry
     {
-        private Map _map;
-        private XElement _xElement;
-        private XDocument _xDocTileset;
+        private const string ElementName = "tileset";
 
-        public XElement Element => _xElement;
+        private string _basePath;
 
         /// <summary>
         /// The (maximum) width of the tiles in this tileset.
@@ -22,18 +20,7 @@ namespace Tiled
         /// </summary>
         public string Source { get; set; }
 
-        public string FullImagePath
-        {
-            get
-            {
-                var source = Image?.Source;
-                if (string.IsNullOrEmpty(source))
-                    return null;
-                if (Path.IsPathRooted(source))
-                    return source;
-                return Path.Combine(_map.BasePath, source);
-            }
-        }
+        public string FullImagePath => GetFullPath(_basePath, Image?.Source);
 
         /// <summary>
         /// The name of this tileset.
@@ -72,79 +59,75 @@ namespace Tiled
         public int Columns { get; set; }
 
         public Image Image { get; set; }
-
-        public Tileset(Map map, XElement xElement)
+        
+        public Tileset(string basePath, XElement xElement)
         {
-            _map = map;
-            _xElement = xElement;
-
+            _basePath = basePath;
             FirstGid = (int?)xElement.Attribute("firstgid") ?? 0;
             Source = xElement.Attribute("source")?.Value;
-
-            // Load an external tileset, if necessary
-            var fileName = GetExternFileName();
-            if (!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(Source))
             {
+                var fileName = GetFullPath(basePath, Source);
                 if (File.Exists(fileName))
                 {
-                    _xDocTileset = XDocument.Load(fileName);
-                    Load(_xDocTileset.Element("tileset"));
+                    TilesetFromNode(XDocument.Load(fileName).Element(ElementName));
                 }
             }
             else
             {
-                Load(xElement);
+                TilesetFromNode(xElement);
             }
         }
 
-        public void SaveChanges()
+        public XElement AsNode()
         {
-            _xElement.SetAttributeValue("firstgid", FirstGid);
-            _xElement.SetAttributeValue("source", Source);
-
-            var fileName = GetExternFileName();
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                Save(_xDocTileset.Element("tileset"));
-                Map.Save(_xDocTileset, fileName);
-            }
+            var element = new XElement(ElementName);
+            element.SetAttributeValue("firstgid", FirstGid);
+            if (!string.IsNullOrEmpty(Source))
+                element = TilesetAsNode(element);
             else
-            {
-                Save(_xElement);
-            }
+                element.SetAttributeValue("source", Source);
+            return element;
         }
 
-        private string GetExternFileName()
+        public void SaveChanges(string basePath)
         {
-            var source = Source;
-            return string.IsNullOrEmpty(source) ? null :
-                Path.Combine(_map.BasePath, source);
+            var doc = new XDocument();
+            doc.Add(TilesetAsNode());
+            doc.Save(GetFullPath(basePath, Source));
         }
 
-        private void Load(XElement xElement)
+        private XElement TilesetAsNode(XElement element = null)
         {
-            var image = xElement.Element("image");
+            if (element != null)
+                element = new XElement(ElementName);
+            if (!string.IsNullOrEmpty(Name)) element.SetAttributeValue("name", Name);
+            if (TileWidth != 0) element.SetAttributeValue("tilewidth", TileWidth);
+            if (TileHeight != 0) element.SetAttributeValue("tileheight", TileHeight);
+            if (Spacing != 0) element.SetAttributeValue("spacing", Spacing);
+            if (Margin != 0) element.SetAttributeValue("margin", Margin);
+            if (TileCount > 0) element.SetAttributeValue("tilecount", TileCount);
+            if (Columns > 0) element.SetAttributeValue("columns", Columns);
+            element.Add(Image.AsNode());
+            return element;
+        }
+
+        private void TilesetFromNode(XElement element)
+        {
+            var image = element.Element("image");
             if (image == null)
-                _xElement.Add(image = new XElement("image"));
+                element.Add(image = new XElement("image"));
             Image = new Image(image);
-
-            Name = xElement.Attribute("name")?.Value;
-            TileWidth = (int?)xElement.Attribute("tilewidth") ?? 0;
-            TileHeight = (int?)xElement.Attribute("tileheight") ?? 0;
-            Spacing = (int?)xElement.Attribute("spacing");
-            Margin = (int?)xElement.Attribute("margin");
-            TileCount = (int?)xElement.Attribute("tilecount") ?? 0;
-            Columns = (int?)xElement.Attribute("columns") ?? 0;
+            
+            Spacing = (int?)element.Attribute("spacing");
+            Margin = (int?)element.Attribute("margin");
+            TileCount = (int?)element.Attribute("tilecount") ?? 0;
+            Columns = (int?)element.Attribute("columns") ?? 0;
         }
-        private void Save(XElement xElement)
+
+        private string GetFullPath(string basePath, string source)
         {
-            xElement.Attribute("name")?.Remove();
-            xElement.Attribute("tilewidth")?.Remove();
-            xElement.Attribute("tileheight")?.Remove();
-            xElement.Attribute("spacing")?.Remove();
-            xElement.Attribute("margin")?.Remove();
-            xElement.Attribute("tilecount")?.Remove();
-            xElement.Attribute("columns")?.Remove();
+            return !Path.IsPathRooted(source) ? Path.Combine(basePath, source) : source;
         }
     }
 }

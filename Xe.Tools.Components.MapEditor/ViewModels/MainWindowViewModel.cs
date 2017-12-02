@@ -154,8 +154,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         
         public ObjectPropertiesViewModel ObjectPropertiesViewModel { get; }
 
-        private IObjectEntry _selectedObjectEntry;
-        public IObjectEntry SelectedObjectEntry
+        private ObjectEntry _selectedObjectEntry;
+        public ObjectEntry SelectedObjectEntry
         {
             get => _selectedObjectEntry;
             set
@@ -255,7 +255,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             OnPropertyChanged(nameof(MasterNode));
         }
 
-        private void OnTilemapChanged(object sender, ITileMap tilemap)
+        private void OnTilemapChanged(object sender, Map tilemap)
         {
             MasterNode = new NodeMapViewModel(this, MapEditor.MapName);
         }

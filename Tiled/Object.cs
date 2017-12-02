@@ -46,8 +46,9 @@ namespace Tiled
         /// </summary>
         public bool Visible { get; set; }
 
-        public PropertiesDictionary Properties { get; }
+        public PropertiesDictionary Properties { get; set; }
 
+        public Object() { }
         public Object(XElement xElement)
         {
             Id = (int)xElement.Attribute("id");

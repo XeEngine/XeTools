@@ -8,8 +8,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     {
         MainWindowViewModel _vm;
 
-        private ILayerTilemap _layerTilemap;
-        public  ILayerTilemap LayerTilemap
+        private LayerTilemap _layerTilemap;
+        public  LayerTilemap LayerTilemap
         {
             get => _layerTilemap;
             set

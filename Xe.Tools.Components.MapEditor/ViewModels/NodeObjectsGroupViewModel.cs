@@ -9,7 +9,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 {
     public class NodeObjectsGroupViewModel : NodeBaseViewModel
     {
-        private ILayerObjects _objects;
+        private LayerObjects _objects;
 
 
         public new string Name
@@ -33,7 +33,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public NodeObjectsGroupViewModel(MainWindowViewModel vm, ILayerObjects objects) :
+        public NodeObjectsGroupViewModel(MainWindowViewModel vm, LayerObjects objects) :
             base(vm)
         {
             _objects = objects;

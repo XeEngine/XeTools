@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Xml.Linq;
 
 namespace Tiled
@@ -10,6 +11,7 @@ namespace Tiled
 
         private XElement _xElement;
 
+        public PropertiesDictionary() { }
         public PropertiesDictionary(XElement xParent)
         {
             var xElement = _xElement = xParent.Element("properties");
@@ -40,7 +42,7 @@ namespace Tiled
                                     value = attribute.AsColor();
                                     break;
                                 case "file":
-                                    value = new Uri(attribute.Value);
+                                    value = new Uri(attribute.Value, UriKind.Relative);
                                     break;
                                 case "string":
                                 default:
@@ -59,6 +61,9 @@ namespace Tiled
             var element = new XElement(ElementName);
             foreach (var property in this)
             {
+                if (property.Value == null)
+                    continue;
+
                 var propElement = new XElement("property");
                 propElement.SetAttributeValue("name", property.Key);
 
@@ -75,18 +80,15 @@ namespace Tiled
                 {
                     type = "float";
                 }
-                else if (property.Value is Boolean)
+                else if (property.Value is Boolean boolean)
                 {
                     type = "bool";
-                    value = (bool)value ? 1 : 0;
+                    value = boolean ? 1 : 0;
                 }
-                else if (property.Value is Color)
+                else if (property.Value is Color color)
                 {
                     type = "color";
-                }
-                else if (property.Value is Color)
-                {
-                    type = "color";
+                    value = color.AsString();
                 }
                 else if (property.Value is Uri uri)
                 {

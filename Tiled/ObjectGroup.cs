@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -17,7 +18,7 @@ namespace Tiled
         /// <summary>
         /// The color used to display the objects in this group.
         /// </summary>
-        public Color Color { get; }
+        public Color? Color { get; }
 
         /// <summary>
         /// The opacity of the layer as a value from 0 to 1. Defaults to 1.
@@ -41,8 +42,9 @@ namespace Tiled
 
         public PropertiesDictionary Properties { get; }
 
-        public List<Object> Objects { get; }
+        public List<Object> Objects { get; set; }
 
+        public ObjectGroup() { }
         public ObjectGroup(XElement xElement)
         {
             Name = xElement.Attribute("name")?.Value;

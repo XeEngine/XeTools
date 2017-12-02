@@ -23,9 +23,9 @@ namespace Xe.Tools.Components.MapEditor.Services
 
         public static string[] LayerNames => LAYER_NAMES;
 
-        public static ITileMap Open(string fileName)
+        public static Map Open(string fileName)
         {
-            return new TilemapTiled(fileName);
+            return TilemapTiled.Open(fileName);
         }
 
         public static string GetLayerName(int index)
@@ -35,16 +35,16 @@ namespace Xe.Tools.Components.MapEditor.Services
             return $"Unknown 0x{index.ToString("X02")}";
         }
         
-        public static IEnumerable<ILayerEntry> FlatteredLayers(this IEnumerable<ILayerBase> entries)
+        public static IEnumerable<LayerEntry> FlatteredLayers(this IEnumerable<LayerBase> entries)
         {
-            var list = new List<ILayerEntry>();
+            var list = new List<LayerEntry>();
             foreach (var entry in entries)
             {
-                if (entry is ILayerEntry layer)
+                if (entry is LayerEntry layer)
                 {
                     list.Add(layer);
                 }
-                else if (entry is ILayersGroup group)
+                else if (entry is LayersGroup group)
                 {
                     list.AddRange(FlatteredLayers(group.Layers));
                 }

@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Drawing;
+using System.Xml.Linq;
 
 namespace Tiled
 {
@@ -20,7 +21,7 @@ namespace Tiled
         /// <summary>
         /// Defines a specific color that is treated as transparent (example value: “#FF00FF” for magenta).
         /// </summary>
-        public Color Transparency { get; set; }
+        public Color? Transparency { get; set; }
 
         /// <summary>
         /// The image width in pixels.
@@ -46,8 +47,8 @@ namespace Tiled
             var element = new XElement(ElementName);
             element.SetAttributeValue("format", Format);
             element.SetAttributeValue("source", Source);
-            if (Transparency != null)
-                element.SetAttributeValue("trans", Transparency);
+            if (Transparency.HasValue)
+                element.SetAttributeValue("trans", Transparency.Value.AsString());
             element.SetAttributeValue("width", Width);
             element.SetAttributeValue("height", Height);
             return element;

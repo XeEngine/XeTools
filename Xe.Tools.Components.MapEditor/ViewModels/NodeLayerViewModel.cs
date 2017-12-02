@@ -11,7 +11,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     {
         public MainWindowViewModel MainWindow { get; }
 
-        public ITileMap TileMap => MainWindow.MapEditor.TileMap;
+        public Map TileMap => MainWindow.MapEditor.TileMap;
 
         public virtual string Name { get; }
 
@@ -27,7 +27,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public IEnumerable<NodeBaseViewModel> Childs { get; private set; }
 
-        public NodeGroupViewModel(MainWindowViewModel vm, ILayersGroup layersGroup) : base(vm)
+        public NodeGroupViewModel(MainWindowViewModel vm, LayersGroup layersGroup) : base(vm)
         {
             Name = layersGroup.Name;
             Childs = NodeMapViewModel.GetLayers(vm, layersGroup.Layers);
@@ -43,24 +43,24 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public ObservableCollection<NodeBaseViewModel> Childs { get; set; }
 
         public NodeLayerViewModel(MainWindowViewModel vm,
-            IEnumerable<ILayerEntry> layers, int priority) :
+            IEnumerable<LayerEntry> layers, int priority) :
             base(vm)
         {
             Priority = priority;
             Childs = new ObservableCollection<NodeBaseViewModel>(
                 layers.Where(x =>
                 {
-                    if (x is ILayerTilemap layerTilemap)
+                    if (x is LayerTilemap layerTilemap)
                         return layerTilemap.Priority == priority;
-                    if (x is ILayerObjects objectsGroup)
+                    if (x is LayerObjects objectsGroup)
                         return objectsGroup.Priority == priority;
                     return false;
                 })
                 .Select(x =>
                 {
-                    if (x is ILayerTilemap layerTilemap)
+                    if (x is LayerTilemap layerTilemap)
                         return new NodeEntryTilemapViewModel(vm, layerTilemap);
-                    if (x is ILayerObjects objectsGroup)
+                    if (x is LayerObjects objectsGroup)
                         return new NodeObjectsGroupViewModel(vm, objectsGroup);
                     return (NodeBaseViewModel)null;
                 })

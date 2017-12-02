@@ -16,11 +16,11 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     public class MapEditorViewModel : BaseNotifyPropertyChanged
     {
         public static MapEditorViewModel Instance = new MapEditorViewModel();
-        private ITileMap _tileMap;
+        private Map _tileMap;
         private IProjectFile _file;
 
         #region Delegates and events
-        public delegate void TilemapChangedHandler(MapEditorViewModel sender, ITileMap tileMap);
+        public delegate void TilemapChangedHandler(MapEditorViewModel sender, Map tileMap);
         public event TilemapChangedHandler OnTilemapChanged;
         #endregion
 
@@ -39,7 +39,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public ITileMap TileMap
+        public Map TileMap
         {
             get => _tileMap;
             set
@@ -65,7 +65,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public void Save()
         {
-            TileMap.Save(_file.FullPath);
+            TilemapTiled.Save(TileMap, new Tiled.Map()
+            {
+                FileName = _file.FullPath
+            }).Save(_file.FullPath);
         }
         
 #if DEBUG

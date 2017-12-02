@@ -14,8 +14,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     {
         public MapEditorViewModel ViewModel { get; }
 
-        private ILayerEntry _layerEntry;
-        public ILayerEntry LayerEntry
+        private LayerEntry _layerEntry;
+        public LayerEntry LayerEntry
         {
             get => _layerEntry;
             set
@@ -78,13 +78,13 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public NodeLayerEntryViewModel(MainWindowViewModel vm, ILayerEntry layerEntry) :
+        public NodeLayerEntryViewModel(MainWindowViewModel vm, LayerEntry layerEntry) :
             base(vm)
         {
             LayerEntry = layerEntry;
-            if (layerEntry is ILayerTilemap)
+            if (layerEntry is LayerTilemap)
                 LayerType = LayerType.Tilemap;
-            else if (layerEntry is ILayerObjects)
+            else if (layerEntry is LayerObjects)
                 LayerType = LayerType.ObjectGroup;
             else
                 LayerType = LayerType.Unknown;

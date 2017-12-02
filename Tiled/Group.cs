@@ -8,9 +8,7 @@ namespace Tiled
     public class Group : ILayerEntry, INodeItem
     {
         private const string ElementName = "group";
-
-        private Map _map;
-
+        
         /// <summary>
         /// The name of the layer.
         /// </summary>
@@ -36,14 +34,13 @@ namespace Tiled
         /// </summary>
         public bool Visible { get; set; }
 
-        public PropertiesDictionary Properties { get; }
+        public PropertiesDictionary Properties { get; set; }
 
-        public List<ILayerEntry> Entries { get; }
+        public List<ILayerEntry> Entries { get; set; }
 
+        public Group() { }
         public Group(Map map, XElement xElement)
         {
-            _map = map;
-
             Name = xElement.Attribute("name")?.Value;
             OffsetX = (int?)xElement.Attribute("offsetx") ?? 0;
             OffsetY = (int?)xElement.Attribute("offsety") ?? 0;

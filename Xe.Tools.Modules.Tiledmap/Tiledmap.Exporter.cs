@@ -42,7 +42,7 @@ namespace Xe.Tools.Modules
             WriteChunk(_tiledmap, w, WriteObjectsChunk);
         }
 
-        private static void WriteChunk(ITileMap tileMap, BinaryWriter writer, Func<ITileMap, BinaryWriter, string> action)
+        private static void WriteChunk(Map tileMap, BinaryWriter writer, Func<Map, BinaryWriter, string> action)
         {
             using (var memoryStream = new MemoryStream(0x8000))
             {

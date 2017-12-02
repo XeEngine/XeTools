@@ -23,6 +23,21 @@ namespace Xe.Drawing
                 }
                 return _surface;
             }
+            set
+            {
+                if (_surface != value)
+                {
+                    _graphics.Flush();
+                    if (value is CSurface surface)
+                    {
+                        _surface = surface;
+                    }
+                    else
+                    {
+                        _surface = null;
+                    }
+                }
+            }
         }
 
         public override Filter Filter

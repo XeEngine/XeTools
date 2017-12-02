@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -16,23 +17,32 @@ namespace Tiled
             Hexagonal
         }
 
-        protected XDocument _xRoot;
-        private XElement _xMap;
+        private const string ElementName = "map";
 
-        public string BasePath { get; }
+        protected XDocument _xRoot;
+
+        private string BasePath => Path.GetDirectoryName(FileName);
 
         /// <summary>
-        /// The TMX format version. Was "1.0" so far, and will be incremented to match minor Tiled releases.
+        /// File name of the TMX file.
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// The TMX format version. Was "1.0" so far, and will be incremented
+        /// to match minor Tiled releases.
         /// </summary>
         public Version FormatVersion { get; private set; }
 
         /// <summary>
-        /// The Tiled version used to save the file. May be a date (for snapshot builds).
+        /// The Tiled version used to save the file.
+        /// May be a date (for snapshot builds).
         /// </summary>
         public Version TiledVersion { get; private set; }
 
         /// <summary>
-        /// Map orientation. Tiled supports "orthogonal", "isometric", "staggered" and "hexagonal".
+        /// Map orientation. Tiled supports "orthogonal", "isometric",
+        /// "staggered" and "hexagonal".
         /// </summary>
         public OrientationType Orientation { get; set; }
 
@@ -59,47 +69,49 @@ namespace Tiled
         /// <summary>
         /// The background color of the map.
         /// </summary>
-        public Color BackgroundColor { get; }
+        public Color? BackgroundColor { get; set; }
 
         /// <summary>
-        /// Stores the next available ID for new objects. This number is stored to prevent reuse of the same ID after objects have been removed.
+        /// Stores the next available ID for new objects. This number is stored
+        /// to prevent reuse of the same ID after objects have been removed.
         /// </summary>
         public int NextObjectId { get; set; }
 
         public PropertiesDictionary Properties { get; private set; }
         
-        public List<Tileset> Tilesets { get; }
-        public List<ILayerEntry> Entries { get; }
+        public List<Tileset> Tilesets { get; set; }
+        public List<ILayerEntry> Entries { get; set; }
 
 
+        public Map() { }
         public Map(string fileName)
         {
-            BasePath = Path.GetDirectoryName(Path.GetFullPath(fileName));
+            FileName = fileName;
 
             _xRoot = XDocument.Load(fileName);
-            _xMap = _xRoot.Element("map") ?? new XElement("map");
-            if (_xMap != null)
+            var map = _xRoot.Element(ElementName) ?? new XElement(ElementName);
+            if (map != null)
             {
-                Orientation = GetOrientationType((string)_xMap.Attribute("orientation"));
-                Width = (int)_xMap.Attribute("width");
-                Height = (int)_xMap.Attribute("height");
-                TileWidth = (int)_xMap.Attribute("tilewidth");
-                TileHeight = (int)_xMap.Attribute("tileheight");
-                NextObjectId = (int)_xMap.Attribute("nextobjectid");
-                FormatVersion = _xMap.Attribute("version")?.AsVersion();
-                TiledVersion = _xMap.Attribute("tiledversion")?.AsVersion();
-                BackgroundColor = _xMap.Attribute("backgroundcolor").AsColor();
+                Orientation = GetOrientationType((string)map.Attribute("orientation"));
+                Width = (int)map.Attribute("width");
+                Height = (int)map.Attribute("height");
+                TileWidth = (int)map.Attribute("tilewidth");
+                TileHeight = (int)map.Attribute("tileheight");
+                NextObjectId = (int)map.Attribute("nextobjectid");
+                FormatVersion = map.Attribute("version")?.AsVersion();
+                TiledVersion = map.Attribute("tiledversion")?.AsVersion();
+                BackgroundColor = map.Attribute("backgroundcolor").AsColor();
 
-                Properties = new PropertiesDictionary(_xMap);
+                Properties = new PropertiesDictionary(map);
 
                 var tilesets = new List<Tileset>();
                 var entries = new List<ILayerEntry>();
-                foreach (var element in _xMap.Elements())
+                foreach (var element in map.Elements())
                 {
                     switch (element.Name.LocalName)
                     {
                         case "tileset":
-                            tilesets.Add(new Tileset(this, element));
+                            tilesets.Add(new Tileset(BasePath, element));
                             break;
                         case "group":
                             entries.Add(new Group(this, element));
@@ -119,37 +131,41 @@ namespace Tiled
 
         public void Save(string fileName)
         {
-            SaveChanges();
-            Save(_xRoot, fileName);
+            XDocument doc = new XDocument();
+            doc.Add(AsNode());
+            doc.Save(fileName);
+
+            var basePath = Path.GetDirectoryName(fileName);
+            foreach (var tileset in Tilesets)
+                tileset.SaveChanges(basePath);
         }
 
-        private void SaveChanges()
+        private XElement AsNode(XElement element = null)
         {
-            _xMap.SetAttributeValue("version", FormatVersion.ToString());
-            if (FormatVersion != null)
-                _xMap.SetAttributeValue("tiledversion", FormatVersion.ToString());
-            if (TiledVersion != null)
-                _xMap.SetAttributeValue("tiledversion", TiledVersion.ToString());
-            _xMap.SetAttributeValue("orientation", GetOrientationType(Orientation));
-            _xMap.SetAttributeValue("width", Width);
-            _xMap.SetAttributeValue("height", Height);
-            _xMap.SetAttributeValue("tilewidth", TileWidth);
-            _xMap.SetAttributeValue("tileheight", TileHeight);
-            if (BackgroundColor != null)
-                _xMap.SetAttributeValue("backgroundcolor", $"#{BackgroundColor.ToString()}");
-            _xMap.SetAttributeValue("nextobjectid", NextObjectId);
+            if (element != null)
+                element = new XElement(ElementName);
 
-            _xMap.RemoveNodes();
+            element.SetAttributeValue("version", FormatVersion.ToString());
+            if (FormatVersion != null)
+                element.SetAttributeValue("tiledversion", FormatVersion.ToString());
+            if (TiledVersion != null)
+                element.SetAttributeValue("tiledversion", TiledVersion.ToString());
+            element.SetAttributeValue("orientation", GetOrientationType(Orientation));
+            element.SetAttributeValue("width", Width);
+            element.SetAttributeValue("height", Height);
+            element.SetAttributeValue("tilewidth", TileWidth);
+            element.SetAttributeValue("tileheight", TileHeight);
+            if (BackgroundColor.HasValue)
+                element.SetAttributeValue("backgroundcolor", $"#{BackgroundColor.Value.AsString()}");
+            element.SetAttributeValue("nextobjectid", NextObjectId);
+            
             if (Properties.Count > 0)
-                _xMap.Add(Properties.AsNode());
+                element.Add(Properties.AsNode());
             foreach (var tileset in Tilesets)
-            {
-                _xMap.Add(tileset.Element);
-            }
+                element.Add(tileset.AsNode());
             foreach (var item in Entries)
-            {
-                _xMap.Add(item.AsNode());
-            }
+                element.Add(item.AsNode());
+            return element;
         }
 
         #region Utilities

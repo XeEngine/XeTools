@@ -71,16 +71,16 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             OnPropertyChanged(nameof(Childs));
         }
 
-        public static IEnumerable<NodeBaseViewModel> GetLayers(MainWindowViewModel vm, IEnumerable<ILayerBase> layers)
+        public static IEnumerable<NodeBaseViewModel> GetLayers(MainWindowViewModel vm, IEnumerable<LayerBase> layers)
         {
             return layers
                 .Select(x =>
                 {
-                    if (x is ILayersGroup layerGroup)
+                    if (x is LayersGroup layerGroup)
                         return new NodeGroupViewModel(vm, layerGroup);
-                    if (x is ILayerTilemap layerTilemap)
+                    if (x is LayerTilemap layerTilemap)
                         return new NodeEntryTilemapViewModel(vm, layerTilemap);
-                    if (x is ILayerObjects objectsGroup)
+                    if (x is LayerObjects objectsGroup)
                         return new NodeObjectsGroupViewModel(vm, objectsGroup);
                     return (NodeBaseViewModel)null;
                 })

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xe.Drawing;
 using Xe.Game.Tilemaps;
 
@@ -12,10 +9,10 @@ namespace Xe.Tools.Tilemap
     public class TilemapDrawer : IDisposable
     {
         private IDrawing Drawing;
-        private ITileMap Map;
+        private Map Map;
         private ISurface[] Surfaces;
 
-        public TilemapDrawer(IDrawing drawing, ITileMap map)
+        public TilemapDrawer(IDrawing drawing, Map map)
         {
             Drawing = drawing;
             Map = map;
@@ -24,14 +21,14 @@ namespace Xe.Tools.Tilemap
 
         public void DrawLayerIndex(IDrawing drawing, int index)
         {
-            foreach (var layer in Map.Layers.Where(x => x is ILayerTilemap).Select(x => x as ILayerTilemap))
+            foreach (var layer in Map.Layers.Where(x => x is LayerTilemap).Select(x => x as LayerTilemap))
             {
                 Rectangle src = new Rectangle(0, 0, 0, 0);
                 for (int j = 0; j < layer.Height; j++)
                 {
                     for (int i = 0; i < layer.Width; i++)
                     {
-                        var tile = layer.GetTile(i, j);
+                        var tile = layer.Tiles[i, j];
                         if (tile.Tileset < 0)
                             continue;
                         var tileset = Map.Tilesets[tile.Tileset];

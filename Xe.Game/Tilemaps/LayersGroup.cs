@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Xe.Game.Tilemaps
 {
-    public interface ILayersGroup : ILayerBase
+    public class LayersGroup : LayerBase
     {
-        List<ILayerBase> Layers { get; }
+        public List<LayerBase> Layers { get; set; }
     }
 }

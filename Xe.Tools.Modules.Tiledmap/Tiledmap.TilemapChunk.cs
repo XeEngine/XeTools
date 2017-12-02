@@ -14,11 +14,11 @@ namespace Xe.Tools.Modules
     {
         private class LayerEntry
         {
-            public ITileMap TileMap { get; set; }
+            public Map TileMap { get; set; }
 
             public int Priority { get; set; }
 
-            public List<ILayerTilemap> Sublayers { get; set; }
+            public List<LayerTilemap> Sublayers { get; set; }
 
             public int MapWidth { get; set; }
 
@@ -140,12 +140,12 @@ namespace Xe.Tools.Modules
         }
 
 
-        private string WriteTilemapChunk(ITileMap tileMap, BinaryWriter w)
+        private string WriteTilemapChunk(Map tileMap, BinaryWriter w)
         {
             var dc = new DrawingContext(tileMap);
             var layers = tileMap.Layers
-                .Where(x => x is ILayerTilemap)
-                .Select(x => (ILayerTilemap)x)
+                .Where(x => x is LayerTilemap)
+                .Select(x => (LayerTilemap)x)
                 .GroupBy(x => x.Priority)
                 .Where(x => x.Any(layer => layer.Visible))
                 .Select(x => new LayerEntry
@@ -206,7 +206,7 @@ namespace Xe.Tools.Modules
         /// <param name="dc"></param>
         /// <param name="layer"></param>
         /// <returns></returns>
-        private static ISurface RenderTilemapLayers(ITileMap tileMap, DrawingContext dc, LayerEntry layer)
+        private static ISurface RenderTilemapLayers(Map tileMap, DrawingContext dc, LayerEntry layer)
         {
             var tileSize = tileMap.TileSize;
             ISurface surface = dc.Drawing.CreateSurface(
@@ -228,7 +228,7 @@ namespace Xe.Tools.Modules
         /// <param name="dc"></param>
         /// <param name="surface"></param>
         /// <param name="layer"></param>
-        private static void RenderTilemapLayer(ITileMap tileMap, DrawingContext dc, ISurface surface, ILayerTilemap layer)
+        private static void RenderTilemapLayer(Map tileMap, DrawingContext dc, ISurface surface, LayerTilemap layer)
         {
             var tileSize = tileMap.TileSize;
             int width = layer.Width;
@@ -243,7 +243,7 @@ namespace Xe.Tools.Modules
                 rect.Y = y * rect.Width;
                 for (int x = 0; x < width; x++)
                 {
-                    var tile = layer.GetTile(x, y);
+                    var tile = layer.Tiles[x, y];
                     if (tile.Index > 0)
                     {
                         rect.X = x * rect.Height;

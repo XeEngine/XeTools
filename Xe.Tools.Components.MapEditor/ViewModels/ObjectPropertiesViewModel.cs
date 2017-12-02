@@ -9,13 +9,13 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 {
     public class ObjectPropertiesViewModel: BaseNotifyPropertyChanged
     {
-        public delegate void InvalidateEntry(object sender, IObjectEntry entry);
+        public delegate void InvalidateEntry(object sender, ObjectEntry entry);
         public event InvalidateEntry OnInvalidateEntry;
 
         public MainWindowViewModel MainEditor { get; }
 
-        private IObjectEntry _objectEntry;
-        public IObjectEntry ObjectEntry
+        private ObjectEntry _objectEntry;
+        public ObjectEntry ObjectEntry
         {
             get => _objectEntry;
             set

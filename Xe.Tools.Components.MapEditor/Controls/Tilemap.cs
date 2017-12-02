@@ -58,8 +58,8 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         #region Delegates and events
 
-        public delegate void SelectedEntity(object sender, IObjectEntry objectEntry);
-        public delegate void MoveEntry(object sender, IObjectEntry objectEntry, double newX, double newY);
+        public delegate void SelectedEntity(object sender, ObjectEntry objectEntry);
+        public delegate void MoveEntry(object sender, ObjectEntry objectEntry, double newX, double newY);
 
         public SelectedEntity OnSelectedEntity;
         public MoveEntry OnMoveEntry;
@@ -78,7 +78,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         private VisualCollection _children;
         private DrawingVisual _visual;
-        private ITileMap _tileMap => MapEditorViewModel.Instance.TileMap;
+        private Map _tileMap => MapEditorViewModel.Instance.TileMap;
         private ResourceService<string, AnimationDataEntry> _resAnimationData;
         private ResourceService<AnimKeyEntry, FramesGroup> _resAnimations;
         private ResourceService<string, ISurface> _resTileset;
@@ -87,7 +87,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         #endregion
 
-        public ITileMap TileMap
+        public Map TileMap
         {
             get => _tileMap;
         }
@@ -183,7 +183,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
             Render();
         }
 
-        private void RenderMap(ITileMap tileMap, int x, int y)
+        private void RenderMap(Map tileMap, int x, int y)
         {
             var size = tileMap.Size;
             var tileSize = tileMap.TileSize;
@@ -241,24 +241,24 @@ namespace Xe.Tools.Components.MapEditor.Controls
             });
         }
 
-        private void RenderLayer(ILayerBase layerBase, int x, int y)
+        private void RenderLayer(LayerBase layerBase, int x, int y)
         {
-            if (layerBase is ILayersGroup group)
+            if (layerBase is LayersGroup group)
             {
                 foreach (var item in group.Layers)
                     RenderLayer(item, x, y);
             }
-            else if (layerBase is ILayerEntry entry)
+            else if (layerBase is LayerEntry entry)
                 RenderLayer(entry, x, y);
         }
 
-        private void RenderLayer(ILayerEntry layer, int x, int y)
+        private void RenderLayer(LayerEntry layer, int x, int y)
         {
-            if (layer is ILayerTilemap tilemap) RenderLayer(tilemap, x, y);
-            else if (layer is ILayerObjects objects) RenderLayer(objects, x, y);
+            if (layer is LayerTilemap tilemap) RenderLayer(tilemap, x, y);
+            else if (layer is LayerObjects objects) RenderLayer(objects, x, y);
         }
 
-        private void RenderLayer(ILayerTilemap layer, int x, int y)
+        private void RenderLayer(LayerTilemap layer, int x, int y)
         {
             if (!layer.Visible)
                 return;
@@ -284,7 +284,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 rect.Y = iy * rect.Width - smallY;
                 for (int ix = Math.Max(0, -tileX); ix < width; ix++)
                 {
-                    var tile = layer.GetTile(tileX + ix, tileY + iy);
+                    var tile = layer.Tiles[tileX + ix, tileY + iy];
                     if (tile.Index > 0)
                     {
                         rect.X = ix * rect.Height - smallX;
@@ -300,13 +300,13 @@ namespace Xe.Tools.Components.MapEditor.Controls
             }
         }
 
-        private void RenderLayer(ILayerObjects layer, int x, int y)
+        private void RenderLayer(LayerObjects layer, int x, int y)
         {
             foreach (var entry in layer.Objects)
                 RenderObject(entry, x, y);
         }
 
-        private void RenderObject(IObjectEntry entry, int x, int y)
+        private void RenderObject(ObjectEntry entry, int x, int y)
         {
             var strAnimData = entry.AnimationData ?? "data/sprite/editor.anim.json";
             var framesGroup = GetFramesGroup(strAnimData, entry.AnimationName, entry.Direction);
@@ -330,7 +330,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
         #region Event handler
 
         private bool _isMouseDown;
-        private IObjectEntry _objEntrySelected;
+        private ObjectEntry _objEntrySelected;
         private Point _dragMousePosition;
         private double _dragObjEntryX, _dragObjEntryY;
 
@@ -379,11 +379,11 @@ namespace Xe.Tools.Components.MapEditor.Controls
         
         #region Resource events and utilities
 
-        private IObjectEntry GetObjectEntry(double x, double y)
+        private ObjectEntry GetObjectEntry(double x, double y)
         {
             foreach (var layer in TileMap.Layers
-                .Where(o => o is ILayerObjects)
-                .Select(o => o as ILayerObjects)
+                .Where(o => o is LayerObjects)
+                .Select(o => o as LayerObjects)
                 .Reverse())
             {
                 foreach (var o in layer.Objects)

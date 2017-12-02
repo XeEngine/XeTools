@@ -7,14 +7,14 @@ namespace Xe.Tools.Modules
 {
     public partial class Tiledmap : ModuleBase
     {
-        private TilemapTiled _tiledmap;
+        private Map _tiledmap;
         private string _outputFileNameTilesetImage;
 
         public Tiledmap(ModuleInit init) : base(init) { }
         
         public override bool OpenFileData(string fileName)
         {
-            _tiledmap = new TilemapTiled(fileName);
+            _tiledmap = TilemapTiled.Open(fileName);
             return true;
         }
         public override bool OpenFileData(FileStream stream) { return true; }
@@ -26,22 +26,30 @@ namespace Xe.Tools.Modules
 
         public override IEnumerable<string> GetSecondaryInputFileNames()
         {
-            var basePath = _tiledmap.BasePath;
+            var basePath = Path.GetDirectoryName(_tiledmap.FileName);
             var filesList = new List<string>(_tiledmap.Tilesets.Count);
             foreach (var item in _tiledmap.Tilesets)
             {
-                if (item is TilemapTiled.Tileset tileset)
+                if (!string.IsNullOrEmpty(item.ExternalTileset))
                 {
-                    var tsx = tileset.ExternalTileset;
-                    if (!string.IsNullOrEmpty(tsx))
-                        filesList.Add(Path.Combine(basePath, tsx));
-                    var imagePath = tileset.ImageSource;
-                    if (!string.IsNullOrEmpty(imagePath))
-                        filesList.Add(Path.Combine(basePath, imagePath));
+                    if (!Path.IsPathRooted(item.ExternalTileset))
+                        filesList.Add(Path.Combine(basePath, item.ExternalTileset));
+                    else
+                        filesList.Add(item.ExternalTileset);
                 }
-                else
+                if (!string.IsNullOrEmpty(item.ImagePath))
                 {
-                    filesList.Add(item.ImagePath);
+                    if (!Path.IsPathRooted(item.ImagePath))
+                        filesList.Add(Path.Combine(basePath, item.ImagePath));
+                    else
+                        filesList.Add(item.ImagePath);
+                }
+                if (!string.IsNullOrEmpty(item.ImageSource))
+                {
+                    if (!Path.IsPathRooted(item.ImageSource))
+                        filesList.Add(Path.Combine(basePath, item.ImageSource));
+                    else
+                        filesList.Add(item.ImageSource);
                 }
             }
             return filesList;

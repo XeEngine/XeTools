@@ -18,8 +18,7 @@ namespace Tiled
         public const uint INDEX_FLAG = ~(FLIPPED_HORIZONTALLY_FLAG |
             FLIPPED_VERTICALLY_FLAG |
             FLIPPED_DIAGONALLY_FLAG);
-
-        private Map _map;
+        
         private XElement _dataElement;
 
         /// <summary>
@@ -61,13 +60,12 @@ namespace Tiled
 
         public uint[,] Data;
 
+        public Layer() { }
         public Layer(Map map, XElement xElement)
         {
-            _map = map;
-
             Name = xElement.Attribute("name")?.Value;
-            Width = (int?)xElement.Attribute("width") ?? _map.Width;
-            Height = (int?)xElement.Attribute("height") ?? _map.Height;
+            Width = (int?)xElement.Attribute("width") ?? map.Width;
+            Height = (int?)xElement.Attribute("height") ?? map.Height;
             Visible = (bool?)xElement.Attribute("visible") ?? true;
             Opacity = (double?)xElement.Attribute("opacity") ?? 1.0;
             OffsetX = (int?)xElement.Attribute("offsetx") ?? 0;

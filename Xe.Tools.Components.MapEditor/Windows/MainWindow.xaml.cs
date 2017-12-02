@@ -43,7 +43,7 @@ namespace Xe.Tools.Components.MapEditor.Windows
             timer.Elapsed += (s, e) =>
             {
                 // Returns to the main thread
-                Application.Current.Dispatcher.Invoke(new Action(() =>
+                Application.Current?.Dispatcher.Invoke(new Action(() =>
                 {
                     if (ViewModel.IsRedrawingNeeded == true)
                     {
