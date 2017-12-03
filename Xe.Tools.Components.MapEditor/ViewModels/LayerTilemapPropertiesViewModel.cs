@@ -35,10 +35,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public int Type
+        public int ProcessingMode
         {
-            get => _layerTilemap?.Type ?? int.MinValue;
-            set => _layerTilemap.Type = value;
+            get => (int)(_layerTilemap?.ProcessingMode ?? LayerProcessingMode.Tilemap);
+            set => _layerTilemap.ProcessingMode = (LayerProcessingMode)value;
         }
 
         public bool IsVisible

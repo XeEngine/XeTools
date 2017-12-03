@@ -34,6 +34,8 @@ namespace Xe.Tools.Modules
         {
             var inputFileName = Path.Combine(InputWorkingPath, InputFileName);
             var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
+            if (File.Exists(outputFileName))
+                File.Delete(outputFileName);
             File.Copy(inputFileName, outputFileName);
         }
     }

@@ -29,6 +29,7 @@ namespace Xe.Tools.Modules
 
             public Stream TilemapStream { get; set; }
         }
+
         private class TilesetMemory : IDisposable
         {
             [DllImport("kernel32.dll")]
@@ -144,8 +145,8 @@ namespace Xe.Tools.Modules
         private string WriteTilemapChunk(Map tileMap, BinaryWriter w)
         {
             var layers = tileMap.Layers
-                .FlatterLayers()
-                .OfType<LayerTilemap>()
+                .FlatterLayers<LayerTilemap>()
+                .Where(x => x.ProcessingMode == LayerProcessingMode.Tilemap)
                 .Where(x => x.Visible)
                 .GroupBy(x => x.Priority)
                 .Select(x => new LayerEntry
@@ -209,7 +210,10 @@ namespace Xe.Tools.Modules
             {
                 w.Write((short)layer.MapWidth);
                 w.Write((short)layer.MapHeight);
-                w.Write((uint)0);
+                w.Write((byte)layer.Priority);
+                w.Write((byte)0);
+                w.Write((byte)0);
+                w.Write((byte)0);
                 layer.TilemapStream.Position = 0;
                 layer.TilemapStream.CopyTo(w.BaseStream);
             }

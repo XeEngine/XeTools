@@ -140,9 +140,10 @@ namespace Xe.Game.Tilemaps
             if (dst == null) dst = new LayerTilemap();
             dst.Name = src.Name;
             dst.Visible = src.Visible;
-            dst.Priority = GetPropertyValue(src.Properties, 0, nameof(LayerTilemap.Priority));
             dst.Opacity = src.Opacity;
-            dst.Type = GetPropertyValue(src.Properties, 0, nameof(LayerTilemap.Type));
+            dst.Priority = GetPropertyValue(src.Properties, 0, nameof(LayerTilemap.Priority));
+            dst.ProcessingMode = GetPropertyValue(src.Properties, LayerProcessingMode.Tilemap,
+                nameof(LayerTilemap.ProcessingMode));
             dst.Tiles = new Tile[src.Data.GetLength(0), src.Data.GetLength(1)];
             for (int y = 0; y < src.Height; y++)
             {
@@ -167,7 +168,7 @@ namespace Xe.Game.Tilemaps
             dst.Visible = src.Visible;
             dst.Properties[nameof(LayerTilemap.Priority)] = src.Priority;
             dst.Opacity = src.Opacity;
-            dst.Properties[nameof(LayerTilemap.Type)] = src.Type;
+            dst.Properties[nameof(LayerTilemap.ProcessingMode)] = src.ProcessingMode;
             dst.Width = src.Width;
             dst.Height = src.Height;
             dst.Data = new uint[src.Width, src.Height];

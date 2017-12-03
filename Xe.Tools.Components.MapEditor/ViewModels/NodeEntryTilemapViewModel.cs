@@ -11,6 +11,12 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     {
         public LayerTilemap LayerTilemap { get; }
 
+        public int ProcessingMode
+        {
+            get => (int)(LayerTilemap?.ProcessingMode ?? LayerProcessingMode.Tilemap);
+            set => LayerTilemap.ProcessingMode = (LayerProcessingMode)value;
+        }
+
         public NodeEntryTilemapViewModel(MainWindowViewModel vm, LayerTilemap layerTilemap) :
             base(vm, layerTilemap)
         {

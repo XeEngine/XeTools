@@ -228,12 +228,12 @@ namespace Xe.Tools.Components.MapEditor.Controls
             var framesGroup = GetFramesGroup(strAnimData, entry.AnimationName, entry.Direction);
             if (framesGroup != null)
             {
-                var realX = entry.X + entry.Width / 2;
-                var realY = entry.Y + entry.Height / 2;
+                var realX = x + entry.Width / 2;
+                var realY = y + entry.Height / 2;
                 if (realX > ActualWidth ||
                     realY > ActualHeight)
                     return;
-                _drawingService.DrawAnimation(framesGroup, realX - x, realY - y);
+                _drawingService.DrawAnimation(framesGroup, realX, realY);
             }
             else
             {
@@ -298,8 +298,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
         private ObjectEntry GetObjectEntry(double x, double y)
         {
             foreach (var layer in TileMap.Layers
-                .Where(o => o is LayerObjects)
-                .Select(o => o as LayerObjects)
+                .FlatterLayers<LayerObjects>()
                 .Reverse())
             {
                 foreach (var o in layer.Objects)

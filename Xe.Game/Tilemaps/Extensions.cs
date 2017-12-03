@@ -22,5 +22,23 @@ namespace Xe.Game.Tilemaps
             }
             return list;
         }
+
+        public static IEnumerable<T> FlatterLayers<T>(this IEnumerable<LayerBase> entries)
+            where T : LayerEntry
+        {
+            var list = new List<T>();
+            foreach (var entry in entries)
+            {
+                if (entry is LayersGroup group)
+                {
+                    list.AddRange(FlatterLayers<T>(group.Layers));
+                }
+                else if (entry is T layer)
+                {
+                    list.Add(layer);
+                }
+            }
+            return list;
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Xe.Game.Tilemaps
 {
-    public enum LayerMode
+    public enum LayerRenderingMode
     {
         Default,
         SimpleParallax,
@@ -13,8 +13,6 @@ namespace Xe.Game.Tilemaps
         VerticalParallax,
         Mode7,
         Shadow,
-        Collision,
-        Depth
     }
 
     public class LayerDefinition
@@ -34,5 +32,7 @@ namespace Xe.Game.Tilemaps
         public float HorizontalCameraSpeed { get; set; }
 
         public float VerticalCameraSpeed { get; set; }
+
+        public LayerRenderingMode RenderingMode { get; set; }
     }
 }

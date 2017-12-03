@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Xe.Tools.Components.MapEditor.Controls.LayerTilemapProperties"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Xe.Tools.Components.MapEditor.Controls"
              xmlns:services="clr-namespace:Xe.Tools.Components.MapEditor.Services"
              xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+             xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Xe.Tools.Components.MapEditor.Controls.LayerTilemapProperties"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="200">
     <StackPanel Background="White">
@@ -14,13 +15,20 @@
 
         <TextBlock Text="Priority"/>
         <ComboBox Margin="0 0 0 5"
-                  ItemsSource="{Binding Source={x:Static services:TilemapService.LayerNames}, Mode=OneTime}"
+                  ItemsSource="{Binding Mode=OneTime, Source={x:Static services:TilemapService.LayerNames}}"
                   SelectedIndex="{Binding Priority, Mode=TwoWay}"/>
+
+        <TextBlock Text="Processing mode"/>
+        <ComboBox Margin="0 0 0 5" SelectedIndex="{Binding ProcessingMode, Mode=TwoWay}">
+            <TextBlock>Tilemap</TextBlock>
+            <TextBlock>Collision</TextBlock>
+            <TextBlock>Priority</TextBlock>
+        </ComboBox>
 
         <CheckBox Content="Is visible" Margin="0 0 0 5"
                   IsChecked="{Binding IsVisible}"/>
 
-        <TextBlock Text="{Binding ColorText, StringFormat='Opacity and color: {0}'}"/>
+        <TextBlock Text="{Binding ColorText, StringFormat=Opacity and color: \{0\}}"/>
         <DockPanel Margin="0 0 0 5">
             <Rectangle DockPanel.Dock="Left" Width="17"
                                    Fill="{Binding MultiplyColorBrush}"/>

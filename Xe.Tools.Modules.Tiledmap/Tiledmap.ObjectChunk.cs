@@ -13,19 +13,20 @@ namespace Xe.Tools.Modules
             var animDictionary = new Dictionary<string, int>();
 
             var objects = tileMap.Layers
-                .Where(x => x is LayerObjects)
-                .Select(x => x as LayerObjects)
+                .FlatterLayers<LayerObjects>()
                 .SelectMany(x => x.Objects, (x, o) => new
                 {
                     Layer = x,
                     Object = o
                 });
+            var objectsCount = objects.Count();
+            if (objectsCount == 0)
+                return null;
 
-
-            w.Write((short)objects.Count());
+            w.Write((short)objectsCount);
             var headerPos = w.BaseStream.Position;
-            w.Write((short)0); // Write it later
-            w.Write((uint)0); // Write it later
+            w.Write((short)0); // RESERVED
+            w.Write((uint)0); // RESERVED
             foreach (var entry in objects)
             {
                 var o = entry.Object;
@@ -41,6 +42,7 @@ namespace Xe.Tools.Modules
                 w.Write((short)o.X);
                 w.Write((short)o.Y);
                 w.Write((short)o.Z);
+                w.Write((short)0); // RESERVED
                 w.Write((short)o.Width);
                 w.Write((short)o.Height);
                 w.Write((byte)0); // depth
@@ -52,20 +54,29 @@ namespace Xe.Tools.Modules
                 w.Write(Crc32.CalculateDigestAscii(o.AnimationName));
             }
 
-            var animationsPos = w.BaseStream.Position;
-            var count = animDictionary.Count;
-            w.BaseStream.Position = w.BaseStream.Position += count * 4;
-            var pointersList = new List<int>(count);
-            foreach (var item in animDictionary
+            // Write animation names
+            var animationNames = animDictionary
                 .OrderBy(x => x.Value)
-                .Select(x => x.Key))
+                .Select(x => new
+                {
+                    Name = x.Key,
+                    Data = System.Text.Encoding.UTF8.GetBytes(x.Key)
+                })
+                .Select(x => new
+                {
+                    Name = x.Name,
+                    Data = x.Data,
+                    Length = x.Data.Length
+                });
+            var animationNamesLength = animationNames.Sum(x => x.Length + 1);
+            w.Write((ushort)animDictionary.Count);
+            w.Write((ushort)animationNamesLength);
+            foreach (var item in animationNames)
             {
-                pointersList.Add((int)w.BaseStream.Position);
-                w.Write(System.Text.Encoding.UTF8.GetBytes(item));
+                w.Write(item.Data);
+                w.Write((byte)0);
             }
-            w.BaseStream.Position = headerPos;
-            w.Write((short)count);
-            w.Write((uint)animationsPos);
+            w.Align(8);
 
             return "OBJ\x01";
         }

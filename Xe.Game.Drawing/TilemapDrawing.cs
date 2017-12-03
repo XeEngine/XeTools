@@ -143,8 +143,8 @@ namespace Xe.Tools.Tilemap
                 return;
             foreach (var entry in layer.Objects)
             {
-                float acutalX = (float)(entry.X + rect.X);
-                float acutalY = (float)(entry.Y + rect.Y);
+                float acutalX = (float)(entry.X - rect.X);
+                float acutalY = (float)(entry.Y - rect.Y);
                 if (acutalX >= -Margin || acutalX + rect.Width < Margin ||
                     acutalY >= -Margin || acutalY + rect.Height < Margin)
                 {

@@ -40,7 +40,6 @@
     <Compile Include="Tiledmap.cs" />
     <Compile Include="Tiledmap.Exporter.cs" />
     <Compile Include="Tiledmap.ObjectChunk.cs" />
-    <Compile Include="Tiledmap.PriorityChunk.cs" />
     <Compile Include="Tiledmap.TilemapChunk.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +79,9 @@
   <ItemGroup>
     <Reference Include="netstandard" />
     <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tiledmap.TilesetChunk.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

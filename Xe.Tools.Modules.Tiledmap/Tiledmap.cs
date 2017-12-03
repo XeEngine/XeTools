@@ -55,11 +55,16 @@ namespace Xe.Tools.Modules
             return filesList;
         }
 
-        public override IEnumerable<string> GetSecondaryOutputFileNames()
+        public string GetTilesetFileName()
         {
             var basePath = Path.GetDirectoryName(InputFileName);
             var tilesetImage = $"{Path.GetFileNameWithoutExtension(OutputFileName)}.png";
-            _outputFileNameTilesetImage = Path.Combine(OutputWorkingPath, Path.Combine(basePath, tilesetImage));
+            return Path.Combine(basePath, tilesetImage);
+        }
+
+        public override IEnumerable<string> GetSecondaryOutputFileNames()
+        {
+            _outputFileNameTilesetImage = Path.Combine(OutputWorkingPath, GetTilesetFileName());
             return new string[]
             {
                 _outputFileNameTilesetImage
