@@ -20,5 +20,7 @@ namespace Xe.Game.Tilemaps
         public List<Tileset> Tilesets { get; set; }
 
         public List<LayerBase> Layers { get; set; }
+
+        public List<LayerDefinition> LayersDefinition { get; set; }
     }
 }

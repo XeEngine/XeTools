@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using Xe.Drawing;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Services;
+using Xe.Tools.Tilemap;
 
 namespace Xe.Tools.Modules
 {
@@ -142,12 +143,11 @@ namespace Xe.Tools.Modules
 
         private string WriteTilemapChunk(Map tileMap, BinaryWriter w)
         {
-            var dc = new DrawingContext(tileMap);
             var layers = tileMap.Layers
-                .Where(x => x is LayerTilemap)
-                .Select(x => (LayerTilemap)x)
+                .FlatterLayers()
+                .OfType<LayerTilemap>()
+                .Where(x => x.Visible)
                 .GroupBy(x => x.Priority)
-                .Where(x => x.Any(layer => layer.Visible))
                 .Select(x => new LayerEntry
                 {
                     TileMap = tileMap,
@@ -159,26 +159,43 @@ namespace Xe.Tools.Modules
                 .OrderBy(x => x.Priority)
                 .ToList();
 
-            // Rendering
-            foreach (var layer in layers)
+            using (var drawing = Factory.Resolve<IDrawing>())
             {
-                layer.MapWidth = layer.Sublayers.Max(x => x.Width);
-                layer.MapHeight = layer.Sublayers.Max(x => x.Height);
-                layer.Surface = RenderTilemapLayers(tileMap, dc, layer);
-            }
-
-            // Tileset creation
-            using (var tileset = new TilesetMemory(tileMap.TileSize.Width, tileMap.TileSize.Height))
-            {
-                foreach (var layer in layers)
+                using (var dc = new TilemapDrawer(drawing))
                 {
-                    layer.TilemapStream = new MemoryStream(4096 * 4096 / 16 / 16 * sizeof(ushort));
-                    using (var writable = new BinaryWriter(layer.TilemapStream))
+                    dc.Map = tileMap;
+                    // Rendering
+                    var rect = new RectangleF(0, 0, float.MaxValue, float.MaxValue);
+                    var tileSize = tileMap.TileSize;
+                    foreach (var layer in layers)
                     {
-                        ProcessLayerAndTileset(layer, tileset, writable);
+                        layer.MapWidth = layer.Sublayers.Max(x => x.Width);
+                        layer.MapHeight = layer.Sublayers.Max(x => x.Height);
+
+                        ISurface surface = dc.Drawing.CreateSurface(
+                             layer.MapWidth * tileSize.Width,
+                             layer.MapHeight * tileSize.Height,
+                             PixelFormat.Undefined);
+
+                        dc.Drawing.Surface = surface;
+                        foreach (var sublayer in layer.Sublayers)
+                            dc.DrawLayer(sublayer, rect);
+                        layer.Surface = drawing.Surface;
                     }
                 }
-                tileset.Save(_outputFileNameTilesetImage);
+
+                // Tileset creation
+                using (var tileset = new TilesetMemory(tileMap.TileSize.Width, tileMap.TileSize.Height))
+                {
+                    foreach (var layer in layers)
+                    {
+                        layer.TilemapStream = new MemoryStream(4096 * 4096 / 16 / 16 * sizeof(ushort));
+                        var writable = new BinaryWriter(layer.TilemapStream);
+                        ProcessLayerAndTileset(layer, tileset, writable);
+                        layer.Surface?.Dispose();
+                    }
+                    tileset.Save(_outputFileNameTilesetImage);
+                }
             }
 
             // Header writing
@@ -197,66 +214,6 @@ namespace Xe.Tools.Modules
                 layer.TilemapStream.CopyTo(w.BaseStream);
             }
             return "TLV\x01";
-        }
-
-        /// <summary>
-        /// Write a layer into the specified DrawingContext.
-        /// </summary>
-        /// <param name="tileMap"></param>
-        /// <param name="dc"></param>
-        /// <param name="layer"></param>
-        /// <returns></returns>
-        private static ISurface RenderTilemapLayers(Map tileMap, DrawingContext dc, LayerEntry layer)
-        {
-            var tileSize = tileMap.TileSize;
-            ISurface surface = dc.Drawing.CreateSurface(
-                layer.MapWidth * tileSize.Width, 
-                layer.MapHeight * tileSize.Height, 
-                PixelFormat.Undefined);
-            dc.Drawing.Surface = surface;
-            foreach (var sublayer in layer.Sublayers)
-            {
-                RenderTilemapLayer(tileMap, dc, surface, sublayer);
-            }
-            return surface;
-        }
-
-        /// <summary>
-        /// Write a single sub-layer into the specified DrawingContext.
-        /// </summary>
-        /// <param name="tileMap"></param>
-        /// <param name="dc"></param>
-        /// <param name="surface"></param>
-        /// <param name="layer"></param>
-        private static void RenderTilemapLayer(Map tileMap, DrawingContext dc, ISurface surface, LayerTilemap layer)
-        {
-            var tileSize = tileMap.TileSize;
-            int width = layer.Width;
-            int height = layer.Height;
-            var rect = new Rectangle
-            {
-                Width = tileSize.Width,
-                Height = tileSize.Height
-            };
-            for (int y = 0; y < height; y++)
-            {
-                rect.Y = y * rect.Width;
-                for (int x = 0; x < width; x++)
-                {
-                    var tile = layer.Tiles[x, y];
-                    if (tile.Index > 0)
-                    {
-                        rect.X = x * rect.Height;
-                        var imgTile = dc[tile.Index];
-                        Drawing.Flip flip = Drawing.Flip.None;
-                        if (tile.IsFlippedX)
-                            flip |= Drawing.Flip.FlipHorizontal;
-                        if (tile.IsFlippedY)
-                            flip |= Drawing.Flip.FlipVertical;
-                        dc.Drawing.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect, flip);
-                    }
-                }
-            }
         }
 
         /// <summary>

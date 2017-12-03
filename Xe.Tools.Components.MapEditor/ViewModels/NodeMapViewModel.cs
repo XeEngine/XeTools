@@ -61,7 +61,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             {
                 case NodeOrderMode.GroupByPriority:
                     for (int i = 0; i < LayersCount; i++)
-                        Childs.Add(new NodeLayerViewModel(MainWindow, TileMap.Layers.FlatteredLayers(), LayersCount - i - 1));
+                        Childs.Add(new NodeLayerViewModel(MainWindow, TileMap.Layers.FlatterLayers(), LayersCount - i - 1));
                     break;
                 case NodeOrderMode.OriginalOrder:
                     foreach (var layer in GetLayers(MainWindow, TileMap.Layers))

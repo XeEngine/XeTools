@@ -17,14 +17,10 @@ namespace Xe.Tools.MapTest
                     PixelFormat.Format32bppArgb))
                 {
                     drawing.Surface = surface;
-                    using (var mapDrawer = new TilemapDrawer(drawing, map))
+                    using (var mapDrawer = new TilemapDrawer(drawing))
                     {
-                        mapDrawer.DrawLayerIndex(drawing, 0);
-                        mapDrawer.DrawLayerIndex(drawing, 1);
-                        mapDrawer.DrawLayerIndex(drawing, 2);
-                        mapDrawer.DrawLayerIndex(drawing, 3);
-                        mapDrawer.DrawLayerIndex(drawing, 4);
-                        mapDrawer.DrawLayerIndex(drawing, 5);
+                        mapDrawer.Map = map;
+                        mapDrawer.DrawMap(new System.Drawing.RectangleF(0, 0, float.MaxValue, float.MaxValue));
                     }
                     drawing.Surface.Save(@"D:\out.png");
                     drawing.Surface = null;

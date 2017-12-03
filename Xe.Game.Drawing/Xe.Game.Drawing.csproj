@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FontDrawer.cs" />
-    <Compile Include="TilemapDrawer.cs" />
+    <Compile Include="TilemapDrawing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +44,10 @@
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
+      <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
+      <Name>Xe.Tools.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

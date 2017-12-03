@@ -49,10 +49,13 @@ namespace Xe.Tools.Modules
                 using (var memoryWriter = new BinaryWriter(memoryStream))
                 {
                     var strChunk = action(tileMap, memoryWriter);
-                    var head = System.Text.Encoding.ASCII.GetBytes(strChunk);
-                    writer.Write(head, 0, 4);
-                    writer.Write((uint)memoryStream.Length);
-                    writer.Write(memoryStream.GetBuffer(), 0, (int)memoryStream.Length);
+                    if (memoryStream.Length > 0)
+                    {
+                        var head = System.Text.Encoding.ASCII.GetBytes(strChunk);
+                        writer.Write(head, 0, 4);
+                        writer.Write((uint)memoryStream.Length);
+                        writer.Write(memoryStream.GetBuffer(), 0, (int)memoryStream.Length);
+                    }
                 }
             }
         }

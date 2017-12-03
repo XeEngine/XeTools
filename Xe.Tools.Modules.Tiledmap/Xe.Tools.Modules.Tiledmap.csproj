@@ -38,7 +38,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tiledmap.CollisionChunk.cs" />
     <Compile Include="Tiledmap.cs" />
-    <Compile Include="Tiledmap.DrawingContext.cs" />
     <Compile Include="Tiledmap.Exporter.cs" />
     <Compile Include="Tiledmap.ObjectChunk.cs" />
     <Compile Include="Tiledmap.PriorityChunk.cs" />

@@ -34,22 +34,5 @@ namespace Xe.Tools.Components.MapEditor.Services
                 return LAYER_NAMES[index];
             return $"Unknown 0x{index.ToString("X02")}";
         }
-        
-        public static IEnumerable<LayerEntry> FlatteredLayers(this IEnumerable<LayerBase> entries)
-        {
-            var list = new List<LayerEntry>();
-            foreach (var entry in entries)
-            {
-                if (entry is LayerEntry layer)
-                {
-                    list.Add(layer);
-                }
-                else if (entry is LayersGroup group)
-                {
-                    list.AddRange(FlatteredLayers(group.Layers));
-                }
-            }
-            return list;
-        }
     }
 }

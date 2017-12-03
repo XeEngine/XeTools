@@ -16,6 +16,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     public class MapEditorViewModel : BaseNotifyPropertyChanged
     {
         public static MapEditorViewModel Instance = new MapEditorViewModel();
+        private Tiled.Map _tiledMap;
         private Map _tileMap;
         private IProjectFile _file;
 
@@ -51,24 +52,34 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public string MapName => Path.GetFileNameWithoutExtension(_file?.Name ?? "<unknown>");
+        public string MapName
+        {
+            get
+            {
+                var fileName = TileMap.FileName;
+                return string.IsNullOrEmpty(fileName) ?
+                    "<unknown>" : Path.GetFileNameWithoutExtension(fileName);
+            }
+        }
 
         public bool IsTilemapLoaded => TileMap != null;
 
         public bool OpenTileMap(IProjectFile file)
         {
-            var result = (TileMap = TilemapService.Open(file.FullPath)) != null;
-            if (result)
+            var fileName = file.FullPath;
+            if (File.Exists(fileName))
+            {
                 _file = file;
-            return result;
+                _tiledMap = new Tiled.Map(fileName);
+                TileMap = TilemapTiled.Open(_tiledMap);
+                return true;
+            }
+            return false;
         }
 
         public void Save()
         {
-            TilemapTiled.Save(TileMap, new Tiled.Map()
-            {
-                FileName = _file.FullPath
-            }).Save(_file.FullPath);
+            TilemapTiled.Save(TileMap, _tiledMap).Save(_file.FullPath);
         }
         
 #if DEBUG

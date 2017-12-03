@@ -52,6 +52,7 @@ namespace Xe.Security
 
         public static uint CalculateDigestAscii(string str)
         {
+            if (str == null) return 0U;
             var data = Encoding.ASCII.GetBytes(str);
             return CalculateDigest(data, 0, (uint)data.Length);
         }

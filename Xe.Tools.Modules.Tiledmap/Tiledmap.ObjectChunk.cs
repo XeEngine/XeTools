@@ -72,6 +72,8 @@ namespace Xe.Tools.Modules
 
         private static int CheckEntry(Dictionary<string, int> dictionary, string key)
         {
+            if (key == null)
+                return -1;
             if (dictionary.TryGetValue(key, out var value))
                 return value;
             value = dictionary.Count + 1;

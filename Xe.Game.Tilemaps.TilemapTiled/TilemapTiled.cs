@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -7,6 +9,12 @@ namespace Xe.Game.Tilemaps
 {
     public static class TilemapTiled
     {
+        private class Ext
+        {
+            public List<LayerDefinition> LayersDefinition { get; set; }
+                = new List<LayerDefinition>();
+        }
+
         public static Map Open(Tiled.Map tiledMap)
         {
             return Map(tiledMap);
@@ -38,20 +46,51 @@ namespace Xe.Game.Tilemaps
             Uri Extension = GetPropertyValue(src.Properties, default(Uri), nameof(Extension));
             if (Extension != null && !string.IsNullOrEmpty(Extension.OriginalString))
             {
-
+                string fileName;
+                if (Path.IsPathRooted(Extension.OriginalString))
+                    fileName = Extension.OriginalString;
+                else
+                    fileName = Path.Combine(Path.GetDirectoryName(src.FileName), Extension.OriginalString);
+                if (File.Exists(fileName))
+                {
+                    using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = new StreamReader(stream))
+                        {
+                            var strContent = reader.ReadToEnd();
+                            var ext = JsonConvert.DeserializeObject<Ext>(strContent);
+                            dst.LayersDefinition = ext.LayersDefinition;
+                        }
+                    }
+                }
             }
             return dst;
         }
         private static Tiled.Map Map(Map src, Tiled.Map dst = null)
         {
+            var basePath = Path.GetDirectoryName(src.FileName);
             if (dst == null) dst = new Tiled.Map();
+            dst.FileName = src.FileName;
             dst.Width = src.Size.Width;
             dst.Height = src.Size.Height;
             dst.TileWidth = src.TileSize.Width;
             dst.TileHeight = src.TileSize.Height;
             dst.BackgroundColor = src.BackgroundColor;
-            dst.Tilesets = src.Tilesets.Select(x => Map(x)).ToList();
+            //dst.Tilesets = src.Tilesets.Select(x => Map(x)).ToList();
             dst.Entries = src.Layers.Select(x => Map(x)).ToList();
+
+            var extFileName = $"{Path.GetFileNameWithoutExtension(src.FileName)}.ext.json";
+            var fileName = Path.Combine(Path.GetDirectoryName(src.FileName), extFileName);
+            using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            {
+                using (var writer = new StreamWriter(stream))
+                {
+                    writer.Write(JsonConvert.SerializeObject(new Ext()
+                    {
+                        LayersDefinition = src.LayersDefinition
+                    }));
+                }
+            }
             return dst;
         }
         #endregion
@@ -107,7 +146,7 @@ namespace Xe.Game.Tilemaps
                 for (int x = 0; x < src.Width; x++)
                 {
                     var data = src.Data[x, y];
-                    dst.Tiles[x, y] = new Tilemaps.Tile()
+                    dst.Tiles[x, y] = new Tile()
                     {
                         Tileset = 0,
                         Index = (int)(data & Tiled.Layer.INDEX_FLAG),
