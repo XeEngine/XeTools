@@ -114,12 +114,15 @@ namespace Xe.Game.Tilemaps
         public static Tileset Map(Tiled.Tileset src, Tileset dst = null)
         {
             if (dst == null) dst = new Tileset();
+            dst.Name = src.Name;
             dst.ExternalTileset = src.Source;
             dst.ImageSource = src.Image?.Source;
             dst.ImagePath = src.FullImagePath;
             dst.StartId = src.FirstGid;
             dst.TileWidth = src.TileWidth;
             dst.TileHeight = src.TileHeight;
+            dst.Spacing = src.Spacing ?? 0;
+            dst.Margin = src.Margin ?? 0;
             dst.TilesPerRow = src.Columns;
             dst.TilesCount = src.TileCount;
             return dst;
@@ -140,7 +143,7 @@ namespace Xe.Game.Tilemaps
             dst.Priority = GetPropertyValue(src.Properties, 0, nameof(LayerTilemap.Priority));
             dst.Opacity = src.Opacity;
             dst.Type = GetPropertyValue(src.Properties, 0, nameof(LayerTilemap.Type));
-            dst.Tiles = new Tilemaps.Tile[src.Data.GetLength(0), src.Data.GetLength(1)];
+            dst.Tiles = new Tile[src.Data.GetLength(0), src.Data.GetLength(1)];
             for (int y = 0; y < src.Height; y++)
             {
                 for (int x = 0; x < src.Width; x++)
@@ -180,6 +183,8 @@ namespace Xe.Game.Tilemaps
                     );
                 }
             }
+            dst.Encoding = "base64";
+            dst.Compression = "gzip";
             return dst;
         }
         #endregion
@@ -197,6 +202,7 @@ namespace Xe.Game.Tilemaps
             if (dst == null) dst = new Tiled.Group();
             dst.Name = src.Name;
             dst.Visible = src.Visible;
+            dst.Opacity = 1.0;
             dst.Entries = src.Layers.Select(x => Map(x)).Where(x => x != null).ToList();
             return dst;
         }
@@ -216,6 +222,7 @@ namespace Xe.Game.Tilemaps
             if (dst == null) dst = new Tiled.ObjectGroup();
             dst.Name = src.Name;
             dst.Visible = src.Visible;
+            dst.Opacity = 1.0;
             dst.Properties[nameof(LayerObjects.Priority)] = src.Priority;
             dst.Objects = src.Objects.Select(x => Map(x)).ToList();
             return dst;
@@ -232,14 +239,14 @@ namespace Xe.Game.Tilemaps
             dst.AnimationData = GetPropertyValue<string>(src.Properties, null, nameof(ObjectEntry.AnimationData));
             dst.AnimationName = GetPropertyValue<string>(src.Properties, null, nameof(ObjectEntry.AnimationName));
             dst.Direction = GetPropertyValue(src.Properties, Direction.Undefined, nameof(ObjectEntry.Direction));
-            dst.Visible = GetPropertyValue(src.Properties, true, nameof(ObjectEntry.Visible));
+            dst.Visible = src.Visible;
             dst.HasShadow = GetPropertyValue(src.Properties, false, nameof(ObjectEntry.HasShadow));
             // Layout
-            dst.X = GetPropertyValue(src.Properties, 0.0, nameof(ObjectEntry.X));
-            dst.Y = GetPropertyValue(src.Properties, 0.0, nameof(ObjectEntry.Y));
+            dst.X = src.X;
+            dst.Y = src.Y;
             dst.Z = GetPropertyValue(src.Properties, 0.0, nameof(ObjectEntry.Z));
-            dst.Width = GetPropertyValue(src.Properties, 0.0, nameof(ObjectEntry.Width));
-            dst.Height = GetPropertyValue(src.Properties, 0.0, nameof(ObjectEntry.Height));
+            dst.Width = src.Width;
+            dst.Height = src.Height;
             dst.Flip = GetPropertyValue(src.Properties, Flip.None, nameof(ObjectEntry.Flip));
             return dst;
         }

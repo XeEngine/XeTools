@@ -44,7 +44,10 @@ namespace Tiled
 
         public List<Object> Objects { get; set; }
 
-        public ObjectGroup() { }
+        public ObjectGroup()
+        {
+            Properties = new PropertiesDictionary();
+        }
         public ObjectGroup(XElement xElement)
         {
             Name = xElement.Attribute("name")?.Value;

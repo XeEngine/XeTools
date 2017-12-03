@@ -48,7 +48,10 @@ namespace Tiled
 
         public PropertiesDictionary Properties { get; set; }
 
-        public Object() { }
+        public Object()
+        {
+            Properties = new PropertiesDictionary();
+        }
         public Object(XElement xElement)
         {
             Id = (int)xElement.Attribute("id");

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -58,9 +57,16 @@ namespace Tiled
 
         public PropertiesDictionary Properties { get; }
 
+        public string Encoding { get; set; }
+
+        public string Compression { get; set; }
+
         public uint[,] Data;
 
-        public Layer() { }
+        public Layer()
+        {
+            Properties = new PropertiesDictionary();
+        }
         public Layer(Map map, XElement xElement)
         {
             Name = xElement.Attribute("name")?.Value;
@@ -72,24 +78,28 @@ namespace Tiled
             OffsetY = (int?)xElement.Attribute("offsety") ?? 0;
             Properties = new PropertiesDictionary(xElement);
 
+            Data = new uint[Width, Height];
             var xData = _dataElement = xElement.Element("data");
-            var encoding = (string)xData.Attribute("encoding");
-
-            int width = Width, height = Height;
-            Data = new uint[width, height];
-            switch (encoding)
+            if (xData != null)
             {
-                case "base64":
-                    DecodeBase64(xData.Value, (string)xData.Attribute("compression"), Data, width, height);
-                    break;
-                case "csv":
-                    DecodeCsv(xData.Value, Data, width, height);
-                    break;
-                case null:
-                    DecodeXml(xData, Data, width, height);
-                    break;
-                default:
-                    throw new Exception($"Layer data: {encoding} encoding is not supported.");
+                Encoding = xData.Attribute("encoding")?.Value;
+                Compression = xData.Attribute("compression")?.Value;
+
+                int width = Width, height = Height;
+                switch (Encoding)
+                {
+                    case "base64":
+                        DecodeBase64(xData.Value, Compression, Data, width, height);
+                        break;
+                    case "csv":
+                        DecodeCsv(xData.Value, Data, width, height);
+                        break;
+                    case null:
+                        DecodeXml(xData, Data, width, height);
+                        break;
+                    default:
+                        throw new Exception($"Layer data: {Encoding} decoding is not supported.");
+                }
             }
         }
 
@@ -106,7 +116,33 @@ namespace Tiled
             if (Properties.Count > 0)
                 element.Add(Properties.AsNode());
 
-            element.Add(_dataElement);
+            var dataElement = new XElement("data");
+            if (!string.IsNullOrEmpty(Encoding))
+                dataElement.SetAttributeValue("encoding", Encoding);
+            if (!string.IsNullOrEmpty(Compression))
+                dataElement.SetAttributeValue("compression", Compression);
+
+            string strData;
+            switch (Encoding)
+            {
+                case "base64":
+                    strData = EncodeBase64(Compression, Data, Width, Height);
+                    break;
+                case "csv":
+                    strData = EncodeCsv(Data, Width, Height);
+                    break;
+                case null:
+                    strData = null;
+                    EncodeXml(dataElement, Data, Width, Height);
+                    break;
+                default:
+                    throw new Exception($"Layer data: {Encoding} encoding is not supported.");
+            }
+            if (strData != null)
+            {
+                dataElement.Add(strData);
+            }
+            element.Add(dataElement);
 
             return element;
         }
@@ -129,6 +165,25 @@ namespace Tiled
                 }
             }
         }
+
+        private static void EncodeXml(XElement xData, uint[,] data, int width, int height)
+        {
+            int arrayX = data.GetLength(0);
+            int arrayY = data.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    uint uid = 0;
+                    if (x < arrayX && y < arrayY)
+                        uid = data[x, y];
+                    var element = new XElement("tile");
+                    element.SetAttributeValue("gid", uid);
+                    xData.Add(element);
+                }
+            }
+        }
+
         private void DecodeCsv(string csvData, uint[,] data, int width, int height)
         {
             int x = 0, y = 0;
@@ -142,10 +197,30 @@ namespace Tiled
                 }
             }
         }
+
+        private string EncodeCsv(uint[,] data, int width, int height)
+        {
+            var strBuilder = new StringBuilder(width * height * 4);
+            int arrayX = data.GetLength(0);
+            int arrayY = data.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    uint uid = 0;
+                    if (x < arrayX && y < arrayY)
+                        uid = data[x, y];
+                    strBuilder.Append($"{uid},");
+                }
+            }
+            return strBuilder.Remove(strBuilder.Length - 1, 1).ToString();
+        }
+
         private void DecodeBase64(string base64Data, string compression, uint[,] data, int width, int height)
         {
             var rawData = Convert.FromBase64String(base64Data);
             var memoryStream = new MemoryStream(rawData);
+            ushort header;
 
             Stream uncompressedStream;
             switch (compression)
@@ -154,14 +229,14 @@ namespace Tiled
                     uncompressedStream = new GZipStream(memoryStream, CompressionMode.Decompress, false);
                     break;
                 case "zlib":
-                    memoryStream.Position = 2;
+                    header = (ushort)(memoryStream.ReadByte() | (memoryStream.ReadByte() << 8));
                     uncompressedStream = new DeflateStream(memoryStream, CompressionMode.Decompress, false);
                     break;
                 case null:
                     uncompressedStream = memoryStream;
                     break;
                 default:
-                    throw new Exception($"Layer data: {compression} compression is not supported.");
+                    throw new Exception($"Layer data: {compression} decompression is not supported.");
             }
 
             using (var reader = new BinaryReader(uncompressedStream))
@@ -176,6 +251,57 @@ namespace Tiled
                     }
                 }
             }
+        }
+
+        private string EncodeBase64(string compression, uint[,] data, int width, int height)
+        {
+            Stream stream;
+            var memStream = new MemoryStream(width * height * sizeof(uint));
+            uint? checksum = null;
+            switch (compression)
+            {
+                case "gzip":
+                    stream = new GZipStream(memStream, CompressionMode.Compress, true);
+                    break;
+                /*case "zlib":
+                    memStream.WriteByte(0x78);
+                    memStream.WriteByte(0x9C);
+                    stream = new DeflateStream(memStream, CompressionMode.Compress, true);
+                    checksum = 0;
+                    break;*/
+                case null:
+                    stream = memStream;
+                    break; 
+                default:
+                    throw new Exception($"Layer data: {compression} compression is not supported.");
+            }
+
+            int arrayX = data.GetLength(0);
+            int arrayY = data.GetLength(1);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    uint uid = 0;
+                    if (x < arrayX && y < arrayY)
+                        uid = data[x, y];
+                    stream.WriteByte((byte)((uid >> 0) & 0xFF));
+                    stream.WriteByte((byte)((uid >> 8) & 0xFF));
+                    stream.WriteByte((byte)((uid >> 16) & 0xFF));
+                    stream.WriteByte((byte)((uid >> 24) & 0xFF));
+                }
+            }
+            stream.Flush();
+            if (memStream != stream)
+                stream.Close();
+            if (checksum.HasValue)
+            {
+                memStream.WriteByte((byte)((checksum >> 0) & 0xFF));
+                memStream.WriteByte((byte)((checksum >> 8) & 0xFF));
+                memStream.WriteByte((byte)((checksum >> 16) & 0xFF));
+                memStream.WriteByte((byte)((checksum >> 24) & 0xFF));
+            }
+            return Convert.ToBase64String(memStream.GetBuffer(), 0, (int)memStream.Length);
         }
     }
 }

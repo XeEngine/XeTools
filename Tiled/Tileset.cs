@@ -83,7 +83,7 @@ namespace Tiled
         {
             var element = new XElement(ElementName);
             element.SetAttributeValue("firstgid", FirstGid);
-            if (!string.IsNullOrEmpty(Source))
+            if (string.IsNullOrEmpty(Source))
                 element = TilesetAsNode(element);
             else
                 element.SetAttributeValue("source", Source);
@@ -92,14 +92,17 @@ namespace Tiled
 
         public void SaveChanges(string basePath)
         {
-            var doc = new XDocument();
-            doc.Add(TilesetAsNode());
-            doc.Save(GetFullPath(basePath, Source));
+            if (!string.IsNullOrEmpty(Source))
+            {
+                var doc = new XDocument();
+                doc.Add(TilesetAsNode());
+                doc.Save(GetFullPath(basePath, Source));
+            }
         }
 
         private XElement TilesetAsNode(XElement element = null)
         {
-            if (element != null)
+            if (element == null)
                 element = new XElement(ElementName);
             if (!string.IsNullOrEmpty(Name)) element.SetAttributeValue("name", Name);
             if (TileWidth != 0) element.SetAttributeValue("tilewidth", TileWidth);
@@ -118,7 +121,10 @@ namespace Tiled
             if (image == null)
                 element.Add(image = new XElement("image"));
             Image = new Image(image);
-            
+
+            Name = element.Attribute("name")?.Value;
+            TileWidth = (int?)element.Attribute("tilewidth") ?? 0;
+            TileHeight = (int?)element.Attribute("tilewidth") ?? 0;
             Spacing = (int?)element.Attribute("spacing");
             Margin = (int?)element.Attribute("margin");
             TileCount = (int?)element.Attribute("tilecount") ?? 0;

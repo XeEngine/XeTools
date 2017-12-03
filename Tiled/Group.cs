@@ -38,7 +38,10 @@ namespace Tiled
 
         public List<ILayerEntry> Entries { get; set; }
 
-        public Group() { }
+        public Group()
+        {
+            Properties = new PropertiesDictionary();
+        }
         public Group(Map map, XElement xElement)
         {
             Name = xElement.Attribute("name")?.Value;
@@ -71,10 +74,10 @@ namespace Tiled
         {
             var element = new XElement(ElementName);
             element.SetAttributeValue("name", Name);
-            element.SetAttributeValue("offsetx", OffsetX);
-            element.SetAttributeValue("offsety", OffsetY);
-            element.SetAttributeValue("opacity", Opacity);
-            element.SetAttributeValue("visible", Visible ? 1 : 0);
+            if (OffsetX != 0) element.SetAttributeValue("offsetx", OffsetX);
+            if (OffsetY != 0) element.SetAttributeValue("offsety", OffsetY);
+            if (Opacity != 1.0) element.SetAttributeValue("opacity", Opacity);
+            if (Visible != true) element.SetAttributeValue("visible", Visible ? 1 : 0);
 
             if (Properties.Count > 0)
                 element.Add(Properties.AsNode());

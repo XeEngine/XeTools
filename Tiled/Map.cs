@@ -83,7 +83,10 @@ namespace Tiled
         public List<ILayerEntry> Entries { get; set; }
 
 
-        public Map() { }
+        public Map()
+        {
+            Properties = new PropertiesDictionary();
+        }
         public Map(string fileName)
         {
             FileName = fileName;
@@ -142,7 +145,7 @@ namespace Tiled
 
         private XElement AsNode(XElement element = null)
         {
-            if (element != null)
+            if (element == null)
                 element = new XElement(ElementName);
 
             element.SetAttributeValue("version", FormatVersion.ToString());
@@ -156,7 +159,7 @@ namespace Tiled
             element.SetAttributeValue("tilewidth", TileWidth);
             element.SetAttributeValue("tileheight", TileHeight);
             if (BackgroundColor.HasValue)
-                element.SetAttributeValue("backgroundcolor", $"#{BackgroundColor.Value.AsString()}");
+                element.SetAttributeValue("backgroundcolor", $"{BackgroundColor.Value.AsString()}");
             element.SetAttributeValue("nextobjectid", NextObjectId);
             
             if (Properties.Count > 0)

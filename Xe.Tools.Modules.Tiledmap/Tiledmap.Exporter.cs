@@ -64,7 +64,7 @@ namespace Xe.Tools.Modules
         {
             int remainingData = -(int)(w.BaseStream.Position - ((w.BaseStream.Position + align - 1) / align) * align);
             while (remainingData-- > 0)
-                w.Write((byte)fill);
+                w.Write(fill);
         }
     }
 }

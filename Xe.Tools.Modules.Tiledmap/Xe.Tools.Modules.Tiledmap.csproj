@@ -73,7 +73,7 @@
       <Name>Xe.Tools.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
+      <Project>{1936CEBA-B05F-4A04-BB47-299D8201EC63}</Project>
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>
