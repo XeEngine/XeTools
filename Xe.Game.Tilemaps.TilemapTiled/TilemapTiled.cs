@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace Xe.Game.Tilemaps
 {
-    public static class TilemapTiled
+    public class TilemapTiled
     {
         private class Ext
         {
@@ -15,15 +15,17 @@ namespace Xe.Game.Tilemaps
                 = new List<LayerDefinition>();
         }
 
-        public static Map Open(Tiled.Map tiledMap)
+        public Action<Tiled.Object, IObjectExtension> OnLoadObjectExtension { get; set; }
+
+        public Map Open(Tiled.Map tiledMap)
         {
             return Map(tiledMap);
         }
-        public static Map Open(string tiledFileName)
+        public Map Open(string tiledFileName)
         {
             return Map(new Tiled.Map(tiledFileName));
         }
-        public static Tiled.Map Save(Map map, Tiled.Map tiledMap)
+        public Tiled.Map Save(Map map, Tiled.Map tiledMap)
         {
             var r = Map(map, tiledMap);
             r.Save(tiledMap.FileName);
@@ -66,7 +68,7 @@ namespace Xe.Game.Tilemaps
             }
             return dst;
         }
-        private static Tiled.Map Map(Map src, Tiled.Map dst = null)
+        private Tiled.Map Map(Map src, Tiled.Map dst = null)
         {
             var basePath = Path.GetDirectoryName(src.FileName);
             if (dst == null) dst = new Tiled.Map();
@@ -102,7 +104,7 @@ namespace Xe.Game.Tilemaps
             if (src is Tiled.ObjectGroup objGroup) return Map(objGroup);
             return null;
         }
-        public static Tiled.ILayerEntry Map(LayerBase src)
+        public Tiled.ILayerEntry Map(LayerBase src)
         {
             if (src is LayersGroup group) return Map(group);
             if (src is LayerTilemap layer) return Map(layer);
@@ -198,7 +200,7 @@ namespace Xe.Game.Tilemaps
             dst.Layers = src.Entries.Select(x => Map(x)).Where(x => x != null).ToList();
             return dst;
         }
-        public static Tiled.Group Map(LayersGroup src, Tiled.Group dst = null)
+        public Tiled.Group Map(LayersGroup src, Tiled.Group dst = null)
         {
             if (dst == null) dst = new Tiled.Group();
             dst.Name = src.Name;
@@ -218,7 +220,7 @@ namespace Xe.Game.Tilemaps
             dst.Objects = src.Objects.Select(x => Map(x)).ToList();
             return dst;
         }
-        public static Tiled.ObjectGroup Map(LayerObjects src, Tiled.ObjectGroup dst = null)
+        public Tiled.ObjectGroup Map(LayerObjects src, Tiled.ObjectGroup dst = null)
         {
             if (dst == null) dst = new Tiled.ObjectGroup();
             dst.Name = src.Name;
@@ -251,7 +253,7 @@ namespace Xe.Game.Tilemaps
             dst.Flip = GetPropertyValue(src.Properties, Flip.None, nameof(ObjectEntry.Flip));
             return dst;
         }
-        public static Tiled.Object Map(ObjectEntry src, Tiled.Object dst = null)
+        public Tiled.Object Map(ObjectEntry src, Tiled.Object dst = null)
         {
             if (dst == null) dst = new Tiled.Object();
             // Basic properties
@@ -262,6 +264,7 @@ namespace Xe.Game.Tilemaps
             dst.Properties[nameof(ObjectEntry.AnimationName)] = src.AnimationName;
             dst.Visible = src.Visible;
             dst.Properties[nameof(ObjectEntry.HasShadow)] = src.HasShadow;
+            dst.Properties[nameof(ObjectEntry.Direction)] = src.Direction;
             // Layout
             dst.X = src.X;
             dst.Y = src.Y;
@@ -269,6 +272,7 @@ namespace Xe.Game.Tilemaps
             dst.Width = src.Width;
             dst.Height = src.Height;
             dst.Properties[nameof(ObjectEntry.Flip)] = src.Flip;
+            //OnLoadObjectExtension?.Invoke()
             return dst;
         }
         #endregion

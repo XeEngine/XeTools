@@ -25,7 +25,7 @@ namespace Xe.Tools.Components.MapEditor.Services
 
         public static Map Open(string fileName)
         {
-            return TilemapTiled.Open(fileName);
+            return new TilemapTiled().Open(fileName);
         }
 
         public static string GetLayerName(int index)

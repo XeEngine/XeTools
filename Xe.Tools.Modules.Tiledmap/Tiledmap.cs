@@ -14,7 +14,7 @@ namespace Xe.Tools.Modules
         
         public override bool OpenFileData(string fileName)
         {
-            _tiledmap = TilemapTiled.Open(fileName);
+            _tiledmap = new TilemapTiled().Open(fileName);
             return true;
         }
         public override bool OpenFileData(FileStream stream) { return true; }

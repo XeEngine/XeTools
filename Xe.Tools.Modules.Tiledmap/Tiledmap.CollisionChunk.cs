@@ -18,19 +18,20 @@ namespace Xe.Tools.Modules
 
         private static string WriteCollisionChunk(Map tileMap, BinaryWriter w)
         {
-            return WriteGenericChunk(tileMap, w, "collision", LayerProcessingMode.Collision) ?
+            return WriteGenericChunk(tileMap, w, "collision", LayerProcessingMode.Collision, 0) ?
                 "COL\x01" : null;
         }
 
         private static string WritePriorityChunk(Map tileMap, BinaryWriter w)
         {
-            return WriteGenericChunk(tileMap, w, "zdepth", LayerProcessingMode.Depth) ?
+            return WriteGenericChunk(tileMap, w, "zdepth", LayerProcessingMode.Depth, 0x80) ?
                 "PRZ\x01" : null;
         }
 
         private static bool WriteGenericChunk(Map tileMap,
             BinaryWriter w, string tilesetName,
-            LayerProcessingMode processingMode)
+            LayerProcessingMode processingMode,
+            byte defaultValue = 0)
         {
             var layers = tileMap.Layers
                 .FlatterLayers<LayerTilemap>()
@@ -67,6 +68,8 @@ namespace Xe.Tools.Modules
                 w.Write((byte)0);
                 w.Write((byte)0);
                 layer.Data = new byte[layer.Width * layer.Height];
+                for (int i = 0; i < layer.Data.Length; i++)
+                    layer.Data[i] = defaultValue;
                 foreach (var collisionLayer in layer.Sublayers)
                 {
                     int width = collisionLayer.Width;
@@ -77,9 +80,7 @@ namespace Xe.Tools.Modules
                         for (int x = 0; x < width; x++)
                         {
                             var data = collisionLayer.Tiles[x, y].Index - id;
-                            if (data < 0)
-                                data = 0;
-                            layer.Data[index++] = (byte)data;
+                            layer.Data[index++] = (byte)Math.Max(0, data);
                         }
                     }
                 }

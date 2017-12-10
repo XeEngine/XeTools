@@ -71,7 +71,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             {
                 _file = file;
                 _tiledMap = new Tiled.Map(fileName);
-                TileMap = TilemapTiled.Open(_tiledMap);
+                TileMap = new TilemapTiled().Open(_tiledMap);
                 return true;
             }
             return false;
@@ -79,7 +79,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public void Save()
         {
-            TilemapTiled.Save(TileMap, _tiledMap).Save(_file.FullPath);
+            new TilemapTiled().Save(TileMap, _tiledMap).Save(_file.FullPath);
         }
         
 #if DEBUG

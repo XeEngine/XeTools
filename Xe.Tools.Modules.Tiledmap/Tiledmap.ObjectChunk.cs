@@ -32,41 +32,43 @@ namespace Xe.Tools.Modules
                 var o = entry.Object;
 
                 int flags = 0;
-                AddFlag(flags, 0, o.Visible);
-                AddFlag(flags, 1, o.HasShadow);
-                AddFlag(flags, 2, (int)o.Flip);
-                AddFlag(flags, 4, (int)o.Direction);
+                flags = AddFlag(flags, 0, o.Visible);
+                flags = AddFlag(flags, 1, o.HasShadow);
+                flags = AddFlag(flags, 2, (int)o.Flip);
+                flags = AddFlag(flags, 4, (int)o.Direction);
 
                 w.Write(Crc32.CalculateDigestAscii(o.Name));
                 w.Write(Crc32.CalculateDigestAscii(o.Type));
+                w.Write((uint)CheckEntry(animDictionary, o.AnimationData)); // To replace with Crc32 in future
+                w.Write(Crc32.CalculateDigestAscii(o.AnimationName));
                 w.Write((short)o.X);
                 w.Write((short)o.Y);
                 w.Write((short)o.Z);
-                w.Write((short)0); // RESERVED
+                w.Write((byte)0); // depth
+                w.Write((byte)entry.Layer.Priority);
                 w.Write((short)o.Width);
                 w.Write((short)o.Height);
-                w.Write((byte)0); // depth
                 w.Write((byte)flags);
-                w.Write((byte)entry.Layer.Priority);
-                w.Write((byte)0); // RESERVED
-
-                w.Write((uint)CheckEntry(animDictionary, o.AnimationData)); // To replace with Crc32
-                w.Write(Crc32.CalculateDigestAscii(o.AnimationName));
+                w.Write((byte)0);
+                w.Write((byte)0); // Extension ID
+                w.Write((byte)0); // Extension length
             }
 
             // Write animation names
             var animationNames = animDictionary
                 .OrderBy(x => x.Value)
-                .Select(x => new
+                .Select(x =>
                 {
-                    Name = x.Key,
-                    Data = System.Text.Encoding.UTF8.GetBytes(x.Key)
-                })
-                .Select(x => new
-                {
-                    Name = x.Name,
-                    Data = x.Data,
-                    Length = x.Data.Length
+                    var str = x.Key;
+                    if (Path.GetExtension(str) == ".json")
+                        str = str.Substring(0, str.IndexOf(".json"));
+                    var data = System.Text.Encoding.UTF8.GetBytes(str);
+                    return new
+                    {
+                        Name = str,
+                        Data = data,
+                        Length = data.Length
+                    };
                 });
             var animationNamesLength = animationNames.Sum(x => x.Length + 1);
             w.Write((ushort)animDictionary.Count);
@@ -87,7 +89,7 @@ namespace Xe.Tools.Modules
                 return -1;
             if (dictionary.TryGetValue(key, out var value))
                 return value;
-            value = dictionary.Count + 1;
+            value = dictionary.Count;
             dictionary.Add(key, value);
             return value;
         }
@@ -97,7 +99,7 @@ namespace Xe.Tools.Modules
         }
         private static int AddFlag(int data, int shift, int value)
         {
-            return data |= (1 << shift);
+            return data |= (value << shift);
         }
     }
 }

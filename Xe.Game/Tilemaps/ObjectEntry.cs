@@ -1,5 +1,16 @@
-﻿namespace Xe.Game.Tilemaps
+﻿using System.IO;
+
+namespace Xe.Game.Tilemaps
 {
+    public interface IObjectExtension
+    {
+        int GetId();
+
+        int GetLength();
+
+        void Write(BinaryWriter writer);
+    }
+
     public class ObjectEntry
     {
         #region Properties
@@ -7,6 +18,8 @@
         public string Name { get; set; }
 
         public string Type { get; set; }
+
+        public IObjectExtension Extension { get; set; }
 
         #endregion
 

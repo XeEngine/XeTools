@@ -205,7 +205,8 @@ namespace Xe.Tools.Modules
             w.Write((byte)0);
             w.Write((byte)0);
             w.Write((byte)0);
-            w.Write((uint)0);
+            w.Write((ushort)(tileMap.Size.Width));
+            w.Write((ushort)(tileMap.Size.Height));
             foreach (var layer in layers)
             {
                 w.Write((short)layer.MapWidth);
