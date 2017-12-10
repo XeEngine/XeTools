@@ -14,9 +14,9 @@
         <TextBox Margin="0 0 0 5" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Text="Priority"/>
-        <ComboBox Margin="0 0 0 5"
+        <ComboBox Margin="0 0 0 5" DisplayMemberPath="Name" SelectedValuePath="Id"
                   ItemsSource="{Binding Mode=OneTime, Source={x:Static services:TilemapService.LayerNames}}"
-                  SelectedIndex="{Binding Priority, Mode=TwoWay}"/>
+                  SelectedValue="{Binding DefinitionId, Mode=TwoWay}"/>
 
         <TextBlock Text="Processing mode"/>
         <ComboBox Margin="0 0 0 5" SelectedIndex="{Binding ProcessingMode, Mode=TwoWay}">

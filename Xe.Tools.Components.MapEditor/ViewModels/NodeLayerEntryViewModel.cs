@@ -23,7 +23,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 _layerEntry = value;
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsVisible));
-                OnPropertyChanged(nameof(Priority));
+                OnPropertyChanged(nameof(DefinitionId));
             }
         }
 
@@ -37,12 +37,12 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public int Priority
+        public Guid DefinitionId
         {
-            get => LayerEntry.Priority;
+            get => LayerEntry.DefinitionId;
             set
             {
-                LayerEntry.Priority = value;
+                LayerEntry.DefinitionId = value;
                 MainWindow.IsRedrawingNeeded = true;
                 OnPropertyChanged();
             }

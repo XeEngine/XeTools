@@ -72,6 +72,19 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 _file = file;
                 _tiledMap = new Tiled.Map(fileName);
                 TileMap = new TilemapTiled().Open(_tiledMap);
+                if (TileMap.LayersDefinition == null)
+                {
+                    TileMap.LayersDefinition =
+                        TilemapService.LayerNames
+                        .OrderBy(x => x.Order)
+                        .Select(x => new LayerDefinition()
+                        {
+                            Id = x.Id,
+                            Name = x.Name
+                        }).ToList();
+                }
+                foreach (var layer in TileMap.Layers.FlatterLayers())
+                    layer.DefinitionId = layer.DefinitionId;
                 return true;
             }
             return false;

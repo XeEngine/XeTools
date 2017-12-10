@@ -1,7 +1,9 @@
-﻿namespace Xe.Game.Tilemaps
+﻿using System;
+
+namespace Xe.Game.Tilemaps
 {
     public class LayerEntry : LayerBase
     {
-        public int Priority { get; set; }
+        public Guid DefinitionId { get; set; }
     }
 }

@@ -67,8 +67,9 @@ namespace Xe.Tools.Tilemap
         {
             foreach (var priority in Map.Layers
                 .FlatterLayers()
-                .GroupBy(l => l.Priority)
-                .OrderBy(l => l.Key))
+                .GroupBy(l => l.DefinitionId)
+                .OrderBy(l => TilemapSettings.LayerNames.
+                    FirstOrDefault(x => x.Id == l.Key)?.Order ?? -1))
             {
                 foreach (var layer in priority)
                 {

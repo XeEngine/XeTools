@@ -54,14 +54,12 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         private void ReorderLayers()
         {
-            const int LayersCount = 11;
-
             Childs.Clear();
             switch (_nodeOrderMode)
             {
                 case NodeOrderMode.GroupByPriority:
-                    for (int i = 0; i < LayersCount; i++)
-                        Childs.Add(new NodeLayerViewModel(MainWindow, TileMap.Layers.FlatterLayers(), LayersCount - i - 1));
+                    foreach (var layerDef in (TileMap.LayersDefinition as IEnumerable<LayerDefinition>).Reverse())
+                        Childs.Add(new NodeLayerViewModel(MainWindow, TileMap.Layers.FlatterLayers(), layerDef));
                     break;
                 case NodeOrderMode.OriginalOrder:
                     foreach (var layer in GetLayers(MainWindow, TileMap.Layers))

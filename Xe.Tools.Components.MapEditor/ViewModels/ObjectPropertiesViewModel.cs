@@ -24,7 +24,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(Type));
                 OnPropertyChanged(nameof(AnimationData));
-                OnPropertyChanged(nameof(AnimationData));
+                OnPropertyChanged(nameof(AnimationName));
                 OnPropertyChanged(nameof(Orientation));
                 OnPropertyChanged(nameof(IsVisible));
                 OnPropertyChanged(nameof(HasShadow));

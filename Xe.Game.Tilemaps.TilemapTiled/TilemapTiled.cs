@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -61,7 +62,8 @@ namespace Xe.Game.Tilemaps
                         {
                             var strContent = reader.ReadToEnd();
                             var ext = JsonConvert.DeserializeObject<Ext>(strContent);
-                            dst.LayersDefinition = ext.LayersDefinition;
+                            if (ext != null)
+                                dst.LayersDefinition = ext.LayersDefinition;
                         }
                     }
                 }
@@ -82,6 +84,7 @@ namespace Xe.Game.Tilemaps
             dst.Entries = src.Layers.Select(x => Map(x)).ToList();
 
             var extFileName = $"{Path.GetFileNameWithoutExtension(src.FileName)}.ext.json";
+            SetPropertyValue(dst.Properties, new Uri(extFileName, UriKind.Relative), "Extension");
             var fileName = Path.Combine(Path.GetDirectoryName(src.FileName), extFileName);
             using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
@@ -90,7 +93,7 @@ namespace Xe.Game.Tilemaps
                     writer.Write(JsonConvert.SerializeObject(new Ext()
                     {
                         LayersDefinition = src.LayersDefinition
-                    }));
+                    }, Formatting.Indented));
                 }
             }
             return dst;
@@ -143,7 +146,7 @@ namespace Xe.Game.Tilemaps
             dst.Name = src.Name;
             dst.Visible = src.Visible;
             dst.Opacity = src.Opacity;
-            dst.Priority = GetPropertyValue(src.Properties, 0, nameof(LayerTilemap.Priority));
+            dst.DefinitionId = GetPropertyValue(src.Properties, default(Guid), nameof(LayerTilemap.DefinitionId));
             dst.ProcessingMode = GetPropertyValue(src.Properties, LayerProcessingMode.Tilemap,
                 nameof(LayerTilemap.ProcessingMode));
             dst.Tiles = new Tile[src.Data.GetLength(0), src.Data.GetLength(1)];
@@ -168,7 +171,7 @@ namespace Xe.Game.Tilemaps
             if (dst == null) dst = new Tiled.Layer();
             dst.Name = src.Name;
             dst.Visible = src.Visible;
-            dst.Properties[nameof(LayerTilemap.Priority)] = src.Priority;
+            dst.Properties[nameof(LayerTilemap.DefinitionId)] = src.DefinitionId;
             dst.Opacity = src.Opacity;
             dst.Properties[nameof(LayerTilemap.ProcessingMode)] = src.ProcessingMode;
             dst.Width = src.Width;
@@ -216,7 +219,7 @@ namespace Xe.Game.Tilemaps
             if (dst == null) dst = new LayerObjects();
             dst.Name = src.Name;
             dst.Visible = src.Visible;
-            dst.Priority = GetPropertyValue(src.Properties, 0, nameof(LayerObjects.Priority));
+            dst.DefinitionId = GetPropertyValue(src.Properties, default(Guid), nameof(LayerTilemap.DefinitionId));
             dst.Objects = src.Objects.Select(x => Map(x)).ToList();
             return dst;
         }
@@ -226,7 +229,7 @@ namespace Xe.Game.Tilemaps
             dst.Name = src.Name;
             dst.Visible = src.Visible;
             dst.Opacity = 1.0;
-            dst.Properties[nameof(LayerObjects.Priority)] = src.Priority;
+            dst.Properties[nameof(LayerTilemap.DefinitionId)] = src.DefinitionId;
             dst.Objects = src.Objects.Select(x => Map(x)).ToList();
             return dst;
         }
@@ -305,7 +308,8 @@ namespace Xe.Game.Tilemaps
                         }
                         return (T)(object)Convert.ToInt32(value);
                     }
-                    result = (T)Convert.ChangeType(value, type, null);
+                    //result = (T)Convert.ChangeType(value, type, null);
+                    result = (T)TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value.ToString());
                 }
                 catch
                 {
@@ -328,10 +332,11 @@ namespace Xe.Game.Tilemaps
         }
 
         private static void SetPropertyValue<T>(Tiled.PropertiesDictionary properties, T value, [CallerMemberName] string key = null)
+            where T : class
         {
             if (properties != null)
             {
-                properties[key] = value?.ToString();
+                properties[key] = value;
             }
         }
 

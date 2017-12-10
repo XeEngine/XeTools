@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Xe.Game.Tilemaps
 {
@@ -39,6 +39,13 @@ namespace Xe.Game.Tilemaps
                 }
             }
             return list;
+        }
+
+        public static int GetPriority(this LayerEntry layerEntry)
+        {
+            return TilemapSettings.LayerNames
+                .FirstOrDefault(x => x.Id == layerEntry.DefinitionId)?
+                .Order ?? 0;
         }
     }
 }

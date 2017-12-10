@@ -17,13 +17,15 @@ namespace Xe.Tools.Modules
         {
             public Map TileMap { get; set; }
 
-            public int Priority { get; set; }
-
             public List<LayerTilemap> Sublayers { get; set; }
 
             public int MapWidth { get; set; }
 
             public int MapHeight { get; set; }
+
+            public LayerDefinition Definition { get; set; }
+
+            public LayerName Name { get; set; }
 
             public ISurface Surface { get; set; }
 
@@ -144,20 +146,37 @@ namespace Xe.Tools.Modules
 
         private string WriteTilemapChunk(Map tileMap, BinaryWriter w)
         {
+            // LayersDefinition is a strict requirement.
+            if (tileMap.LayersDefinition == null)
+                return null;
+
             var layers = tileMap.Layers
                 .FlatterLayers<LayerTilemap>()
                 .Where(x => x.ProcessingMode == LayerProcessingMode.Tilemap)
                 .Where(x => x.Visible)
-                .GroupBy(x => x.Priority)
-                .Select(x => new LayerEntry
-                {
-                    TileMap = tileMap,
-                    Priority = x.Key,
-                    Sublayers = x.Where(layer => layer.Visible).ToList(),
-                    Surface = null,
-                    TilemapStream = null
-                })
-                .OrderBy(x => x.Priority)
+                .GroupBy(x => x.DefinitionId)
+                .Join(tileMap.LayersDefinition,
+                    group => group.Key,
+                    definition => definition.Id,
+                    (group, definition) => new
+                    {
+                        Group = group,
+                        Definition = definition,
+                    })
+                .Join(TilemapSettings.LayerNames,
+                    l => l.Definition.Id,
+                    name => name.Id,
+                    (layer, name) => new LayerEntry
+                    {
+                        TileMap = tileMap,
+                        Sublayers = layer.Group.Where(x => x.Visible).ToList(),
+                        Definition = layer.Definition,
+                        Name = name,
+                        Surface = null,
+                        TilemapStream = null
+                    })
+                .Where(x => x.Definition.IsEnabled)
+                .OrderBy(x => x.Name.Order)
                 .ToList();
 
             using (var drawing = Factory.Resolve<IDrawing>())
@@ -202,19 +221,25 @@ namespace Xe.Tools.Modules
             // Header writing
             var totalSize = layers.Sum(x => x.TilemapStream.Length);
             w.Write((byte)layers.Count);
-            w.Write((byte)0);
-            w.Write((byte)0);
-            w.Write((byte)0);
+            w.Write(tileMap.BackgroundColor?.R ?? 0xFF);
+            w.Write(tileMap.BackgroundColor?.G ?? 0x00);
+            w.Write(tileMap.BackgroundColor?.B ?? 0xFF);
             w.Write((ushort)(tileMap.Size.Width));
             w.Write((ushort)(tileMap.Size.Height));
             foreach (var layer in layers)
             {
                 w.Write((short)layer.MapWidth);
                 w.Write((short)layer.MapHeight);
-                w.Write((byte)layer.Priority);
-                w.Write((byte)0);
-                w.Write((byte)0);
-                w.Write((byte)0);
+                w.Write((byte)layer.Name.Order);
+                w.Write((byte)0); // RESERVED
+                w.Write((byte)0); // RESERVED
+                w.Write((byte)0); // RESERVED
+                w.Write((uint)0); // RESERVED
+                w.Write((uint)0); // RESERVED
+                w.Write(layer.Definition.ParallaxHorizontalMultiplier);
+                w.Write(layer.Definition.ParallaxVerticalMultiplier);
+                w.Write(layer.Definition.ParallaxHorizontalSpeed);
+                w.Write(layer.Definition.ParallaxVerticalSpeed);
                 layer.TilemapStream.Position = 0;
                 layer.TilemapStream.CopyTo(w.BaseStream);
             }
@@ -254,5 +279,6 @@ namespace Xe.Tools.Modules
                 }
             }
         }
+
     }
 }

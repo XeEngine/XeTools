@@ -37,14 +37,17 @@ namespace Xe.Tools.Modules
                 .FlatterLayers<LayerTilemap>()
                 .Where(x => x.ProcessingMode == processingMode)
                 .Where(x => x.Visible)
-                .GroupBy(x => x.Priority)
-                .Select(x => new DataLayer
-                {
-                    Priority = x.Key,
-                    Width = x.Max(l => l.Width),
-                    Height = x.Max(l => l.Height),
-                    Sublayers = x.ToList()
-                })
+                .GroupBy(x => x.DefinitionId)
+                .Join(TilemapSettings.LayerNames,
+                    x => x.Key,
+                    x => x.Id,
+                    (layer, def) => new DataLayer
+                    {
+                        Priority = def.Order,
+                        Width = layer.Max(l => l.Width),
+                        Height = layer.Max(l => l.Height),
+                        Sublayers = layer.ToList()
+                    })
                 .OrderBy(x => x.Priority)
                 .ToList();
             if (layers.Count == 0)

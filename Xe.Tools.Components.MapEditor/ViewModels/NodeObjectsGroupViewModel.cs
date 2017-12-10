@@ -22,12 +22,12 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public int Priority
+        public Guid DefinitionId
         {
-            get => _objects.Priority;
+            get => _objects.DefinitionId;
             set
             {
-                _objects.Priority = value;
+                _objects.DefinitionId = value;
                 MainWindow.IsRedrawingNeeded = true;
                 OnPropertyChanged();
             }

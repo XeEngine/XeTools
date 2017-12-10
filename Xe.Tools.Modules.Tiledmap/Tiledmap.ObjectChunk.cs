@@ -41,11 +41,11 @@ namespace Xe.Tools.Modules
                 w.Write(Crc32.CalculateDigestAscii(o.Type));
                 w.Write((uint)CheckEntry(animDictionary, o.AnimationData)); // To replace with Crc32 in future
                 w.Write(Crc32.CalculateDigestAscii(o.AnimationName));
-                w.Write((short)o.X);
-                w.Write((short)o.Y);
+                w.Write((short)(o.X + o.Width / 2));
+                w.Write((short)(o.Y + o.Height / 2));
                 w.Write((short)o.Z);
                 w.Write((byte)0); // depth
-                w.Write((byte)entry.Layer.Priority);
+                w.Write((byte)entry.Layer.GetPriority());
                 w.Write((short)o.Width);
                 w.Write((short)o.Height);
                 w.Write((byte)flags);

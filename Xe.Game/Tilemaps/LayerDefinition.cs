@@ -11,28 +11,32 @@ namespace Xe.Game.Tilemaps
         SimpleParallax,
         HorizontalParallax,
         VerticalParallax,
-        Mode7,
         Shadow,
+        Custom5,
+        Custom6,
+        Mode7
     }
 
     public class LayerDefinition
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = "unknown";
 
-        public bool Visible { get; set; }
+        public bool IsVisible { get; set; } = true;
 
-        public Color Color { get; set; }
+        public bool IsEnabled { get; set; } = true;
 
-        public float HorizontalCameraMultiplier { get; set; }
+        public Color Color { get; set; } = Color.White;
 
-        public float VerticalCameraMultiplier { get; set; }
+        public float ParallaxHorizontalMultiplier { get; set; } = 1.0f;
 
-        public float HorizontalCameraSpeed { get; set; }
+        public float ParallaxVerticalMultiplier { get; set; } = 1.0f;
 
-        public float VerticalCameraSpeed { get; set; }
+        public float ParallaxHorizontalSpeed { get; set; } = 0.0f;
 
-        public LayerRenderingMode RenderingMode { get; set; }
+        public float ParallaxVerticalSpeed { get; set; } = 0.0f;
+
+        public LayerRenderingMode RenderingMode { get; set; } = LayerRenderingMode.Default;
     }
 }

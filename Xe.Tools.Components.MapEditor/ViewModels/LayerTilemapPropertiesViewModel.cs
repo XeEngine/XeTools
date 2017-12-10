@@ -1,5 +1,7 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using Xe.Game.Tilemaps;
+using Xe.Tools.Components.MapEditor.Services;
 using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
@@ -17,7 +19,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 _layerTilemap = value;
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsVisible));
-                OnPropertyChanged(nameof(Priority));
+                OnPropertyChanged(nameof(DefinitionId));
                 OnPropertyChanged(nameof(Opacity));
                 OnPropertyChanged(nameof(MultiplyColor));
                 OnPropertyChanged(nameof(MultiplyColorBrush));
@@ -51,12 +53,12 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
-        public int Priority
+        public Guid DefinitionId
         {
-            get => _layerTilemap?.Priority ?? int.MinValue;
+            get => _layerTilemap?.DefinitionId ?? default(Guid);
             set
             {
-                _layerTilemap.Priority = value;
+                _layerTilemap.DefinitionId = value;
                 _vm.IsRedrawingNeeded = true;
                 OnPropertyChanged();
             }

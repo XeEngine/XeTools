@@ -93,7 +93,7 @@ namespace Tiled
                 else if (property.Value is Uri uri)
                 {
                     type = "file";
-                    value = uri.LocalPath;
+                    value = uri.OriginalString;
                 }
 
                 if (type != null)

@@ -4,6 +4,7 @@ using System.Linq;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Wpf;
 using Xe.Tools.Components.MapEditor.Services;
+using System;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
@@ -36,24 +37,91 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
     public class NodeLayerViewModel : NodeBaseViewModel
     {
-        public override string Name => TilemapService.GetLayerName(Priority);
+        private LayerDefinition _layerDef;
 
-        public int Priority { get; }
+        public override string Name
+        {
+            get => TilemapSettings.LayerNames
+                .FirstOrDefault(x => x.Id == _layerDef.Id)?
+                .Name ?? "<unknown>";
+        }
+
+        public bool IsVisible
+        {
+            get => _layerDef.IsVisible;
+            set => _layerDef.IsVisible = value;
+        }
+
+        public bool IsEnabled
+        {
+            get => _layerDef.IsEnabled;
+            set => _layerDef.IsEnabled = value;
+        }
+
+        public int RenderingMode
+        {
+            get => (int)_layerDef.RenderingMode;
+            set
+            {
+                _layerDef.RenderingMode = (LayerRenderingMode)value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float ParallaxHorizontalMultiplier
+        {
+            get => _layerDef.ParallaxHorizontalMultiplier;
+            set
+            {
+                _layerDef.ParallaxHorizontalMultiplier = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float ParallaxVerticalMultiplier
+        {
+            get => _layerDef.ParallaxVerticalMultiplier;
+            set
+            {
+                _layerDef.ParallaxVerticalMultiplier = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float ParallaxHorizontalSpeed
+        {
+            get => _layerDef.ParallaxHorizontalSpeed;
+            set
+            {
+                _layerDef.ParallaxHorizontalSpeed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float ParallaxVerticalSpeed
+        {
+            get => _layerDef.ParallaxVerticalSpeed;
+            set
+            {
+                _layerDef.ParallaxVerticalSpeed = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<NodeBaseViewModel> Childs { get; set; }
 
         public NodeLayerViewModel(MainWindowViewModel vm,
-            IEnumerable<LayerEntry> layers, int priority) :
+            IEnumerable<LayerEntry> layers, LayerDefinition layerDef) :
             base(vm)
         {
-            Priority = priority;
+            _layerDef = layerDef;
             Childs = new ObservableCollection<NodeBaseViewModel>(
                 layers.Where(x =>
                 {
                     if (x is LayerTilemap layerTilemap)
-                        return layerTilemap.Priority == priority;
+                        return layerTilemap.DefinitionId == _layerDef.Id;
                     if (x is LayerObjects objectsGroup)
-                        return objectsGroup.Priority == priority;
+                        return objectsGroup.DefinitionId == _layerDef.Id;
                     return false;
                 })
                 .Select(x =>
