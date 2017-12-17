@@ -54,11 +54,10 @@ namespace Xe.Tools.Tilemap
 
         public void DrawBackground(RectangleF rect)
         {
-            var backColor = Map.BackgroundColor;
+            var backColor = Map.BackgroundColor ?? System.Drawing.Color.Fuchsia;
             if (backColor != null)
             {
-                var backColorValue = backColor.Value;
-                var color = System.Drawing.Color.FromArgb(backColorValue.A, backColorValue.R, backColorValue.G, backColorValue.B);
+                var color = System.Drawing.Color.FromArgb(backColor.A, backColor.R, backColor.G, backColor.B);
                 Drawing.Clear(color);
             }
         }

@@ -17,7 +17,7 @@ namespace Xe.Drawing
     using System;
     using System.Runtime.InteropServices;
 
-    public partial class DrawingDirectX
+    public partial class DrawingDirect2D
     {
         public class MappedResource : IMappedResource
         {
@@ -46,7 +46,7 @@ namespace Xe.Drawing
 
         public class CSurface : ISurface
         {
-            private DrawingDirectX _drawing;
+            private DrawingDirect2D _drawing;
             private d2.Bitmap1 _bitmap;
             private PixelFormat _pixelFormat;
 
@@ -86,7 +86,7 @@ namespace Xe.Drawing
                 _bitmap.Dispose();
             }
 
-            internal CSurface(DrawingDirectX drawing, d2.Bitmap1 bitmap)
+            internal CSurface(DrawingDirect2D drawing, d2.Bitmap1 bitmap)
             {
                 _drawing = drawing;
                 _bitmap = bitmap;
@@ -94,13 +94,25 @@ namespace Xe.Drawing
             }
         }
 
-        public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat)
+        public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat, SurfaceType type)
         {
-            return CreateSurface(width, height, d2.BitmapOptions.Target);
-        }
-        internal CSurface CreateSurfaceAsRenderTarget(int width, int height)
-        {
-            return CreateSurface(width, height, d2.BitmapOptions.Target | d2.BitmapOptions.CannotDraw) as CSurface;
+            d2.BitmapOptions options;
+            switch (type)
+            {
+                case SurfaceType.Input:
+                    options = d2.BitmapOptions.None;
+                    break;
+                case SurfaceType.Output:
+                    options = d2.BitmapOptions.Target | d2.BitmapOptions.CannotDraw;
+                    break;
+                case SurfaceType.InputOutput:
+                    options = d2.BitmapOptions.Target | d2.BitmapOptions.CannotDraw;
+                    break;
+                default:
+                    options = d2.BitmapOptions.Target;
+                    break;
+            }
+            return CreateSurface(width, height, options);
         }
 
         public override ISurface CreateSurface(string filename, Color[] filterColors)

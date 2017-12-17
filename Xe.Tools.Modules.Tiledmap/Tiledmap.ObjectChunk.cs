@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xe.Game.Tilemaps;
@@ -8,8 +9,11 @@ namespace Xe.Tools.Modules
 {
     public partial class Tiledmap
     {
-        private static string WriteObjectsChunk(Map tileMap, BinaryWriter w)
+        private const int Alignment = 8;
+
+        private string WriteObjectsChunk(Map tileMap, BinaryWriter w)
         {
+            var extBuffer = new MemoryStream(256);
             var animDictionary = new Dictionary<string, int>();
 
             var objects = tileMap.Layers
@@ -50,8 +54,27 @@ namespace Xe.Tools.Modules
                 w.Write((short)o.Height);
                 w.Write((byte)flags);
                 w.Write((byte)0);
-                w.Write((byte)0); // Extension ID
-                w.Write((byte)0); // Extension length
+
+                var extensionId = o.Extension != null ? IndexOf(ObjectExtensionDefinitions, o.Extension.Id) : 0;
+                if (extensionId > 0)
+                {
+                    extBuffer.SetLength(0);
+                    o.Extension.Write(new BinaryWriter(extBuffer));
+                    if ((extBuffer.Length % Alignment) == 0)
+                    {
+                        Log.Warning($"Extension {extensionId} {o.Extension.GetType().Name} is not aligned!");
+                        var diff = Alignment - (extBuffer.Length % Alignment);
+                        extBuffer.SetLength(extBuffer.Length + diff);
+                    }
+                    w.Write((byte)extensionId);
+                    w.Write((byte)(extBuffer.Length / Alignment));
+                    w.Write(extBuffer.GetBuffer(), 0, (int)extBuffer.Length);
+                }
+                else
+                {
+                    w.Write((byte)0); // Extension ID
+                    w.Write((byte)0); // Extension length
+                }
             }
 
             // Write animation names
@@ -100,6 +123,16 @@ namespace Xe.Tools.Modules
         private static int AddFlag(int data, int shift, int value)
         {
             return data |= (value << shift);
+        }
+
+        private static int IndexOf(ObjectExtensionDefinition[] array, Guid id)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i].Id == id)
+                    return i + 1;
+            }
+            return 0;
         }
     }
 }

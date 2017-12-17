@@ -50,7 +50,7 @@ namespace Xe.Tools.Modules
             w.Write(ulong.MaxValue);
         }
 
-        private static void WriteChunk(Map tileMap, BinaryWriter writer, Func<Map, BinaryWriter, string> action)
+        private void WriteChunk(Map tileMap, BinaryWriter writer, Func<Map, BinaryWriter, string> action)
         {
             using (var memoryStream = new MemoryStream(0x8000))
             {

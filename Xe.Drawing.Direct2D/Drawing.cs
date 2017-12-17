@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace Xe.Drawing
 {
-    public partial class DrawingDirectX : Drawing
+    public partial class DrawingDirect2D : Drawing
     {
         private CSurface _surface;
         private bool _invalidated;
@@ -70,30 +70,49 @@ namespace Xe.Drawing
             var s = surface as CSurface;
             var srcf = new RawRectangleF(src.Left, src.Top, src.Right, src.Bottom);
             var dstf = new RawRectangleF(dst.Left, dst.Top, dst.Right, dst.Bottom);
-            float tmp;
+            RawMatrix? matrix;
             switch (flip)
             {
                 case Flip.FlipHorizontal:
-                    tmp = srcf.Left;
-                    srcf.Left = srcf.Right;
-                    srcf.Right = tmp;
+                    matrix = new RawMatrix()
+                    {
+                        M11 = -1,
+                        M22 = +1,
+                        M33 = +1,
+                        M44 = +1,
+
+                        M41 = dstf.Left * 2 + src.Width / 2.0f,
+                    };
                     break;
                 case Flip.FlipVertical:
-                    tmp = srcf.Top;
-                    srcf.Top = srcf.Bottom;
-                    srcf.Bottom = tmp;
+                    matrix = new RawMatrix()
+                    {
+                        M11 = +1,
+                        M22 = -1,
+                        M33 = +1,
+                        M44 = +1,
+                        
+                        M42 = dstf.Top * 2 + src.Height / 2.0f,
+                    };
                     break;
                 case Flip.FlipBoth:
-                    tmp = srcf.Left;
-                    srcf.Left = srcf.Right;
-                    srcf.Right = tmp;
-                    tmp = srcf.Top;
-                    srcf.Top = srcf.Bottom;
-                    srcf.Bottom = tmp;
+                    matrix = new RawMatrix()
+                    {
+                        M11 = -1,
+                        M22 = -1,
+                        M33 = +1,
+                        M44 = +1,
+
+                        M41 = dstf.Left * 2 + src.Width / 2.0f,
+                        M42 = dstf.Top * 2 + src.Height / 2.0f,
+                    };
+                    break;
+                default:
+                    matrix = null;
                     break;
             }
             Invalidate();
-            d2dContext.DrawBitmap(s.Bitmap, dstf, 1.0f, _interpolationMode, srcf, null);
+            d2dContext.DrawBitmap(s.Bitmap, dstf, 1.0f, _interpolationMode, srcf, matrix);
         }
 
         public override void Dispose()
@@ -111,32 +130,15 @@ namespace Xe.Drawing
             }
         }
 
-        public DrawingDirectX()
+        public DrawingDirect2D()
         {
             CommonInit();
-        }
-        public DrawingDirectX(int width, int height)
-        {
-            CommonInit();
-            ResizeRenderTarget(width, height);
         }
 
         private void CommonInit()
         {
             Filter = Filter.Nearest;
             Initialize();
-        }
-
-        public static DrawingDirectX Factory(int width, int height, PixelFormat pixelFormat)
-        {
-            return new DrawingDirectX(width, height);
-        }
-        public static DrawingDirectX Factory(ISurface surface)
-        {
-            return new DrawingDirectX()
-            {
-                Surface = surface
-            };
         }
     }
 }

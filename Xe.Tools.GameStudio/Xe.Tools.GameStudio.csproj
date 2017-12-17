@@ -189,14 +189,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
-    <ProjectReference Include="..\Xe.Drawing.DirectX\Xe.Drawing.DirectX.csproj">
-      <Project>{66349c96-4f83-4af1-96f7-56716460ae6e}</Project>
-      <Name>Xe.Drawing.DirectX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
-      <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>
-      <Name>Xe.Drawing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Builder\Xe.Tools.Builder.csproj">
       <Project>{27819939-5fca-483f-9eab-889440922046}</Project>
       <Name>Xe.Tools.Builder</Name>
@@ -220,6 +212,10 @@
     <ProjectReference Include="..\Xe.Tools.Components.MapEditor\Xe.Tools.Components.MapEditor.csproj">
       <Project>{47197a2e-2287-4b30-9adf-ee6921aaf7e9}</Project>
       <Name>Xe.Tools.Components.MapEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Configurator\Xe.Tools.Configurator.csproj">
+      <Project>{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}</Project>
+      <Name>Xe.Tools.Configurator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Animation\Xe.Tools.Modules.Animation.csproj">
       <Project>{947776a6-561e-440f-bce8-c38d476ebcb1}</Project>

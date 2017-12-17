@@ -16,14 +16,16 @@ namespace Xe.Game.Tilemaps
                 = new List<LayerDefinition>();
         }
 
-        public Action<Tiled.Object, IObjectExtension> OnLoadObjectExtension { get; set; }
+        public Dictionary<Guid, ObjectExtensionDefinition> _objExtensions;
 
-        public Map Open(Tiled.Map tiledMap)
+        public Map Open(Tiled.Map tiledMap, IEnumerable<ObjectExtensionDefinition> objExt)
         {
+            LoadExtensions(objExt);
             return Map(tiledMap);
         }
-        public Map Open(string tiledFileName)
+        public Map Open(string tiledFileName, IEnumerable<ObjectExtensionDefinition> objExt)
         {
+            LoadExtensions(objExt);
             return Map(new Tiled.Map(tiledFileName));
         }
         public Tiled.Map Save(Map map, Tiled.Map tiledMap)
@@ -36,7 +38,7 @@ namespace Xe.Game.Tilemaps
         #region Mappings
 
         #region Map
-        private static Map Map(Tiled.Map src, Map dst = null)
+        private Map Map(Tiled.Map src, Map dst = null)
         {
             if (dst == null) dst = new Map();
             dst.FileName = src.FileName;
@@ -100,7 +102,7 @@ namespace Xe.Game.Tilemaps
         }
         #endregion
         #region Entries
-        public static LayerBase Map(Tiled.IEntry src)
+        public LayerBase Map(Tiled.IEntry src)
         {
             if (src is Tiled.Group group) return Map(group);
             if (src is Tiled.Layer layer) return Map(layer);
@@ -116,7 +118,7 @@ namespace Xe.Game.Tilemaps
         }
         #endregion
         #region Tileset
-        public static Tileset Map(Tiled.Tileset src, Tileset dst = null)
+        public Tileset Map(Tiled.Tileset src, Tileset dst = null)
         {
             if (dst == null) dst = new Tileset();
             dst.Name = src.Name;
@@ -132,7 +134,7 @@ namespace Xe.Game.Tilemaps
             dst.TilesCount = src.TileCount;
             return dst;
         }
-        public static Tiled.Tileset Map(Tileset src, Tiled.Tileset dst = null)
+        public Tiled.Tileset Map(Tileset src, Tiled.Tileset dst = null)
         {
             throw new NotImplementedException();
             //if (dst == null) dst = new Tiled.Tileset();
@@ -140,7 +142,7 @@ namespace Xe.Game.Tilemaps
         }
         #endregion
         #region Layer
-        public static LayerTilemap Map(Tiled.Layer src, LayerTilemap dst = null)
+        public LayerTilemap Map(Tiled.Layer src, LayerTilemap dst = null)
         {
             if (dst == null) dst = new LayerTilemap();
             dst.Name = src.Name;
@@ -166,7 +168,7 @@ namespace Xe.Game.Tilemaps
             }
             return dst;
         }
-        public static Tiled.Layer Map(LayerTilemap src, Tiled.Layer dst = null)
+        public Tiled.Layer Map(LayerTilemap src, Tiled.Layer dst = null)
         {
             if (dst == null) dst = new Tiled.Layer();
             dst.Name = src.Name;
@@ -195,7 +197,7 @@ namespace Xe.Game.Tilemaps
         }
         #endregion
         #region Layers group
-        public static LayersGroup Map(Tiled.Group src, LayersGroup dst = null)
+        public LayersGroup Map(Tiled.Group src, LayersGroup dst = null)
         {
             if (dst == null) dst = new LayersGroup();
             dst.Name = src.Name;
@@ -214,7 +216,7 @@ namespace Xe.Game.Tilemaps
         }
         #endregion
         #region Objects group
-        public static LayerObjects Map(Tiled.ObjectGroup src, LayerObjects dst = null)
+        public LayerObjects Map(Tiled.ObjectGroup src, LayerObjects dst = null)
         {
             if (dst == null) dst = new LayerObjects();
             dst.Name = src.Name;
@@ -235,7 +237,7 @@ namespace Xe.Game.Tilemaps
         }
         #endregion
         #region Object entry
-        public static ObjectEntry Map(Tiled.Object src, ObjectEntry dst = null)
+        public ObjectEntry Map(Tiled.Object src, ObjectEntry dst = null)
         {
             if (dst == null) dst = new ObjectEntry();
             // Basic properties
@@ -254,6 +256,20 @@ namespace Xe.Game.Tilemaps
             dst.Width = src.Width;
             dst.Height = src.Height;
             dst.Flip = GetPropertyValue(src.Properties, Flip.None, nameof(ObjectEntry.Flip));
+
+            var id = GetPropertyValue(src.Properties, Guid.Empty, "ExtensionId");
+            if (id != Guid.Empty)
+            {
+                dst.Extension = CreateInstance(id);
+                if (dst.Extension != null)
+                {
+                    foreach (var property in dst.Extension.GetType().GetProperties())
+                    {
+                        var value = GetPropertyValue(src.Properties, property.PropertyType, null, $"Extension.{property.Name}");
+                        property.SetValue(dst.Extension, value);
+                    }
+                }
+            }
             return dst;
         }
         public Tiled.Object Map(ObjectEntry src, Tiled.Object dst = null)
@@ -275,10 +291,37 @@ namespace Xe.Game.Tilemaps
             dst.Width = src.Width;
             dst.Height = src.Height;
             dst.Properties[nameof(ObjectEntry.Flip)] = src.Flip;
-            //OnLoadObjectExtension?.Invoke()
+            if (src.Extension != null)
+            {
+                var id = src.Extension.Id;
+                if (id != Guid.Empty)
+                {
+                    dst.Properties["Extensionid"] = id;
+                    foreach (var property in src.Extension.GetType().GetProperties())
+                    {
+                        dst.Properties[$"Extension.{property.Name}"] = property.GetValue(src.Extension);
+                    }
+                }
+            }
             return dst;
         }
         #endregion
+
+        #endregion
+
+        #region Extension processing
+
+        private void LoadExtensions(IEnumerable<ObjectExtensionDefinition> objExts)
+        {
+            _objExtensions = objExts.ToDictionary(x => x.Id);
+        }
+
+        private IObjectExtension CreateInstance(Guid id)
+        {
+            if (_objExtensions.TryGetValue(id, out var objExt))
+                return Activator.CreateInstance(objExt.Type) as IObjectExtension;
+            return null;
+        }
 
         #endregion
 
@@ -286,15 +329,18 @@ namespace Xe.Game.Tilemaps
 
         private static T GetPropertyValue<T>(Tiled.PropertiesDictionary properties, T defaultValue = default(T), [CallerMemberName] string key = null)
         {
-            T result;
+            return (T)GetPropertyValue(properties, typeof(T), defaultValue, key);
+        }
+        private static object GetPropertyValue(Tiled.PropertiesDictionary properties, Type type, object defaultValue, [CallerMemberName] string key = null)
+        {
+            object result;
             if (properties != null && properties.TryGetValue(key, out object value))
             {
-                if (typeof(T) == value.GetType())
-                    return (T)value;
+                if (type == value.GetType())
+                    return value;
                 try
                 {
                     bool isNumeric = IsNumeric(value);
-                    var type = typeof(T);
                     if (type.IsEnum)
                     {
                         if (!isNumeric)
@@ -302,14 +348,14 @@ namespace Xe.Game.Tilemaps
                             foreach (var enumValues in type.GetEnumValues())
                             {
                                 if (value.ToString().Equals(enumValues.ToString(), StringComparison.OrdinalIgnoreCase))
-                                    return (T)enumValues;
+                                    return enumValues;
                             }
-                            return int.TryParse(value.ToString(), out int r) ? (T)(object)r : defaultValue;
+                            return int.TryParse(value.ToString(), out int r) ? r : defaultValue;
                         }
-                        return (T)(object)Convert.ToInt32(value);
+                        return Convert.ToInt32(value);
                     }
                     //result = (T)Convert.ChangeType(value, type, null);
-                    result = (T)TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value.ToString());
+                    result = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value.ToString());
                 }
                 catch
                 {

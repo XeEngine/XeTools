@@ -25,18 +25,11 @@
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0">
                 <StatusBar DockPanel.Dock="Bottom">
-                    <TextBlock Text="Last: " />
                     <TextBlock Text="{Binding LastRenderingTime}" />
-                    <TextBlock Text="ms" Margin="0 0 10 0" />
-                    <TextBlock Text="Max: " />
-                    <TextBlock Text="{Binding MaxRenderingTime}" />
-                    <TextBlock Text="ms" Margin="0 0 10 0" />
-                    <TextBlock Text="Avg: " />
-                    <TextBlock Text="{Binding AvgRenderingTime}" />
-                    <TextBlock Text="ms" Margin="0 0 10 0" />
+                    <TextBlock Text="ms" />
                 </StatusBar>
-                <ScrollBar DockPanel.Dock="Bottom" Orientation="Horizontal"/>
-                <ScrollBar DockPanel.Dock="Right" Orientation="Vertical"/>
+                <ScrollBar DockPanel.Dock="Bottom" Orientation="Horizontal" Visibility="Collapsed"/>
+                <ScrollBar DockPanel.Dock="Right" Orientation="Vertical" Visibility="Collapsed"/>
                 <Controls:Tilemap x:Name="tileMap" ClipToBounds="True"
                                   MouseDown="TileMap_MouseDown"
                                   MouseMove="TileMap_MouseMove"

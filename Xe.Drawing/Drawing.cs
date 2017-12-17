@@ -2,13 +2,23 @@
 
 namespace Xe.Drawing
 {
+    public enum SurfaceType
+    {
+        // Surface used as input for drawing
+        Input,
+        // Surface used where the content will be drawn.
+        Output,
+        // Used as input and output
+        InputOutput
+    }
+
     public abstract class Drawing : IDrawing
     {
         public abstract ISurface Surface { get; set; }
         public abstract Filter Filter { get; set; }
 
         public abstract void Clear(Color color);
-        public abstract ISurface CreateSurface(int width, int height, PixelFormat pixelFormat);
+        public abstract ISurface CreateSurface(int width, int height, PixelFormat pixelFormat, SurfaceType type);
         public abstract ISurface CreateSurface(string filename, Color[] filterColors = null);
         public abstract void Dispose();
         

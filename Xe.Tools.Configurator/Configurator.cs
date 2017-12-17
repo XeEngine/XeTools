@@ -11,7 +11,7 @@ namespace Xe.Tools.Configurator
 
         private static void RegisterServices()
         {
-            Factory.Register<Drawing.IDrawing, Drawing.DrawingDirectX>(Factory.Scope.Lifetime);
+            Factory.Register<Drawing.IDrawing, Drawing.DrawingDirect2D>(Factory.Scope.Lifetime);
         }
     }
 }

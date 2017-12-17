@@ -27,14 +27,17 @@ namespace Xe.Drawing
             {
                 if (_surface != value)
                 {
-                    _graphics.Flush();
+                    _surface?.Dispose();
+                    _graphics?.Flush();
                     if (value is CSurface surface)
                     {
                         _surface = surface;
+                        _graphics = Graphics.FromImage(_surface.Bitmap);
                     }
                     else
                     {
                         _surface = null;
+                        _graphics = null;
                     }
                 }
             }
@@ -66,7 +69,7 @@ namespace Xe.Drawing
             }
         }
 
-        public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat)
+        public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat, SurfaceType type)
         {
             using (var bitmap = new Bitmap(width, height, GetPixelFormat(pixelFormat)))
             {
@@ -124,7 +127,7 @@ namespace Xe.Drawing
             _graphics.Dispose();
         }
 
-        private DrawingGdiPlus(int width, int height, PixelFormat pixelFormat)
+        /*private DrawingGdiPlus(int width, int height, PixelFormat pixelFormat)
         {
             using (var bitmap = new Bitmap(width, height, GetPixelFormat(pixelFormat)))
             {
@@ -137,7 +140,7 @@ namespace Xe.Drawing
         {
             _surface = surface;
             _graphics = Graphics.FromImage(_surface.Bitmap);
-        }
+        }*/
 
         private void Invalidate()
         {
@@ -164,18 +167,6 @@ namespace Xe.Drawing
                 case PixelFormat.Format64bppArgb: return System.Drawing.Imaging.PixelFormat.Format64bppArgb;
                 default: return System.Drawing.Imaging.PixelFormat.Undefined;
             }
-        }
-
-        public static DrawingGdiPlus Factory(int width, int height, PixelFormat pixelFormat)
-        {
-            return new DrawingGdiPlus(width, height, pixelFormat);
-        }
-        public static DrawingGdiPlus Factory(ISurface surface)
-        {
-            var mySurface = surface as CSurface;
-            if (mySurface == null)
-                throw new ArgumentException("Invalid surface specified", nameof(surface));
-            return new DrawingGdiPlus(mySurface);
         }
     }
 }

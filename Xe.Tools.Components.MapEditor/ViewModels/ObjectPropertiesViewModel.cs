@@ -1,6 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using Xe.Game;
 using Xe.Game.Tilemaps;
+using Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCalengal;
 using Xe.Tools.Wpf;
 using Xe.Tools.Wpf.Commands;
 using Xe.Tools.Wpf.Dialogs;
@@ -21,19 +26,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             set
             {
                 _objectEntry = value;
-                OnPropertyChanged(nameof(Name));
-                OnPropertyChanged(nameof(Type));
-                OnPropertyChanged(nameof(AnimationData));
-                OnPropertyChanged(nameof(AnimationName));
-                OnPropertyChanged(nameof(Orientation));
-                OnPropertyChanged(nameof(IsVisible));
-                OnPropertyChanged(nameof(HasShadow));
-                OnPropertyChanged(nameof(X));
-                OnPropertyChanged(nameof(Y));
-                OnPropertyChanged(nameof(Z));
-                OnPropertyChanged(nameof(Width));
-                OnPropertyChanged(nameof(Height));
-                OnPropertyChanged(nameof(Flip));
+                OnAllPropertiesChanged();
+                UpdateExtension(_objectEntry?.Extension?.Id ?? Guid.Empty);
             }
         }
 
@@ -204,6 +198,108 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         #endregion
 
+        #region Extensions
+
+        public IEnumerable<ObjectExtensionDefinition> Extensions
+        {
+            get
+            {
+                var list = new List<ObjectExtensionDefinition>()
+                {
+                    new ObjectExtensionDefinition() { Id = Guid.Empty, Name = "None", Type = typeof(object) }
+                };
+                list.AddRange(Modules.ObjectExtensions.SwordsOfCalengal.Extensions);
+                return list;
+            }
+        }
+
+        public Guid ExtensionId
+        {
+            get => ObjectEntry?.Extension?.Id ?? Guid.Empty;
+            set
+            {
+                if (ObjectEntry?.Extension?.Id != value)
+                {
+                    UpdateExtension(value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        PlayerViewModel _extensionPlayer;
+        public PlayerViewModel ExtensionPlayer
+        {
+            get => _extensionPlayer;
+            set
+            {
+                _extensionPlayer = value;
+                _extensionPlayer?.OnAllPropertiesChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        EnemyViewModel _extensionEnemy;
+        public EnemyViewModel ExtensionEnemy
+        {
+            get => _extensionEnemy;
+            set
+            {
+                _extensionEnemy = value;
+                _extensionEnemy?.OnAllPropertiesChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        NpcViewModel _extensionNpc;
+        public NpcViewModel ExtensionNpc
+        {
+            get => _extensionNpc;
+            set
+            {
+                _extensionNpc = value;
+                _extensionNpc?.OnAllPropertiesChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        MapChangeViewModel _extensionMapChange;
+        public MapChangeViewModel ExtensionMapChange
+        {
+            get => _extensionMapChange;
+            set
+            {
+                _extensionMapChange = value;
+                _extensionMapChange.OnAllPropertiesChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        ChestViewModel _extensionChest;
+        public ChestViewModel ExtensionChest
+        {
+            get => _extensionChest;
+            set
+            {
+                _extensionChest = value;
+                _extensionChest?.OnAllPropertiesChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        EventViewModel _extensionEvent;
+        public EventViewModel ExtensionEvent
+        {
+            get => _extensionEvent;
+            set
+            {
+                _extensionEvent = value;
+                _extensionEvent?.OnAllPropertiesChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Commands
@@ -246,9 +342,42 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         #endregion
 
+        private void UpdateExtension(Guid id)
+        {
+            if (ObjectEntry != null)
+            {
+                if (id == Guid.Empty)
+                {
+                    // No extension specified for the current object.
+                    ObjectEntry.Extension = null;
+                }
+                else if (ObjectEntry.Extension?.Id != id)
+                {
+                    var ext = Modules.ObjectExtensions.SwordsOfCalengal.Extensions
+                        .FirstOrDefault(x => x.Id == id);
+                    if (ext != null)
+                        ObjectEntry.Extension = Activator.CreateInstance(ext.Type) as IObjectExtension;
+                    else if (ObjectEntry != null)
+                        ObjectEntry.Extension = null;
+                }
+                else
+                {
+                    // Do not change anything.
+                }
+            }
+            var extension = ObjectEntry?.Extension;
+            ExtensionPlayer = new PlayerViewModel(extension);
+            ExtensionEnemy = new EnemyViewModel(extension);
+            ExtensionNpc = new NpcViewModel(extension);
+            ExtensionMapChange = new MapChangeViewModel(extension);
+            ExtensionChest = new ChestViewModel(extension);
+            ExtensionEvent = new EventViewModel(extension);
+        }
+
         public ObjectPropertiesViewModel(MainWindowViewModel vm)
         {
             MainEditor = vm;
+            UpdateExtension(Guid.Empty);
         }
     }
 }

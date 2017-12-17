@@ -13,7 +13,7 @@ namespace Xe.Drawing
     using dw = SharpDX.DirectWrite;
     using System.Drawing.Imaging;
 
-    public partial class DrawingDirectX
+    public partial class DrawingDirect2D
     {
         private static d2.PixelFormat d2PixelFormat = new d2.PixelFormat(dxgi.Format.B8G8R8A8_UNorm, d2.AlphaMode.Premultiplied);
         private static Guid wicPixelFormat = wic.PixelFormat.Format32bppPBGRA;
@@ -25,13 +25,6 @@ namespace Xe.Drawing
         {
             d2dDevice = device.GetD2DDevice();
             d2dContext = new d2.DeviceContext(d2dDevice, d2.DeviceContextOptions.None);
-        }
-
-        public void ResizeRenderTarget(int width, int height)
-        {
-            _surface?.Dispose();
-            _surface = CreateSurfaceAsRenderTarget(width, height);
-            d2dContext.Target = _surface.Bitmap;
         }
     }
 }

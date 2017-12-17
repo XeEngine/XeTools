@@ -71,7 +71,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             {
                 _file = file;
                 _tiledMap = new Tiled.Map(fileName);
-                TileMap = new TilemapTiled().Open(_tiledMap);
+                TileMap = new TilemapTiled().Open(_tiledMap, Modules.ObjectExtensions.SwordsOfCalengal.Extensions);
                 if (TileMap.LayersDefinition == null)
                 {
                     TileMap.LayersDefinition =

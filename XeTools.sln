@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{B379A764-9651-4DE0-A880-BC5A22037A5D}"
 EndProject
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Components", "Xe.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Drawing.GdiPlus", "Xe.Drawing.GdiPlus\Xe.Drawing.GdiPlus.csproj", "{80ECBD59-D578-4694-9AD2-EA4A7BDC47FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Drawing.DirectX", "Xe.Drawing.DirectX\Xe.Drawing.DirectX.csproj", "{66349C96-4F83-4AF1-96F7-56716460AE6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Drawing.Direct2D", "Xe.Drawing.Direct2D\Xe.Drawing.Direct2D.csproj", "{66349C96-4F83-4AF1-96F7-56716460AE6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.MapTest", "Xe.Tools.MapTest\Xe.Tools.MapTest.csproj", "{ACA37BA8-2029-4576-9D97-4E328F7F0DF4}"
 EndProject

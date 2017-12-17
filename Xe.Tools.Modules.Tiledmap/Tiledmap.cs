@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Xe.Game.Tilemaps;
+using Xe.Tools.Modules.ObjectExtensions;
 
 namespace Xe.Tools.Modules
 {
@@ -9,12 +10,13 @@ namespace Xe.Tools.Modules
     {
         private Map _tiledmap;
         private string _outputFileNameTilesetImage;
+        private ObjectExtensionDefinition[] ObjectExtensionDefinitions = SwordsOfCalengal.Extensions;
 
         public Tiledmap(ModuleInit init) : base(init) { }
         
         public override bool OpenFileData(string fileName)
         {
-            _tiledmap = new TilemapTiled().Open(fileName);
+            _tiledmap = new TilemapTiled().Open(fileName, ObjectExtensionDefinitions);
             return true;
         }
         public override bool OpenFileData(FileStream stream) { return true; }

@@ -10,6 +10,14 @@ namespace Xe.Tools.Wpf
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public void OnAllPropertiesChanged()
+        {
+            foreach (var property in GetType().GetProperties())
+            {
+                OnPropertyChanged(property.Name);
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

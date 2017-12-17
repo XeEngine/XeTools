@@ -71,6 +71,24 @@
     <Compile Include="Controls\MapProperties.xaml.cs">
       <DependentUpon>MapProperties.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ObjectExtensions\ObjExtChest.xaml.cs">
+      <DependentUpon>ObjExtChest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ObjectExtensions\ObjExtEnemy.xaml.cs">
+      <DependentUpon>ObjExtEnemy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ObjectExtensions\ObjExtEvent.xaml.cs">
+      <DependentUpon>ObjExtEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ObjectExtensions\ObjExtMapChange.xaml.cs">
+      <DependentUpon>ObjExtMapChange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ObjectExtensions\ObjExtNpc.xaml.cs">
+      <DependentUpon>ObjExtNpc.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ObjectExtensions\ObjExtPlayer.xaml.cs">
+      <DependentUpon>ObjExtPlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ObjectProperties.xaml.cs">
       <DependentUpon>ObjectProperties.xaml</DependentUpon>
     </Compile>
@@ -93,6 +111,7 @@
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MapEditorViewModel.cs" />
     <Compile Include="ViewModels\NodeObjectsGroupViewModel.cs" />
+    <Compile Include="ViewModels\ObjectExtensions\SwordsOfCalengal.cs" />
     <Compile Include="ViewModels\ObjectPropertiesViewModel.cs" />
     <Compile Include="ViewModels\TilemapViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
@@ -130,10 +149,6 @@
       <Project>{2632a519-f583-438e-8568-f055b192a726}</Project>
       <Name>Tiled</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Drawing.DirectX\Xe.Drawing.DirectX.csproj">
-      <Project>{66349c96-4f83-4af1-96f7-56716460ae6e}</Project>
-      <Name>Xe.Drawing.DirectX</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
       <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>
       <Name>Xe.Drawing</Name>
@@ -153,6 +168,10 @@
     <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">
       <Project>{0a9e80cc-c253-47e8-b99a-c211d91291d4}</Project>
       <Name>Xe.Tools.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Tiledmap\Xe.Tools.Modules.Tiledmap.csproj">
+      <Project>{AFF69391-A837-4A84-814B-2637DC185B60}</Project>
+      <Name>Xe.Tools.Modules.Tiledmap</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
       <Project>{240b9f1c-1dba-4d73-8fc3-7f9eb39b57d5}</Project>
@@ -184,6 +203,30 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ObjectExtensions\ObjExtChest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectExtensions\ObjExtEnemy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectExtensions\ObjExtEvent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectExtensions\ObjExtMapChange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectExtensions\ObjExtNpc.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectExtensions\ObjExtPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ObjectProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,5 +240,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

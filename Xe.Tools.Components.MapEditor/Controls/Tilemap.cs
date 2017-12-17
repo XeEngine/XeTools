@@ -157,24 +157,16 @@ namespace Xe.Tools.Components.MapEditor.Controls
         {
             if (_drawingService == null)
             {
-                _drawingService?.Dispose();
-                _drawingService = new DrawingDirectX(width, height);
+                _drawingService = Xe.Factory.Resolve<IDrawing>();
                 _tileMapDrawer?.Dispose();
                 _tileMapDrawer = new TilemapDrawer(_drawingService)
                 {
                     ActionDrawObject = RenderObject
                 };
             }
-            else if (_drawingService is DrawingDirectX dx)
-            {
-                dx.ResizeRenderTarget(width, height);
-            }
-            else
-            {
-                _drawingService.Surface?.Dispose();
-                _drawingService.Surface = _drawingService.CreateSurface(
-                    width, height, Drawing.PixelFormat.Format32bppArgb);
-            }
+            _drawingService.Surface?.Dispose();
+            _drawingService.Surface = _drawingService.CreateSurface(
+                width, height, Drawing.PixelFormat.Format32bppArgb, SurfaceType.InputOutput);
             Render();
         }
 

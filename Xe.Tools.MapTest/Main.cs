@@ -9,12 +9,12 @@ namespace Xe.Tools.MapTest
         static void Main(string[] args)
         {
             Configurator.Configurator.Initialize();
-            var map = new TilemapTiled().Open(@"D:\Xe\Repo\vladya\soc\data\data\map\island_03.tmx");
+            var map = new TilemapTiled().Open(@"D:\Xe\Repo\vladya\soc\data\data\map\island_03.tmx", new ObjectExtensionDefinition[] { });
             using (var drawing = Factory.Resolve<IDrawing>())
             {
                 using (var surface = drawing.CreateSurface(map.Size.Width * map.TileSize.Width,
                     map.Size.Height * map.TileSize.Height,
-                    PixelFormat.Format32bppArgb))
+                    PixelFormat.Format32bppArgb, SurfaceType.Output))
                 {
                     drawing.Surface = surface;
                     using (var mapDrawer = new TilemapDrawer(drawing))

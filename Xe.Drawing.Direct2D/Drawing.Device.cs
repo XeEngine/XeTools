@@ -7,7 +7,7 @@ namespace Xe.Drawing
     using dxgi = SharpDX.DXGI;
     using wic = SharpDX.WIC;
 
-    public partial class DrawingDirectX
+    public partial class DrawingDirect2D
     {
         private static Device device = new Device();
 

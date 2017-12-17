@@ -1,16 +1,5 @@
-﻿using System.IO;
-
-namespace Xe.Game.Tilemaps
+﻿namespace Xe.Game.Tilemaps
 {
-    public interface IObjectExtension
-    {
-        int GetId();
-
-        int GetLength();
-
-        void Write(BinaryWriter writer);
-    }
-
     public class ObjectEntry
     {
         #region Properties
