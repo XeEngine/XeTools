@@ -195,7 +195,7 @@ namespace Xe.Tools.Modules
                         ISurface surface = dc.Drawing.CreateSurface(
                              layer.MapWidth * tileSize.Width,
                              layer.MapHeight * tileSize.Height,
-                             PixelFormat.Undefined);
+                             PixelFormat.Undefined, SurfaceType.Output);
 
                         dc.Drawing.Surface = surface;
                         foreach (var sublayer in layer.Sublayers)
