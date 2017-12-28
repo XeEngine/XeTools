@@ -60,7 +60,7 @@ namespace Xe.Tools.Modules
                 {
                     extBuffer.SetLength(0);
                     o.Extension.Write(new BinaryWriter(extBuffer));
-                    if ((extBuffer.Length % Alignment) == 0)
+                    if ((extBuffer.Length % Alignment) != 0)
                     {
                         Log.Warning($"Extension {extensionId} {o.Extension.GetType().Name} is not aligned!");
                         var diff = Alignment - (extBuffer.Length % Alignment);
