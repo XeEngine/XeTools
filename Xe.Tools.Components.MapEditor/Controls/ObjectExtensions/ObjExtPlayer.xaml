@@ -21,6 +21,6 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Entry" VerticalAlignment="Center"/>
         <controls:NumericUpDown Grid.Row="0" Grid.Column="2"
                                 MinimumValue="0" MaximumValue="255"
-                                Value="{Binding Entry}"/>
+                                Value="{Binding Entry, Mode=TwoWay}"/>
     </Grid>
 </UserControl>

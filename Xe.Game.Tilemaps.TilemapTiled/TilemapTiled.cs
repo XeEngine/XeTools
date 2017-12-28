@@ -10,6 +10,9 @@ namespace Xe.Game.Tilemaps
 {
     public class TilemapTiled
     {
+        private const string Extension = "Extension";
+        private const string ExtensionId = "ExtensionId";
+
         private class Ext
         {
             public List<LayerDefinition> LayersDefinition { get; set; }
@@ -257,7 +260,7 @@ namespace Xe.Game.Tilemaps
             dst.Height = src.Height;
             dst.Flip = GetPropertyValue(src.Properties, Flip.None, nameof(ObjectEntry.Flip));
 
-            var id = GetPropertyValue(src.Properties, Guid.Empty, "ExtensionId");
+            var id = GetPropertyValue(src.Properties, Guid.Empty, ExtensionId);
             if (id != Guid.Empty)
             {
                 dst.Extension = CreateInstance(id);
@@ -265,8 +268,11 @@ namespace Xe.Game.Tilemaps
                 {
                     foreach (var property in dst.Extension.GetType().GetProperties())
                     {
-                        var value = GetPropertyValue(src.Properties, property.PropertyType, null, $"Extension.{property.Name}");
-                        property.SetValue(dst.Extension, value);
+                        if (property.CanRead && property.CanWrite)
+                        {
+                            var value = GetPropertyValue(src.Properties, property.PropertyType, null, $"{Extension}.{property.Name}");
+                            property.SetValue(dst.Extension, value);
+                        }
                     }
                 }
             }
@@ -296,10 +302,13 @@ namespace Xe.Game.Tilemaps
                 var id = src.Extension.Id;
                 if (id != Guid.Empty)
                 {
-                    dst.Properties["Extensionid"] = id;
+                    dst.Properties[ExtensionId] = id;
                     foreach (var property in src.Extension.GetType().GetProperties())
                     {
-                        dst.Properties[$"Extension.{property.Name}"] = property.GetValue(src.Extension);
+                        if (property.CanRead && property.CanWrite)
+                        {
+                            dst.Properties[$"{Extension}.{property.Name}"] = property.GetValue(src.Extension);
+                        }
                     }
                 }
             }
