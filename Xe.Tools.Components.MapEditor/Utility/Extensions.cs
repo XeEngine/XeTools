@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xe.Drawing;
 using Xe.Game.Animations;
+using Xe.Game.Tilemaps;
 using Xe.Tools.Components.MapEditor.Models;
 using Xe.Tools.Services;
 
@@ -17,19 +18,49 @@ namespace Xe.Tools.Components.MapEditor
     {
         public static class Extensions
         {
-            public static void DrawAnimation(this IDrawing drawing, FramesGroup framesGroup, double x, double y)
+            public static void DrawObjectEntryRect(this IDrawing drawing, ObjectEntry objectEntry)
+            {
+                drawing.DrawRectangle(new System.Drawing.RectangleF()
+                {
+                    X = (float)objectEntry.X,
+                    Y = (float)objectEntry.Y,
+                    Width = (float)objectEntry.Width,
+                    Height = (float)objectEntry.Height
+                }, System.Drawing.Color.Fuchsia, 2.0f);
+            }
+
+            public static void DrawAnimation(this IDrawing drawing, FramesGroup framesGroup, double x, double y, Drawing.Flip flip = Drawing.Flip.None)
             {
                 var frame = framesGroup.Frames.FirstOrDefault();
                 if (frame != null)
                 {
                     var src = frame.Source;
+
+                    flip = flip.Add(Drawing.Flip.FlipHorizontal, framesGroup.Reference.FlipX)
+                        .Add(Drawing.Flip.FlipVertical, framesGroup.Reference.FlipY);
+
+                    var nx = x - frame.Pivot.X;
+                    var ny = y - frame.Pivot.Y;
+                    if (flip.HasFlag(Drawing.Flip.FlipHorizontal))
+                        nx += frame.Pivot.X * 2 - src.Width;
+                    if (flip.HasFlag(Drawing.Flip.FlipVertical))
+                        ny -= frame.Pivot.Y * 2 - src.Height;
+
                     drawing.DrawSurface(framesGroup.Texture,
                         new System.Drawing.Rectangle((int)src.Left, (int)src.Top, (int)src.Width, (int)src.Height),
-                        new System.Drawing.Rectangle((int)x - (int)frame.Pivot.X, (int)y - (int)frame.Pivot.Y, (int)src.Width, (int)src.Height),
-                        Drawing.Flip.None);
+                        new System.Drawing.Rectangle((int)nx, (int)ny, (int)src.Width, (int)src.Height), flip);
                 }
             }
 
+            public static Drawing.Flip Add(this Drawing.Flip x, Drawing.Flip y)
+            {
+                return (Drawing.Flip)((int)x ^ (int)y);
+            }
+
+            public static Drawing.Flip Add(this Drawing.Flip x, Drawing.Flip y, bool reverse)
+            {
+                return reverse ? (Drawing.Flip)((int)x ^ (int)y) : x;
+            }
         }
     }
 }

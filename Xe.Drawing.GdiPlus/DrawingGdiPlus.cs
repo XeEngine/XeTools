@@ -85,6 +85,17 @@ namespace Xe.Drawing
             _graphics.Clear(color);
         }
 
+        public override void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
+        {
+            using (var brush = new SolidBrush(color))
+            {
+                using (var pen = new Pen(brush, width))
+                {
+                    _graphics.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+                }
+            }
+        }
+
         public override void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip)
         {
             var mySurface = surface as CSurface;

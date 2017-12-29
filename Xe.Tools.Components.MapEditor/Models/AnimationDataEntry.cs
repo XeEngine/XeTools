@@ -94,6 +94,9 @@ namespace Xe.Tools.Components.MapEditor.Models
             {
                 return new FramesGroup()
                 {
+                    Definition = animationRef,
+                    Reference = animDirectionRef,
+                    Animation = animation,
                     Texture = _textures[animation.Texture],
                     Frames = animation.Frames.Join(_animationData.Frames,
                         x => x.Frame,

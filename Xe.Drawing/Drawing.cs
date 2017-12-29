@@ -54,6 +54,7 @@ namespace Xe.Drawing
             DrawSurface(surface, src, dst, flip);
         }
 
+        public abstract void DrawRectangle(RectangleF rect, Color color, float width = 1.0f);
         public abstract void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip);
     }
 }

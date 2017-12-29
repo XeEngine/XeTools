@@ -32,16 +32,19 @@ namespace Xe
 
         public static T Resolve<T>() where T : class
         {
-            var entry = _dictionary[typeof(T)];
-            switch (entry.Scope)
+            if (_dictionary.TryGetValue(typeof(T), out var entry))
             {
-                case Scope.Lifetime:
-                    return (T)(entry.Instance = entry.Instance ?? Activator.CreateInstance(entry.Implementation));
-                case Scope.Instance:
-                    return (T)Activator.CreateInstance(entry.Implementation);
-                default:
-                    return null;
+                switch (entry.Scope)
+                {
+                    case Scope.Lifetime:
+                        return (T)(entry.Instance = entry.Instance ?? Activator.CreateInstance(entry.Implementation));
+                    case Scope.Instance:
+                        return (T)Activator.CreateInstance(entry.Implementation);
+                    default:
+                        return null;
+                }
             }
+            return null;
         }
     }
 }

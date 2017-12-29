@@ -1,4 +1,5 @@
-﻿using SharpDX.Mathematics.Interop;
+﻿using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -63,6 +64,14 @@ namespace Xe.Drawing
             var a = color.A / 255.0f;
             Invalidate();
             d2dContext.Clear(new RawColor4(r, g, b, a));
+        }
+
+        public override void DrawRectangle(RectangleF rect, Color color, float width)
+        {
+            using (var brush = new SolidColorBrush(d2dContext, ToRaw(color)))
+            {
+                d2dContext.DrawRectangle(ToRaw(rect), brush, width);
+            }
         }
 
         public override void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip)
@@ -139,6 +148,22 @@ namespace Xe.Drawing
         {
             Filter = Filter.Nearest;
             Initialize();
+        }
+
+        private static RawRectangle ToRaw(Rectangle rect)
+        {
+            return new RawRectangle(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        }
+
+        private static RawRectangleF ToRaw(RectangleF rect)
+        {
+            return new RawRectangleF(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        }
+
+        private static RawColor4 ToRaw(Color color)
+        {
+            return new RawColor4(color.R / 255.0f, color.G / 255.0f,
+                color.B / 255.0f, color.A / 255.0f);
         }
     }
 }

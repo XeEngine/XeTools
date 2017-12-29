@@ -28,6 +28,7 @@ namespace Xe.Drawing
         ISurface CreateSurface(string filename, Color[] filterColors = null);
 
         void Clear(Color color);
+        void DrawRectangle(RectangleF rect, Color color, float width = 1.0f);
         void DrawSurface(ISurface surface, int x, int y, Flip flip = Flip.None);
         void DrawSurface(ISurface surface, int x, int y, int width, int height, Flip flip = Flip.None);
         void DrawSurface(ISurface surface, Rectangle dst, Flip flip = Flip.None);

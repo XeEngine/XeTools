@@ -158,16 +158,22 @@ namespace Xe.Tools.Components.MapEditor.Controls
             if (_drawingService == null)
             {
                 _drawingService = Xe.Factory.Resolve<IDrawing>();
-                _tileMapDrawer?.Dispose();
-                _tileMapDrawer = new TilemapDrawer(_drawingService)
+                if (_drawingService != null)
                 {
-                    ActionDrawObject = RenderObject
-                };
+                    _tileMapDrawer?.Dispose();
+                    _tileMapDrawer = new TilemapDrawer(_drawingService)
+                    {
+                        ActionDrawObject = RenderObject
+                    };
+                }
             }
-            _drawingService.Surface?.Dispose();
-            _drawingService.Surface = _drawingService.CreateSurface(
-                width, height, Drawing.PixelFormat.Format32bppArgb, SurfaceType.InputOutput);
-            Render();
+            if (_drawingService != null)
+            {
+                _drawingService.Surface?.Dispose();
+                _drawingService.Surface = _drawingService.CreateSurface(
+                    width, height, Drawing.PixelFormat.Format32bppArgb, SurfaceType.InputOutput);
+                Render();
+            }
         }
 
         private void RenderMap(Map tileMap)
@@ -227,9 +233,9 @@ namespace Xe.Tools.Components.MapEditor.Controls
                     return;
                 _drawingService.DrawAnimation(framesGroup, realX, realY);
             }
-            else
+            if (entry == _objEntrySelected)
             {
-
+                _drawingService.DrawObjectEntryRect(entry);
             }
         }
 
@@ -252,7 +258,12 @@ namespace Xe.Tools.Components.MapEditor.Controls
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             var position = e.GetPosition(this);
-            _objEntrySelected = GetObjectEntry(ScrollX + position.X, ScrollY + position.Y);
+            var objEntrySelected = GetObjectEntry(ScrollX + position.X, ScrollY + position.Y);
+            if (_objEntrySelected != objEntrySelected)
+            {
+                _objEntrySelected = objEntrySelected;
+                Render();
+            }
             if (_objEntrySelected != null)
             {
                 _isMouseDown = true;
