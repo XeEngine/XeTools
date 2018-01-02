@@ -1,0 +1,41 @@
+﻿<Window x:Class="Xe.Tools.Components.TileCollisionEditor.Windows.CollisionTypesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.Components.TileCollisionEditor.Windows"
+        mc:Ignorable="d"
+        Title="Collision types management" Height="315" Width="360" ResizeMode="NoResize">
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Collision types:"/>
+        <ListBox Grid.Row="2" Grid.Column="0"
+                 ItemsSource="{Binding CollisionTypes}"
+                 SelectedIndex="{Binding SelectedIndex}"
+                 SelectedValue="{Binding SelectedCollisionType}"
+                 DisplayMemberPath="Name"/>
+
+        <StackPanel Grid.Row="2" Grid.Column="2">
+            <Button Margin="0 0 0 10" Height="24" Content="_Add" Command="{Binding AddCommand}"/>
+            <Button Margin="0 0 0 10" Height="24" Content="_Edit" Command="{Binding EditCommand}"/>
+            <Button Margin="0 0 0 10" Height="24" Content="_Remove" Command="{Binding RemoveCommand}"/>
+            <Button Margin="0 0 0 10" Height="24" Content="Move _up" Command="{Binding MoveUpCommand}"/>
+            <Button Margin="0 0 0 10" Height="24" Content="Move _down" Command="{Binding MoveDownCommand}"/>
+        </StackPanel>
+
+        <Button Grid.Row="4" Grid.Column="2" Height="24" Content="_Close"
+                Command="{Binding CloseCommand}" IsCancel="True"/>
+
+    </Grid>
+</Window>

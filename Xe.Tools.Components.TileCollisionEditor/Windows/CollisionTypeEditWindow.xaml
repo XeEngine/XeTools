@@ -1,0 +1,48 @@
+﻿<Window x:Class="Xe.Tools.Components.TileCollisionEditor.Windows.CollisionTypeEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.Components.TileCollisionEditor.Windows"
+        xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+        mc:Ignorable="d"
+        Title="Collision Type editor" Height="320" Width="300" ResizeMode="NoResize">
+    <DockPanel Margin="10">
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Id"/>
+            <TextBox Margin="0 0 0 8" IsEnabled="False" Text="{Binding Id, Mode=OneTime}"/>
+            <TextBlock Text="Name"/>
+            <TextBox Margin="0 0 0 8" Text="{Binding Name, Mode=TwoWay}"/>
+            <TextBlock Text="Effect"/>
+            <ComboBox Margin="0 0 0 8" ItemsSource="{Binding Effects, Mode=OneTime}"
+                  SelectedValue="{Binding Effect, Mode=TwoWay}"
+                  SelectedValuePath="Id"
+                  DisplayMemberPath="Name"/>
+            <TextBlock Margin="0 0 0 8" Text="{Binding Description, Mode=OneWay}"
+                       TextWrapping="Wrap" Height="Auto"/>
+            <StackPanel Visibility="{Binding HasParameters, Mode=OneWay}">
+                <TextBlock Text="{Binding ParameterName, Mode=OneWay}"/>
+                <StackPanel Margin="0 0 0 8" Orientation="Horizontal"
+                            Visibility="{Binding IntegerParameterVisibility}">
+                    <controls:NumericUpDown Width="70"
+                                    Value="{Binding ParameterValue, Mode=TwoWay}"
+                                    MinimumValue="{Binding MinimumValue, Mode=OneWay}"
+                                    MaximumValue="{Binding MaximumValue, Mode=OneWay}"/>
+                    <TextBlock Margin="8 0 0 0"
+                        Text="{Binding ParameterDescription, Mode=OneWay}"/>
+                </StackPanel>
+                <ComboBox Margin="0 0 0 8"
+                  Visibility="{Binding ListParameterVisibility}"
+                  ItemsSource="{Binding ParameterList, Mode=OneWay}"
+                  SelectedValue="{Binding ParameterValueId, Mode=TwoWay}"
+                  SelectedValuePath="Id"
+                  DisplayMemberPath="Name"/>
+            </StackPanel>
+        </StackPanel>
+        <Grid>
+            <Button Width="100" Height="24" Content="_Close"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right" IsCancel="True"/>
+        </Grid>
+    </DockPanel>
+</Window>

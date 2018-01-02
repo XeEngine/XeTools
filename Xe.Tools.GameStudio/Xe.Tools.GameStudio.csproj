@@ -213,6 +213,10 @@
       <Project>{47197a2e-2287-4b30-9adf-ee6921aaf7e9}</Project>
       <Name>Xe.Tools.Components.MapEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Components.TileCollisionEditor\Xe.Tools.Components.TileCollisionEditor.csproj">
+      <Project>{7a121d57-00d3-42d3-aa21-fd568a845b64}</Project>
+      <Name>Xe.Tools.Components.TileCollisionEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Configurator\Xe.Tools.Configurator.csproj">
       <Project>{6D7658E8-FF4D-4C50-9BA5-E30889CB00D1}</Project>
       <Name>Xe.Tools.Configurator</Name>
