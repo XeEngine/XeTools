@@ -59,10 +59,6 @@ namespace Xe.Tools.Services
             };
             var frame = BitmapFrame.Create(bitmapImage);
             encoder.Frames.Add(frame);
-            if (bitmapImage.Palette != null)
-            {
-                encoder.Palette = new BitmapPalette(bitmapImage.Palette.Colors);
-            }
 
             using (var outFile = new FileStream(fileOutput, FileMode.Create, FileAccess.Write))
             {

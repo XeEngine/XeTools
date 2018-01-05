@@ -4,13 +4,14 @@ using System.IO;
 using System.Windows;
 using Xe.Tools.Components.TileCollisionEditor.ViewModels;
 using Xe.Tools.Projects;
+using Xe.Tools.Wpf.Controls;
 
 namespace Xe.Tools.Components.TileCollisionEditor.Windows
 {
     /// <summary>
     /// Interaction logic for CollisionEditor.xaml
     /// </summary>
-    public partial class CollisionEditor : Window
+    public partial class CollisionEditor : WindowEx
     {
         public CollisionEditorViewModel ViewModel => DataContext as CollisionEditorViewModel;
 
@@ -40,7 +41,7 @@ namespace Xe.Tools.Components.TileCollisionEditor.Windows
             }
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override bool DoSaveChanges()
         {
             if (_projectFile != null && ViewModel.CollisionSystem != null)
             {
@@ -50,9 +51,10 @@ namespace Xe.Tools.Components.TileCollisionEditor.Windows
                     ViewModel.SaveChanges();
                     var str = JsonConvert.SerializeObject(ViewModel.CollisionSystem, Formatting.Indented);
                     stream.Write(str);
+                    return true;
                 }
             }
-            base.OnClosed(e);
+            return false;
         }
     }
 }

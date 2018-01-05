@@ -197,22 +197,11 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         #region Commands
 
-        public ICommand CommandSaveMap { get; } = new RelayCommand(o =>
-        {
-            (o as MainWindowViewModel)?.MapEditor.Save();
-        });
+        public ICommand CommandSaveMap { get; }
 
-        public ICommand GroupLayersByPriorityCommand { get; } = new RelayCommand(o =>
-        {
-            if (o is MainWindowViewModel vm)
-                vm.ChangeLayerOrder(NodeOrderMode.GroupByPriority);
-        });
+        public ICommand GroupLayersByPriorityCommand { get; }
 
-        public ICommand UngroupLayersCommand { get; } = new RelayCommand(o =>
-        {
-            if (o is MainWindowViewModel vm)
-                vm.ChangeLayerOrder(NodeOrderMode.OriginalOrder);
-        });
+        public ICommand UngroupLayersCommand { get; }
 
         #endregion
 
@@ -242,6 +231,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             {
                 OnPropertyChanged(nameof(MasterNode));
             };
+
+            CommandSaveMap = new RelayCommand(o => MapEditor.Save());
+            GroupLayersByPriorityCommand = new RelayCommand(o => ChangeLayerOrder(NodeOrderMode.GroupByPriority));
+            UngroupLayersCommand = new RelayCommand(o => ChangeLayerOrder(NodeOrderMode.OriginalOrder));
         }
 
         private void ChangeLayerOrder(NodeOrderMode order)

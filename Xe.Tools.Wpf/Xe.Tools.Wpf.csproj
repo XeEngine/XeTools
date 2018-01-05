@@ -164,6 +164,7 @@
     <Compile Include="Controls\SpecialGroupBox.xaml.cs">
       <DependentUpon>SpecialGroupBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WindowEx.cs" />
     <Compile Include="Controls\XeWindow.xaml.cs">
       <DependentUpon>XeWindow.xaml</DependentUpon>
     </Compile>

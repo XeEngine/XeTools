@@ -3,13 +3,14 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using Xe.Tools.Components.MapEditor.ViewModels;
+using Xe.Tools.Wpf.Controls;
 
 namespace Xe.Tools.Components.MapEditor.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : WindowEx
     {
         const double FPS = 60.0;
         
@@ -104,6 +105,12 @@ namespace Xe.Tools.Components.MapEditor.Windows
                 tileMap.ScrollX = (int)(_scrollX + diff.X);
                 tileMap.ScrollY = (int)(_scrollY + diff.Y);
             }
+        }
+
+        protected override bool DoSaveChanges()
+        {
+            ViewModel.CommandSaveMap.Execute(null);
+            return true;
         }
     }
 }

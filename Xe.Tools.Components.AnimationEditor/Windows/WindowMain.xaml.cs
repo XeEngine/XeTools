@@ -19,7 +19,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
     /// <summary>
     /// Interaction logic for WindowMain.xaml
     /// </summary>
-    public partial class WindowMain : Window
+    public partial class WindowMain : WindowEx
     {
         public IProject Project { get; private set; }
         public IProjectFile ProjectFile { get; private set; }
@@ -61,13 +61,7 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
 
         private void MenuFileSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var writer = System.IO.File.CreateText(WorkingFileName))
-            {
-                ViewModel.SaveChanges();
-                var json = JsonConvert.SerializeObject(AnimationData, Formatting.Indented);
-                writer.Write(json);
-                Log.Message($"Animation file {WorkingFileName} saved.");
-            }
+            DoSaveChanges();
         }
 
         private void MenuViewTextures_Click(object sender, RoutedEventArgs e)
@@ -183,6 +177,18 @@ namespace Xe.Tools.Components.AnimationEditor.Windows
         private void ButtonFrameRemove_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.RemoveFrame();
+        }
+
+        protected override bool DoSaveChanges()
+        {
+            using (var writer = File.CreateText(WorkingFileName))
+            {
+                ViewModel.SaveChanges();
+                var json = JsonConvert.SerializeObject(AnimationData, Formatting.Indented);
+                writer.Write(json);
+                Log.Message($"Animation file {WorkingFileName} saved.");
+            }
+            return true;
         }
     }
 }
