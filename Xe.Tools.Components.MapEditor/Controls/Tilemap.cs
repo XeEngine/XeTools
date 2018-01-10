@@ -189,35 +189,41 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         private void Flush(DrawingContext dc, ISurface surface)
         {
-            using (var map = surface.Map())
+            if (surface != null)
             {
-                if (_writeableBitmap == null ||
-                    surface.Width != _writeableBitmap.Width ||
-                    surface.Height != _writeableBitmap.Height ||
-                    map.Stride / 4 != _writeableBitmap.Width)
+                using (var map = surface.Map())
                 {
-                    _writeableBitmap = new WriteableBitmap(map.Stride / 4, surface.Height, 96.0, 96.0, PixelFormats.Bgra32, null);
-                }
+                    if (_writeableBitmap == null ||
+                        surface.Width != _writeableBitmap.Width ||
+                        surface.Height != _writeableBitmap.Height ||
+                        map.Stride / 4 != _writeableBitmap.Width)
+                    {
+                        _writeableBitmap = new WriteableBitmap(map.Stride / 4, surface.Height, 96.0, 96.0, PixelFormats.Bgra32, null);
+                    }
 
-                _writeableBitmap.Lock();
-                CopyMemory(_writeableBitmap.BackBuffer, map.Data, map.Length);
-                _writeableBitmap.AddDirtyRect(new Int32Rect()
+                    _writeableBitmap.Lock();
+                    CopyMemory(_writeableBitmap.BackBuffer, map.Data, map.Length);
+                    _writeableBitmap.AddDirtyRect(new Int32Rect()
+                    {
+                        X = 0,
+                        Y = 0,
+                        Width = surface.Width,
+                        Height = surface.Height
+                    });
+                    _writeableBitmap.Unlock();
+                }
+            }
+
+            if (_writeableBitmap != null)
+            {
+                dc.DrawImage(_writeableBitmap, new Rect()
                 {
                     X = 0,
                     Y = 0,
-                    Width = surface.Width,
-                    Height = surface.Height
+                    Width = _writeableBitmap.Width,
+                    Height = _writeableBitmap.Height
                 });
-                _writeableBitmap.Unlock();
             }
-
-            dc.DrawImage(_writeableBitmap, new Rect()
-            {
-                X = 0,
-                Y = 0,
-                Width = _writeableBitmap.Width,
-                Height = _writeableBitmap.Height
-            });
         }
 
         private void RenderObject(ObjectEntry entry, float x, float y)

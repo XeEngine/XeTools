@@ -42,9 +42,17 @@
       <Project>{66349c96-4f83-4af1-96f7-56716460ae6e}</Project>
       <Name>Xe.Drawing.Direct2D</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Drawing.Direct3D\Xe.Drawing.Direct3D.csproj">
+      <Project>{b36bdc2b-1a6c-43df-b463-801a3479f451}</Project>
+      <Name>Xe.Drawing.Direct3D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing.GdiPlus\Xe.Drawing.GdiPlus.csproj">
       <Project>{80ecbd59-d578-4694-9ad2-ea4a7bdc47fa}</Project>
       <Name>Xe.Drawing.GdiPlus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Drawing.Null\Xe.Drawing.Null.csproj">
+      <Project>{75f29823-6bbb-4fef-83f8-fcc7631d7e1f}</Project>
+      <Name>Xe.Drawing.Null</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
       <Project>{17ce77b7-cae4-46f1-93b2-be1809856f4d}</Project>

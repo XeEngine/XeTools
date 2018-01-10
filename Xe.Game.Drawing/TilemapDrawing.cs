@@ -125,12 +125,15 @@ namespace Xe.Tools.Tilemap
                     {
                         rect.X = (int)(ix * rect.Height - smallX);
                         var imgTile = _resTile[tile.Index];
-                        Flip flip = Flip.None;
-                        if (tile.IsFlippedX)
-                            flip |= Flip.FlipHorizontal;
-                        if (tile.IsFlippedY)
-                            flip |= Flip.FlipVertical;
-                        Drawing.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect, flip);
+                        if (imgTile != null)
+                        {
+                            Flip flip = Flip.None;
+                            if (tile.IsFlippedX)
+                                flip |= Flip.FlipHorizontal;
+                            if (tile.IsFlippedY)
+                                flip |= Flip.FlipVertical;
+                            Drawing.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect, flip);
+                        }
                     }
                 }
             }
