@@ -26,48 +26,58 @@
 
         public override void DrawRectangle(RectangleF rect, Color color, float width = 1)
         {
-        }
+		}
 
-        public override void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip)
-        {
-            var size = surface.Size;
-            SetTextureToDraw(surface);
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)
+		{
+			DrawSurface(surface, src, dst, 1.0f, flip);
+		}
 
-            EnqueueVertex(new Vertex()
-            {
-                X = dst.Left / _viewportSize.Width * +2.0f - 1.0f,
-                Y = dst.Top / _viewportSize.Height * -2.0f + 1.0f,
-                U = (float)src.Left / size.Width,
-                V = (float)src.Top / size.Height,
-                A = 1.0f,
-            });
-            EnqueueVertex(new Vertex()
-            {
-                X = dst.Right / _viewportSize.Width * +2.0f - 1.0f,
-                Y = dst.Top / _viewportSize.Height * -2.0f + 1.0f,
-                U = (float)src.Right / size.Width,
-                V = (float)src.Top / size.Height,
-                A = 1.0f,
-            });
-            EnqueueVertex(new Vertex()
-            {
-                X = dst.Left / _viewportSize.Width * +2.0f - 1.0f,
-                Y = dst.Bottom / _viewportSize.Height * -2.0f + 1.0f,
-                U = (float)src.Left / size.Width,
-                V = (float)src.Bottom / size.Height,
-                A = 1.0f,
-            });
-            EnqueueVertex(new Vertex()
-            {
-                X = dst.Right / _viewportSize.Width * +2.0f - 1.0f,
-                Y = dst.Bottom / _viewportSize.Height * -2.0f + 1.0f,
-                U = (float)src.Right / size.Width,
-                V = (float)src.Bottom / size.Height,
-                A = 1.0f,
-            });
-        }
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip)
+		{
+			var size = surface.Size;
+			SetTextureToDraw(surface);
 
-        private CSurface _prevSurface;
+			EnqueueVertex(new Vertex()
+			{
+				X = dst.Left / _viewportSize.Width * +2.0f - 1.0f,
+				Y = dst.Top / _viewportSize.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Top / size.Height,
+				A = alpha,
+			});
+			EnqueueVertex(new Vertex()
+			{
+				X = dst.Right / _viewportSize.Width * +2.0f - 1.0f,
+				Y = dst.Top / _viewportSize.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Top / size.Height,
+				A = alpha,
+			});
+			EnqueueVertex(new Vertex()
+			{
+				X = dst.Left / _viewportSize.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / _viewportSize.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Bottom / size.Height,
+				A = alpha,
+			});
+			EnqueueVertex(new Vertex()
+			{
+				X = dst.Right / _viewportSize.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / _viewportSize.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Bottom / size.Height,
+				A = alpha,
+			});
+		}
+
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip)
+		{
+			DrawSurface(surface, src, dst, color.A, flip);
+		}
+
+		private CSurface _prevSurface;
         private void SetTextureToDraw(ISurface surface)
         {
             if (_prevSurface != surface)

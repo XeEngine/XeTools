@@ -52,9 +52,16 @@ namespace Xe.Drawing
         {
             var dst = new Rectangle(x, y, width, height);
             DrawSurface(surface, src, dst, flip);
-        }
+		}
 
-        public abstract void DrawRectangle(RectangleF rect, Color color, float width = 1.0f);
-        public abstract void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip);
-    }
+		public void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip)
+		{
+			DrawSurface(surface, src, new RectangleF(dst.X, dst.Y, dst.Width, dst.Height), flip);
+		}
+
+		public abstract void DrawRectangle(RectangleF rect, Color color, float width = 1.0f);
+        public abstract void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip);
+		public abstract void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip = Flip.None);
+		public abstract void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip = Flip.None);
+	}
 }

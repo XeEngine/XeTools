@@ -72,59 +72,69 @@ namespace Xe.Drawing
             {
                 d2dContext.DrawRectangle(ToRaw(rect), brush, width);
             }
-        }
+		}
 
-        public override void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip)
-        {
-            var s = surface as CSurface;
-            var srcf = new RawRectangleF(src.Left, src.Top, src.Right, src.Bottom);
-            var dstf = new RawRectangleF(dst.Left, dst.Top, dst.Right, dst.Bottom);
-            RawMatrix? matrix;
-            switch (flip)
-            {
-                case Flip.FlipHorizontal:
-                    matrix = new RawMatrix()
-                    {
-                        M11 = -1,
-                        M22 = +1,
-                        M33 = +1,
-                        M44 = +1,
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)
+		{
+			DrawSurface(surface, src, dst, 1.0f, flip);
+		}
 
-                        M41 = dstf.Left * 2 + src.Width / 2.0f,
-                    };
-                    break;
-                case Flip.FlipVertical:
-                    matrix = new RawMatrix()
-                    {
-                        M11 = +1,
-                        M22 = -1,
-                        M33 = +1,
-                        M44 = +1,
-                        
-                        M42 = dstf.Top * 2 + src.Height / 2.0f,
-                    };
-                    break;
-                case Flip.FlipBoth:
-                    matrix = new RawMatrix()
-                    {
-                        M11 = -1,
-                        M22 = -1,
-                        M33 = +1,
-                        M44 = +1,
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip)
+		{
+			var s = surface as CSurface;
+			var srcf = new RawRectangleF(src.Left, src.Top, src.Right, src.Bottom);
+			var dstf = new RawRectangleF(dst.Left, dst.Top, dst.Right, dst.Bottom);
+			RawMatrix? matrix;
+			switch (flip)
+			{
+				case Flip.FlipHorizontal:
+					matrix = new RawMatrix()
+					{
+						M11 = -1,
+						M22 = +1,
+						M33 = +1,
+						M44 = +1,
 
-                        M41 = dstf.Left * 2 + src.Width / 2.0f,
-                        M42 = dstf.Top * 2 + src.Height / 2.0f,
-                    };
-                    break;
-                default:
-                    matrix = null;
-                    break;
-            }
-            Invalidate();
-            d2dContext.DrawBitmap(s.Bitmap, dstf, 1.0f, _interpolationMode, srcf, matrix);
-        }
+						M41 = dstf.Left * 2 + src.Width,
+					};
+					break;
+				case Flip.FlipVertical:
+					matrix = new RawMatrix()
+					{
+						M11 = +1,
+						M22 = -1,
+						M33 = +1,
+						M44 = +1,
 
-        public override void Dispose()
+						M42 = dstf.Top * 2 + src.Height,
+					};
+					break;
+				case Flip.FlipBoth:
+					matrix = new RawMatrix()
+					{
+						M11 = -1,
+						M22 = -1,
+						M33 = +1,
+						M44 = +1,
+
+						M41 = dstf.Left * 2 + src.Width,
+						M42 = dstf.Top * 2 + src.Height,
+					};
+					break;
+				default:
+					matrix = null;
+					break;
+			}
+			Invalidate();
+			d2dContext.DrawBitmap(s.Bitmap, dstf, alpha, _interpolationMode, srcf, matrix);
+		}
+
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip = Flip.None)
+		{
+			DrawSurface(surface, src, dst, color.A, flip);
+		}
+
+		public override void Dispose()
         {
             _surface?.Dispose();
             d2dContext?.Dispose();

@@ -55,6 +55,7 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             {
                 LayerEntry.Visible = value;
                 OnPropertyChanged();
+				MainWindow.IsRedrawingNeeded = true;
             }
         }
 

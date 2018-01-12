@@ -96,7 +96,7 @@ namespace Xe.Drawing
             }
         }
 
-        public override void DrawSurface(ISurface surface, Rectangle src, Rectangle dst, Flip flip)
+        public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)
         {
             var mySurface = surface as CSurface;
             if (mySurface == null)
@@ -130,9 +130,19 @@ namespace Xe.Drawing
                     break;
             }
             Invalidate();
-        }
+		}
 
-        public override void Dispose()
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip = Flip.None)
+		{
+			DrawSurface(surface, src, dst, flip);
+		}
+
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip = Flip.None)
+		{
+			DrawSurface(surface, src, dst, flip);
+		}
+
+		public override void Dispose()
         {
             _surface.Dispose();
             _graphics.Dispose();

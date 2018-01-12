@@ -189,7 +189,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         private void Flush(DrawingContext dc, ISurface surface)
         {
-            if (surface != null)
+            if (surface != null && surface.Width > 0 && surface.Height > 0)
             {
                 using (var map = surface.Map())
                 {

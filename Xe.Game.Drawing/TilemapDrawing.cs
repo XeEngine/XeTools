@@ -101,7 +101,7 @@ namespace Xe.Tools.Tilemap
             var tileSize = Map.TileSize;
             int width = (int)Math.Min((panelWidth + tileSize.Width - 1) / tileSize.Width, layer.Width);
             int height = (int)Math.Min((panelHeight + tileSize.Height - 1) / tileSize.Height, layer.Height);
-            var rect = new Rectangle
+            var rect = new RectangleF
             {
                 Width = Map.TileSize.Width,
                 Height = Map.TileSize.Height
@@ -111,19 +111,20 @@ namespace Xe.Tools.Tilemap
             var smallY = y % tileSize.Height;
             var tileX = (int)x / tileSize.Width;
             var tileY = (int)y / tileSize.Height;
+			var alpha = (float)layer.Opacity;
 
             width = Math.Min(width, layer.Width - tileX);
             height = Math.Min(height, layer.Height - tileY);
             
             for (int iy = Math.Max(0, -tileY); iy < height; iy++)
             {
-                rect.Y = (int)(iy * rect.Width - smallY);
+                rect.Y = iy * rect.Height - smallY;
                 for (int ix = Math.Max(0, -tileX); ix < width; ix++)
                 {
                     var tile = layer.Tiles[tileX + ix, tileY + iy];
                     if (tile.Index > 0)
                     {
-                        rect.X = (int)(ix * rect.Height - smallX);
+                        rect.X = ix * rect.Width - smallX;
                         var imgTile = _resTile[tile.Index];
                         if (imgTile != null)
                         {
@@ -132,7 +133,7 @@ namespace Xe.Tools.Tilemap
                                 flip |= Flip.FlipHorizontal;
                             if (tile.IsFlippedY)
                                 flip |= Flip.FlipVertical;
-                            Drawing.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect, flip);
+                            Drawing.DrawSurface(imgTile.Surface, imgTile.Rectangle, rect, alpha, flip);
                         }
                     }
                 }
@@ -144,6 +145,8 @@ namespace Xe.Tools.Tilemap
             const float Margin = 128.0f;
             if (ActionDrawObject == null)
                 return;
+			if (!layer.Visible)
+				return;
             foreach (var entry in layer.Objects)
             {
                 float acutalX = (float)(entry.X - rect.X);

@@ -33,6 +33,17 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             }
         }
 
+		public bool IsVisible
+		{
+			get => _objects.Visible;
+			set
+			{
+				_objects.Visible = value;
+				OnPropertyChanged();
+				MainWindow.IsRedrawingNeeded = true;
+			}
+		}
+
         public NodeObjectsGroupViewModel(MainWindowViewModel vm, LayerObjects objects) :
             base(vm)
         {
