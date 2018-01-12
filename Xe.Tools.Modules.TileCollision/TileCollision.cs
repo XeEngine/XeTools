@@ -32,7 +32,7 @@ namespace Xe.Tools.Modules
             }
             else
                 baseFileName = InputFileName;
-            return $"{baseFileName}_tmp.bin";
+            return $"{baseFileName}.bin";
         }
 
         public override IEnumerable<string> GetSecondaryInputFileNames()

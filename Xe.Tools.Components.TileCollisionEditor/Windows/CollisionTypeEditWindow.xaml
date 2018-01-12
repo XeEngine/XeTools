@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Xe.Tools.Components.TileCollisionEditor.Windows"
         xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
         mc:Ignorable="d"
-        Title="Collision Type editor" Height="320" Width="300" ResizeMode="NoResize">
+        Title="Collision Type editor" Height="340" Width="300" ResizeMode="NoResize">
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Top">
             <TextBlock Text="Id"/>
@@ -19,7 +19,7 @@
                   SelectedValuePath="Id"
                   DisplayMemberPath="Name"/>
             <TextBlock Margin="0 0 0 8" Text="{Binding Description, Mode=OneWay}"
-                       TextWrapping="Wrap" Height="Auto"/>
+                       TextWrapping="Wrap" Height="70"/>
             <StackPanel Visibility="{Binding HasParameters, Mode=OneWay}">
                 <TextBlock Text="{Binding ParameterName, Mode=OneWay}"/>
                 <StackPanel Margin="0 0 0 8" Orientation="Horizontal"
