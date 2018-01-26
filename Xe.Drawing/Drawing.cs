@@ -63,5 +63,9 @@ namespace Xe.Drawing
         public abstract void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip);
 		public abstract void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip = Flip.None);
 		public abstract void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip = Flip.None);
-	}
+        public virtual void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color,
+            float centerX, float centerY, float centerZ, float scaleX, float scaleY, float scaleZ,
+            float rotateX, float rotateY, float rotateZ, Flip flip = Flip.None)
+        { }
+    }
 }

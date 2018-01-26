@@ -115,7 +115,7 @@ namespace Xe.Drawing
             return CreateSurface(width, height, options);
         }
 
-        public override ISurface CreateSurface(string filename, Color[] filterColors)
+        public override ISurface CreateSurface(string filename, System.Drawing.Color[] filterColors)
         {
             var imagingFactory = device.ImagingFactory;
 
