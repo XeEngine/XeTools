@@ -65,7 +65,7 @@ namespace Xe.Tools.Tilemap
         public void DrawMap(RectangleF rect)
         {
             foreach (var priority in Map.Layers
-                .FlatterLayers<LayerTilemap>()
+                .FlatterLayers()
                 .GroupBy(l => l.DefinitionId)
                 .Join(Map.LayersDefinition,
                     sublayers => sublayers.Key,
