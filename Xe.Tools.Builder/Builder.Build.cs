@@ -26,7 +26,7 @@ namespace Xe.Tools.Builder
                 .ToList();
 
             FileNames.Clear();
-#if DEBUG
+#if true //DEBUG
             int filesProcessed = 0;
             int filesCount = entries.Count;
             foreach (var entry in entries)
