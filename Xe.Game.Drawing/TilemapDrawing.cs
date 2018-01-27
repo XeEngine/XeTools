@@ -67,10 +67,19 @@ namespace Xe.Tools.Tilemap
             foreach (var priority in Map.Layers
                 .FlatterLayers()
                 .GroupBy(l => l.DefinitionId)
+                .Join(Map.LayersDefinition,
+                    sublayers => sublayers.Key,
+                    definition => definition.Id,
+                    (sublayers, definition) => new
+                    {
+                        Sublayers = sublayers,
+                        Definition = definition
+                    })
+                .Where(x => x.Definition.IsVisible)
                 .OrderBy(l => TilemapSettings.LayerNames.
-                    FirstOrDefault(x => x.Id == l.Key)?.Order ?? -1))
+                    FirstOrDefault(x => x.Id == l.Definition.Id)?.Order ?? -1))
             {
-                foreach (var layer in priority)
+                foreach (var layer in priority.Sublayers)
                 {
                     DrawLayer(layer, rect);
                 }

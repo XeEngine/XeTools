@@ -115,62 +115,68 @@ namespace Xe.Drawing
             return CreateSurface(width, height, options);
         }
 
-        public override ISurface CreateSurface(string filename, Color[] filterColors)
+        public override ISurface CreateSurface(string filename, System.Drawing.Color[] filterColors)
         {
             var imagingFactory = device.ImagingFactory;
-            using (var inputStream = new wic.WICStream(imagingFactory, filename, NativeFileAccess.Read))
+
+            using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
             {
-                using (var pngDecoder = new wic.PngBitmapDecoder(imagingFactory))
+                using (var inputStream = new wic.WICStream(imagingFactory, fileStream))
                 {
-                    pngDecoder.Initialize(inputStream, wic.DecodeOptions.CacheOnLoad);
-
-                    // decode the loaded image to a format that can be consumed by D2D
-                    using (var formatConverter = new wic.FormatConverter(imagingFactory))
+                    using (var pngDecoder = new wic.PngBitmapDecoder(imagingFactory))
                     {
-                        var frame = pngDecoder.GetFrame(0);
-                        wic.BitmapSource bmpSource;
-                        if (frame.PixelFormat != wicPixelFormat)
-                        {
-                            formatConverter.Initialize(frame, wicPixelFormat);
-                            bmpSource = formatConverter;
-                        }
-                        else
-                        {
-                            bmpSource = frame;
-                        }
+                        pngDecoder.Initialize(inputStream, wic.DecodeOptions.CacheOnLoad);
 
-                        // load the base image into a D2D Bitmap
-                        d2.Bitmap1 inputBitmap;
-                        var bitmapProperties = new d2.BitmapProperties1(d2PixelFormat);
-                        if (filterColors == null || filterColors.Length <= 0)
+                        // decode the loaded image to a format that can be consumed by D2D
+                        using (var formatConverter = new wic.FormatConverter(imagingFactory))
                         {
-                            inputBitmap = d2.Bitmap1.FromWicBitmap(d2dContext, bmpSource, bitmapProperties);
-                        }
-                        else
-                        {
-                            var bmpSize = bmpSource.Size;
-                            var stride = bmpSize.Width * 32 / 8;
-                            var memSize = stride * bmpSize.Height;
-                            var ptr = Marshal.AllocHGlobal(memSize);
-                            bmpSource.CopyPixels(stride, ptr, memSize);
-                            Xe.Tools.Services.ImageService.MakeTransparent_Bgra32(ptr, stride, bmpSize.Height,
-                                filterColors
-                                .Select(x => new Xe.Tools.Services.Color()
-                                {
-                                    a = x.A, r = x.R,
-                                    g = x.G, b = x.B
-                                })
-                                .ToArray()
-                            );
-
-                            inputBitmap = new d2.Bitmap1(d2dContext, new Size2()
+                            var frame = pngDecoder.GetFrame(0);
+                            wic.BitmapSource bmpSource;
+                            if (frame.PixelFormat != wicPixelFormat)
                             {
-                                Width = bmpSize.Width,
-                                Height = bmpSize.Height
-                            }, new DataStream(ptr, memSize, true, false), stride, bitmapProperties);
-                            Marshal.FreeHGlobal(ptr);
+                                formatConverter.Initialize(frame, wicPixelFormat);
+                                bmpSource = formatConverter;
+                            }
+                            else
+                            {
+                                bmpSource = frame;
+                            }
+
+                            // load the base image into a D2D Bitmap
+                            d2.Bitmap1 inputBitmap;
+                            var bitmapProperties = new d2.BitmapProperties1(d2PixelFormat);
+                            if (filterColors == null || filterColors.Length <= 0)
+                            {
+                                inputBitmap = d2.Bitmap1.FromWicBitmap(d2dContext, bmpSource, bitmapProperties);
+                            }
+                            else
+                            {
+                                var bmpSize = bmpSource.Size;
+                                var stride = bmpSize.Width * 32 / 8;
+                                var memSize = stride * bmpSize.Height;
+                                var ptr = Marshal.AllocHGlobal(memSize);
+                                bmpSource.CopyPixels(stride, ptr, memSize);
+                                Xe.Tools.Services.ImageService.MakeTransparent_Bgra32(ptr, stride, bmpSize.Height,
+                                    filterColors
+                                    .Select(x => new Xe.Tools.Services.Color()
+                                    {
+                                        a = x.A,
+                                        r = x.R,
+                                        g = x.G,
+                                        b = x.B
+                                    })
+                                    .ToArray()
+                                );
+
+                                inputBitmap = new d2.Bitmap1(d2dContext, new Size2()
+                                {
+                                    Width = bmpSize.Width,
+                                    Height = bmpSize.Height
+                                }, new DataStream(ptr, memSize, true, false), stride, bitmapProperties);
+                                Marshal.FreeHGlobal(ptr);
+                            }
+                            return new CSurface(this, inputBitmap);
                         }
-                        return new CSurface(this, inputBitmap);
                     }
                 }
             }

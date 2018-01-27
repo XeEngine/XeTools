@@ -156,11 +156,11 @@ namespace Xe.Tools.Modules
                 .Where(x => x.Visible)
                 .GroupBy(x => x.DefinitionId)
                 .Join(tileMap.LayersDefinition,
-                    group => group.Key,
+                    sublayers => sublayers.Key,
                     definition => definition.Id,
-                    (group, definition) => new
+                    (sublayers, definition) => new
                     {
-                        Group = group,
+                        Sublayers = sublayers,
                         Definition = definition,
                     })
                 .Join(TilemapSettings.LayerNames,
@@ -169,7 +169,7 @@ namespace Xe.Tools.Modules
                     (layer, name) => new LayerEntry
                     {
                         TileMap = tileMap,
-                        Sublayers = layer.Group.Where(x => x.Visible).ToList(),
+                        Sublayers = layer.Sublayers.Where(x => x.Visible).ToList(),
                         Definition = layer.Definition,
                         Name = name,
                         Surface = null,

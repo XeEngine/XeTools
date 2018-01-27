@@ -49,13 +49,17 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public bool IsVisible
         {
             get => _layerDef.IsVisible;
-            set => _layerDef.IsVisible = value;
+            set
+            {
+                _layerDef.IsVisible = value;
+                MainWindow.IsRedrawingNeeded = true;
+            }
         }
 
         public bool IsEnabled
         {
             get => _layerDef.IsEnabled;
-            set => _layerDef.IsEnabled = value;
+            set =>_layerDef.IsEnabled = value;
         }
 
         public int RenderingMode

@@ -25,10 +25,10 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Zone" VerticalAlignment="Center"/>
         <ComboBox Grid.Row="0" Grid.Column="2" SelectedIndex="{Binding Zone, Mode=TwoWay}">
             <ComboBoxItem Content="Debug"/>
-            <ComboBoxItem Content="Mountain"/>
-            <ComboBoxItem Content="Cave"/>
             <ComboBoxItem Content="Island"/>
             <ComboBoxItem Content="Forest"/>
+            <ComboBoxItem Content="Cave"/>
+            <ComboBoxItem Content="Mountain"/>
             <ComboBoxItem Content="Purification plant"/>
             <ComboBoxItem Content="Power plant"/>
         </ComboBox>

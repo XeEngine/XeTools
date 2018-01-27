@@ -1,7 +1,7 @@
 ﻿using SharpDX.Direct2D1;
+using SharpDX.Mathematics;
 using SharpDX.Mathematics.Interop;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace Xe.Drawing
 {
@@ -10,7 +10,7 @@ namespace Xe.Drawing
         private CSurface _surface;
         private bool _invalidated;
         private Filter _filter;
-        private SharpDX.Direct2D1.InterpolationMode _interpolationMode;
+        private InterpolationMode _interpolationMode;
 
         public override ISurface Surface
         {
@@ -44,13 +44,13 @@ namespace Xe.Drawing
                 switch (value)
                 {
                     case Filter.Nearest:
-                        _interpolationMode = SharpDX.Direct2D1.InterpolationMode.NearestNeighbor;
+                        _interpolationMode = InterpolationMode.NearestNeighbor;
                         break;
                     case Filter.Linear:
-                        _interpolationMode = SharpDX.Direct2D1.InterpolationMode.Linear;
+                        _interpolationMode = InterpolationMode.Linear;
                         break;
                     case Filter.Cubic:
-                        _interpolationMode = SharpDX.Direct2D1.InterpolationMode.Cubic;
+                        _interpolationMode = InterpolationMode.Cubic;
                         break;
                 }
             }
@@ -81,52 +81,9 @@ namespace Xe.Drawing
 
 		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip)
 		{
-			var s = surface as CSurface;
-			var srcf = new RawRectangleF(src.Left, src.Top, src.Right, src.Bottom);
-			var dstf = new RawRectangleF(dst.Left, dst.Top, dst.Right, dst.Bottom);
-			RawMatrix? matrix;
-			switch (flip)
-			{
-				case Flip.FlipHorizontal:
-					matrix = new RawMatrix()
-					{
-						M11 = -1,
-						M22 = +1,
-						M33 = +1,
-						M44 = +1,
-
-						M41 = dstf.Left * 2 + src.Width,
-					};
-					break;
-				case Flip.FlipVertical:
-					matrix = new RawMatrix()
-					{
-						M11 = +1,
-						M22 = -1,
-						M33 = +1,
-						M44 = +1,
-
-						M42 = dstf.Top * 2 + src.Height,
-					};
-					break;
-				case Flip.FlipBoth:
-					matrix = new RawMatrix()
-					{
-						M11 = -1,
-						M22 = -1,
-						M33 = +1,
-						M44 = +1,
-
-						M41 = dstf.Left * 2 + src.Width,
-						M42 = dstf.Top * 2 + src.Height,
-					};
-					break;
-				default:
-					matrix = null;
-					break;
-			}
-			Invalidate();
-			d2dContext.DrawBitmap(s.Bitmap, dstf, alpha, _interpolationMode, srcf, matrix);
+            RawMatrix? matrix = flip != Flip.None ?
+                ToMatrix(dst, flip) : (RawMatrix?)null;
+            DrawSurface(surface, src, dst, alpha, matrix);
 		}
 
 		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip = Flip.None)
@@ -134,7 +91,59 @@ namespace Xe.Drawing
 			DrawSurface(surface, src, dst, color.A, flip);
 		}
 
-		public override void Dispose()
+        public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color,
+            float centerX, float centerY, float centerZ, float scaleX, float scaleY, float scaleZ,
+            float rotateX, float rotateY, float rotateZ, Flip flip = Flip.None)
+        {
+            var sr = System.Math.Sin(rotateY);
+            var cr = System.Math.Cos(rotateY);
+            var sp = System.Math.Sin(rotateX);
+            var cp = System.Math.Cos(rotateX);
+            var sy = System.Math.Sin(rotateZ);
+            var cy = System.Math.Cos(rotateZ);
+
+            var _11 = cp * cy;
+            var _12 = sr * sp * cy - cr * sy;
+            var _13 = cr * sp * cy + sr * sy;
+            var _21 = cp * sy;
+            var _22 = sr * sp * sy + cr * cy;
+            var _23 = cr * sp * sy - sr * cy;
+            var _31 = -sp;
+            var _32 = sr * cp;
+            var _33 = cr * cp;
+
+            RawMatrix matrix = new RawMatrix
+            {
+                M11 = (float)(_11 * scaleX),
+                M12 = (float)(_12 * scaleY),
+                M13 = (float)(_13 * scaleZ),
+                M14 = 0.0f,
+                M21 = (float)(_21 * scaleX),
+                M22 = (float)(_22 * scaleY),
+                M23 = (float)(_23 * scaleZ),
+                M24 = 0.0f,
+                M31 = (float)(_31 * scaleX),
+                M32 = (float)(_32 * scaleY),
+                M33 = (float)(_33 * scaleZ),
+                M34 = 0.0f,
+                M41 = (float)((centerX * _11 + centerY * _21 + centerZ * _31) * scaleX),
+                M42 = (float)((centerX * _12 + centerY * _22 + centerZ * _32) * scaleY),
+                M43 = (float)((centerX * _13 + centerY * _23 + centerZ * _33) * scaleZ),
+                M44 = 1.0f
+            };
+            DrawSurface(surface, src, dst, color.A, matrix);
+        }
+
+        private void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, RawMatrix? matrix)
+        {
+            var s = surface as CSurface;
+            var srcf = new RawRectangleF(src.Left, src.Top, src.Right, src.Bottom);
+            var dstf = new RawRectangleF(dst.Left, dst.Top, dst.Right, dst.Bottom);
+            Invalidate();
+            d2dContext.DrawBitmap(s.Bitmap, dstf, alpha, _interpolationMode, srcf, matrix);
+        }
+
+        public override void Dispose()
         {
             _surface?.Dispose();
             d2dContext?.Dispose();
@@ -168,6 +177,49 @@ namespace Xe.Drawing
         private static RawRectangleF ToRaw(RectangleF rect)
         {
             return new RawRectangleF(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        }
+
+        private static RawMatrix ToMatrix(RectangleF rect, Flip flip)
+        {
+            switch (flip)
+            {
+                case Flip.FlipHorizontal:
+                    return new RawMatrix()
+                    {
+                        M11 = -1,
+                        M22 = +1,
+                        M33 = +1,
+                        M44 = +1,
+                        M41 = rect.Left * 2 + rect.Width,
+                    };
+                case Flip.FlipVertical:
+                    return new RawMatrix
+                    {
+                        M11 = +1,
+                        M22 = -1,
+                        M33 = +1,
+                        M44 = +1,
+                        M42 = rect.Top * 2 + rect.Height,
+                    };
+                case Flip.FlipBoth:
+                    return new RawMatrix
+                    {
+                        M11 = -1,
+                        M22 = -1,
+                        M33 = +1,
+                        M44 = +1,
+                        M41 = rect.Left * 2 + rect.Width,
+                        M42 = rect.Top * 2 + rect.Height,
+                    };
+                default:
+                    return new RawMatrix()
+                    {
+                        M11 = +1,
+                        M22 = +1,
+                        M33 = +1,
+                        M44 = +1,
+                    };
+            }
         }
 
         private static RawColor4 ToRaw(Color color)

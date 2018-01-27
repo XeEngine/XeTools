@@ -40,6 +40,8 @@ namespace Xe.Drawing
 
 		void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip = Flip.None);
 
-		void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip = Flip.None);
-	}
+        void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color,
+            float centerX, float centerY, float centerZ, float scaleX, float scaleY, float scaleZ,
+            float rotateX, float rotateY, float rotateZ, Flip flip = Flip.None);
+    }
 }
