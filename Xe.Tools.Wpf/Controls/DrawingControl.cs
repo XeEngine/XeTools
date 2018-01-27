@@ -164,50 +164,52 @@ namespace Xe.Tools.Wpf.Controls
 
 		private void Present()
 		{
-			using (var dc = _visual.RenderOpen())
-			{
-				Present(dc, Drawing.Surface);
-			}
+            Present(Drawing.Surface);
 		}
 
-		private void Present(DrawingContext dc, ISurface surface)
-		{
-			if (surface != null && surface.Width > 0 && surface.Height > 0)
-			{
-				using (var map = surface.Map())
-				{
-					if (_writeableBitmap == null ||
-						surface.Width != _writeableBitmap.Width ||
-						surface.Height != _writeableBitmap.Height ||
-						map.Stride / 4 != _writeableBitmap.Width)
-					{
-						_writeableBitmap = new WriteableBitmap(map.Stride / 4, surface.Height, 96.0, 96.0, PixelFormats.Bgra32, null);
-					}
+		private void Present(ISurface surface)
+        {
+            if (surface != null && surface.Width > 0 && surface.Height > 0)
+            {
+                using (var map = surface.Map())
+                {
+                    if (_writeableBitmap == null ||
+                        surface.Width != _writeableBitmap.Width ||
+                        surface.Height != _writeableBitmap.Height ||
+                        map.Stride / 4 != _writeableBitmap.Width)
+                    {
+                        _writeableBitmap = new WriteableBitmap(map.Stride / 4, surface.Height, 96.0, 96.0, PixelFormats.Bgra32, null);
+                    }
 
-					_writeableBitmap.Lock();
-					CopyMemory(_writeableBitmap.BackBuffer, map.Data, map.Length);
-					_writeableBitmap.AddDirtyRect(new Int32Rect()
-					{
-						X = 0,
-						Y = 0,
-						Width = surface.Width,
-						Height = surface.Height
-					});
-					_writeableBitmap.Unlock();
-				}
-			}
+                    _writeableBitmap.Lock();
+                    CopyMemory(_writeableBitmap.BackBuffer, map.Data, map.Length);
+                    _writeableBitmap.AddDirtyRect(new Int32Rect()
+                    {
+                        X = 0,
+                        Y = 0,
+                        Width = surface.Width,
+                        Height = surface.Height
+                    });
+                    _writeableBitmap.Unlock();
+                }
+            }
 
-			if (_writeableBitmap != null)
-			{
-				dc.DrawImage(_writeableBitmap, new Rect()
-				{
-					X = 0,
-					Y = 0,
-					Width = _writeableBitmap.Width,
-					Height = _writeableBitmap.Height
-				});
-			}
-		}
+            using (var dc = _visual.RenderOpen())
+            {
+                Present(dc, _writeableBitmap);
+            }
+        }
+
+        private void Present(DrawingContext dc, ImageSource image)
+        {
+            dc.DrawImage(image, new Rect()
+            {
+                X = 0,
+                Y = 0,
+                Width = image.Width,
+                Height = image.Height
+            });
+        }
 
 		private void ResizeRenderingEngine(int width, int height)
 		{

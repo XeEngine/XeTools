@@ -117,6 +117,9 @@ namespace Xe.Game.Drawing
 
 		public bool SetAnimation(string animationDefinitionName, Direction direction)
 		{
+            if (string.IsNullOrEmpty(animationDefinitionName))
+                return false;
+
 			if (Drawer.DictionaryAnimationDefinitions.TryGetValue(animationDefinitionName, out var animationDefinition))
 			{
 				string animation;
