@@ -32,6 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimationDrawer.cs" />
+    <Compile Include="AnimationEntityDrawer.cs" />
     <Compile Include="FontDrawer.cs" />
     <Compile Include="TilemapDrawing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

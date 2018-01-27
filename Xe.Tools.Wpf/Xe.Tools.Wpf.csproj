@@ -76,6 +76,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\NumericUpDownd.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\NumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -97,6 +101,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\SingleSelectionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Icons\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,8 +162,12 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\D2DControl.cs" />
     <Compile Include="Controls\D2DControl.DX11ImageSource.cs" />
+    <Compile Include="Controls\DrawingControl.cs" />
     <Compile Include="Controls\FooterBar.xaml.cs">
       <DependentUpon>FooterBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NumericUpDownd.xaml.cs">
+      <DependentUpon>NumericUpDownd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
@@ -164,6 +176,7 @@
     <Compile Include="Controls\SpecialGroupBox.xaml.cs">
       <DependentUpon>SpecialGroupBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TwoColumnStackPanel.cs" />
     <Compile Include="Controls\WindowEx.cs" />
     <Compile Include="Controls\XeWindow.xaml.cs">
       <DependentUpon>XeWindow.xaml</DependentUpon>
@@ -183,6 +196,9 @@
     <Compile Include="Extensions.Direct3D11.cs" />
     <Compile Include="Extensions.Mathematics.cs" />
     <Compile Include="Extensions.WIC.cs" />
+    <Compile Include="Icons\Icons.xaml.cs">
+      <DependentUpon>Icons.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -208,6 +224,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
+      <Project>{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}</Project>
+      <Name>Xe.Drawing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
       <Project>{EA2C7533-429D-4C2E-A3CE-4C77340E8A40}</Project>
       <Name>Xe.Tools</Name>

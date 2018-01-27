@@ -22,28 +22,28 @@ namespace Xe.Tools.Wpf.Controls
     /// <summary>
     /// Interaction logic for NumericUpDown.xaml
     /// </summary>
-    public partial class NumericUpDown : UserControl
+    public partial class NumericUpDownd : UserControl
     {
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
                 "Value",
-                typeof(int),
-                typeof(NumericUpDown),
-                new PropertyMetadata(0, new PropertyChangedCallback(OnValuePropertyChanged)),
+                typeof(double),
+                typeof(NumericUpDownd),
+                new PropertyMetadata(0.0, new PropertyChangedCallback(OnValuePropertyChanged)),
                 new ValidateValueCallback(ValidateValue));
         public static readonly DependencyProperty MinimumValueProperty =
             DependencyProperty.Register(
                 "MinimumValue",
-                typeof(int),
-                typeof(NumericUpDown),
-                new PropertyMetadata(0, new PropertyChangedCallback(OnMinimumValuePropertyChanged)),
+                typeof(double),
+                typeof(NumericUpDownd),
+                new PropertyMetadata(0.0, new PropertyChangedCallback(OnMinimumValuePropertyChanged)),
                 new ValidateValueCallback(ValidateValue));
         public static readonly DependencyProperty MaximumValueProperty =
             DependencyProperty.Register(
                 "MaximumValue",
-                typeof(int),
-                typeof(NumericUpDown),
-                new PropertyMetadata(100, new PropertyChangedCallback(OnMaximumValuePropertyChanged)),
+                typeof(double),
+                typeof(NumericUpDownd),
+                new PropertyMetadata(100.0, new PropertyChangedCallback(OnMaximumValuePropertyChanged)),
                 new ValidateValueCallback(ValidateValue));
 		
 		public delegate void ValueChangedEventHandler(object sender, ScrollEventArgs e);
@@ -51,29 +51,29 @@ namespace Xe.Tools.Wpf.Controls
 		public event ValueChangedEventHandler ValueChanged;
 
 
-		public int Value
+		public double Value
         {
-            get => (int)GetValue(ValueProperty);
+            get => (double)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
-        public int MinimumValue
+        public double MinimumValue
         {
-            get => (int)GetValue(MinimumValueProperty);
+            get => (double)GetValue(MinimumValueProperty);
             set => SetValue(MinimumValueProperty, value);
         }
-        public int MaximumValue
+        public double MaximumValue
         {
-            get => (int)GetValue(MaximumValueProperty);
+            get => (double)GetValue(MaximumValueProperty);
             set => SetValue(MaximumValueProperty, value);
         }
 
-        public NumericUpDown()
+        public NumericUpDownd()
         {
             InitializeComponent();
             TextNumber.DataContext = this;
         }
         
-        private void CheckBoundaries(int value, int minimumValue, int maximumValue)
+        private void CheckBoundaries(double value, double minimumValue, double maximumValue)
         {
             var minReached = value != minimumValue;
             var maxReached = value != maximumValue;
@@ -85,17 +85,17 @@ namespace Xe.Tools.Wpf.Controls
 
         private void ButtonUp_Click(object sender, RoutedEventArgs e)
         {
-            Value++;
+            Value += 0.5;
         }
 
         private void ButtonDown_Click(object sender, RoutedEventArgs e)
         {
-            Value--;
+            Value -= 0.5;
         }
 
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            int value;
+			double value;
             switch (e.Key)
             {
                 case Key.Up:
@@ -113,7 +113,7 @@ namespace Xe.Tools.Wpf.Controls
 
         private void TextNumber_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            int value;
+			double value;
             int move = e.Delta / 120;
             if (move > 0)
             {
@@ -132,18 +132,18 @@ namespace Xe.Tools.Wpf.Controls
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var str = TextNumber.Text;
-            if (int.TryParse(str, out int value))
+            if (double.TryParse(str, out double value))
             {
                 Value = value;
                 TextNumber.SelectionStart = str.Length;
             }
         }
 
-        private void OnValueChanged(int oldValue, int newValue)
+        private void OnValueChanged(double oldValue, double newValue)
         {
             var minimumValue = MinimumValue;
             var maximumValue = MaximumValue;
-            int realValue = Math.Max(minimumValue, Math.Min(maximumValue, newValue));
+			double realValue = Math.Max(minimumValue, Math.Min(maximumValue, newValue));
             if (realValue != newValue)
             {
                 Value = realValue;
@@ -156,7 +156,7 @@ namespace Xe.Tools.Wpf.Controls
                 CheckBoundaries(newValue, minimumValue, maximumValue);
             }
         }
-        private void OnMinimumValueChanged(int oldValue, int newValue)
+        private void OnMinimumValueChanged(double oldValue, double newValue)
         {
             var minimumValue = newValue;
             var maximumValue = MaximumValue;
@@ -173,7 +173,7 @@ namespace Xe.Tools.Wpf.Controls
                     CheckBoundaries(value, minimumValue, maximumValue);
             }
         }
-        private void OnMaximumValueChanged(int oldValue, int newValue)
+        private void OnMaximumValueChanged(double oldValue, double newValue)
         {
             var minimumValue = MinimumValue;
             var maximumValue = newValue;
@@ -193,19 +193,19 @@ namespace Xe.Tools.Wpf.Controls
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as NumericUpDown).OnValueChanged((int)e.OldValue, (int)e.NewValue);
+            (d as NumericUpDownd).OnValueChanged((double)e.OldValue, (double)e.NewValue);
         }
         private static void OnMinimumValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as NumericUpDown).OnMinimumValueChanged((int)e.OldValue, (int)e.NewValue);
+            (d as NumericUpDownd).OnMinimumValueChanged((double)e.OldValue, (double)e.NewValue);
         }
         private static void OnMaximumValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as NumericUpDown).OnMaximumValueChanged((int)e.OldValue, (int)e.NewValue);
+            (d as NumericUpDownd).OnMaximumValueChanged((double)e.OldValue, (double)e.NewValue);
         }
         private static bool ValidateValue(object o)
         {
-            return o is int;
+            return o is double;
         }
     }
 }

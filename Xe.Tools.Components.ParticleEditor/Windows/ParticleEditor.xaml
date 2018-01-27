@@ -1,0 +1,116 @@
+﻿<Window x:Class="Xe.Tools.Components.ParticleEditor.Windows.ParticleEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xe.Tools.Components.ParticleEditor.Windows"
+        xmlns:controls="clr-namespace:Xe.Tools.Components.ParticleEditor.Controls"
+        xmlns:tools="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+        mc:Ignorable="d"
+        Title="Particle editor" Height="480" Width="600">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="textRenderingTime" Margin="0 0 10 0"/>
+                <TextBlock x:Name="textPresentationTime" Margin="0 0 10 0"/>
+                <TextBlock x:Name="textDeltaTime" Margin="0 0 10 0"/>
+            </StackPanel>
+        </StatusBar>
+        <Grid Margin="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0">
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Text="Animation data"/>
+                    <ComboBox Margin="0 0 0 5" ItemsSource="{Binding AnimationDataList, Mode=OneTime}"
+                              SelectedValue="{Binding AnimationDataName}"/>
+
+                    <TextBlock Text="Particle groups list"/>
+                </StackPanel>
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Margin="0 5 5 0"
+                            Command="{Binding AddParticleGroup}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Add_16x}" Width="16"/>
+                            <TextBlock Text="Add" Margin="3 0 3 0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="1" Margin="0 5 0 0"
+                            Command="{Binding RemoveParticleGroup}"
+                            IsEnabled="{Binding IsParticleGroupSelected}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                            <TextBlock Text="Remove" Margin="3 0 3 0"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <ListBox ItemsSource="{Binding ParticleGroups}"
+                         DisplayMemberPath="{Binding AnimationName}"
+                         SelectedValue="{Binding SelectedParticleGroup}"/>
+            </DockPanel>
+            <DockPanel Grid.Column="2" IsEnabled="{Binding IsParticleGroupSelected}">
+                <StackPanel DockPanel.Dock="Top">
+                    <tools:SpecialGroupBox Header="Particle group properties">
+                        <StackPanel>
+                            <TextBlock Text="Animation name"/>
+                            <ComboBox Margin="0 0 0 5" ItemsSource="{Binding AnimationNames}"
+                                      SelectedValue="{Binding AnimationName, Mode=TwoWay}"/>
+
+                            <TextBlock Text="Particles count"/>
+                            <tools:NumericUpDown Margin="0 0 0 5"
+                                                 MinimumValue="0"
+                                                 MaximumValue="10000"
+                                                 Value="{Binding ParticlesCount, Mode=TwoWay}"/>
+
+                            <TextBlock Text="Global delay"/>
+                            <tools:NumericUpDownd Margin="0 0 0 5"
+                                                 MinimumValue="0"
+                                                 MaximumValue="100"
+                                                  Value="{Binding GlobalDelay, Mode=TwoWay}"/>
+
+                            <TextBlock Text="Global duration"/>
+                            <tools:NumericUpDownd Margin="0 0 0 5"
+                                                 MinimumValue="0"
+                                                 MaximumValue="100"
+                                                  Value="{Binding GlobalDuration, Mode=TwoWay}"/>
+
+                            <TextBlock Text="Delay between particles"/>
+                            <tools:NumericUpDownd Margin="0 0 0 5"
+                                                 MinimumValue="0"
+                                                 MaximumValue="10"
+                                                  Value="{Binding DelayBetweenParticles, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </tools:SpecialGroupBox>
+                    <TextBlock Text="Particle group effects"/>
+                </StackPanel>
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Margin="0 5 5 0" Click="ButtonCreateEffect_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Add_16x}" Width="16"/>
+                            <TextBlock Text="Add new particle effect" Margin="3 0 3 0"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <ScrollViewer>
+                    <StackPanel x:Name="panelParticleGroupEffects" Margin="0 0 5 0"/>
+                </ScrollViewer>
+            </DockPanel>
+            <DockPanel Grid.Column="4">
+                <Button DockPanel.Dock="Bottom" Content="Reset timer" Command="{Binding ResetTimerCommand}"/>
+                <controls:ParticlePanel x:Name="particlePanel" FramesPerSecond="60"/>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -216,6 +216,10 @@
       <Project>{47197a2e-2287-4b30-9adf-ee6921aaf7e9}</Project>
       <Name>Xe.Tools.Components.MapEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Components.ParticleEditor\Xe.Tools.Components.ParticleEditor.csproj">
+      <Project>{ecc169d6-3a46-4135-93fb-05f5b7a19c34}</Project>
+      <Name>Xe.Tools.Components.ParticleEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Components.TileCollisionEditor\Xe.Tools.Components.TileCollisionEditor.csproj">
       <Project>{7a121d57-00d3-42d3-aa21-fd568a845b64}</Project>
       <Name>Xe.Tools.Components.TileCollisionEditor</Name>

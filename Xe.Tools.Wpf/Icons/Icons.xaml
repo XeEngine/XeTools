@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Xe.Tools.Wpf.Icons.Icons"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Xe.Tools.Wpf.Icons"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="22">
+    <StackPanel>
+        <Image Margin="0 0 5 0" Source="{StaticResource Add_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource AddFile_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource AddRowToAbove_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource AddRowToBelow_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource AppearanceTabSolid_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource AppearanceTabSwatch_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Assembly_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource BuildSelection_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource CleanData_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource ClearWindowContent_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Copy_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Document_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource EditTitleString_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Export_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource FileCollection_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Folder_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource FolderOpen_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Import_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource NewFile_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource NewSolutionFolder_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource OpenFileDialog_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Property_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Remove_color_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Run_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Search_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Settings_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource SpecialFolder_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource StatusCriticalError_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource StatusInformation_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource StatusNotStarted_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource StatusWarning_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Stop_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource TableInsideBorder_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource ZoomIn_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource ZoomOut_16x}" Width="16"/>
+    </StackPanel>
+</UserControl>

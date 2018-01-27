@@ -28,7 +28,8 @@ namespace Xe.Tools.Services
 
         public AnimationData GetAnimationData(string fileName)
         {
-            return GetAnimationData(ProjectFiles.SingleOrDefault(x => x.Name == fileName));
+			var file = ProjectFiles.FirstOrDefault(x => x.Name == fileName);
+			return file != null ? GetAnimationData(file) : null;
         }
 
         public AnimationData GetAnimationData(IProjectFile item)

@@ -352,6 +352,19 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
+    <DrawingImage x:Key="StatusNotStarted_16x" >
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M13.958,8C13.958,11.313 11.271,14 7.958,14 4.645,14 1.958,11.313 1.958,8 1.958,4.687 4.645,2 7.958,2 11.271,2 13.958,4.687 13.958,8" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M11.958,8C11.958,5.791 10.167,4 7.958,4 5.749,4 3.958,5.791 3.958,8 3.958,10.209 5.749,12 7.958,12 10.167,12 11.958,10.209 11.958,8" />
+                    <GeometryDrawing Brush="#FF414141" Geometry="F1M7.958,12C5.749,12 3.958,10.209 3.958,8 3.958,5.791 5.749,4 7.958,4 10.167,4 11.958,5.791 11.958,8 11.958,10.209 10.167,12 7.958,12 M7.958,3C5.197,3 2.958,5.238 2.958,8 2.958,10.762 5.197,13 7.958,13 10.72,13 12.958,10.762 12.958,8 12.958,5.238 10.72,3 7.958,3" />
+                    <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M11.958,8C11.958,5.791 10.167,4 7.958,4 5.749,4 3.958,5.791 3.958,8 3.958,10.209 5.749,12 7.958,12 10.167,12 11.958,10.209 11.958,8" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
     <DrawingImage x:Key="StatusWarning_16x" >
         <DrawingImage.Drawing>
             <DrawingGroup>
@@ -360,6 +373,17 @@
                     <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.0002,-0.000199999999999534L0.000200000000000422,13.9998 2.0002,15.9998 14.0002,15.9998 16.0002,13.9998 9.0002,-0.000199999999999534z" />
                     <GeometryDrawing Brush="#FFFFCC00" Geometry="F1M9,10L7,10 7,5 9,5z M9,13L7,13 7,11 9,11z M8.382,1L7.618,1 1.217,13.803 2.5,15 13.5,15 14.783,13.803z" />
                     <GeometryDrawing Brush="#FF000000" Geometry="F1M9,11L7,11 7,13 9,13z M9,10L7,10 7,5 9,5z" />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Stop_16x" >
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M13,13L3,13 3,3 13,3z" />
+                    <GeometryDrawing Brush="#FFA1260D" Geometry="F1M12,12L4,12 4,4 12,4z" />
                 </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingImage.Drawing>
