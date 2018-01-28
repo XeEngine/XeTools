@@ -22,5 +22,7 @@ namespace Xe.Game.Tilemaps
         public List<LayerBase> Layers { get; set; }
 
         public List<LayerDefinition> LayersDefinition { get; set; }
+
+        public List<EventDefinition> EventDefinitions { get; set; }
     }
 }

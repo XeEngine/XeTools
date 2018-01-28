@@ -17,6 +17,9 @@ namespace Xe.Game.Tilemaps
         {
             public List<LayerDefinition> LayersDefinition { get; set; }
                 = new List<LayerDefinition>();
+
+            public List<EventDefinition> EventsDefinitions { get; set; }
+                = new List<EventDefinition>();
         }
 
         public Dictionary<Guid, ObjectExtensionDefinition> _objExtensions;
@@ -67,8 +70,8 @@ namespace Xe.Game.Tilemaps
                         {
                             var strContent = reader.ReadToEnd();
                             var ext = JsonConvert.DeserializeObject<Ext>(strContent);
-                            if (ext != null)
-                                dst.LayersDefinition = ext.LayersDefinition;
+                            dst.LayersDefinition = ext?.LayersDefinition ?? new List<LayerDefinition>();
+                            dst.EventDefinitions = ext?.EventsDefinitions ?? new List<EventDefinition>();
                         }
                     }
                 }
@@ -97,7 +100,10 @@ namespace Xe.Game.Tilemaps
                 {
                     writer.Write(JsonConvert.SerializeObject(new Ext()
                     {
-                        LayersDefinition = src.LayersDefinition
+                        LayersDefinition = src.LayersDefinition,
+                        EventsDefinitions = src.EventDefinitions
+                            .OrderBy(x => x.Index)
+                            .ToList()
                     }, Formatting.Indented));
                 }
             }

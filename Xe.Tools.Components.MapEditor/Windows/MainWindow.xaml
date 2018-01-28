@@ -18,6 +18,11 @@
                           Command="{Binding CommandSaveMap}"
                           CommandParameter="{Binding}" />
             </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Events"
+                          Command="{Binding CommandEditEvents}"
+                          CommandParameter="{Binding}" />
+            </MenuItem>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
