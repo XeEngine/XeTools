@@ -29,7 +29,8 @@ namespace Xe.Tools.Components.MapEditor
                 }, System.Drawing.Color.Fuchsia, 2.0f);
             }
 
-            public static void DrawAnimation(this IDrawing drawing, FramesGroup framesGroup, double x, double y, Drawing.Flip flip = Drawing.Flip.None)
+            public static void DrawAnimation(this IDrawing drawing, FramesGroup framesGroup, double x, double y,
+                float alpha = 1.0f, Drawing.Flip flip = Drawing.Flip.None)
             {
                 var frame = framesGroup.Frames.FirstOrDefault();
                 if (frame != null)
@@ -48,7 +49,7 @@ namespace Xe.Tools.Components.MapEditor
 
                     drawing.DrawSurface(framesGroup.Texture,
                         new System.Drawing.Rectangle((int)src.Left, (int)src.Top, (int)src.Width, (int)src.Height),
-                        new System.Drawing.Rectangle((int)nx, (int)ny, (int)src.Width, (int)src.Height), flip);
+                        new System.Drawing.Rectangle((int)nx, (int)ny, (int)src.Width, (int)src.Height), alpha, flip);
                 }
             }
 

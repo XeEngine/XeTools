@@ -184,7 +184,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
             var rect = new drawing.RectangleF(ScrollX, ScrollY, (float)ActualWidth, (float)ActualHeight);
             _tileMapDrawer.Map = TileMap;
             _tileMapDrawer.DrawBackground(rect);
-            _tileMapDrawer.DrawMap(rect);
+            _tileMapDrawer.DrawMap(rect, true);
         }
 
         private void Flush(DrawingContext dc, ISurface surface)
@@ -226,7 +226,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
             }
         }
 
-        private void RenderObject(ObjectEntry entry, float x, float y)
+        private void RenderObject(ObjectEntry entry, float x, float y, float alpha)
         {
             var strAnimData = entry.AnimationData ?? "data/sprite/editor.anim.json";
             var framesGroup = GetFramesGroup(strAnimData, entry.AnimationName, entry.Direction);
@@ -237,7 +237,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 if (realX > ActualWidth ||
                     realY > ActualHeight)
                     return;
-                _drawingService.DrawAnimation(framesGroup, realX, realY);
+                _drawingService.DrawAnimation(framesGroup, realX, realY, alpha);
             }
             if (entry == _objEntrySelected)
             {

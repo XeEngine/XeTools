@@ -41,7 +41,7 @@ namespace Xe.Tools.Tilemap
 
         public ResourceService<string, ISurface> ResourceTileset { get; }
 
-        public Action<ObjectEntry, float, float> ActionDrawObject { get; set; }
+        public Action<ObjectEntry, float, float, float> ActionDrawObject { get; set; }
 
         public TilemapDrawer(IDrawing drawing)
         {
@@ -62,7 +62,7 @@ namespace Xe.Tools.Tilemap
             }
         }
 
-        public void DrawMap(RectangleF rect)
+        public void DrawMap(RectangleF rect, bool drawInvisibleObjects = false)
         {
             foreach (var priority in Map.Layers
                 .FlatterLayers()
@@ -82,6 +82,30 @@ namespace Xe.Tools.Tilemap
                 foreach (var layer in priority.Sublayers)
                 {
                     DrawLayer(layer, rect);
+                }
+            }
+
+            if (drawInvisibleObjects)
+            {
+                foreach (var entities in Map.Layers
+                    .FlatterLayers<LayerObjects>()
+                    .GroupBy(l => l.DefinitionId)
+                    .Join(Map.LayersDefinition,
+                        sublayers => sublayers.Key,
+                        definition => definition.Id,
+                        (sublayers, definition) => new
+                        {
+                            Sublayers = sublayers,
+                            Definition = definition
+                        })
+                    .Where(x => x.Definition.IsVisible)
+                    .OrderBy(l => TilemapSettings.LayerNames.
+                        FirstOrDefault(x => x.Id == l.Definition.Id)?.Order ?? -1))
+                {
+                    foreach (var layer in entities.Sublayers)
+                    {
+                        DrawLayer(layer, rect, 0.333333f);
+                    }
                 }
             }
         }
@@ -149,7 +173,7 @@ namespace Xe.Tools.Tilemap
             }
         }
 
-        public void DrawLayer(LayerObjects layer, RectangleF rect)
+        public void DrawLayer(LayerObjects layer, RectangleF rect, float alpha = 1.0f)
         {
             const float Margin = 128.0f;
             if (ActionDrawObject == null)
@@ -163,7 +187,7 @@ namespace Xe.Tools.Tilemap
                 if (acutalX >= -Margin || acutalX + rect.Width < Margin ||
                     acutalY >= -Margin || acutalY + rect.Height < Margin)
                 {
-                    ActionDrawObject(entry, acutalX, acutalY);
+                    ActionDrawObject(entry, acutalX, acutalY, alpha);
                 }
             }
         }
