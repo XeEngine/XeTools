@@ -187,17 +187,28 @@ namespace Xe.Tools.Components.TileCollisionEditor.ViewModels
 				ParameterStringFunc = x => $"change depth by {x.ToString("+00;-00;+00")}"
 			},
 			new Effect()
-            {
-                Id = TileCollision.Effects.Climb,
-                Name = "Climb",
-                Description = "Describe a climb, specifying a moving angle. Depth value will be affected.",
-                ParameterName = "Angle",
-                HasParameter = true,
-                MinimumValue = 0,
-                MaximumValue = 255,
-                ParameterStringFunc = x => $"{(x / 256.0 * 360.0).ToString("0.##")}°"
-            },
-            new Effect()
+			{
+				Id = TileCollision.Effects.ClimbHorizontal,
+				Name = "Climb horizontal",
+				Description = "Describe an horizontal climb, specifying how the depth should be affected for each tile. A slope is automatically calculated.",
+				ParameterName = "Depth mod",
+				HasParameter = true,
+				MinimumValue = -128,
+				MaximumValue = +127,
+				ParameterStringFunc = x => $" Depth {(x / 4).ToString("+0;-##")} {(x * 45.0 / 64.0).ToString("0.##")}°"
+			},
+			new Effect()
+			{
+				Id = TileCollision.Effects.ClimbVertical,
+				Name = "Climb vertical",
+				Description = "Describe a vertical climb, specifying how the depth should be affected for each tile. A slope is automatically calculated.",
+				ParameterName = "Depth mod",
+				HasParameter = true,
+				MinimumValue = -128,
+				MaximumValue = +127,
+				ParameterStringFunc = x => $" Depth {(x / 4).ToString("+0;-##")} {(x * 45.0 / 64.0).ToString("0.##")}°"
+			},
+			new Effect()
             {
                 Id = TileCollision.Effects.WalkEffect,
                 Name = "Walk effect",
