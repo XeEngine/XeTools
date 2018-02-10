@@ -51,7 +51,7 @@ namespace Xe.Tools.Components.MapEditor.Windows
                         ViewModel.IsRedrawingNeeded = false;
                         var stopWatch = new Stopwatch();
                         stopWatch.Start();
-                        tileMap.Render();
+						ctrlTileMap.DoRender();
                         stopWatch.Stop();
                         ViewModel.LastRenderingTime = stopWatch.Elapsed.TotalMilliseconds;
                     }
@@ -64,11 +64,11 @@ namespace Xe.Tools.Components.MapEditor.Windows
         {
             base.OnInitialized(e);
 
-            tileMap.OnSelectedEntity += (o, entity) =>
+			ctrlTileMap.OnSelectedEntity += (o, entity) =>
             {
                 ViewModel.SelectedObjectEntry = entity;
             };
-            tileMap.OnMoveEntry += (o, entity, x, y) =>
+			ctrlTileMap.OnMoveEntry += (o, entity, x, y) =>
             {
                 var vm = ViewModel.ObjectPropertiesViewModel;
                 vm.X = (int)x;
@@ -81,8 +81,8 @@ namespace Xe.Tools.Components.MapEditor.Windows
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 _mouseMove = e.GetPosition(this);
-                _scrollX = tileMap.ScrollX;
-                _scrollY = tileMap.ScrollY;
+                _scrollX = ctrlTileMap.ScrollX;
+                _scrollY = ctrlTileMap.ScrollY;
             }
         }
 
@@ -91,8 +91,8 @@ namespace Xe.Tools.Components.MapEditor.Windows
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 var diff = _mouseMove - e.GetPosition(this);
-                tileMap.ScrollX = (int)(_scrollX + diff.X);
-                tileMap.ScrollY = (int)(_scrollY + diff.Y);
+				ctrlTileMap.ScrollX = (int)(_scrollX + diff.X);
+				ctrlTileMap.ScrollY = (int)(_scrollY + diff.Y);
                 ViewModel.IsRedrawingNeeded = true;
             }
         }
@@ -102,8 +102,8 @@ namespace Xe.Tools.Components.MapEditor.Windows
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 var diff = _mouseMove - e.GetPosition(this);
-                tileMap.ScrollX = (int)(_scrollX + diff.X);
-                tileMap.ScrollY = (int)(_scrollY + diff.Y);
+				ctrlTileMap.ScrollX = (int)(_scrollX + diff.X);
+				ctrlTileMap.ScrollY = (int)(_scrollY + diff.Y);
             }
         }
 

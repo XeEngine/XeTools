@@ -36,10 +36,10 @@
                 </StatusBar>
                 <ScrollBar DockPanel.Dock="Bottom" Orientation="Horizontal" Visibility="Collapsed"/>
                 <ScrollBar DockPanel.Dock="Right" Orientation="Vertical" Visibility="Collapsed"/>
-                <Controls:Tilemap x:Name="tileMap" ClipToBounds="True"
+                <Controls:Tilemap x:Name="ctrlTileMap" ClipToBounds="True"
                                   MouseDown="TileMap_MouseDown"
                                   MouseMove="TileMap_MouseMove"
-                                  MouseUp="TileMap_MouseUp"/>
+                                  MouseUp="TileMap_MouseUp" FramesPerSecond="0"/>
             </DockPanel>
             <Grid Grid.Column="1" Margin="5 0 5 0">
                 <Grid.RowDefinitions>

@@ -16,10 +16,11 @@ using Xe.Tools.Services;
 using System.Runtime.InteropServices;
 using Xe.Tools.Components.MapEditor.Services;
 using Xe.Tools.Tilemap;
+using Xe.Tools.Wpf.Controls;
 
 namespace Xe.Tools.Components.MapEditor.Controls
 {
-    public class Tilemap : FrameworkElement
+    public class Tilemap : DrawingControl
     {
         [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
         private static extern void CopyMemory(IntPtr dest, IntPtr src, int count);
@@ -60,18 +61,14 @@ namespace Xe.Tools.Components.MapEditor.Controls
         private TilemapDrawer _tileMapDrawer;
         public ProjectService ProjectService => AnimationService?.ProjectService;
         public AnimationService AnimationService => MapEditorViewModel.Instance.AnimationService;
-        private IDrawing _drawingService;
 
         #endregion
 
         #region Resources
-
-        private VisualCollection _children;
-        private DrawingVisual _visual;
+		
         private Map _tileMap => MapEditorViewModel.Instance.TileMap;
         private ResourceService<string, AnimationDataEntry> _resAnimationData;
         private ResourceService<AnimKeyEntry, FramesGroup> _resAnimations;
-        private WriteableBitmap _writeableBitmap;
 
         #endregion
 
@@ -87,7 +84,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
             set
             {
                 _scrollX = value;
-                Render();
+				DoRender();
             }
         }
         public int ScrollY
@@ -96,7 +93,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
             set
             {
                 _scrollY = value;
-                Render();
+                DoRender();
             }
         }
 
@@ -112,69 +109,32 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 OnResourceAnimationsUnload);
 
             #endregion
-
-            _children = new VisualCollection(this);
-
-            _visual = new DrawingVisual();
-            _children.Add(_visual);
         }
 
-        #region Public methods
+		#region Public methods
 
-        public void Render()
-        {
+		protected override void OnDrawingCreated()
+		{
+			_tileMapDrawer?.Dispose();
+			_tileMapDrawer = new TilemapDrawer(Drawing)
+			{
+				ActionDrawObject = RenderObject
+			};
+			base.OnDrawingCreated();
+		}
+
+		protected override void OnDrawRequired()
+		{
             if (TileMap != null)
             {
                 RenderMap(TileMap);
-                var surface = _drawingService.Surface;
-                using (var dc = _visual.RenderOpen())
-                {
-                    Flush(dc, surface);
-                }
             }
         }
 
         #endregion
 
-        protected override int VisualChildrenCount
-        {
-            get { return _children.Count; }
-        }
-
-        protected override Visual GetVisualChild(int index)
-        {
-            if (index < 0 || index >= _children.Count)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            return _children[index];
-        }
-
         #region Rendering
-
-        private void ResizeRenderingEngine(int width, int height)
-        {
-            if (_drawingService == null)
-            {
-                _drawingService = Xe.Factory.Resolve<IDrawing>();
-                if (_drawingService != null)
-                {
-                    _tileMapDrawer?.Dispose();
-                    _tileMapDrawer = new TilemapDrawer(_drawingService)
-                    {
-                        ActionDrawObject = RenderObject
-                    };
-                }
-            }
-            if (_drawingService != null)
-            {
-                _drawingService.Surface?.Dispose();
-                _drawingService.Surface = _drawingService.CreateSurface(
-                    width, height, Drawing.PixelFormat.Format32bppArgb, SurfaceType.InputOutput);
-                Render();
-            }
-        }
+		
 
         private void RenderMap(Map tileMap)
         {
@@ -185,45 +145,6 @@ namespace Xe.Tools.Components.MapEditor.Controls
             _tileMapDrawer.Map = TileMap;
             _tileMapDrawer.DrawBackground(rect);
             _tileMapDrawer.DrawMap(rect, true);
-        }
-
-        private void Flush(DrawingContext dc, ISurface surface)
-        {
-            if (surface != null && surface.Width > 0 && surface.Height > 0)
-            {
-                using (var map = surface.Map())
-                {
-                    if (_writeableBitmap == null ||
-                        surface.Width != _writeableBitmap.Width ||
-                        surface.Height != _writeableBitmap.Height ||
-                        map.Stride / 4 != _writeableBitmap.Width)
-                    {
-                        _writeableBitmap = new WriteableBitmap(map.Stride / 4, surface.Height, 96.0, 96.0, PixelFormats.Bgra32, null);
-                    }
-
-                    _writeableBitmap.Lock();
-                    CopyMemory(_writeableBitmap.BackBuffer, map.Data, map.Length);
-                    _writeableBitmap.AddDirtyRect(new Int32Rect()
-                    {
-                        X = 0,
-                        Y = 0,
-                        Width = surface.Width,
-                        Height = surface.Height
-                    });
-                    _writeableBitmap.Unlock();
-                }
-            }
-
-            if (_writeableBitmap != null)
-            {
-                dc.DrawImage(_writeableBitmap, new Rect()
-                {
-                    X = 0,
-                    Y = 0,
-                    Width = _writeableBitmap.Width,
-                    Height = _writeableBitmap.Height
-                });
-            }
         }
 
         private void RenderObject(ObjectEntry entry, float x, float y, float alpha)
@@ -237,11 +158,11 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 if (realX > ActualWidth ||
                     realY > ActualHeight)
                     return;
-                _drawingService.DrawAnimation(framesGroup, realX, realY, alpha);
+                Drawing.DrawAnimation(framesGroup, realX, realY, alpha);
             }
             if (entry == _objEntrySelected)
             {
-                _drawingService.DrawObjectEntryRect(entry);
+				Drawing.DrawObjectEntryRect(entry);
             }
         }
 
@@ -253,14 +174,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
         private ObjectEntry _objEntrySelected;
         private Point _dragMousePosition;
         private double _dragObjEntryX, _dragObjEntryY;
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            var size = sizeInfo.NewSize;
-            base.OnRenderSizeChanged(sizeInfo);
-            ResizeRenderingEngine((int)size.Width, (int)size.Height);
-        }
-
+		
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             var position = e.GetPosition(this);
@@ -268,7 +182,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
             if (_objEntrySelected != objEntrySelected)
             {
                 _objEntrySelected = objEntrySelected;
-                Render();
+                DoRender();
             }
             if (_objEntrySelected != null)
             {
@@ -334,7 +248,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         private bool OnResourceAnimationDataLoad(string filePath, out AnimationDataEntry entry)
         {
-            entry = AnimationDataEntry.Create(AnimationService, _drawingService, filePath);
+            entry = AnimationDataEntry.Create(AnimationService, Drawing, filePath);
             return entry != null;
         }
 
