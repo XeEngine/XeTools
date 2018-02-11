@@ -160,6 +160,7 @@
   <ItemGroup>
     <Compile Include="BaseNotifyPropertyChanged.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Commands\StackCommands.cs" />
     <Compile Include="Controls\D2DControl.cs" />
     <Compile Include="Controls\D2DControl.DX11ImageSource.cs" />
     <Compile Include="Controls\DrawingControl.cs" />

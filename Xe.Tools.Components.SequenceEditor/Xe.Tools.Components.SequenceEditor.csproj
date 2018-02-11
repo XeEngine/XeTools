@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C7423A30-6310-4718-8B27-2DE60A1DD5B0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Xe.Tools.Components.SequenceEditor</RootNamespace>
+    <AssemblyName>Xe.Tools.Components.SequenceEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\SequenceEntryPanel.xaml.cs">
+      <DependentUpon>SequenceEntryPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SequenceSimulator.cs" />
+    <Compile Include="IController.cs" />
+    <Compile Include="Windows\SequenceEditor.xaml.cs">
+      <DependentUpon>SequenceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Controls\SequenceEntryPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SequenceEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tiled\Tiled.csproj">
+      <Project>{2632a519-f583-438e-8568-f055b192a726}</Project>
+      <Name>Tiled</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
+      <Project>{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}</Project>
+      <Name>Xe.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
+      <Project>{356875B9-86C1-47CB-942F-1E8413EEC42D}</Project>
+      <Name>Xe.Game.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
+      <Project>{891aebe7-a248-4ef3-9237-50eb124e74de}</Project>
+      <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
+      <Project>{B5A0BF08-18E7-406E-82E7-DF72EB113B1B}</Project>
+      <Name>Xe.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Components.Component\Xe.Tools.Components.csproj">
+      <Project>{0a9e80cc-c253-47e8-b99a-c211d91291d4}</Project>
+      <Name>Xe.Tools.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Configurator\Xe.Tools.Configurator.csproj">
+      <Project>{6d7658e8-ff4d-4c50-9ba5-e30889cb00d1}</Project>
+      <Name>Xe.Tools.Configurator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.Tiledmap\Xe.Tools.Modules.Tiledmap.csproj">
+      <Project>{aff69391-a837-4a84-814b-2637dc185b60}</Project>
+      <Name>Xe.Tools.Modules.Tiledmap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
+      <Project>{240b9f1c-1dba-4d73-8fc3-7f9eb39b57d5}</Project>
+      <Name>Xe.Tools.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
+      <Project>{545d863a-cd36-4c79-a07f-cf82b718fc3e}</Project>
+      <Name>Xe.Tools.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
+      <Project>{ea2c7533-429d-4c2e-a3ce-4c77340e8a40}</Project>
+      <Name>Xe.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

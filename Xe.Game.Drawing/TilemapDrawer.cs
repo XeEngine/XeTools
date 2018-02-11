@@ -7,7 +7,6 @@ using Xe.Tools.Services;
 
 namespace Xe.Tools.Tilemap
 {
-
     public class TilemapDrawer : IDisposable
     {
         private class TileEntry
@@ -30,14 +29,8 @@ namespace Xe.Tools.Tilemap
         public Map Map
         {
             get => _map;
-            set
-            {
-                _map = value;
-                IsRenderingNeeded = true;
-            }
+			set => _map = value;
         }
-
-        public bool IsRenderingNeeded { get; private set; }
 
         public ResourceService<string, ISurface> ResourceTileset { get; }
 

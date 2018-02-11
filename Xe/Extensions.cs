@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -31,5 +32,12 @@ namespace Xe
         {
             return guid.GetHashCode() == guid2.GetHashCode();
         }
-    }
+
+
+		public static IEnumerable<TResult> Select<TResult>(this Array array, Func<object, TResult> selector)
+		{
+			foreach (var item in array)
+				yield return selector(item);
+		}
+	}
 }

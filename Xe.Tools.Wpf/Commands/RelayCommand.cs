@@ -5,7 +5,7 @@ namespace Xe.Tools.Wpf.Commands
 {
     public class RelayCommand : ICommand
     {
-        private Action<object> _execute;
+        private Action<object> _execute, _undo;
         private Func<object, bool> _canExecute;
 
         public event EventHandler CanExecuteChanged
@@ -15,9 +15,11 @@ namespace Xe.Tools.Wpf.Commands
         }
 
         public RelayCommand(Action<object> execute,
-            Func<object, bool> canExecute = null)
+			Func<object, bool> canExecute = null,
+			Action<object> undo = null)
         {
             _execute = execute;
+			_undo = undo;
             _canExecute = canExecute;
         }
 
@@ -30,5 +32,10 @@ namespace Xe.Tools.Wpf.Commands
         {
             _execute(parameter);
         }
+
+		public void Undo(object parameter)
+		{
+			_undo(parameter);
+		}
     }
 }

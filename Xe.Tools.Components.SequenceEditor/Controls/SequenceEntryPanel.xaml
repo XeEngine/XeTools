@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Xe.Tools.Components.SequenceEditor.Controls.SequenceEntryPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Xe.Tools.Components.SequenceEditor.Controls"
+             xmlns:tools="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel>
+        <tools:SpecialGroupBox>
+            <tools:SpecialGroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Button Grid.Column="1" Margin="0 0 5 0" Click="ButtonUp_Click">
+                        <Image Source="{StaticResource AddRowToAbove_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <Label>Move the commands up.</Label>
+                            </StackPanel>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Grid.Column="1" Margin="0 0 5 0" Click="ButtonDown_Click">
+                        <Image Source="{StaticResource AddRowToBelow_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <Label>Move the commands down.</Label>
+                            </StackPanel>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Grid.Column="1" Margin="0 0 5 0" Click="ButtonRemove_Click">
+                        <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <Label>Remove the command.</Label>
+                            </StackPanel>
+                        </Button.ToolTip>
+                    </Button>
+                    <!--<CheckBox Margin="0 0 5 0" IsChecked="{Binding IsExecutionEnabled, Mode=TwoWay}"/>
+                    <Image Margin="0 0 5 0" Visibility="{Binding StateReadyVisibility}" Source="{StaticResource StatusNotStarted_16x}" Width="16"/>
+                    <Image Margin="0 0 5 0" Visibility="{Binding StateRunningVisibility}" Source="{StaticResource Run_16x}" Width="16"/>
+                    <Image Margin="0 0 5 0" Visibility="{Binding StateFinishedVisibility}" Source="{StaticResource Stop_16x}" Width="16"/>-->
+                    <TextBlock Margin="0 0 5 0" Text="{Binding SelectedOperation}"/>
+                </StackPanel>
+            </tools:SpecialGroupBox.Header>
+            <tools:SpecialGroupBox.Content>
+                <StackPanel>
+                    <TextBlock Text="Operation"/>
+                    <ComboBox Margin="0 0 0 5"
+                              ItemsSource="{Binding Operations}"
+                              SelectedValue="{Binding SelectedOperation}"/>
+                    <CheckBox Margin="0 0 0 5" Content="Asynchronous"
+                              IsChecked="{Binding Entry.Asynchronous}"/>
+                    <StackPanel Initialized="StackPanel_Initialized"/>
+                </StackPanel>
+            </tools:SpecialGroupBox.Content>
+        </tools:SpecialGroupBox>
+    </DockPanel>
+</UserControl>

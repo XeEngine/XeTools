@@ -35,7 +35,10 @@
     <Compile Include="AnimationDrawer.cs" />
     <Compile Include="AnimationEntityDrawer.cs" />
     <Compile Include="FontDrawer.cs" />
-    <Compile Include="TilemapDrawing.cs" />
+    <Compile Include="MapDrawer.cs" />
+    <Compile Include="MapDrawer.Entity.cs" />
+    <Compile Include="SequenceDrawer.cs" />
+    <Compile Include="TilemapDrawer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +53,10 @@
     <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
       <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
       <Name>Xe.Tools.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
+      <Project>{EA2C7533-429D-4C2E-A3CE-4C77340E8A40}</Project>
+      <Name>Xe.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

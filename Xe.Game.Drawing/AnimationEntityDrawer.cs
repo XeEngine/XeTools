@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Xe.Drawing;
 using Xe.Game.Animations;
 
@@ -158,12 +159,12 @@ namespace Xe.Game.Drawing
 			return false;
 		}
 
-		public void Draw(double x, double y)
+		public void Draw(double x, double y, float opacity = 1.0f)
 		{
 			var frame = CurrentFrame;
 			if (frame != null)
 			{
-				var rect = new System.Drawing.Rectangle()
+				var rect = new Rectangle()
 				{
 					X = frame.Left,
 					Y = frame.Top,
@@ -171,7 +172,12 @@ namespace Xe.Game.Drawing
 					Height = frame.Bottom - frame.Top
 				};
 				Drawer.Drawing.DrawSurface(_spriteSheet, rect,
-					(int)x - frame.CenterX, (int)y - frame.CenterY);
+					new RectangleF(
+						(int)x - frame.CenterX,
+						(int)y - frame.CenterY,
+						rect.Width, rect.Height
+					),
+					opacity, Flip.None);
 			}
 		}
 
