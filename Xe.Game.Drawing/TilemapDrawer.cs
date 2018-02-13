@@ -125,8 +125,8 @@ namespace Xe.Tools.Tilemap
             if (!layer.Visible)
                 return;
             var tileSize = Map.TileSize;
-            int width = (int)Math.Min((panelWidth + tileSize.Width - 1) / tileSize.Width, layer.Width);
-            int height = (int)Math.Min((panelHeight + tileSize.Height - 1) / tileSize.Height, layer.Height);
+            int width = (int)Math.Min((panelWidth + tileSize.Width * 2 - 1) / tileSize.Width, layer.Width);
+            int height = (int)Math.Min((panelHeight + tileSize.Height * 2 - 1) / tileSize.Height, layer.Height);
             var rect = new RectangleF
             {
                 Width = Map.TileSize.Width,

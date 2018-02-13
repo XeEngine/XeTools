@@ -328,7 +328,7 @@ namespace Xe.Game.Tilemaps
 
         private void LoadExtensions(IEnumerable<ObjectExtensionDefinition> objExts)
         {
-            _objExtensions = objExts.ToDictionary(x => x.Id);
+			_objExtensions = objExts?.ToDictionary(x => x.Id) ?? new Dictionary<Guid, ObjectExtensionDefinition>();
         }
 
         private IObjectExtension CreateInstance(Guid id)

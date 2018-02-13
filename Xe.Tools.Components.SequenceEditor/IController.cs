@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xe.Game.Sequences;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Components.SequenceEditor
 {
 	public interface IController
 	{
 		Sequence Sequence { get; }
+
+		ProjectService ProjectService { get; }
 
 		void AddSequenceOperator();
 
@@ -18,5 +21,7 @@ namespace Xe.Tools.Components.SequenceEditor
 		void MoveSequenceUp(Sequence.Entry entry);
 
 		void MoveSequenceDown(Sequence.Entry entry);
+
+		int CurrentOperationIndex { set; }
 	}
 }

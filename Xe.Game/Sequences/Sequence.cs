@@ -9,7 +9,7 @@ namespace Xe.Game.Sequences
 	{
 		Boolean,
 		Integer,
-		Float,
+		Double,
 		String,
 		Color,
 		Point2f,

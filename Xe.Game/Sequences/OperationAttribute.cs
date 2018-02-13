@@ -46,10 +46,10 @@ namespace Xe.Game.Sequences
 			Description = description;
 		}
 
-		public ParameterAttribute(float defaultValue, float minimum, float maximum, string description)
+		public ParameterAttribute(double defaultValue, double minimum, double maximum, string description)
 		{
-			Type = ParameterType.Float;
-			ValueType = typeof(float);
+			Type = ParameterType.Double;
+			ValueType = typeof(double);
 			DefaultValue = defaultValue;
 			MinimumValue = minimum;
 			MaximumValue = maximum;

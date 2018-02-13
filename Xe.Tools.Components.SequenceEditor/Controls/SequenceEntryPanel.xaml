@@ -8,38 +8,59 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <tools:SpecialGroupBox>
+        <tools:SpecialGroupBox IsContentVisible="False">
             <tools:SpecialGroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <Button Grid.Column="1" Margin="0 0 5 0" Click="ButtonUp_Click">
+                    <Button Margin="0 0 5 0" Click="ButtonMoveUp_Click">
                         <Image Source="{StaticResource AddRowToAbove_16x}" Width="16"/>
                         <Button.ToolTip>
-                            <StackPanel>
-                                <Label>Move the commands up.</Label>
-                            </StackPanel>
+                            <Label>Move the commands up.</Label>
                         </Button.ToolTip>
                     </Button>
-                    <Button Grid.Column="1" Margin="0 0 5 0" Click="ButtonDown_Click">
+                    <Button Margin="0 0 5 0" Click="ButtonMoveDown_Click">
                         <Image Source="{StaticResource AddRowToBelow_16x}" Width="16"/>
                         <Button.ToolTip>
-                            <StackPanel>
-                                <Label>Move the commands down.</Label>
-                            </StackPanel>
+                            <Label>Move the commands down.</Label>
                         </Button.ToolTip>
                     </Button>
-                    <Button Grid.Column="1" Margin="0 0 5 0" Click="ButtonRemove_Click">
+                    <Button Margin="0 0 5 0" Click="ButtonRemove_Click">
                         <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
                         <Button.ToolTip>
-                            <StackPanel>
-                                <Label>Remove the command.</Label>
-                            </StackPanel>
+                            <Label>Remove the command.</Label>
                         </Button.ToolTip>
                     </Button>
-                    <!--<CheckBox Margin="0 0 5 0" IsChecked="{Binding IsExecutionEnabled, Mode=TwoWay}"/>
-                    <Image Margin="0 0 5 0" Visibility="{Binding StateReadyVisibility}" Source="{StaticResource StatusNotStarted_16x}" Width="16"/>
-                    <Image Margin="0 0 5 0" Visibility="{Binding StateRunningVisibility}" Source="{StaticResource Run_16x}" Width="16"/>
-                    <Image Margin="0 0 5 0" Visibility="{Binding StateFinishedVisibility}" Source="{StaticResource Stop_16x}" Width="16"/>-->
-                    <TextBlock Margin="0 0 5 0" Text="{Binding SelectedOperation}"/>
+                    <Image Source="{StaticResource StatusNotStarted_16x}" Width="16"
+                           Visibility="{Binding IsStatusNotStarted}">
+                        <Image.ToolTip>
+                            <Label>Not started yet</Label>
+                        </Image.ToolTip>
+                    </Image>
+                    <Image Source="{StaticResource StatusNotStartedGreen_16x}" Width="16"
+                           Visibility="{Binding IsStatusRunning}">
+                        <Image.ToolTip>
+                            <Label>Executing</Label>
+                        </Image.ToolTip>
+                    </Image>
+                    <Image Source="{StaticResource StatusNotStartedYellow_16x}" Width="16"
+                           Visibility="{Binding IsStatusFinished}">
+                        <Image.ToolTip>
+                            <Label>Previously executed.</Label>
+                        </Image.ToolTip>
+                    </Image>
+                    <TextBlock Margin="0 0 15 0" Text="{Binding SelectedOperation}">
+                        <TextBlock.ToolTip>
+                            <Label Content="{Binding Description}"/>
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <TextBlock Text="{Binding UserDescription}"
+                               Visibility="{Binding UserDescriptionVisibility, Mode=OneWay}"
+                               MouseDown="TextOpDescription_MouseDown"/>
+                    <TextBox Text="{Binding UserDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding UserDescriptionEditVisibility, Mode=OneWay}"
+                             MinWidth="100"
+                             PreviewKeyDown="TextOpDescription_PreviewKeyDown"
+                             LostFocus="TextOpDescription_LostFocus"/>
+
                 </StackPanel>
             </tools:SpecialGroupBox.Header>
             <tools:SpecialGroupBox.Content>
@@ -49,7 +70,7 @@
                               ItemsSource="{Binding Operations}"
                               SelectedValue="{Binding SelectedOperation}"/>
                     <CheckBox Margin="0 0 0 5" Content="Asynchronous"
-                              IsChecked="{Binding Entry.Asynchronous}"/>
+                              IsChecked="{Binding IsAsynchronous}"/>
                     <StackPanel Initialized="StackPanel_Initialized"/>
                 </StackPanel>
             </tools:SpecialGroupBox.Content>

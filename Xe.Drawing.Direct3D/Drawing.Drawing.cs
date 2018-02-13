@@ -22,10 +22,14 @@
             public float V;
             public float A;
         }
-        
 
-        public override void DrawRectangle(RectangleF rect, Color color, float width = 1)
-        {
+
+		public override void DrawRectangle(RectangleF rect, Color color, float width = 1)
+		{
+		}
+
+		public override void FillRectangle(RectangleF rect, Color color)
+		{
 		}
 
 		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)

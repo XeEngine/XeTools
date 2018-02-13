@@ -64,14 +64,22 @@ namespace Xe.Drawing
             var a = color.A / 255.0f;
             Invalidate();
             d2dContext.Clear(new RawColor4(r, g, b, a));
-        }
+		}
 
-        public override void DrawRectangle(RectangleF rect, Color color, float width)
-        {
-            using (var brush = new SolidColorBrush(d2dContext, ToRaw(color)))
-            {
-                d2dContext.DrawRectangle(ToRaw(rect), brush, width);
-            }
+		public override void DrawRectangle(RectangleF rect, Color color, float width)
+		{
+			using (var brush = new SolidColorBrush(d2dContext, ToRaw(color)))
+			{
+				d2dContext.DrawRectangle(ToRaw(rect), brush, width);
+			}
+		}
+
+		public override void FillRectangle(RectangleF rect, Color color)
+		{
+			using (var brush = new SolidColorBrush(d2dContext, ToRaw(color)))
+			{
+				d2dContext.FillRectangle(ToRaw(rect), brush);
+			}
 		}
 
 		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)

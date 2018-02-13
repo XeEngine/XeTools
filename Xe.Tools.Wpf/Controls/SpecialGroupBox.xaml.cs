@@ -41,7 +41,13 @@ namespace Xe.Tools.Wpf.Controls
             InitializeComponent();
         }
 
-        private void SetContentVisibility(bool visible)
+		protected override void OnInitialized(EventArgs e)
+		{
+			base.OnInitialized(e);
+			ApplyTemplate();
+		}
+
+		private void SetContentVisibility(bool visible)
         {
             if (Template.FindName("CtrlContent", this) is ContentPresenter ctrlContent)
                 ctrlContent.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
@@ -55,7 +61,6 @@ namespace Xe.Tools.Wpf.Controls
         {
             var control = (SpecialGroupBox)d;
             control?.SetContentVisibility((bool?)e.NewValue ?? true);
-
         }
 
         private void ButtonShow_Click(object sender, RoutedEventArgs e)

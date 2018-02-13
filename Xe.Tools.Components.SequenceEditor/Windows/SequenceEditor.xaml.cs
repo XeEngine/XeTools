@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Xe.Game.Sequences;
 using Xe.Tools.Components.SequenceEditor.Controls;
+using Xe.Tools.Projects;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Components.SequenceEditor.Windows
 {
@@ -21,21 +23,110 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 	/// </summary>
 	public partial class SequenceEditor : Window, IController
 	{
-		public Sequence _sequence;
+		private ProjectService _projectService;
 
-		public Sequence Sequence => _sequence;
+		public ProjectService ProjectService
+		{
+			get => _projectService;
+			set
+			{
+				_projectService = value;
+			}
+		}
+
+		public Sequence Sequence
+		{
+			get => ctrlSequenceSimulator.Sequence;
+			set
+			{
+				ctrlSequenceSimulator.Sequence = value;
+				foreach (var item in value.Entries)
+				{
+					AddSequenceOperator(item);
+				}
+			}
+		}
+
+		public int CurrentOperationIndex
+		{
+			set
+			{
+				int index = 0;
+				foreach (var item in OperationsPanel.Children)
+				{
+					if (item is SequenceEntryPanel _item)
+					{
+						if (index < value - 1)
+							_item.Status = Status.Finished;
+						else if (index >= value)
+							_item.Status = Status.NotStarted;
+						else
+							_item.Status = Status.Running;
+						index++;
+					}
+				}
+			}
+		}
 
 		public SequenceEditor()
 		{
 			InitializeComponent();
-			_sequence = new Sequence();
+			ctrlSequenceSimulator.Controller = this;
+			
+			Sequence = new Sequence()
+			{
+				Entries = new List<Sequence.Entry>()
+				{
+					new Sequence.Entry(Operation.ChangeMap)
+						.SetValue(0, 1)
+						.SetValue(1, 3),
+					new Sequence.Entry(Operation.CameraSet)
+						.SetValue(0, 600)
+						.SetValue(1, 300),
+					new Sequence.Entry(Operation.CameraShake),
+					new Sequence.Entry(Operation.CameraMove)
+						.SetValue(0, 200)
+						.SetValue(1, 200)
+						.SetValue(2, 80.0),
+					new Sequence.Entry(Operation.FadeOutWhite),
+					new Sequence.Entry(Operation.ChangeMap)
+						.SetValue(0, 0)
+						.SetValue(1, 4),
+					new Sequence.Entry(Operation.Sleep).SetValue(0, 0.5),
+					new Sequence.Entry(Operation.FadeInWhite),
+					new Sequence.Entry(Operation.Sleep).SetValue(0, 0.5),
+					new Sequence.Entry(Operation.FadeOutBlack),
+					new Sequence.Entry(Operation.ChangeMap)
+						.SetValue(0, 1)
+						.SetValue(1, 0),
+					new Sequence.Entry(Operation.CameraSet)
+						.SetValue(0, 400)
+						.SetValue(1, 400),
+					new Sequence.Entry(Operation.FadeInBlack),
+					new Sequence.Entry(Operation.Sleep)
+						.SetValue(0, 10.0),
+				}
+			};
+		}
+
+		public void Open(IProject project, IProjectFile file)
+		{
+			ProjectService = new ProjectService(project);
 		}
 
 		public void AddSequenceOperator()
 		{
 			var entry = new Sequence.Entry(Operation.None);
-			_sequence.Entries.Add(entry);
-			OperationsPanel.Children.Add(new SequenceEntryPanel(this, entry));
+			Sequence.Entries.Add(entry);
+			AddSequenceOperator(entry);
+		}
+
+		public void AddSequenceOperator(Sequence.Entry entry)
+		{
+			OperationsPanel.Children.Add(new SequenceEntryPanel(this, entry)
+			{
+				
+			});
 		}
 
 		public void RemoveSequenceOperator(Sequence.Entry entry)
@@ -43,7 +134,7 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 			UIElement elementToRemove = GetElementFromEntry(entry);
 			if (elementToRemove != null)
 			{
-				_sequence.Entries.Remove(entry);
+				Sequence.Entries.Remove(entry);
 				OperationsPanel.Children.Remove(elementToRemove);
 			}
 		}
@@ -56,8 +147,8 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 				var index = OperationsPanel.Children.IndexOf(element);
 				if (index > 0)
 				{
-					_sequence.Entries.RemoveAt(index);
-					_sequence.Entries.Insert(index - 1, entry);
+					Sequence.Entries.RemoveAt(index);
+					Sequence.Entries.Insert(index - 1, entry);
 					OperationsPanel.Children.RemoveAt(index);
 					OperationsPanel.Children.Insert(index - 1, element);
 				}
@@ -72,8 +163,8 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 				var index = OperationsPanel.Children.IndexOf(element);
 				if (index < OperationsPanel.Children.Count - 1)
 				{
-					_sequence.Entries.RemoveAt(index);
-					_sequence.Entries.Insert(index + 1, entry);
+					Sequence.Entries.RemoveAt(index);
+					Sequence.Entries.Insert(index + 1, entry);
 					OperationsPanel.Children.RemoveAt(index);
 					OperationsPanel.Children.Insert(index + 1, element);
 				}
@@ -98,6 +189,11 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 		private void ButtonAddOperation_Click(object sender, RoutedEventArgs e)
 		{
 			AddSequenceOperator();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			ctrlSequenceSimulator.Reset();
 		}
 	}
 }

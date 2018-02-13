@@ -26,7 +26,9 @@ namespace Xe.Game.Sequences
 
 			public object[] Parameters { get; private set; } = new object[0];
 
-			public bool Asynchronous { get; set; }
+			public bool IsAsynchronous { get; set; }
+
+			public string UserDescription { get; set; }
 
 			[JsonIgnore]
 			public string Description => _entry.Description;
@@ -45,7 +47,7 @@ namespace Xe.Game.Sequences
 				return Parameters[index];
 			}
 
-			public void SetValue(int index, object value)
+			public Entry SetValue(int index, object value)
 			{
 				var desc = ParametersDescription[index];
 				if (value == null)
@@ -58,6 +60,7 @@ namespace Xe.Game.Sequences
 				}
 				else
 					throw new InvalidCastException($"Value {value} of type {value.GetType()} must be of type {desc.ValueType}.");
+				return this;
 			}
 
 			private void SetInternal()

@@ -83,20 +83,28 @@ namespace Xe.Drawing
         public override void Clear(Color color)
         {
             _graphics.Clear(color);
-        }
+		}
 
-        public override void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
-        {
-            using (var brush = new SolidBrush(color))
-            {
-                using (var pen = new Pen(brush, width))
-                {
-                    _graphics.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
-                }
-            }
-        }
+		public override void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
+		{
+			using (var brush = new SolidBrush(color))
+			{
+				using (var pen = new Pen(brush, width))
+				{
+					_graphics.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+				}
+			}
+		}
 
-        public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)
+		public override void FillRectangle(RectangleF rect, Color color)
+		{
+			using (var brush = new SolidBrush(color))
+			{
+				_graphics.FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
+			}
+		}
+
+		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)
         {
             var mySurface = surface as CSurface;
             if (mySurface == null)

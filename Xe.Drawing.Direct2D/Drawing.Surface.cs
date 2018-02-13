@@ -106,7 +106,7 @@ namespace Xe.Drawing
                     options = d2.BitmapOptions.Target | d2.BitmapOptions.CannotDraw;
                     break;
                 case SurfaceType.InputOutput:
-                    options = d2.BitmapOptions.Target | d2.BitmapOptions.CannotDraw;
+                    options = d2.BitmapOptions.Target;
                     break;
                 default:
                     options = d2.BitmapOptions.Target;

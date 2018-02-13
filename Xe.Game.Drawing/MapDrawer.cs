@@ -35,6 +35,8 @@ namespace Xe.Game.Drawing
 		}
 
 		public Dictionary<ObjectEntry, Entity> Entities { get; private set; }
+		public Dictionary<string, IEnumerable<Entity>> EntitiesByName { get; private set; }
+		public Dictionary<string, IEnumerable<Entity>> EntitiesByGroup { get; private set; }
 
 		public MapDrawer(ProjectService projService, IDrawing drawing)
 		{
@@ -53,13 +55,13 @@ namespace Xe.Game.Drawing
 			LoadEntities();
 		}
 
-		public void Update(double deltaTime)
+		public virtual void Update(double deltaTime)
 		{
 			foreach (var entity in Entities)
 				entity.Value.Update(deltaTime);
 		}
 
-		public void Render(RectangleF rect, bool drawInvisibleObjects = false)
+		public virtual void Render(RectangleF rect, bool drawInvisibleObjects = false)
 		{
 			TilemapDrawer.DrawBackground(rect);
 			TilemapDrawer.DrawMap(rect, drawInvisibleObjects);
@@ -89,6 +91,9 @@ namespace Xe.Game.Drawing
 
 		private void RenderObject(ObjectEntry entry, float x, float y, float opacity)
 		{
+			if (entry.AnimationData == null)
+				return;
+
 			var entity = Entities[entry];
 			if (entity.Drawer == null)
 				entity.Drawer = AnimationResources[entity.Entry.AnimationData];

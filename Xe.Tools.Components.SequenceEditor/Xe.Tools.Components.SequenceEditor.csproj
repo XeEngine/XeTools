@@ -49,6 +49,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Component.cs" />
     <Compile Include="Controls\SequenceEntryPanel.xaml.cs">
       <DependentUpon>SequenceEntryPanel.xaml</DependentUpon>
     </Compile>

@@ -6,20 +6,23 @@
         xmlns:local="clr-namespace:Xe.Tools.Components.SequenceEditor.Windows"
         xmlns:controls="clr-namespace:Xe.Tools.Components.SequenceEditor.Controls"
         mc:Ignorable="d"
-        Title="Sequence Editor" Height="480" Width="720">
+        Title="Sequence Editor" Height="700" Width="1200">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="64*"/>
+            <ColumnDefinition Width="170*"/>
             <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="117*"/>
             <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
-        
-        <DockPanel Grid.Column="0">
-            <controls:SequenceSimulator/>
+
+        <DockPanel Grid.Column="0" Grid.ColumnSpan="2">
+            <Button DockPanel.Dock="Bottom" Content="RESTART CUTSCENE"
+                    Click="Button_Click"/>
+            <controls:SequenceSimulator x:Name="ctrlSequenceSimulator"/>
         </DockPanel>
-        
-        <DockPanel Grid.Column="2" Margin="0 0 0 5">
+
+        <DockPanel Grid.Column="3" Margin="0 0 0 5">
             <Grid DockPanel.Dock="Bottom" >
                 <Button Margin="0 5 0 0" Click="ButtonAddOperation_Click">
                     <StackPanel Orientation="Horizontal">

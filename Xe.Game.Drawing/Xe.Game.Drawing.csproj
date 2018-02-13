@@ -38,13 +38,23 @@
     <Compile Include="MapDrawer.cs" />
     <Compile Include="MapDrawer.Entity.cs" />
     <Compile Include="SequenceDrawer.cs" />
+    <Compile Include="SequenceOperations\ISequenceOperation.cs" />
+    <Compile Include="SequenceOperations\SequenceOperations.cs" />
     <Compile Include="TilemapDrawer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tiled\Tiled.csproj">
+      <Project>{2632a519-f583-438e-8568-f055b192a726}</Project>
+      <Name>Tiled</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
       <Project>{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}</Project>
       <Name>Xe.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Game.Tilemaps.TilemapTiled\Xe.Game.Tilemaps.TilemapTiled.csproj">
+      <Project>{891AEBE7-A248-4EF3-9237-50EB124E74DE}</Project>
+      <Name>Xe.Game.Tilemaps.TilemapTiled</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>

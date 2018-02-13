@@ -26,15 +26,18 @@ namespace Xe.Game.Sequences
 		[Parameter(1.0f, 0.0f, 10.0f, "Speed multiplier")]
 		SetTimeMuliplier = 0x32,
 
+		[Description("Remove all asynchronous operations.")]
+		RemoveAsynchronousOperations = 0x33,
+
 		[Description("Interrupt the current sequence and play a new one.")]
 		[Parameter((string)null, "Sequence name")]
-		PlaySequence = 0x33,
+		PlaySequence = 0x38,
 
-		[Description("Change map.")]
+		[Description("Change map. Does remove any asynchronous operations too.")]
 		[Parameter(0, 0, 255, "Zone")]
 		[Parameter(0, 0, 255, "Map")]
 		[Parameter(0, 0, 255, "Door")]
-		ChangeMap = 0x34,
+		ChangeMap = 0x39,
 
 		[Description("Activate gamepad rumbling.")]
 		[Parameter(0.0f, 0.0f, 1.0f, "Low-frequency rumble strength")]
@@ -66,16 +69,21 @@ namespace Xe.Game.Sequences
 		CameraLock = 0x44,
 
 		[Description("Shake the camera.")]
-		[Parameter(4, 0, 100, "Shake strength")]
-		[Parameter(0.5f, 0.0f, 100.0f, "Friction")]
+		[Parameter(2.0, -16.0, +16.0, "Horizontal shake strength")]
+		[Parameter(2.0, -16.0, +16.0, "Vertical shake strength")]
+		[Parameter(1.0f, 0.0f, 100.0f, "Timer")]
 		CameraShake = 0x45,
 
-		[Description("Move the camera.")]
+		[Description("Set the camera to the specified position.")]
 		[Parameter(0, -32768, +32767, "Destination X")]
 		[Parameter(0, -32768, +32767, "Destination Y")]
-		[Parameter(0.0f, -256.0f, +256.0f, "Horizontal movement speed")]
-		[Parameter(0.0f, -256.0f, +256.0f, "Vertical movement speed")]
-		CameraMove = 0x46,
+		CameraSet = 0x46,
+
+		[Description("Move the camera to a specified position.")]
+		[Parameter(0, -32768, +32767, "Destination X")]
+		[Parameter(0, -32768, +32767, "Destination Y")]
+		[Parameter(0.0f, 0.0f, +256.0f, "Movement speed")]
+		CameraMove = 0x47,
 
 		[Description("Play a BGM")]
 		[Parameter(0, 0, Config.BgmLayersCount, "Layer index")]
@@ -141,9 +149,13 @@ namespace Xe.Game.Sequences
 		// TODO
 		[Description("Change the position of the specified entity.")]
 		EntityPosition = 0xA1,
-
-		// TODO
+		
 		[Description("Move the specified entity.")]
+		[Parameter((string)null, "Name of the entity (optional)")]
+		[Parameter((string)null, "Group's name of the entity (optional)")]
+		[Parameter(0, -32768, +32767, "Destination X")]
+		[Parameter(0, -32768, +32767, "Destination Y")]
+		[Parameter(0.0f, 0.0f, +256.0f, "Movement speed")]
 		EntityMove = 0xA2,
 
 		// TODO
