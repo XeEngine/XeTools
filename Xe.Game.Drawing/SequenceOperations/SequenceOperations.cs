@@ -57,7 +57,7 @@ namespace Xe.Game.Drawing.SequenceOperations
 		public void Update(double deltaTime)
 		{
 			Timer += deltaTime;
-			int opacity = (int)((Timer / _dstTimer) * 255.0);
+			int opacity = (int)(Math.Min(Timer / _dstTimer, 1) * 255.0);
 			opacity = Math.Min(Math.Max(opacity, 0), 255);
 			_seq.ForegroundColor = Color.FromArgb(255 - opacity, _seq.ForegroundColor);
 		}
@@ -87,7 +87,7 @@ namespace Xe.Game.Drawing.SequenceOperations
 		public void Update(double deltaTime)
 		{
 			Timer += deltaTime;
-			int opacity = (int)((Timer / _dstTimer) * 255.0);
+			int opacity = (int)(Math.Min(Timer / _dstTimer, 1) * 255.0);
 			opacity = Math.Min(Math.Max(opacity, 0), 255);
 			_seq.ForegroundColor = Color.FromArgb(opacity, _seq.ForegroundColor);
 		}
@@ -169,6 +169,45 @@ namespace Xe.Game.Drawing.SequenceOperations
 			if (Math.Sign(diffX) != Math.Sign(_dstX - _seq.Camera.X))
 			{
 				_seq.Camera = new PointF(_dstX, _dstY);
+			}
+		}
+	}
+
+	public class EntityMove : ISequenceOperation
+	{
+		private MapDrawer.Entity _entity;
+		private int _dstX, _dstY;
+		private double _speed;
+
+		public bool IsFinished => _entity.Position.X == _dstX && _entity.Position.Y == _dstY;
+
+		public double TimeDiscarded => 0.0;
+
+		public bool IsAsynchronous { get; }
+
+		public double Timer { get; private set; }
+
+		public EntityMove(MapDrawer.Entity entity, Sequence.Entry entry)
+		{
+			_entity = entity;
+			_dstX = (int)entry.GetValue(1);
+			_dstY = (int)entry.GetValue(2);
+			_speed = (double)entry.GetValue(3);
+			IsAsynchronous = entry.IsAsynchronous;
+		}
+
+		public void Update(double deltaTime)
+		{
+			var diffX = _dstX - _entity.Position.X;
+			var diffY = _dstY - _entity.Position.Y;
+			double rad = Math.Atan2(diffY, diffX);
+			var x = (float)(Math.Cos(rad) * _speed * deltaTime);
+			var y = (float)(Math.Sin(rad) * _speed * deltaTime);
+			_entity.Position = new PointF(_entity.Position.X + x, _entity.Position.Y + y);
+			if (Math.Sign(diffX) != Math.Sign(_dstX - _entity.Position.X) ||
+				Math.Sign(diffY) != Math.Sign(_dstY - _entity.Position.Y))
+			{
+				_entity.Position = new PointF(_dstX, _dstY);
 			}
 		}
 	}

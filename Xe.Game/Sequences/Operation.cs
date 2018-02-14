@@ -145,26 +145,31 @@ namespace Xe.Game.Sequences
 		// TODO
 		[Description("Follow the specified entity.")]
 		CameraFollow = 0xA0,
-
-		// TODO
+		
 		[Description("Change the position of the specified entity.")]
+		[Parameter((string)null, "Name of the entity")]
+		[Parameter(0, -32768, +32767, "Destination X")]
+		[Parameter(0, -32768, +32767, "Destination Y")]
 		EntityPosition = 0xA1,
 		
 		[Description("Move the specified entity.")]
-		[Parameter((string)null, "Name of the entity (optional)")]
-		[Parameter((string)null, "Group's name of the entity (optional)")]
+		[Parameter((string)null, "Name of the entity")]
 		[Parameter(0, -32768, +32767, "Destination X")]
 		[Parameter(0, -32768, +32767, "Destination Y")]
 		[Parameter(0.0f, 0.0f, +256.0f, "Movement speed")]
 		EntityMove = 0xA2,
-
-		// TODO
+		
 		[Description("Set an animation for the specified entry.")]
+		[Parameter((string)null, "Name of the entity")]
+		[Parameter((string)null, "Name of the animation")]
+		[Parameter(0, 0, 4, "Direction (unk, up, right, down, left)")]
 		EntityAnimation = 0xA3,
 
 		// TODO
 		[Description("Set the direction for the specified entry.")]
-		Entityirection,
+		[Parameter((string)null, "Name of the entity")]
+		[Parameter(0, 0, 4, "Direction (unk, up, right, down, left)")]
+		EntityDirection,
 
 		#endregion
 

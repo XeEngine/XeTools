@@ -16,9 +16,6 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 {
 	public class SequenceSimulator : DrawingControl
 	{
-		const int CameraWidth = 427, CameraHeight = 240;
-		const float CameraAspectRatio = (float)CameraWidth / CameraHeight;
-
 		private SequenceDrawer _drawer;
 		private ISurface _backBuffer;
 		private IController _controller;
@@ -46,7 +43,17 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 					_drawer.Sequence = value;
 			}
 		}
-		
+
+		public int CameraWidth { get; set; } = 427;
+
+		public int CameraHeight { get; set; } = 240;
+
+		public bool Paused
+		{
+			get => _drawer.Paused;
+			set => _drawer.Paused = value;
+		}
+
 		public void Reset()
 		{
 			_drawer.Reset();
@@ -57,16 +64,14 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 			base.OnDrawingCreated();
 			_drawer = new SequenceDrawer(_controller.ProjectService, Drawing);
 			_drawer.OnChangeSequenceIndex += Drawer_OnChangeSequenceIndex;
+			_drawer.OnSequenceFinished += Drawer_OnSequenceFinished;
 			_backBuffer = Drawing.CreateSurface(CameraWidth, CameraHeight, PixelFormat.Format32bppArgb, SurfaceType.InputOutput);
 			_drawer.Sequence = Sequence;
+		}
 
-//#if DEBUG
-			var file = _controller.ProjectService.Project.GetFilesByFormat("tilemap")
-				.FirstOrDefault(x => x.Name == "debug_01.tmx");
-			var tiledMap = new Tiled.Map(file.FullPath);
-			var tileMap = new TilemapTiled().Open(tiledMap, Modules.ObjectExtensions.SwordsOfCalengal.Extensions);
-			_drawer.Map = tileMap;
-			//#endif
+		private void Drawer_OnSequenceFinished()
+		{
+			Controller.IsSequenceFinished = true;
 		}
 
 		private void Drawer_OnChangeSequenceIndex(int index)
@@ -76,7 +81,11 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 
 		protected override void OnDrawRequired()
 		{
+#if DEBUG
+			_drawer.Update(1.0 / 60.0);
+#else
 			_drawer.Update(DeltaTime);
+#endif
 
 			bool useZoom = true;
 
@@ -98,7 +107,7 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 					Drawing.Surface = frontBuffer;
 					var src = new Rectangle(0, 0, CameraWidth, CameraHeight);
 					RectangleF dst;
-					if (ActualWidth / ActualHeight > CameraAspectRatio)
+					if (ActualWidth / ActualHeight > (float)CameraWidth / CameraHeight)
 					{
 						float zoom = (float)(ActualHeight / CameraHeight);
 						float width = CameraWidth * zoom;
@@ -138,8 +147,11 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 					}, true);
 				}
 			}
-
 			base.OnDrawRequired();
+
+			Controller.RenderTime = LastDrawAndPresentTime;
+			Controller.ExecutionTime = _drawer.Timer;
+			Controller.TimeMultiplier = _drawer.TimeMultiplier;
 		}
 
 		protected override void OnDrawCompleted()

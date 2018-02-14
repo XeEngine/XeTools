@@ -22,6 +22,7 @@ namespace Xe.Game.Drawing
 		private bool _isAborted;
 
 		public delegate void ChangeSequenceIndexDelegate(int index);
+		public delegate void SequenceFinished();
 
 		public Sequence Sequence
 		{
@@ -43,9 +44,13 @@ namespace Xe.Game.Drawing
 			}
 		}
 
+		public bool Paused { get; set; } = true;
+
 		public int ExecutingOperationsCount => _asyncOperations.Count + (_currentOperation == null ? 0 : 1);
 
 		public event ChangeSequenceIndexDelegate OnChangeSequenceIndex;
+
+		public event SequenceFinished OnSequenceFinished;
 
 		#region Operation variables
 
@@ -56,8 +61,11 @@ namespace Xe.Game.Drawing
 			{
 				_isAborted = value;
 				EntryIndex = int.MaxValue - 1;
+				OnSequenceFinished?.Invoke();
 			}
 		}
+
+		public double Timer { get; set; }
 
 		public double TimeMultiplier { get; private set; }
 
@@ -121,9 +129,14 @@ namespace Xe.Game.Drawing
 
 		public override void Update(double deltaTime)
 		{
+			if (Paused)
+				return;
+
 			var currentDeltaTime = deltaTime * TimeMultiplier;
 			while (!IsAborted && currentDeltaTime > 0.0)
 			{
+				Timer += currentDeltaTime;
+
 				if (_currentOperation != null)
 					_currentOperation.Update(currentDeltaTime);
 				foreach (var op in _asyncOperations)
@@ -163,6 +176,9 @@ namespace Xe.Game.Drawing
 		
 		private ISequenceOperation Execute(Sequence.Entry entry)
 		{
+			Entity entity;
+			IEnumerable<Entity> entities;
+
 			switch (entry.Operation)
 			{
 				case Operation.None:
@@ -241,13 +257,51 @@ namespace Xe.Game.Drawing
 				case Operation.CameraFollow:
 					break;
 				case Operation.EntityPosition:
-					break;
+					entity = GetEntityByName((string)entry.GetValue(0));
+					if (entity != null)
+					{
+						int x = (int)entry.GetValue(1);
+						int y = (int)entry.GetValue(2);
+						entity.Position = new PointF(x, y);
+					}
+					else
+					{
+						// TODO log not found
+					}
+					return null;
 				case Operation.EntityMove:
-					break;
+					entity = GetEntityByName((string)entry.GetValue(0));
+					if (entity == null)
+					{
+						// TODO log not found
+						return null;
+					}
+					return new EntityMove(entity, entry);
 				case Operation.EntityAnimation:
-					break;
-				case Operation.Entityirection:
-					break;
+					entity = GetEntityByName((string)entry.GetValue(0));
+					if (entity != null)
+					{
+						var animName = (string)entry.GetValue(1);
+						var direction = (Direction)(int)entry.GetValue(2);
+						entity.SetAnimation(animName, direction);
+					}
+					else
+					{
+						// TODO log not found
+					}
+					return null;
+				case Operation.EntityDirection:
+					entity = GetEntityByName((string)entry.GetValue(0));
+					if (entity != null)
+					{
+						var direction = (Direction)(int)entry.GetValue(1);
+						entity.SetAnimation(entity.Animation, direction);
+					}
+					else
+					{
+						// TODO log not found
+					}
+					return null;
 				case Operation.DialogFaceset:
 					break;
 				case Operation.TextColor:

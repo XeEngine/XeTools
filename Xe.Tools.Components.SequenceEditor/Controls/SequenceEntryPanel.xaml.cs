@@ -36,6 +36,7 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 
 		private IController _controller;
 		private Panel _panel;
+		private SpecialGroupBox _specialGroupBox;
 		private Status _status;
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -45,6 +46,7 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 		public Sequence.Entry Entry { get; }
 
 		public string Description => Entry.Description;
+
 		public string UserDescription
 		{
 			get
@@ -126,6 +128,12 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 		public Visibility IsStatusNotStarted { get; private set; }
 		public Visibility IsStatusRunning { get; private set; }
 		public Visibility IsStatusFinished { get; private set; }
+
+		public bool IsContentCollapsed
+		{
+			get => !_specialGroupBox.IsContentVisible;
+			set => _specialGroupBox.IsContentVisible = !value;
+		}
 
 		public SequenceEntryPanel(IController controller, Sequence.Entry entry)
 		{
@@ -269,6 +277,11 @@ namespace Xe.Tools.Components.SequenceEditor.Controls
 		private void TextOpDescription_LostFocus(object sender, RoutedEventArgs e)
 		{
 			IsUserEditDescription = false;
+		}
+		
+		private void SpecialGroupBox_Loaded(object sender, RoutedEventArgs e)
+		{
+			_specialGroupBox = sender as SpecialGroupBox;
 		}
 	}
 }

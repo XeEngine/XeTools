@@ -47,7 +47,7 @@ namespace Xe.Tools.Tilemap
 
         public void DrawBackground(RectangleF rect)
         {
-            var backColor = Map.BackgroundColor ?? System.Drawing.Color.Fuchsia;
+            var backColor = Map?.BackgroundColor ?? System.Drawing.Color.Fuchsia;
             if (backColor != null)
             {
                 var color = System.Drawing.Color.FromArgb(backColor.A, backColor.R, backColor.G, backColor.B);
@@ -57,6 +57,9 @@ namespace Xe.Tools.Tilemap
 
         public void DrawMap(RectangleF rect, bool drawInvisibleObjects = false)
         {
+			if (Map == null)
+				return;
+
             foreach (var priority in Map.Layers
                 .FlatterLayers()
                 .GroupBy(l => l.DefinitionId)

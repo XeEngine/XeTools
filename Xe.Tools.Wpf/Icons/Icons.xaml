@@ -20,6 +20,7 @@
         <Image Margin="0 0 5 0" Source="{StaticResource Copy_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource Document_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource EditTitleString_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource ExpandChevronRightGroup_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource Export_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource FileCollection_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource Folder_16x}" Width="16"/>
@@ -28,6 +29,7 @@
         <Image Margin="0 0 5 0" Source="{StaticResource NewFile_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource NewSolutionFolder_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource OpenFileDialog_16x}" Width="16"/>
+        <Image Margin="0 0 5 0" Source="{StaticResource Pause_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource Property_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource Remove_color_16x}" Width="16"/>
         <Image Margin="0 0 5 0" Source="{StaticResource Run_16x}" Width="16"/>

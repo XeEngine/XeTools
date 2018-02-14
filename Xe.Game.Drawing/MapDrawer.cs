@@ -34,9 +34,9 @@ namespace Xe.Game.Drawing
 			}
 		}
 
-		public Dictionary<ObjectEntry, Entity> Entities { get; private set; }
-		public Dictionary<string, IEnumerable<Entity>> EntitiesByName { get; private set; }
-		public Dictionary<string, IEnumerable<Entity>> EntitiesByGroup { get; private set; }
+		private Dictionary<ObjectEntry, Entity> Entities { get; set; }
+		private Dictionary<string, Entity> EntitiesByName { get; set; }
+		private Dictionary<string, IEnumerable<Entity>> EntitiesByGroup { get; set; }
 
 		public MapDrawer(ProjectService projService, IDrawing drawing)
 		{
@@ -45,7 +45,7 @@ namespace Xe.Game.Drawing
 			Drawing = drawing;
 			TilemapDrawer = new TilemapDrawer(Drawing)
 			{
-				ActionDrawObject = RenderObject
+				ActionDrawObject = RenderEntity
 			};
 
 			AnimationResources = new ResourceService<string, AnimationDrawer>(
@@ -73,23 +73,62 @@ namespace Xe.Game.Drawing
 			AnimationResources?.RemoveAll();
 		}
 
+		/// <summary>
+		/// Load all the entitire from a map file and initialize them.
+		/// </summary>
 		protected void LoadEntities()
 		{
-			Entities = Map?.Layers
+			// Get all the entities
+			var entities = Map?.Layers
 				.FlatterLayers<LayerObjects>()
 				.SelectMany(x => x.Objects)
 				.Select(x => new Entity(x))
+				.ToList();
+
+			Entities = entities?
 				.ToDictionary(x => x.Entry, x => x) ??
 				new Dictionary<ObjectEntry, Entity>();
+			EntitiesByName = entities?
+				.Where(x => !string.IsNullOrWhiteSpace(x.Name))
+				.GroupBy(x => x.Name)
+				.ToDictionary(x => x.Key, x => x.FirstOrDefault()) ??
+				new Dictionary<string, Entity>();
+			EntitiesByGroup = entities?
+				.Where(x => !string.IsNullOrWhiteSpace(x.Group))
+				.GroupBy(x => x.Group)
+				.ToDictionary(x => x.Key, x => x.AsEnumerable()) ??
+				new Dictionary<string, IEnumerable<Entity>>();
 		}
 
+		/// <summary>
+		/// Reset the state of all the entities at the loading state.
+		/// </summary>
 		protected void ResetEntities()
 		{
 			foreach (var entity in Entities)
 				entity.Value.Reset();
 		}
 
-		private void RenderObject(ObjectEntry entry, float x, float y, float opacity)
+		protected Entity GetEntityByName(string name)
+		{
+			EntitiesByName.TryGetValue(name, out var entity);
+			return entity;
+		}
+
+		protected IEnumerable<Entity> GetEntitesByGroup(string group)
+		{
+			EntitiesByGroup.TryGetValue(group, out var entities);
+			return entities;
+		}
+
+		/// <summary>
+		/// Draw an entity using the animation system.
+		/// </summary>
+		/// <param name="entry">Entity to render</param>
+		/// <param name="x">Horizontal position</param>
+		/// <param name="y">Vertical position</param>
+		/// <param name="opacity">Level of opacity, from 0 to 1</param>
+		private void RenderEntity(ObjectEntry entry, float x, float y, float opacity)
 		{
 			if (entry.AnimationData == null)
 				return;

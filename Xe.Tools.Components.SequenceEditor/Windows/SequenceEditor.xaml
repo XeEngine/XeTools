@@ -6,32 +6,116 @@
         xmlns:local="clr-namespace:Xe.Tools.Components.SequenceEditor.Windows"
         xmlns:controls="clr-namespace:Xe.Tools.Components.SequenceEditor.Controls"
         mc:Ignorable="d"
-        Title="Sequence Editor" Height="700" Width="1200">
+        Title="Sequence Editor" Height="700" Width="1202">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="64*"/>
-            <ColumnDefinition Width="170*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="117*"/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0" Grid.ColumnSpan="2">
-            <Button DockPanel.Dock="Bottom" Content="RESTART CUTSCENE"
-                    Click="Button_Click"/>
+            <StatusBar DockPanel.Dock="Bottom" Height="22">
+                <Image Source="{StaticResource Stop_16x}"
+                       Visibility="{Binding VisibilityIsNotRunning}">
+                    <Image.ToolTip>
+                        <ToolTip>Not running</ToolTip>
+                    </Image.ToolTip>
+                </Image>
+                <Image Source="{StaticResource Pause_16x}"
+                       Visibility="{Binding VisibilityIsPaused}">
+                    <Image.ToolTip>
+                        <ToolTip>Paused</ToolTip>
+                    </Image.ToolTip>
+                </Image>
+                <Image Source="{StaticResource Run_16x}"
+                       Visibility="{Binding VisibilityIsRunning}">
+                    <Image.ToolTip>
+                        <ToolTip>Running</ToolTip>
+                    </Image.ToolTip>
+                </Image>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <TextBlock>
+                    <Run Text="{Binding RenderTime, StringFormat=N2}"/>
+                    <Run Text="ms"/>
+                </TextBlock>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <TextBlock>
+                    <Run Text="{Binding ExecutionTime, StringFormat=N2}"/>
+                    <Run Text="s"/>
+                </TextBlock>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <TextBlock Text="{Binding CurrentCamera}" />
+                <TextBlock Text="camera" />
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <TextBlock Text="{Binding CurrentViewport}" />
+                <TextBlock Text="viewport" />
+            </StatusBar>
             <controls:SequenceSimulator x:Name="ctrlSequenceSimulator"/>
         </DockPanel>
 
-        <DockPanel Grid.Column="3" Margin="0 0 0 5">
-            <Grid DockPanel.Dock="Bottom" >
-                <Button Margin="0 5 0 0" Click="ButtonAddOperation_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource Add_16x}" Width="16"/>
-                        <TextBlock Text="Add new operator" Margin="3 0 3 0"/>
-                    </StackPanel>
+        <DockPanel Grid.Column="2">
+            <StackPanel DockPanel.Dock="Top" Margin="0 2 0 2" Orientation="Horizontal" Height="18">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button BorderThickness="0" Background="Transparent"
+                        Click="Button_CollapseAll">
+                    <Button.Content>
+                        <Image Source="{StaticResource Assembly_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <ToolTip Content="Collapse all the operations"/>
+                    </Button.ToolTip>
                 </Button>
-            </Grid>
-            <ScrollViewer Margin="0 0 0 5">
+                <Button BorderThickness="0" Background="Transparent"
+                        Click="ButtonAddOperation_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Add_16x}"/>
+                            <TextBlock Text="New operator"/>
+                        </StackPanel>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <ToolTip Content="Add a new operator at the bottom of all the operators."/>
+                    </Button.ToolTip>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button BorderThickness="0" Background="Transparent"
+                        Click="Button_SequenceStop">
+                    <Button.Content>
+                        <Image Source="{StaticResource Stop_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <ToolTip Content="Interrupt the running sequence."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button BorderThickness="0" Background="Transparent"
+                        Click="Button_SequencePause">
+                    <Button.Content>
+                        <Image Source="{StaticResource Pause_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <ToolTip Content="Pause the running sequence and reset the speed at 1x."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button BorderThickness="0" Background="Transparent"
+                        Click="Button_SequencePlay">
+                    <Button.Content>
+                        <Image Source="{StaticResource Run_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <ToolTip Content="Run the sequence."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button BorderThickness="0" Background="Transparent">
+                    <Button.Content>
+                        <Image Source="{StaticResource ExpandChevronRightGroup_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <ToolTip Content="Execute the sequence at double speed, skipping the dialogs."/>
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
+            <ScrollViewer>
                 <StackPanel x:Name="OperationsPanel">
                 </StackPanel>
             </ScrollViewer>

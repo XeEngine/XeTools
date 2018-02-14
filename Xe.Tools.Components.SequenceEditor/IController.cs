@@ -14,6 +14,16 @@ namespace Xe.Tools.Components.SequenceEditor
 
 		ProjectService ProjectService { get; }
 
+		double RenderTime { get; set; }
+
+		double ExecutionTime { get; set; }
+
+		double TimeMultiplier { get; set; }
+
+		int CurrentOperationIndex { set; }
+
+		bool IsSequenceFinished { set; }
+
 		void AddSequenceOperator();
 
 		void RemoveSequenceOperator(Sequence.Entry entry);
@@ -21,7 +31,5 @@ namespace Xe.Tools.Components.SequenceEditor
 		void MoveSequenceUp(Sequence.Entry entry);
 
 		void MoveSequenceDown(Sequence.Entry entry);
-
-		int CurrentOperationIndex { set; }
 	}
 }

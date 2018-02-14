@@ -63,6 +63,12 @@ namespace Xe.Game.Sequences
 				return this;
 			}
 
+			public Entry SetAsynchronous(bool isAsync)
+			{
+				IsAsynchronous = isAsync;
+				return this;
+			}
+
 			private void SetInternal()
 			{
 				_entry = OPERATIONS[_operation];

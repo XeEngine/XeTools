@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Xe.Game.Sequences;
 using Xe.Tools.Components.SequenceEditor.Controls;
 using Xe.Tools.Projects;
@@ -21,9 +12,20 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 	/// <summary>
 	/// Interaction logic for SequenceEditor.xaml
 	/// </summary>
-	public partial class SequenceEditor : Window, IController
+	public partial class SequenceEditor : Window, IController, INotifyPropertyChanged
 	{
+		private enum State
+		{
+			NotRunning,
+			Running,
+			Pasued
+		}
+
 		private ProjectService _projectService;
+		private double _renderTime, _executionTime, _mulTime;
+		private State _state;
+
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public ProjectService ProjectService
 		{
@@ -47,6 +49,36 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 			}
 		}
 
+		public double RenderTime
+		{
+			get => _renderTime;
+			set
+			{
+				_renderTime = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public double ExecutionTime
+		{
+			get => _executionTime;
+			set
+			{
+				_executionTime = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public double TimeMultiplier
+		{
+			get => _mulTime;
+			set
+			{
+				_mulTime = value;
+				OnPropertyChanged();
+			}
+		}
+
 		public int CurrentOperationIndex
 		{
 			set
@@ -65,14 +97,48 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 						index++;
 					}
 				}
+				RunningState = State.Running;
 			}
 		}
+
+		public bool IsSequenceFinished
+		{
+			set
+			{
+				RunningState = State.NotRunning;
+			}
+		}
+
+		private State RunningState
+		{
+			get => _state;
+			set
+			{
+				_state = value;
+				OnPropertyChanged(nameof(VisibilityIsRunning));
+				OnPropertyChanged(nameof(VisibilityIsPaused));
+				OnPropertyChanged(nameof(VisibilityIsNotRunning));
+			}
+		}
+
+		public Visibility VisibilityIsRunning => RunningState == State.Running ? Visibility.Visible : Visibility.Collapsed;
+
+		public Visibility VisibilityIsPaused => RunningState == State.Pasued ? Visibility.Visible : Visibility.Collapsed;
+
+		public Visibility VisibilityIsNotRunning => RunningState == State.NotRunning ? Visibility.Visible : Visibility.Collapsed;
+
+		public System.Drawing.Point CurrentCamera => new System.Drawing.Point(0, 0);
+
+		public System.Drawing.Point CurrentViewport => new System.Drawing.Point(
+			ctrlSequenceSimulator.CameraWidth, ctrlSequenceSimulator.CameraHeight);
 
 		public SequenceEditor()
 		{
 			InitializeComponent();
+			DataContext = this;
 			ctrlSequenceSimulator.Controller = this;
-			
+			RunningState = State.NotRunning;
+
 			Sequence = new Sequence()
 			{
 				Entries = new List<Sequence.Entry>()
@@ -87,7 +153,7 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 					new Sequence.Entry(Operation.CameraMove)
 						.SetValue(0, 200)
 						.SetValue(1, 200)
-						.SetValue(2, 80.0),
+						.SetValue(2, 160.0),
 					new Sequence.Entry(Operation.FadeOutWhite),
 					new Sequence.Entry(Operation.ChangeMap)
 						.SetValue(0, 0)
@@ -100,11 +166,29 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 						.SetValue(0, 1)
 						.SetValue(1, 0),
 					new Sequence.Entry(Operation.CameraSet)
-						.SetValue(0, 400)
+						.SetValue(0, 500)
 						.SetValue(1, 400),
-					new Sequence.Entry(Operation.FadeInBlack),
-					new Sequence.Entry(Operation.Sleep)
-						.SetValue(0, 10.0),
+					new Sequence.Entry(Operation.FadeInBlack)
+						.SetAsynchronous(true),
+					new Sequence.Entry(Operation.EntityAnimation)
+						.SetValue(0, "PlayerTestCutscene")
+						.SetValue(1, "Walk")
+						.SetValue(2, 3),
+					new Sequence.Entry(Operation.EntityMove)
+						.SetValue(0, "PlayerTestCutscene")
+						.SetValue(1, 416)
+						.SetValue(2, 468)
+						.SetValue(3, 40.0),
+					new Sequence.Entry(Operation.EntityAnimation)
+						.SetValue(0, "PlayerTestCutscene")
+						.SetValue(1, "Stand")
+						.SetValue(2, 1),
+					new Sequence.Entry(Operation.Sleep).SetValue(0, 0.25),
+					new Sequence.Entry(Operation.EntityAnimation)
+						.SetValue(0, "PlayerTestCutscene")
+						.SetValue(1, "FightStand")
+						.SetValue(2, 1),
+					new Sequence.Entry(Operation.Abort)
 				}
 			};
 		}
@@ -191,9 +275,33 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 			AddSequenceOperator();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void Button_CollapseAll(object sender, RoutedEventArgs e)
+		{
+			foreach (var item in OperationsPanel.Children)
+			{
+				if (item is SequenceEntryPanel sequenceEntryPanel)
+					sequenceEntryPanel.IsContentCollapsed = true;
+			}
+		}
+
+		private void Button_SequenceStop(object sender, RoutedEventArgs e)
 		{
 			ctrlSequenceSimulator.Reset();
+		}
+
+		private void Button_SequencePause(object sender, RoutedEventArgs e)
+		{
+			ctrlSequenceSimulator.Paused = true;
+		}
+
+		private void Button_SequencePlay(object sender, RoutedEventArgs e)
+		{
+			ctrlSequenceSimulator.Paused = false;
+		}
+
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

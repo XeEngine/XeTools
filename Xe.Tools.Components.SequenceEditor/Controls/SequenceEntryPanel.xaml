@@ -8,48 +8,48 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <tools:SpecialGroupBox IsContentVisible="False">
+        <tools:SpecialGroupBox IsContentVisible="False" Loaded="SpecialGroupBox_Loaded">
             <tools:SpecialGroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <Button Margin="0 0 5 0" Click="ButtonMoveUp_Click">
                         <Image Source="{StaticResource AddRowToAbove_16x}" Width="16"/>
                         <Button.ToolTip>
-                            <Label>Move the commands up.</Label>
+                            <ToolTip>Move the commands up.</ToolTip>
                         </Button.ToolTip>
                     </Button>
                     <Button Margin="0 0 5 0" Click="ButtonMoveDown_Click">
                         <Image Source="{StaticResource AddRowToBelow_16x}" Width="16"/>
                         <Button.ToolTip>
-                            <Label>Move the commands down.</Label>
+                            <ToolTip>Move the commands down.</ToolTip>
                         </Button.ToolTip>
                     </Button>
                     <Button Margin="0 0 5 0" Click="ButtonRemove_Click">
                         <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
                         <Button.ToolTip>
-                            <Label>Remove the command.</Label>
+                            <ToolTip>Remove the command.</ToolTip>
                         </Button.ToolTip>
                     </Button>
                     <Image Source="{StaticResource StatusNotStarted_16x}" Width="16"
                            Visibility="{Binding IsStatusNotStarted}">
                         <Image.ToolTip>
-                            <Label>Not started yet</Label>
+                            <ToolTip>Not started yet</ToolTip>
                         </Image.ToolTip>
                     </Image>
                     <Image Source="{StaticResource StatusNotStartedGreen_16x}" Width="16"
                            Visibility="{Binding IsStatusRunning}">
                         <Image.ToolTip>
-                            <Label>Executing</Label>
+                            <ToolTip>Executing</ToolTip>
                         </Image.ToolTip>
                     </Image>
                     <Image Source="{StaticResource StatusNotStartedYellow_16x}" Width="16"
                            Visibility="{Binding IsStatusFinished}">
                         <Image.ToolTip>
-                            <Label>Previously executed.</Label>
+                            <ToolTip>Previously executed.</ToolTip>
                         </Image.ToolTip>
                     </Image>
                     <TextBlock Margin="0 0 15 0" Text="{Binding SelectedOperation}">
                         <TextBlock.ToolTip>
-                            <Label Content="{Binding Description}"/>
+                            <ToolTip Content="{Binding Description}"/>
                         </TextBlock.ToolTip>
                     </TextBlock>
                     <TextBlock Text="{Binding UserDescription}"
