@@ -49,8 +49,39 @@ namespace Xe.Tools.GameStudio
                     {
                         Common.SendMessage(MessageType.Initialization, "Loading most recent project...");
                         GameStudioViewModel.Instance.LoadProject(fileLastOpen);
-                    }
-                })
+						
+#if DEBUG
+						var file = Project.GetFiles()
+							.FirstOrDefault(x => x.Format == "sequence");
+						var moduleName = file.Format;
+						while (Globals.Components == null) System.Threading.Thread.Sleep(1);
+						var component = Globals.Components
+							.Where(x => x.ComponentInfo.ModuleName == moduleName)
+							.SingleOrDefault();
+
+						try
+						{
+							Application.Current.Dispatcher.Invoke(
+							() =>
+							{
+								component.CreateInstance(new Components.ComponentProperties()
+								{
+									Project = Project,
+									File = file
+								}).ShowDialog();
+							});
+						}
+						catch (FileNotFoundException ex)
+						{
+							Log.Error($"File {ex.FileName} not found.");
+						}
+						catch (Exception ex)
+						{
+							Log.Error(ex.Message);
+						}
+#endif
+					}
+				})
             };
 
             Task.Run(() =>

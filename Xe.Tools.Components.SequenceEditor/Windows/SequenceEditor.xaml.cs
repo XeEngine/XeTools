@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using Xe.Game.Sequences;
 using Xe.Tools.Components.SequenceEditor.Controls;
 using Xe.Tools.Projects;
 using Xe.Tools.Services;
+using Xe.Tools.Wpf.Controls;
 
 namespace Xe.Tools.Components.SequenceEditor.Windows
 {
 	/// <summary>
 	/// Interaction logic for SequenceEditor.xaml
 	/// </summary>
-	public partial class SequenceEditor : Window, IController, INotifyPropertyChanged
+	public partial class SequenceEditor : WindowEx, IController, INotifyPropertyChanged
 	{
 		private enum State
 		{
@@ -24,6 +27,7 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 		private ProjectService _projectService;
 		private double _renderTime, _executionTime, _mulTime;
 		private State _state;
+		private IProjectFile _file;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -138,64 +142,28 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 			DataContext = this;
 			ctrlSequenceSimulator.Controller = this;
 			RunningState = State.NotRunning;
-
-			Sequence = new Sequence()
-			{
-				Entries = new List<Sequence.Entry>()
-				{
-					new Sequence.Entry(Operation.ChangeMap)
-						.SetValue(0, 1)
-						.SetValue(1, 3),
-					new Sequence.Entry(Operation.CameraSet)
-						.SetValue(0, 600)
-						.SetValue(1, 300),
-					new Sequence.Entry(Operation.CameraShake),
-					new Sequence.Entry(Operation.CameraMove)
-						.SetValue(0, 200)
-						.SetValue(1, 200)
-						.SetValue(2, 160.0),
-					new Sequence.Entry(Operation.FadeOutWhite),
-					new Sequence.Entry(Operation.ChangeMap)
-						.SetValue(0, 0)
-						.SetValue(1, 4),
-					new Sequence.Entry(Operation.Sleep).SetValue(0, 0.5),
-					new Sequence.Entry(Operation.FadeInWhite),
-					new Sequence.Entry(Operation.Sleep).SetValue(0, 0.5),
-					new Sequence.Entry(Operation.FadeOutBlack),
-					new Sequence.Entry(Operation.ChangeMap)
-						.SetValue(0, 1)
-						.SetValue(1, 0),
-					new Sequence.Entry(Operation.CameraSet)
-						.SetValue(0, 500)
-						.SetValue(1, 400),
-					new Sequence.Entry(Operation.FadeInBlack)
-						.SetAsynchronous(true),
-					new Sequence.Entry(Operation.EntityAnimation)
-						.SetValue(0, "PlayerTestCutscene")
-						.SetValue(1, "Walk")
-						.SetValue(2, 3),
-					new Sequence.Entry(Operation.EntityMove)
-						.SetValue(0, "PlayerTestCutscene")
-						.SetValue(1, 416)
-						.SetValue(2, 468)
-						.SetValue(3, 40.0),
-					new Sequence.Entry(Operation.EntityAnimation)
-						.SetValue(0, "PlayerTestCutscene")
-						.SetValue(1, "Stand")
-						.SetValue(2, 1),
-					new Sequence.Entry(Operation.Sleep).SetValue(0, 0.25),
-					new Sequence.Entry(Operation.EntityAnimation)
-						.SetValue(0, "PlayerTestCutscene")
-						.SetValue(1, "FightStand")
-						.SetValue(2, 1),
-					new Sequence.Entry(Operation.Abort)
-				}
-			};
 		}
 
 		public void Open(IProject project, IProjectFile file)
 		{
 			ProjectService = new ProjectService(project);
+			_file = file;
+			using (var reader = File.OpenText(file.FullPath))
+			{
+				var sequence = JsonConvert.DeserializeObject<Sequence>(reader.ReadToEnd());
+				// HACK Newtonsoft converts integers to Int64. We need to convert them back to Int32.
+				foreach (var operation in sequence.Entries)
+				{
+					for (int i = 0; i < operation.Parameters.Length; i++)
+					{
+						if (operation.Parameters[i] is System.Int64 value)
+						{
+							operation.Parameters[i] = (int)(System.Int64)operation.Parameters[i];
+						}
+					}
+				}
+				Sequence = sequence;
+			}
 		}
 
 		public void AddSequenceOperator()
@@ -253,6 +221,15 @@ namespace Xe.Tools.Components.SequenceEditor.Windows
 					OperationsPanel.Children.Insert(index + 1, element);
 				}
 			}
+		}
+
+		protected override bool DoSaveChanges()
+		{
+			using (var writer = File.CreateText(_file.FullPath))
+			{
+				writer.Write(JsonConvert.SerializeObject(Sequence, Formatting.Indented));
+			}
+			return true;
 		}
 
 		private UIElement GetElementFromEntry(Sequence.Entry entry)

@@ -1,12 +1,14 @@
-﻿<Window x:Class="Xe.Tools.Components.SequenceEditor.Windows.SequenceEditor"
+﻿<controls:WindowEx
+        xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+        x:Class="Xe.Tools.Components.SequenceEditor.Windows.SequenceEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.Components.SequenceEditor.Windows"
-        xmlns:controls="clr-namespace:Xe.Tools.Components.SequenceEditor.Controls"
+        xmlns:c="clr-namespace:Xe.Tools.Components.SequenceEditor.Controls"
         mc:Ignorable="d"
-        Title="Sequence Editor" Height="700" Width="1202">
+        Title="Sequence Editor" Height="700" Width="1202" AskExitConfirmation="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -51,7 +53,7 @@
                 <TextBlock Text="{Binding CurrentViewport}" />
                 <TextBlock Text="viewport" />
             </StatusBar>
-            <controls:SequenceSimulator x:Name="ctrlSequenceSimulator"/>
+            <c:SequenceSimulator x:Name="ctrlSequenceSimulator"/>
         </DockPanel>
 
         <DockPanel Grid.Column="2">
@@ -121,4 +123,4 @@
             </ScrollViewer>
         </DockPanel>
     </Grid>
-</Window>
+</controls:WindowEx>

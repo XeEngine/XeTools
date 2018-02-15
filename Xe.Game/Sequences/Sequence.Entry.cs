@@ -24,7 +24,7 @@ namespace Xe.Game.Sequences
 				}
 			}
 
-			public object[] Parameters { get; private set; } = new object[0];
+			public object[] Parameters { get; set; }
 
 			public bool IsAsynchronous { get; set; }
 
@@ -39,7 +39,6 @@ namespace Xe.Game.Sequences
 			public Entry(Operation operation)
 			{
 				Operation = operation;
-				SetInternal();
 			}
 
 			public object GetValue(int index)
