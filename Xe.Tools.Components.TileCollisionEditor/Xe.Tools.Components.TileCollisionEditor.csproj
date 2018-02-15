@@ -56,7 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
-    <Compile Include="Models\Collision.cs" />
+    <Compile Include="ViewModels\CollisionViewModel.cs" />
     <Compile Include="Models\CollisionType.cs" />
     <Compile Include="Models\Effect.cs" />
     <Compile Include="ViewModels\CollisionTypeEditViewModel.cs" />

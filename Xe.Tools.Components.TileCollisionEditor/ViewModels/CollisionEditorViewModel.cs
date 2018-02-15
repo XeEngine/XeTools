@@ -13,7 +13,7 @@ namespace Xe.Tools.Components.TileCollisionEditor.ViewModels
     public class CollisionEditorViewModel : BaseNotifyPropertyChanged
     {
         private Xe.Game.Collisions.CollisionSystem _collisionSystem;
-        private Collision _collision;
+        private CollisionViewModel _collision;
 
         public Window Window { get; set; }
 
@@ -32,10 +32,10 @@ namespace Xe.Tools.Components.TileCollisionEditor.ViewModels
                 if (CollisionTypes == null)
                     CollisionTypes = new CollisionType[] { };
 
-                Collisions = new Collision[0x100];
+                Collisions = new CollisionViewModel[0x100];
                 for (int i = 0; i < Collisions.Length; i++)
                 {
-                    Collisions[i] = new Collision()
+                    Collisions[i] = new CollisionViewModel()
                     {
                         Index = i,
                         CollisionTypes = CollisionTypes,
@@ -59,11 +59,11 @@ namespace Xe.Tools.Components.TileCollisionEditor.ViewModels
             }
         }
 
-        public Collision[] Collisions { get; private set; }
+        public CollisionViewModel[] Collisions { get; private set; }
 
         public IEnumerable<CollisionType> CollisionTypes { get; private set; }
 
-        public Collision SelectedCollision
+        public CollisionViewModel SelectedCollision
         {
             get => _collision;
             set

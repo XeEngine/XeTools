@@ -16,7 +16,8 @@
         </Grid.ColumnDefinitions>
         <ListBox Grid.Column="0"
                  ItemsSource="{Binding Collisions}"
-                 SelectedValue="{Binding SelectedCollision, Mode=TwoWay}"/>
+                 SelectedValue="{Binding SelectedCollision, Mode=TwoWay}"
+                 DisplayMemberPath="Name"/>
         <StackPanel Grid.Column="2">
             <TextBlock Text="Collision type"/>
             <DockPanel Margin="0 0 0 8">

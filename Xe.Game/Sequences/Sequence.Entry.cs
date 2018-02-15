@@ -24,7 +24,7 @@ namespace Xe.Game.Sequences
 				}
 			}
 
-			public object[] Parameters { get; set; }
+			public object[] Parameters { get; set; } = new object[0];
 
 			public bool IsAsynchronous { get; set; }
 
