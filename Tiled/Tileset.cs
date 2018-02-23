@@ -20,7 +20,16 @@ namespace Tiled
         /// </summary>
         public string Source { get; set; }
 
-        public string FullImagePath => GetFullPath(_basePath, Image?.Source);
+        public string FullImagePath
+		{
+			get
+			{
+				var basePath = _basePath;
+				if (!string.IsNullOrEmpty(Source))
+					basePath = Path.Combine(basePath, Path.GetDirectoryName(Source));
+				return GetFullPath(basePath, Image?.Source);
+			}
+		}
 
         /// <summary>
         /// The name of this tileset.
