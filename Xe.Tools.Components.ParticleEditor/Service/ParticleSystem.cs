@@ -10,7 +10,8 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 {
 	public class ParticleBaseSystem
 	{
-		public AnimationDrawer AnimationDrawer { get; protected set; }
+		public AnimationDrawer AnimationDrawer { get;
+			protected set; }
 	}
 
 	public class ParticleSystem : ParticleBaseSystem

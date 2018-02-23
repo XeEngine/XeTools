@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xe.Game.Drawing;
 using Xe.Game.Particles;
+using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.ParticleEditor.Service
 {
@@ -189,12 +190,19 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 		}
 	}
 
-	public class ParticleGroup
+	public class ParticleGroup : BaseNotifyPropertyChanged
 	{
+		public readonly Game.Particles.ParticlesGroup ParticlesGroup;
 		private double _timer;
-		private string _animationName;
 		private AnimationDrawer _animationDrawer;
 		private List<ParticleEntity> _particleEntities = new List<ParticleEntity>();
+
+		public ParticleGroup(Game.Particles.ParticlesGroup particlesGroup)
+		{
+			ParticlesGroup = particlesGroup;
+			ParticlesGroup.Effects = ParticlesGroup.Effects ?? new List<Effect>();
+			Count = ParticlesGroup.ParticlesCount;
+		}
 
 		public AnimationDrawer AnimationDrawer
 		{
@@ -228,14 +236,15 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 		/// </summary>
 		public string AnimationName
 		{
-			get => _animationName;
+			get => ParticlesGroup.AnimationName ?? "<no anim>";
 			set
 			{
-				_animationName = value;
+				ParticlesGroup.AnimationName = value;
 				foreach (var item in _particleEntities)
 				{
 					item.EntityDrawer?.SetAnimation(AnimationName, Game.Direction.Undefined);
 				}
+				OnPropertyChanged();
 			}
 		}
 
@@ -256,7 +265,10 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 						{
 							EntityDrawer = AnimationDrawer?.CreateEntity()
 						};
-						entity.EntityDrawer.SetAnimation(AnimationName, Game.Direction.Undefined);
+						if (entity.EntityDrawer != null)
+						{
+							entity.EntityDrawer.SetAnimation(AnimationName, Game.Direction.Undefined);
+						}
 						_particleEntities.Add(entity);
 					}
 				}
@@ -265,23 +277,36 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 					var itemsToRemove = Count - value;
 					_particleEntities.RemoveRange(value, itemsToRemove);
 				}
+				ParticlesGroup.ParticlesCount = value;
 			}
 		}
 
 		/// <summary>
 		/// Delay for all particles
 		/// </summary>
-		public double GlobalDelay { get; set; }
+		public double GlobalDelay
+		{
+			get => ParticlesGroup.GlobalDelay;
+			set => ParticlesGroup.GlobalDelay = value;
+		}
 
 		/// <summary>
 		/// Duration timer for all particles
 		/// </summary>
-		public double GlobalDuration { get; set; }
+		public double GlobalDuration
+		{
+			get => ParticlesGroup.GlobalDuration;
+			set => ParticlesGroup.GlobalDuration = value;
+		}
 
 		/// <summary>
 		/// Delay between particles
 		/// </summary>
-		public double DelayBetweenParticles { get; set; }
+		public double DelayBetweenParticles
+		{
+			get => ParticlesGroup.Delay;
+			set => ParticlesGroup.Delay = value;
+		}
 
 		/// <summary>
 		/// List of particle entities
@@ -291,7 +316,7 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 		/// <summary>
 		/// List of effects
 		/// </summary>
-		public List<Effect> Effects { get; } = new List<Effect>();
+		public List<Effect> Effects => ParticlesGroup.Effects;
 		
 		private void Update()
 		{
@@ -331,7 +356,7 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 
 		public void Draw(double x, double y)
 		{
-			EntityDrawer.Draw(x + Parameters.X, y + Parameters.Y - Parameters.Z);
+			EntityDrawer?.Draw(x + Parameters.X, y + Parameters.Y - Parameters.Z);
 		}
 	}
 }

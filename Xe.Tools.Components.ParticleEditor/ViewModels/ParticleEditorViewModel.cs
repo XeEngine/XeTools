@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xe.Game.Animations;
+using Xe.Game.Particles;
 using Xe.Tools.Components.ParticleEditor.Service;
 using Xe.Tools.Services;
 using Xe.Tools.Wpf;
@@ -11,8 +12,11 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 {
     public class ParticleEditorViewModel : BaseNotifyPropertyChanged
 	{
-		private string _animationDataName;
+		private IController _controller;
+		private ParticlesData _particlesData = new ParticlesData();
 		private ParticleSystem _particleSystem;
+		private ObservableCollection<ParticleGroup> _particleGroupsCollection
+			= new ObservableCollection<ParticleGroup>();
 
 		#region Basic properties
 
@@ -27,6 +31,7 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 			{
 				_particleSystem = value;
 				_particleSystem.ParticleGroups = ParticleGroups;
+				ParticlesData = _controller.ParticleData;
 			}
 		}
 
@@ -34,13 +39,30 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 		public AnimationData AnimationData { get; private set; }
 
-		public string AnimationDataName
+		public ParticlesData ParticlesData
 		{
-			get => _animationDataName;
+			get => _particlesData;
 			set
 			{
-				_animationDataName = value;
-				if (ParticleSystem.LoadAnimation($"{_animationDataName}.json"))
+				_particlesData = value;
+				AnimationDataName = _particlesData.AnimationDataName;
+				ParticleGroups = new ObservableCollection<ParticleGroup>(
+					_particlesData.Groups
+						.Select(x => new ParticleGroup(x)
+						{
+							AnimationDrawer = ParticleSystem.AnimationDrawer
+						})
+					);
+			}
+		}
+
+		public string AnimationDataName
+		{
+			get => _particlesData?.AnimationDataName;
+			set
+			{
+				_particlesData.AnimationDataName = value;
+				if (ParticleSystem.LoadAnimation($"{value}.json"))
 				{
 					foreach (var particleGroup in ParticleGroups)
 					{
@@ -60,7 +82,19 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 		private ParticleGroup _selectedParticleGroup;
 
-		public ObservableCollection<ParticleGroup> ParticleGroups { get; set; } = new ObservableCollection<ParticleGroup>();
+		public ObservableCollection<ParticleGroup> ParticleGroups
+		{
+			get => _particleGroupsCollection;
+			set
+			{
+				_particleGroupsCollection = value;
+				if (_particleSystem != null)
+				{
+					_particleSystem.ParticleGroups = value;
+				}
+				OnPropertyChanged();
+			}
+		}
 
 		public ParticleGroup SelectedParticleGroup
 		{
@@ -69,7 +103,13 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 			{
 				_selectedParticleGroup = value;
 				OnPropertyChanged();
+				OnPropertyChanged(nameof(AnimationName));
 				OnPropertyChanged(nameof(IsParticleGroupSelected));
+				OnPropertyChanged(nameof(ParticlesCount));
+				OnPropertyChanged(nameof(GlobalDelay));
+				OnPropertyChanged(nameof(GlobalDuration));
+				OnPropertyChanged(nameof(DelayBetweenParticles));
+				_controller.RefreshEffectsList();
 			}
 		}
 
@@ -81,14 +121,18 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 		#endregion
 
-		#region Particle gruop effects management
+		#region Particle group effects management
 
 		public IEnumerable<string> AnimationNames { get; private set; }
 
 		public string AnimationName
 		{
 			get => SelectedParticleGroup?.AnimationName;
-			set => SelectedParticleGroup.AnimationName = value;
+			set
+			{
+				SelectedParticleGroup.AnimationName = value;
+				OnPropertyChanged();
+			}
 		}
 
 		public int ParticlesCount
@@ -133,15 +177,22 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 		#endregion
 
-		public ParticleEditorViewModel(ProjectService projectService)
+		public ParticleEditorViewModel(IController controller, ProjectService projectService)
 		{
+			_controller = controller;
 			ProjectService = projectService;
 			AnimationService = new AnimationService(ProjectService);
 			AnimationDataList = AnimationService.AnimationFilesData;
 
 			AddParticleGroup = new RelayCommand(x =>
 			{
-				ParticleGroups.Add(new ParticleGroup()
+				var particlesGroup = new Game.Particles.ParticlesGroup()
+				{
+					
+				};
+				_particlesData.Groups.Add(particlesGroup);
+
+				ParticleGroups.Add(new ParticleGroup(particlesGroup)
 				{
 					AnimationDrawer = ParticleSystem.AnimationDrawer
 				});
@@ -150,13 +201,20 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 			RemoveParticleGroup = new RelayCommand(x =>
 			{
 				if (IsParticleGroupSelected)
+				{
+					_particlesData.Groups.Remove(SelectedParticleGroup.ParticlesGroup);
 					ParticleGroups.Remove(SelectedParticleGroup);
+				}
 			}, x => true);
 
 			ResetTimerCommand = new RelayCommand(x =>
 			{
 				ParticleSystem.Timer = 0.0;
 			}, x => true);
+		}
+
+		public void SaveChanges()
+		{
 		}
 	}
 }

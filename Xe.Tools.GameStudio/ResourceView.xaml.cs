@@ -75,10 +75,6 @@ namespace Xe.Tools.GameStudio
             else if (index >= 0)
             {
                 Container = Project.Containers[index];
-#if DEBUG
-                Test("sprite/ch/lehior.anim.json");
-                //Test("kernel.bin.json");
-#endif
             }
         }
 
@@ -192,10 +188,6 @@ namespace Xe.Tools.GameStudio
         }
 
         private void treeFileView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-        }
-        
-        private void Test(string inputFileName)
         {
         }
     }
