@@ -1,12 +1,15 @@
-﻿<Window xmlns:Controls="clr-namespace:Xe.Tools.Components.KernelEditor.Controls"  xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
-        x:Class="Xe.Tools.Components.KernelEditor.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor"
-        mc:Ignorable="d"
-        Title="Kernel editor" Height="350" Width="454">
+﻿<xc:WindowEx
+    xmlns:Controls="clr-namespace:Xe.Tools.Components.KernelEditor.Controls"
+    xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+    x:Class="Xe.Tools.Components.KernelEditor.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor"
+    mc:Ignorable="d"
+    Title="Kernel editor" Height="350" Width="454"
+    AskExitConfirmation="True">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -28,6 +31,12 @@
             <TabItem Header="Messages">
                 <Controls:TabMessages x:Name="TabMessages" DataContext="{Binding Messages}"/>
             </TabItem>
+            <TabItem Header="BGMs">
+                <Controls:TabBgms x:Name="TabBgms" DataContext="{Binding Bgms}"/>
+            </TabItem>
+            <TabItem Header="SFXs">
+                <Controls:TabSfxs x:Name="TabSfxs" DataContext="{Binding Sfxs}"/>
+            </TabItem>
         </TabControl>
     </DockPanel>
-</Window>
+</xc:WindowEx>

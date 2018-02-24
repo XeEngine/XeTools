@@ -26,8 +26,10 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         public TabSkillsViewModel Skills { get; private set; }
         public TabPlayersViewModel Players { get; private set; }
         public TabMessagesViewModel Messages { get; private set; }
+		public TabBgm.TabBgmViewModel Bgms { get; private set; }
+		public TabSfx.TabSfxViewModel Sfxs { get; private set; }
 
-        public KernelViewModel(IProject project, IProjectFile file)
+		public KernelViewModel(IProject project, IProjectFile file)
         {
             ProjectService = new ProjectService(project);
             MessageService = new MessageService(ProjectService);
@@ -56,7 +58,10 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
             Players = new TabPlayersViewModel(Kernel.Players, Kernel.Skills, MessageService, ProjectService.AnimationService);
             Messages = new TabMessagesViewModel(MessageService);
-        }
+			Bgms = new TabBgm.TabBgmViewModel(Kernel);
+			Sfxs = new TabSfx.TabSfxViewModel(Kernel);
+
+		}
 
         public void SaveChanges()
         {

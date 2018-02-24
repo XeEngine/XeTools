@@ -2,13 +2,14 @@
 using Xe.Tools;
 using Xe.Tools.Components.KernelEditor.ViewModels;
 using Xe.Tools.Projects;
+using Xe.Tools.Wpf.Controls;
 
 namespace Xe.Tools.Components.KernelEditor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : WindowEx
     {
         public KernelViewModel Kernel { get; set; }
 
@@ -24,5 +25,11 @@ namespace Xe.Tools.Components.KernelEditor
         {
             Kernel.SaveChanges();
         }
-    }
+
+		protected override bool DoSaveChanges()
+		{
+			Kernel.SaveChanges();
+			return true;
+		}
+	}
 }

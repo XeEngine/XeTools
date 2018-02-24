@@ -56,11 +56,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
+    <Compile Include="Controls\TabBgms.xaml.cs">
+      <DependentUpon>TabBgms.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabMessages.xaml.cs">
       <DependentUpon>TabMessages.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TabPlayerGrowth.xaml.cs">
       <DependentUpon>TabPlayerGrowth.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TabSfxs.xaml.cs">
+      <DependentUpon>TabSfxs.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TabSkillsUsage.xaml.cs">
       <DependentUpon>TabSkillsUsage.xaml</DependentUpon>
@@ -72,15 +78,24 @@
     <Compile Include="ViewModels\AnimationsViewModel.cs" />
     <Compile Include="ViewModels\AnimationViewModel.cs" />
     <Compile Include="ViewModels\EnumViewModel.cs" />
+    <Compile Include="ViewModels\Generics\TabGenericListViewModel.cs" />
     <Compile Include="ViewModels\KernelViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
+    <Compile Include="ViewModels\TabBgm\BgmViewModel.cs" />
+    <Compile Include="ViewModels\TabBgm\TabBgmViewModel.cs" />
     <Compile Include="ViewModels\TabPlayersViewModel.cs" />
     <Compile Include="ViewModels\TabMessages.cs" />
     <Compile Include="ViewModels\TabPlayerSkillsUsage.cs" />
+    <Compile Include="ViewModels\TabSfx\SfxViewModel.cs" />
+    <Compile Include="ViewModels\TabSfx\TabSfxViewModel.cs" />
     <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
+    <Page Include="Controls\TabBgms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TabEnemies.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -94,6 +109,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TabPlayers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabSfxs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
