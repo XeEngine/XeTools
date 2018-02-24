@@ -22,7 +22,7 @@
         <ComboBox Margin="0 0 0 5" SelectedIndex="{Binding ProcessingMode, Mode=TwoWay}">
             <TextBlock>Tilemap</TextBlock>
             <TextBlock>Collision</TextBlock>
-            <TextBlock>Priority</TextBlock>
+            <TextBlock>Depthmap</TextBlock>
         </ComboBox>
 
         <CheckBox Content="Is visible" Margin="0 0 0 5"

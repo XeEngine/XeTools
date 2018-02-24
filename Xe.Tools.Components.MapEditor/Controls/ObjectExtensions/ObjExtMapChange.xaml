@@ -38,7 +38,7 @@
                                 MinimumValue="0" MaximumValue="255"
                                 Value="{Binding Map, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Entry" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Door" VerticalAlignment="Center"/>
         <controls:NumericUpDown Grid.Row="4" Grid.Column="2"
                                 MinimumValue="0" MaximumValue="255"
                                 Value="{Binding Entry, Mode=TwoWay}"/>

@@ -24,7 +24,7 @@ namespace Xe.Tools.Modules
 
         private static string WritePriorityChunk(Map tileMap, BinaryWriter w)
         {
-            return WriteGenericChunk(tileMap, w, "zdepth", LayerProcessingMode.Depth, 0x80) ?
+            return WriteGenericChunk(tileMap, w, "zdepth", LayerProcessingMode.Depth, 0) ?
                 "PRZ\x01" : null;
         }
 
@@ -83,8 +83,12 @@ namespace Xe.Tools.Modules
                         for (int x = 0; x < width; x++)
                         {
                             var data = collisionLayer.Tiles[x, y].Index - id;
-                            layer.Data[index++] = (byte)Math.Max(0, data);
-                        }
+							if (data > 0)
+							{
+								layer.Data[index] = (byte)data;
+							}
+							index++;
+						}
                     }
                 }
                 w.Write(layer.Data, 0, layer.Data.Length);

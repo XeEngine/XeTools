@@ -149,18 +149,52 @@ namespace Xe.Tools.Components.MapEditor.Controls
 
         private void RenderObject(ObjectEntry entry, float x, float y, float alpha)
         {
-            var strAnimData = entry.AnimationData ?? "data/sprite/editor.anim.json";
-            var framesGroup = GetFramesGroup(strAnimData, entry.AnimationName, entry.Direction);
-            if (framesGroup != null)
-            {
-                var realX = x + entry.Width / 2;
-                var realY = y + entry.Height / 2;
-                if (realX > ActualWidth ||
-                    realY > ActualHeight)
-                    return;
-                Drawing.DrawAnimation(framesGroup, realX, realY, alpha);
-            }
-            if (entry == _objEntrySelected)
+			const string DEFAULT_ANIMDATA = "data/sprite/editor.anim.json";
+
+			var realX = x + entry.Width / 2;
+			var realY = y + entry.Height / 2;
+
+			int errType;
+			var strAnimData = entry.AnimationData;
+			if (!string.IsNullOrEmpty(strAnimData))
+			{
+				var framesGroup = GetFramesGroup(strAnimData, entry.AnimationName, entry.Direction);
+				if (framesGroup != null)
+				{
+					if (realX <= ActualWidth && realY <= ActualHeight)
+					{
+						Drawing.DrawAnimation(framesGroup, realX, realY, alpha);
+						errType = 0;
+					}
+					else
+						errType = 2;
+				}
+				else
+					errType = 2;
+			}
+			else
+				errType = 1;
+
+			if (errType > 0)
+			{
+				string animName;
+				switch (errType)
+				{
+					case 1:
+						animName = "Unknown";
+						break;
+					case 2:
+						animName = "Error";
+						break;
+					default:
+						animName = "Unknown";
+						break;
+				}
+				var framesGroup = GetFramesGroup(DEFAULT_ANIMDATA, animName, Direction.Undefined);
+				Drawing.DrawAnimation(framesGroup, realX, realY, alpha);
+			}
+
+			if (entry == _objEntrySelected)
             {
 				Drawing.DrawObjectEntryRect(entry);
             }
