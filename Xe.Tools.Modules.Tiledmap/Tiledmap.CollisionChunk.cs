@@ -36,7 +36,7 @@ namespace Xe.Tools.Modules
             var layers = tileMap.Layers
                 .FlatterLayers<LayerTilemap>()
                 .Where(x => x.ProcessingMode == processingMode)
-                .Where(x => x.Visible)
+                //.Where(x => x.Visible)
                 .GroupBy(x => x.DefinitionId)
                 .Join(TilemapSettings.LayerNames,
                     x => x.Key,
