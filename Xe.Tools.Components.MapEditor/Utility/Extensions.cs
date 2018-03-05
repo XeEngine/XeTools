@@ -17,19 +17,27 @@ namespace Xe.Tools.Components.MapEditor
     namespace Utility
     {
         public static class Extensions
-        {
-            public static void DrawObjectEntryRect(this IDrawing drawing, ObjectEntry objectEntry)
-            {
-                drawing.DrawRectangle(new System.Drawing.RectangleF()
-                {
-                    X = (float)objectEntry.X,
-                    Y = (float)objectEntry.Y,
-                    Width = (float)objectEntry.Width,
-                    Height = (float)objectEntry.Height
-                }, System.Drawing.Color.Fuchsia, 2.0f);
-            }
+		{
+			public static void DrawObjectEntryRect(this IDrawing drawing, ObjectEntry objectEntry)
+			{
+				DrawObjectEntryRect(drawing, objectEntry,
+					System.Drawing.Color.Cyan, 0.0f);
+				DrawObjectEntryRect(drawing, objectEntry,
+					System.Drawing.Color.Fuchsia, -objectEntry.Z);
+			}
+			public static void DrawObjectEntryRect(this IDrawing drawing, ObjectEntry objectEntry,
+				System.Drawing.Color color, double yMod)
+			{
+				drawing.DrawRectangle(new System.Drawing.RectangleF()
+				{
+					X = (float)objectEntry.X,
+					Y = (float)(objectEntry.Y + yMod),
+					Width = (float)objectEntry.Width,
+					Height = (float)objectEntry.Height
+				}, color, 2.0f);
+			}
 
-            public static void DrawAnimation(this IDrawing drawing, FramesGroup framesGroup, double x, double y,
+			public static void DrawAnimation(this IDrawing drawing, FramesGroup framesGroup, double x, double y,
                 float alpha = 1.0f, Drawing.Flip flip = Drawing.Flip.None)
             {
                 var frame = framesGroup.Frames.FirstOrDefault();
