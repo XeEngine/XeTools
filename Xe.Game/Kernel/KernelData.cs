@@ -4,7 +4,9 @@ namespace Xe.Game.Kernel
 {
     public class KernelData
     {
-        public List<Skill> Skills { get; set; }
+		public List<Element> Elements { get; set; }
+
+		public List<Skill> Skills { get; set; }
 
         public List<Ability> Abilities { get; set; }
 

@@ -23,7 +23,8 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
         public AnimationGroupsViewModel AnimationGroups { get; private set; }
-        public TabSkillsViewModel Skills { get; private set; }
+		public TabElements.TabElementViewModel Elements { get; private set; }
+		public TabSkillsViewModel Skills { get; private set; }
         public TabPlayersViewModel Players { get; private set; }
         public TabMessagesViewModel Messages { get; private set; }
 		public TabBgm.TabBgmViewModel Bgms { get; private set; }
@@ -54,8 +55,9 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             {
                 Log.Error($"Error while opening {ProjectFile.Path}: {e.Message}");
             }
-            
-            Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
+
+			Elements = new TabElements.TabElementViewModel(Kernel);
+			Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
             Players = new TabPlayersViewModel(Kernel.Players, Kernel.Skills, MessageService, ProjectService.AnimationService);
             Messages = new TabMessagesViewModel(MessageService);
 			Bgms = new TabBgm.TabBgmViewModel(Kernel);
