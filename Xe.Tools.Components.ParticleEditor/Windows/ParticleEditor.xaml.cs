@@ -146,5 +146,36 @@ namespace Xe.Tools.Components.ParticleEditor.Windows
 				}
 			}
 		}
+
+		private int _freeze;
+		private int Freeze
+		{
+			get => _freeze;
+			set
+			{
+				_freeze = value;
+				particlePanel.FramesPerSecond = value == 0 ? 60.0 : 0.0;
+			}
+		}
+		
+		private void Slider_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			Freeze++;
+		}
+
+		private void Slider_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			Freeze--;
+		}
+
+		private void Slider_MouseEnter(object sender, MouseEventArgs e)
+		{
+			//Freeze++;
+		}
+
+		private void Slider_MouseLeave(object sender, MouseEventArgs e)
+		{
+			//Freeze--;
+		}
 	}
 }

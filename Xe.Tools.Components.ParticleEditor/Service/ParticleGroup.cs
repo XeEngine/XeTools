@@ -322,7 +322,7 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 		{
 			var realTimer = Timer - GlobalDelay;
 			if (realTimer > GlobalDuration)
-				Timer = GlobalDuration;
+				_timer = GlobalDuration;
 			if (realTimer >= 0)
 			{
 				foreach (var entity in _particleEntities)

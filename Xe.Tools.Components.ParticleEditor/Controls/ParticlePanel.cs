@@ -26,6 +26,8 @@ namespace Xe.Tools.Components.ParticleEditor.Controls
 			{
 				ParticleSystem.Update(DeltaTime);
 				ParticleSystem.Draw(ActualWidth / 2.0, ActualHeight / 2.0);
+				
+				ViewModel.SetTimer(ViewModel.Timer);
 			}
 		}
 

@@ -74,7 +74,7 @@
 
                             <TextBlock Text="Global delay"/>
                             <tools:NumericUpDownd Margin="0 0 0 5"
-                                                 MinimumValue="0"
+                                                 MinimumValue="-100"
                                                  MaximumValue="100"
                                                   Value="{Binding GlobalDelay, Mode=TwoWay}"/>
 
@@ -110,6 +110,9 @@
             </DockPanel>
             <DockPanel Grid.Column="4">
                 <Button DockPanel.Dock="Bottom" Content="Reset timer" Command="{Binding ResetTimerCommand}"/>
+                <Slider DockPanel.Dock="Bottom"
+                        Value="{Binding Timer}"
+                        Maximum="{Binding TimerTotal}" MouseDown="Slider_MouseDown" MouseEnter="Slider_MouseEnter" MouseLeave="Slider_MouseLeave" MouseUp="Slider_MouseUp"/>
                 <controls:ParticlePanel x:Name="particlePanel" FramesPerSecond="60"/>
             </DockPanel>
         </Grid>

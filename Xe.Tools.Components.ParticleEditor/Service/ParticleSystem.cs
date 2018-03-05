@@ -70,7 +70,9 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 
 		public void Draw(double x, double y)
 		{
-			var entities = ParticleGroups.SelectMany(group => group.Entities)
+			var entities = ParticleGroups
+				.Where(group => Timer >= group.GlobalDelay && Timer < group.GlobalDuration + group.GlobalDelay)
+				.SelectMany(group => group.Entities)
 				.OrderBy(entity => entity.Priority);
 			foreach (var entity in entities)
 			{

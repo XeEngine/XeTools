@@ -74,6 +74,18 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 			}
 		}
 
+		public double Timer
+		{
+			get => ParticleSystem.Timer;
+			set
+			{
+				ParticleSystem.Timer = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public double TimerTotal { get; private set; }
+
 		public RelayCommand ResetTimerCommand { get; }
 
 		#endregion
@@ -186,7 +198,7 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 			AddParticleGroup = new RelayCommand(x =>
 			{
-				var particlesGroup = new Game.Particles.ParticlesGroup()
+				var particlesGroup = new ParticlesGroup()
 				{
 					
 				};
@@ -211,6 +223,13 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 			{
 				ParticleSystem.Timer = 0.0;
 			}, x => true);
+		}
+
+		public void SetTimer(double timer)
+		{
+			TimerTotal = _particlesData.Groups.Max(x => x.GlobalDelay + x.GlobalDuration);
+			Timer = Math.Min(timer, TimerTotal);
+			OnPropertyChanged(nameof(TimerTotal));
 		}
 
 		public void SaveChanges()
