@@ -101,7 +101,7 @@ namespace Xe.Game.Tilemaps
                     writer.Write(JsonConvert.SerializeObject(new Ext()
                     {
                         LayersDefinition = src.LayersDefinition,
-                        EventsDefinitions = src.EventDefinitions
+                        EventsDefinitions = src.EventDefinitions?
                             .OrderBy(x => x.Index)
                             .ToList()
                     }, Formatting.Indented));
