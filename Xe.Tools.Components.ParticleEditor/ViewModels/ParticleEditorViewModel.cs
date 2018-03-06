@@ -131,6 +131,8 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 		public RelayCommand RemoveParticleGroup { get; set; }
 
+		public RelayCommand DuplicateParticleGroup { get; set; }
+
 		#endregion
 
 		#region Particle group effects management
@@ -217,6 +219,40 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 					_particlesData.Groups.Remove(SelectedParticleGroup.ParticlesGroup);
 					ParticleGroups.Remove(SelectedParticleGroup);
 				}
+			}, x => true);
+
+			DuplicateParticleGroup = new RelayCommand(x =>
+			{
+				if (!IsParticleGroupSelected)
+					return;
+				var cur = SelectedParticleGroup;
+				var particlesGroup = new ParticlesGroup()
+				{
+					AnimationName = cur.AnimationName.Substring(0),
+					 ParticlesCount = cur.Count,
+					 GlobalDelay = cur.GlobalDelay,
+					 GlobalDuration = cur.GlobalDuration,
+					 Delay = cur.DelayBetweenParticles,
+					 Effects = cur.Effects
+						.Select(effect => new Effect
+						{
+							Ease = effect.Ease,
+							Parameter = effect.Parameter,
+							Speed = effect.Speed,
+							FixStep = effect.FixStep,
+							Sum = effect.Sum,
+							Multiplier = effect.Multiplier,
+							Delay = effect.Delay,
+							Duration = effect.Duration
+						})
+						.ToList()
+				};
+				_particlesData.Groups.Add(particlesGroup);
+
+				ParticleGroups.Add(new ParticleGroup(particlesGroup)
+				{
+					AnimationDrawer = ParticleSystem.AnimationDrawer
+				});
 			}, x => true);
 
 			ResetTimerCommand = new RelayCommand(x =>
