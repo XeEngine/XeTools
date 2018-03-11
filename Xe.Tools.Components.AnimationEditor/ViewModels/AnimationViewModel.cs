@@ -467,8 +467,12 @@ namespace Xe.Tools.Components.AnimationEditor.ViewModels
 
         public void SaveChanges()
         {
+			AnimationData.AnimationDefinitions =
+				AnimationData.AnimationDefinitions
+				.OrderBy(x => x.Name)
+				.ToList();
             AnimationData.Animations =
-                Animations.ToList();
+                Animations.OrderBy(x => x.Name).ToList();
         }
 
 
