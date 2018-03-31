@@ -115,11 +115,17 @@ namespace Xe.Tools.Modules.ObjectExtensions
 
             public Guid Id => ID;
 
-            public void Write(BinaryWriter writer)
+			public int Category { get; set; }
+
+			public int Index { get; set; }
+
+			public int Flags { get; set; }
+
+			public void Write(BinaryWriter writer)
             {
-                writer.Write((byte)0);
-                writer.Write((byte)0);
-                writer.Write((byte)0);
+                writer.Write((byte)Category);
+                writer.Write((byte)Index);
+                writer.Write((byte)Flags);
                 writer.Write((byte)0);
                 writer.Write((uint)0);
             }

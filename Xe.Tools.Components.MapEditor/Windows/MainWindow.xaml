@@ -19,8 +19,11 @@
                           CommandParameter="{Binding}" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Events"
+                <MenuItem Header="_Events editor"
                           Command="{Binding CommandEditEvents}"
+                          CommandParameter="{Binding}" />
+                <MenuItem Header="_Events listeners"
+                          Command="{Binding CommandEditEventsListeners}"
                           CommandParameter="{Binding}" />
             </MenuItem>
         </Menu>

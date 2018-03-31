@@ -199,9 +199,11 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public ICommand CommandSaveMap { get; }
 
-        public ICommand CommandEditEvents { get; }
+		public ICommand CommandEditEvents { get; }
 
-        public ICommand GroupLayersByPriorityCommand { get; }
+		public ICommand CommandEditEventsListeners { get; }
+
+		public ICommand GroupLayersByPriorityCommand { get; }
 
         public ICommand UngroupLayersCommand { get; }
 
@@ -235,13 +237,17 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
             };
 
             CommandSaveMap = new RelayCommand(o => MapEditor.Save());
-            CommandEditEvents = new RelayCommand(o =>
-            {
-                new Windows.EventsPropertiesWindow(this).ShowDialog();
-                // TODO aggiornare la lista degli eventi
-            });
+			CommandEditEvents = new RelayCommand(o =>
+			{
+				new Windows.EventsPropertiesWindow(this).ShowDialog();
+				// TODO aggiornare la lista degli eventi
+			});
+			CommandEditEventsListeners = new RelayCommand(o =>
+			{
+				//new Windows.EventsListenersWindow(this).ShowDialog();
+			});
 
-            GroupLayersByPriorityCommand = new RelayCommand(o => ChangeLayerOrder(NodeOrderMode.GroupByPriority));
+			GroupLayersByPriorityCommand = new RelayCommand(o => ChangeLayerOrder(NodeOrderMode.GroupByPriority));
             UngroupLayersCommand = new RelayCommand(o => ChangeLayerOrder(NodeOrderMode.OriginalOrder));
         }
 

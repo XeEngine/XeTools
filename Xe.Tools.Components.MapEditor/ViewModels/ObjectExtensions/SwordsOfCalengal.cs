@@ -119,8 +119,38 @@ namespace Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCale
     }
 
     public class EventViewModel : ExtensionBaseViewModel<Modules.ObjectExtensions.SwordsOfCalengal.Event>
-    {
-        public EventViewModel(IObjectExtension objectExtension) :
+	{
+		public int Category
+		{
+			get => _extension?.Category ?? 0;
+			set
+			{
+				_extension.Category = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int Index
+		{
+			get => _extension?.Index ?? 0;
+			set
+			{
+				_extension.Index = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int Flags
+		{
+			get => _extension?.Flags ?? 0;
+			set
+			{
+				_extension.Flags = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public EventViewModel(IObjectExtension objectExtension) :
             base(objectExtension)
         { }
     }

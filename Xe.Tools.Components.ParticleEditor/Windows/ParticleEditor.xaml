@@ -36,19 +36,21 @@
                 <Grid DockPanel.Dock="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="0" Margin="0 5 5 0"
                             Command="{Binding AddParticleGroup}">
                         <Image Source="{StaticResource Add_16x}" Width="16"/>
                     </Button>
-                    <Button Grid.Column="1" Margin="0 5 5 0"
+                    <Button Grid.Column="2" Margin="0 5 5 0"
                             Command="{Binding RemoveParticleGroup}"
                             IsEnabled="{Binding IsParticleGroupSelected}">
                         <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
                     </Button>
-                    <Button Grid.Column="2" Margin="0 5 0 0"
+                    <Button Grid.Column="4" Margin="0 5 0 0"
                             Command="{Binding DuplicateParticleGroup}"
                             IsEnabled="{Binding IsParticleGroupSelected}">
                         <Image Source="{StaticResource Copy_16x}" Width="16"/>

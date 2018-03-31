@@ -108,7 +108,9 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public EventsEditorViewModel(MainWindowViewModel vm)
         {
-            _listEventDefinitions = vm.MapEditor.TileMap.EventDefinitions;
+			if (vm.MapEditor.TileMap.EventDefinitions == null)
+				vm.MapEditor.TileMap.EventDefinitions = new List<EventDefinition>();
+			_listEventDefinitions = vm.MapEditor.TileMap.EventDefinitions;
         }
     }
 }

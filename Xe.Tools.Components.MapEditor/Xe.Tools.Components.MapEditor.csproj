@@ -103,6 +103,7 @@
     <Compile Include="Services\TilemapService.cs" />
     <Compile Include="Utility\Extensions.cs" />
     <Compile Include="ViewModels\EventsEditorViewModel.cs" />
+    <Compile Include="ViewModels\EventsListenersViewModel.cs" />
     <Compile Include="ViewModels\NodeEntryTilemapViewModel.cs" />
     <Compile Include="ViewModels\NodeLayerEntryViewModel.cs" />
     <Compile Include="ViewModels\NodeMapViewModel.cs" />
@@ -114,6 +115,9 @@
     <Compile Include="ViewModels\ObjectExtensions\SwordsOfCalengal.cs" />
     <Compile Include="ViewModels\ObjectPropertiesViewModel.cs" />
     <Compile Include="ViewModels\TilemapViewModel.cs" />
+    <Compile Include="Windows\EventsListenersWindow.xaml.cs">
+      <DependentUpon>EventsListenersWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EventsPropertiesWindow.xaml.cs">
       <DependentUpon>EventsPropertiesWindow.xaml</DependentUpon>
     </Compile>
@@ -235,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ObjectsGroupProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EventsListenersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

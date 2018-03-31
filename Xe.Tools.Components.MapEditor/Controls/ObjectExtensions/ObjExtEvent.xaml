@@ -16,9 +16,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="5"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Event ID" VerticalAlignment="Center"/>
-        <controls:NumericUpDown Grid.Row="0" Grid.Column="2"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Category" VerticalAlignment="Center"/>
+        <controls:NumericUpDown Grid.Row="0" Grid.Column="2" Value="{Binding Category, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Index" VerticalAlignment="Center"/>
+        <controls:NumericUpDown Grid.Row="2" Grid.Column="2" Value="{Binding Index, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Flags" VerticalAlignment="Center"/>
+        <controls:NumericUpDown Grid.Row="4" Grid.Column="2" Value="{Binding Flags, Mode=TwoWay}"/>
     </Grid>
 </UserControl>

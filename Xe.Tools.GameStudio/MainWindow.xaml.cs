@@ -51,34 +51,34 @@ namespace Xe.Tools.GameStudio
                         GameStudioViewModel.Instance.LoadProject(fileLastOpen);
 						
 #if DEBUG
-						var file = Project.GetFiles()
-							.FirstOrDefault(x => x.Format == "particleanim");
-						var moduleName = file.Format;
-						while (Globals.Components == null) System.Threading.Thread.Sleep(1);
-						var component = Globals.Components
-							.Where(x => x.ComponentInfo.ModuleName == moduleName)
-							.SingleOrDefault();
+						//var file = Project.GetFiles()
+						//	.FirstOrDefault(x => x.Format == "tiledmap");
+						//var moduleName = file.Format;
+						//while (Globals.Components == null) System.Threading.Thread.Sleep(1);
+						//var component = Globals.Components
+						//	.Where(x => x.ComponentInfo.ModuleName == moduleName)
+						//	.SingleOrDefault();
 
-						try
-						{
-							Application.Current.Dispatcher.Invoke(
-							() =>
-							{
-								component.CreateInstance(new Components.ComponentProperties()
-								{
-									Project = Project,
-									File = file
-								}).ShowDialog();
-							});
-						}
-						catch (FileNotFoundException ex)
-						{
-							Log.Error($"File {ex.FileName} not found.");
-						}
-						catch (Exception ex)
-						{
-							Log.Error(ex.Message);
-						}
+						//try
+						//{
+						//	Application.Current.Dispatcher.Invoke(
+						//	() =>
+						//	{
+						//		component.CreateInstance(new Components.ComponentProperties()
+						//		{
+						//			Project = Project,
+						//			File = file
+						//		}).ShowDialog();
+						//	});
+						//}
+						//catch (FileNotFoundException ex)
+						//{
+						//	Log.Error($"File {ex.FileName} not found.");
+						//}
+						//catch (Exception ex)
+						//{
+						//	Log.Error(ex.Message);
+						//}
 #endif
 					}
 				})
