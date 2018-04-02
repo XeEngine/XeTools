@@ -76,7 +76,7 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 		public double Timer
 		{
-			get => ParticleSystem.Timer;
+			get => ParticleSystem?.Timer ?? 0.0;
 			set
 			{
 				ParticleSystem.Timer = value;

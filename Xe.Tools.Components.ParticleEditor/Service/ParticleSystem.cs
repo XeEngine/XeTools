@@ -38,7 +38,7 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 		public bool LoadAnimation(string name)
 		{
 			var file = AnimationService.ProjectFiles
-				.FirstOrDefault(x => x.Name == name);
+				.FirstOrDefault(x => x.Path == name);
 			if (file != null)
 			{
 				var animationData = AnimationService.GetAnimationData(file);
