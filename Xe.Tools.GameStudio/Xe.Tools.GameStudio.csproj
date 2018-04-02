@@ -256,6 +256,14 @@
       <Project>{31b99465-ae01-4694-90cb-2def7dc30764}</Project>
       <Name>Xe.Tools.Modules.Message</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.ParticleAnim\Xe.Tools.Modules.ParticleAnim.csproj">
+      <Project>{f98ec5ae-e136-49e8-9974-cd9a5ee56aca}</Project>
+      <Name>Xe.Tools.Modules.ParticleAnim</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Modules.TileCollision\Xe.Tools.Modules.TileCollision.csproj">
+      <Project>{00030908-6b5c-4589-b525-07196a614e0b}</Project>
+      <Name>Xe.Tools.Modules.TileCollision</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Modules.Tiledmap\Xe.Tools.Modules.Tiledmap.csproj">
       <Project>{aff69391-a837-4a84-814b-2637dc185b60}</Project>
       <Name>Xe.Tools.Modules.Tiledmap</Name>

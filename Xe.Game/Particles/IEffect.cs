@@ -54,8 +54,6 @@
 		ColorGreen,
 		ColorBlue,
 		ColorAlpha,
-
-		// Helpers
 		ScaleXYZ,
 		ColorRGB
 	}
