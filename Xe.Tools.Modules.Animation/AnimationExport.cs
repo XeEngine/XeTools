@@ -180,6 +180,10 @@ namespace Xe.Tools.Modules
                 writer.Write((ushort)anim.FieldHitbox.Bottom);
                 foreach (var frame in anim.Frames)
                 {
+					if (frame.Frame == null)
+					{
+						throw new NullReferenceException($"The animation {anim.Name} has one or multiple empty frames.");
+					}
                     if (dicFrames.TryGetValue(frame.Frame, out var tuple))
                         index = tuple.Item1;
                     else

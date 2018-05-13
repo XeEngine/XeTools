@@ -46,8 +46,8 @@ namespace Xe.Tools.GameStudio.Utility
                 var processStartInfo = new ProcessStartInfo(executable)
                 {
                     WorkingDirectory = workingDirectory,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
+                    //RedirectStandardError = true,
+                    //RedirectStandardOutput = true,
                     UseShellExecute = false
                 };
 
