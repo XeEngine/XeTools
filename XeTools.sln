@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Components.Sequenc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xe.Tools.Modules.ParticleAnim", "Xe.Tools.Modules.ParticleAnim\Xe.Tools.Modules.ParticleAnim.csproj", "{F98EC5AE-E136-49E8-9974-CD9A5EE56ACA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xe.Tools.Components.MessagesEditor", "Xe.Tools.Components.MessagesEditor\Xe.Tools.Components.MessagesEditor.csproj", "{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -655,6 +657,22 @@ Global
 		{F98EC5AE-E136-49E8-9974-CD9A5EE56ACA}.Release|x64.Build.0 = Release|Any CPU
 		{F98EC5AE-E136-49E8-9974-CD9A5EE56ACA}.Release|x86.ActiveCfg = Release|Any CPU
 		{F98EC5AE-E136-49E8-9974-CD9A5EE56ACA}.Release|x86.Build.0 = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|x64.Build.0 = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Debug|x86.Build.0 = Debug|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|ARM.Build.0 = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|x64.ActiveCfg = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|x64.Build.0 = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|x86.ActiveCfg = Release|Any CPU
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -697,6 +715,7 @@ Global
 		{ECC169D6-3A46-4135-93FB-05F5B7A19C34} = {BBED2F3B-160B-4A7E-A648-4A261A89D90C}
 		{C7423A30-6310-4718-8B27-2DE60A1DD5B0} = {BBED2F3B-160B-4A7E-A648-4A261A89D90C}
 		{F98EC5AE-E136-49E8-9974-CD9A5EE56ACA} = {8C7381ED-D68B-40D6-8E16-D37D137815FC}
+		{D8BC3CCB-2E2A-4664-8DFC-94433226AE0F} = {BBED2F3B-160B-4A7E-A648-4A261A89D90C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEC93E46-98D1-4CBA-8ED2-5F80D7A35AE3}

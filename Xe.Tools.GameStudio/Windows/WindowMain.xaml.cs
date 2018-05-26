@@ -9,20 +9,19 @@ using Xe.Tools.GameStudio.Utility;
 using Xe.Tools.GameStudio.ViewModels;
 using Xe.Tools.Modules;
 using Xe.Tools.Projects;
-using Xe.Tools.Wpf.Dialogs;
 
-namespace Xe.Tools.GameStudio
+namespace Xe.Tools.GameStudio.Windows
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class WindowMain : Window
 	{
 		private IProject Project => GameStudioViewModel.Instance.Project;
 
         public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
 
-		public MainWindow()
+		public WindowMain()
 		{
 			InitializeComponent();
 

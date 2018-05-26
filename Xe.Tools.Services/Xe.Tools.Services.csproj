@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="AnimationService.cs" />
     <Compile Include="ArevaloRectanglePacker.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="ImageService.cs" />
     <Compile Include="MessageService.cs" />
     <Compile Include="ProjectService.cs" />
