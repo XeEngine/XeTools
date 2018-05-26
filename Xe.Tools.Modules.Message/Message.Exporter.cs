@@ -49,52 +49,42 @@ namespace Xe.Tools.Modules
             using (var memStream = new MemoryStream(0x20000))
             {
                 var w = new BinaryWriter(memStream);
-                foreach (var segment in Messages.Segments)
-                {
-                    ushort id = segment.Id;
-                    foreach (var message in segment.Messages)
-                    {
-                        string str;
-                        switch (CurrentLanguage)
-                        {
-                            case Language.English: str = message.En; break;
-                            case Language.Italian: str = message.It; break;
-                            case Language.French: str = message.Fr; break;
-                            case Language.Deutsch: str = message.De; break;
-                            case Language.Spanish: str = message.Sp; break;
-                            default: str = ""; break;
-                        }
-                        if (str == null) str = "";
-                        var bytes = GetBytesFromString(str);
-                        var entry = new BinaryEntry()
-                        {
-                            Id = id++,
-                            Position = (ushort)w.BaseStream.Position
-                        };
-                        entries.Add(entry);
-                        w.Write(bytes);
-                        w.Write((byte)0);
-                    }
-                }
-                memStream.Flush();
 
-                writer.Write(MagicCode);
-                writer.Write((ushort)entries.Count);
-                writer.Write((ushort)((memStream.Position + 7) / 8));
+				var msgOrdered = new Dictionary<uint, Xe.Game.Messages.Message>();
+				msgOrdered = Messages.Messages
+					.Where(x => x.Language == CurrentLanguage)
+					.ToDictionary(x => x.Tag.GetXeHash(), x => x);
+				
+				w.Write(msgOrdered.Count);
+				var hashPos = w.BaseStream.Position;
+				var offPos = hashPos + msgOrdered.Count * sizeof(uint);
+				var msgPos = offPos + msgOrdered.Count * sizeof(uint);
+				foreach (var msg in msgOrdered)
+				{
+					w.BaseStream.Position = hashPos;
+					w.Write(msg.Key);
+					hashPos += sizeof(uint);
 
-                entries.Sort((x, y) => x.Id - y.Id);
-                foreach (var e in entries)
-                    writer.Write(e.Id);
-                foreach (var e in entries)
-                    writer.Write(e.Position);
-                writer.Write(memStream.GetBuffer(), 0, (int)memStream.Length);
+					w.BaseStream.Position = offPos;
+					w.Write(msgPos);
+					offPos += sizeof(uint);
+
+					var strData = GetBytesFromString(msg.Value.Text);
+					w.BaseStream.Position = msgPos;
+					w.Write(strData);
+					w.BaseStream.WriteByte(0);
+					msgPos += strData.Length + 1;
+				}
+
+				writer.Write(memStream.GetBuffer(), 0, (int)w.BaseStream.Length);
             }
             writer.Flush();
         }
+
         private byte[] GetBytesFromString(string str)
         {
-            byte[] tmp = Encoding.UTF8.GetBytes(str);
-            List<byte> data = new List<byte>(tmp.Length);
+            var tmp = Encoding.UTF8.GetBytes(str);
+            var data = new List<byte>(tmp.Length);
             for (int i = 0; i < tmp.Length; i++)
             {
                 byte c = tmp[i];

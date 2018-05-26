@@ -1,104 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Xe.Game.Messages
 {
     public class MessageContainer
     {
-        public static Language CurrentLanguage { get; set; }
+		private List<Message> messages = new List<Message>();
+		private Dictionary<Guid, Message> idMessages = new Dictionary<Guid, Message>();
+		private Dictionary<Language, List<Message>> langMessages = new Dictionary<Language, List<Message>>();
+		private Dictionary<string, List<Message>> tagMessages = new Dictionary<string, List<Message>>();
 
-        public List<Segment> Segments { get; set; }
+		public List<Message> Messages
+		{
+			get => messages;
+			set
+			{
+				messages = value;
+				idMessages = messages.ToDictionary(x => x.UID, x => x);
+				langMessages = messages
+					.GroupBy(x => x.Language)
+					.ToDictionary(x => x.Key, x => x.ToList());
+				tagMessages = messages
+					.GroupBy(x => x.Tag)
+					.ToDictionary(x => x.Key, x => x.ToList());
+			}
+		}
 
-        public Segment GetSegment(string name)
-        {
-            foreach (var segment in Segments)
-            {
-                if (segment.Name.Length == name.Length)
-                {
-                    if (segment.Name.ToLower().CompareTo(name.ToLower()) == 0)
-                        return segment;
-                }
-            }
-            return null;
-        }
-        public ushort GetMessageId(Guid id)
-        {
-            foreach (var item in Segments)
-            {
-                var index = item.GetMessageIndex(id);
-                if (index >= 0)
-                    return (ushort)(item.Id + index);
-            }
-            return 0;
-        }
-        public bool GetMessage(ushort id, out string str)
-        {
-            if (GetMessage(id, out Message msg))
-            {
-                str = msg.ToString();
-                return true;
-            }
-            str = null;
-            return false;
-        }
-        public string GetMessage(ushort id)
-        {
-            return GetMessage(id, out string str) ? str : null;
-        }
-        public string GetMessage(Guid id)
-        {
-            return GetMessage(id, out Message msg) ? msg.Text : null;
-        }
-        public bool GetMessage(ushort id, out Message str)
-        {
-            foreach (var segment in Segments)
-            {
-                if (segment.Id >= id ||
-                    segment.Id + segment.Messages.Count < id)
-                {
-                    str = segment.Messages[id - segment.Id];
-                    return true;
-                }
-            }
-            str = null;
-            return false;
-        }
-        public bool GetMessage(Guid id, out Message str)
-        {
-            foreach (var segment in Segments)
-            {
-                if (segment.GetMessage(id, out str))
-                    return true;
-            }
-            str = null;
-            return false;
-        }
+		public Message GetMessage(Guid id)
+		{
+			idMessages.TryGetValue(id, out var messages);
+			return messages;
+		}
 
-        public string this[Guid id]
-        {
-            get
-            {
-                if (id != Guid.Empty)
-                {
-                    if (GetMessage(id, out Message str))
-                        return str.En;
-                }
-                return "NOMSG";
-            }
-            set
-            {
-                if (id == Guid.Empty) return;
-                foreach (var segment in Segments)
-                {
-                    foreach (var message in segment.Messages)
-                    {
-                        if (message.UID == id)
-                        {
-                            message.En = value;
-                        }
-                    }
-                }
-            }
-        }
-    }
+		public Message GetMessage(Language language, string tag)
+		{
+			return GetMessagesByTag(tag)?.FirstOrDefault(x => x.Language == language);
+		}
+
+		public IEnumerable<Message> GetMessagesByLanguage(Language language)
+		{
+			return langMessages.TryGetValue(language, out var messages) ? messages : new List<Message>();
+		}
+
+		public IEnumerable<Message> GetMessagesByTag(string tag)
+		{
+			return tagMessages.TryGetValue(tag, out var messages) ? messages : new List<Message>();
+		}
+
+		public Message this[Guid id] => GetMessage(id);
+
+		public Message this[Language language, string tag] => GetMessage(language, tag);
+	}
 }

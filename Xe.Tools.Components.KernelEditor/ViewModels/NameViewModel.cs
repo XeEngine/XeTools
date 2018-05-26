@@ -1,32 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xe.Game.Messages;
-using Xe.Tools.Services;
+﻿using Xe.Tools.Services;
+using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
-    public class NameViewModel
+    public class NameViewModel : BaseNotifyPropertyChanged
     {
-        public IEnumerable<Message> Messages { get; private set; }
+		private string mTagName, mTagDescription;
 
-        public string Id { get; set; }
+		public MessageService MessageService { get; }
 
-        public Message Name { get; set; }
+		public string Id { get; set; }
 
-        public Message Description { get; set; }
+		public string TagName
+		{
+			get => mTagName;
+			set
+			{
+				mTagName = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(Name));
+			}
+		}
 
-        public MessageService MessageService { get; private set; }
+		public string TagDescription
+		{
+			get => mTagDescription;
+			set
+			{
+				mTagDescription = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(Description));
+			}
+		}
 
-        public NameViewModel(string id, Guid msgName, Guid msgDescription,
+		public string Name => MessageService[mTagName];
+
+		public string Description => MessageService[mTagDescription];
+
+        public NameViewModel(string id, string tagName, string tagDescription,
             MessageService messageService)
         {
             MessageService = messageService;
-            Messages = messageService.Messages.Values.Select(x => x.Item3);
+			messageService.OnLanguageChanged += OnLanguageChanged;
+			messageService.OnMessageChanged += OnMessageChanged;
 
-            Id = id;
-            Name = MessageService.GetMessage(msgName);
-            Description = MessageService.GetMessage(msgDescription);
+			Id = id;
+			mTagName = tagName;
+			mTagDescription = tagDescription;
         }
-    }
+
+		private void OnLanguageChanged(Language language)
+		{
+			OnPropertyChanged(Name);
+			OnPropertyChanged(Description);
+		}
+
+		private void OnMessageChanged(string tag)
+		{
+			if (mTagName == tag)
+				OnPropertyChanged(Name);
+			if (mTagDescription == tag)
+				OnPropertyChanged(Description);
+		}
+	}
 }

@@ -12,12 +12,12 @@ namespace Xe.Game.Kernel
 		/// <summary>
 		/// Shown translated name
 		/// </summary>
-        public Guid MsgName { get; set; }
+        public string TagName { get; set; }
 
 		/// <summary>
 		/// Shown translated description
 		/// </summary>
-        public Guid MsgDescription { get; set; }
+        public string TagDescription { get; set; }
 
 		/// <summary>
 		/// Name of the used effect.

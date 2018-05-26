@@ -69,9 +69,9 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             }
         }
 
-        public string Name => SelectedPlayer != null ? MessageService.GetString(SelectedPlayer.Name) : "<null>";
+        public string Name => "WIP";
 
-        public string Description => SelectedPlayer != null ? MessageService.GetString(SelectedPlayer.Description) : "<null>";
+        public string Description => "WIP";
 
         public bool Enabled
         {

@@ -22,54 +22,62 @@ namespace Xe.Tools.Services
             }
         }
 
+		public delegate void LanguageChanged(Language language);
+		public delegate void MessageChanged(string tag);
+		public event LanguageChanged OnLanguageChanged;
+		public event MessageChanged OnMessageChanged;
+
         public ProjectService ProjectService { get; private set; }
 
         public IEnumerable<IProjectFile> Items { get; private set; }
 
         public IEnumerable<Tuple<IProjectFile, MessageContainer>> MessageContainers { get; private set; }
 
-        public IDictionary<Guid, Tuple<IProjectFile, string, Message>> Messages { get; private set; }
+		public Language Language { get; set; }
 
-        public IDictionary<string, IDictionary<Guid, string>> Categories { get; private set; }
-
-        public MessageService(ProjectService projectService)
+		public MessageService(ProjectService projectService)
         {
             ProjectService = projectService;
             Items = ProjectService.Items
                 .Where(x => x.Format == "message")
                 .Distinct(new ItemMessageEqualityComparer());
+
             MessageContainers = Items.Select(x => new Tuple<IProjectFile, MessageContainer> (
                 x, ProjectService.DeserializeItem<MessageContainer>(x)
             ));
-            Messages = MessageContainers.SelectMany(x => x.Item2.Segments
-                .SelectMany(m => m.Messages.Select(mm =>
-                    new Tuple<IProjectFile, string, Message>(x.Item1, m.Name, mm))
-                ))
-                .ToDictionary(x => x.Item3.UID, x => x);
-            Categories = MessageContainers.SelectMany(x => x.Item2.Segments)
-                .ToDictionary(x => x.Name, x => x.Messages.ToDictionary(m => m.UID, m => m.En) as IDictionary<Guid, string>);
-        }
+		}
 
-        public IDictionary<Guid, string> GetMessages(string category)
-        {
-            Categories.TryGetValue(category, out var dic);
-            return dic;
-        }
+		public Message GetMessage(string tag)
+		{
+			return GetMessage(tag, Language);
+		}
 
-        public Message GetMessage(Guid id)
-        {
-            Messages.TryGetValue(id, out var message);
-            return message?.Item3;
-        }
+        public Message GetMessage(string tag, Language language)
+		{
+			foreach (var container in MessageContainers)
+			{
+				var message = container.Item2.GetMessage(language, tag);
+				if (message != null)
+				{
+					return message;
+				}
+			}
 
-        public string GetString(Guid id)
-        {
-            return GetMessage(id)?.En;
-        }
+			return null;
+		}
 
-        public void SaveChanges()
+		public void SaveChanges()
         {
 
         }
+
+		public string this[string tag]
+		{
+			get
+			{
+				var msg = GetMessage(tag);
+				return msg != null ? msg.Text : tag;
+			}
+		}
     }
 }

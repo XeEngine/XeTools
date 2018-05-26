@@ -80,8 +80,6 @@
     <Compile Include="ViewModels\EnumViewModel.cs" />
     <Compile Include="ViewModels\Generics\TabGenericListViewModel.cs" />
     <Compile Include="ViewModels\KernelViewModel.cs" />
-    <Compile Include="ViewModels\MessagesViewModel.cs" />
-    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
     <Compile Include="ViewModels\TabBgm\BgmViewModel.cs" />
     <Compile Include="ViewModels\TabBgm\TabBgmViewModel.cs" />

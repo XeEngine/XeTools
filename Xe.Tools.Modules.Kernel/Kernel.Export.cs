@@ -189,8 +189,8 @@ namespace Xe.Tools.Modules.Kernel
         private void ExportSkill(BinaryWriter w, Skill skill)
         {
             w.Write(skill.Name.GetXeHash());                // 0x00
-            w.Write(skill.MsgName.ToInt());                 // 0x04
-            w.Write(skill.MsgDescription.ToInt());          // 0x08
+            w.Write(skill.TagName.GetXeHash());             // 0x04
+            w.Write(skill.TagDescription.GetXeHash());      // 0x08
             w.Write(_gfxs, skill.GfxName);                  // 0x0c
             w.Write(_gfxs, skill.GfxAnimation);             // 0x0e
             w.Write(_gfxs, skill.Sfx);                      // 0x10

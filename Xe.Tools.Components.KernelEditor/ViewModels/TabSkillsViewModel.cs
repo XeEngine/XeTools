@@ -27,7 +27,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         /// <summary>
         /// Used to display the skill's messages
         /// </summary>
-        public MessagesViewModel Messages { get; private set; }
+        //public MessagesViewModel Messages { get; private set; }
 
         /// <summary>
         /// Used to display the animation files's list
@@ -68,9 +68,9 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public bool IsItemSelected => SelectedItem != null;
 
-        public string Name => MessageService.GetMessage(SelectedItem.MsgName)?.En ?? "NOMSG";
+        public string Name => "WIP";
 
-        public string Description => MessageService.GetMessage(SelectedItem.MsgDescription)?.En ?? "NOMSG";
+        public string Description => "WIP";
 
 
         public string GfxName
