@@ -5,11 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Xe.Tools.GameStudio.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200">
+             d:DesignHeight="400" d:DesignWidth="200">
     <StackPanel>
         <StackPanel Visibility="{Binding FilePropertiesVisibility}">
-            <TextBlock Text="File name"/>
-            <TextBox Height="22" Text="{Binding FileName}" IsEnabled="false" Margin="0 0 0 5"/>
+            <TextBlock Text="File"/>
+            <DockPanel Margin="0 0 0 5">
+                <Button Width="22" Command="{Binding OpenFileCommand}" CommandParameter="{Binding RealPath}">
+                    <Button.Content>
+                        <Image Source="{StaticResource OpenFileDialog_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <Label>Open the file with the operating system's default program.</Label>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <TextBox Text="{Binding FileName, Mode=OneWay}" IsEnabled="false"/>
+            </DockPanel>
+
             <TextBlock Text="Path"/>
             <DockPanel Margin="0 0 0 5">
                 <Button Width="22" Command="{Binding OpenContainingFolderCommand}" CommandParameter="{Binding RealPath}">
@@ -18,17 +31,48 @@
                     </Button.Content>
                     <Button.ToolTip>
                         <StackPanel>
-                            <Label>Open the containing folder</Label>
+                            <Label>Open the containing folder.</Label>
                         </StackPanel>
                     </Button.ToolTip>
                 </Button>
                 <TextBox Text="{Binding FilePath, Mode=OneWay}" IsEnabled="false"/>
             </DockPanel>
-            <TextBlock Text="File processor"/>
-            <TextBox Height="22" Text="{Binding FileProcessor}" IsEnabled="false" Margin="0 0 0 5"/>
+
+            <TextBlock Text="Format"/>
+            <DockPanel Margin="0 0 0 5">
+                <Button Width="22" Command="{Binding ShowFileFormatInfoCommand}" CommandParameter="{Binding FileFormat}"
+                        Visibility="Collapsed">
+                    <Button.Content>
+                        <Image Source="{StaticResource Question_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <Label>Show more information about the file format used.</Label>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <TextBox Text="{Binding FileFormat, Mode=OneWay}" IsEnabled="false"/>
+            </DockPanel>
+
+            <TextBlock Text="Tool"/>
+            <DockPanel Margin="0 0 0 5">
+                <Button Width="22" Command="{Binding ShowFileToolInfoCommand}" CommandParameter="{Binding FileTool}"
+                        Visibility="Collapsed">
+                    <Button.Content>
+                        <Image Source="{StaticResource Question_16x}"/>
+                    </Button.Content>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <Label>Show more information about the tool used.</Label>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <TextBox Text="{Binding FileTool, Mode=OneWay}" IsEnabled="false"/>
+            </DockPanel>
+
         </StackPanel>
         <StackPanel Visibility="{Binding DirectoryPropertiesVisibility}">
-            <TextBlock Text="Folder name"/>
+            <TextBlock Text="Folder"/>
             <TextBox Height="22" Text="{Binding DirectoryName}" IsEnabled="false" Margin="0 0 0 5"/>
             <TextBlock Text="Path"/>
             <DockPanel Margin="0 0 0 5">

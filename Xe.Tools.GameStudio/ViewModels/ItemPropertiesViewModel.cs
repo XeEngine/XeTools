@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Xe.Tools.GameStudio.Commands;
+using Xe.Tools.GameStudio.Utility;
 using Xe.Tools.Projects;
 using Xe.Tools.Wpf;
 
@@ -31,8 +32,9 @@ namespace Xe.Tools.GameStudio.ViewModels
                 {
                     OnPropertyChanged(nameof(FileName));
                     OnPropertyChanged(nameof(FilePath));
-                    OnPropertyChanged(nameof(FileProcessor));
-                }
+					OnPropertyChanged(nameof(FileFormat));
+					OnPropertyChanged(nameof(FileTool));
+				}
             }
         }
 
@@ -78,7 +80,7 @@ namespace Xe.Tools.GameStudio.ViewModels
 
         public string DirectoryPath => _directory?.Path;
 
-        public string FileProcessor
+        public string FileFormat
         {
             get => _file?.Format;
             set
@@ -90,11 +92,28 @@ namespace Xe.Tools.GameStudio.ViewModels
             }
         }
 
-        public string RealPath => Path.Combine(_vm.Project?.WorkingDirectory ?? ".", FilePath ?? DirectoryPath ?? ".");
+		public string FileTool
+		{
+			get
+			{
+				var component = Globals.Components
+					.Where(x => x.ComponentInfo.ModuleName == FileFormat)
+					.FirstOrDefault();
+				return component?.Name;
+			}
+		}
 
-        public OpenContainingFolderCommand OpenContainingFolderCommand { get; } = new OpenContainingFolderCommand();
+		public string RealPath => Path.Combine(_vm.Project?.WorkingDirectory ?? ".", FilePath ?? DirectoryPath ?? ".");
 
-        public ItemPropertiesViewModel(GameStudioViewModel vm)
+		public OpenFileCommand OpenFileCommand { get; } = new OpenFileCommand();
+
+		public OpenContainingFolderCommand OpenContainingFolderCommand { get; } = new OpenContainingFolderCommand();
+
+		public ShowFileFormatInfoCommand ShowFileFormatInfoCommand { get; } = new ShowFileFormatInfoCommand();
+
+		public ShowFileToolInfoCommand ShowFileToolInfoCommand { get; } = new ShowFileToolInfoCommand();
+
+		public ItemPropertiesViewModel(GameStudioViewModel vm)
         {
             _vm = vm;
             Register();

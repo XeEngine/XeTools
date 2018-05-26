@@ -31,7 +31,7 @@ namespace Xe.Tools.GameStudio.Commands
                 var moduleName = file.Format;
                 var component = Globals.Components
                     .Where(x => x.ComponentInfo.ModuleName == moduleName)
-                    .SingleOrDefault();
+                    .FirstOrDefault();
                 
                 try
                 {

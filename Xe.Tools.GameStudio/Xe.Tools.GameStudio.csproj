@@ -56,10 +56,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\OpenFileCommand.cs" />
     <Compile Include="Commands\ProjectBuildCommand.cs" />
     <Compile Include="Commands\ProjectCleanCommand.cs" />
     <Compile Include="Commands\ProjectOpenCommand.cs" />
     <Compile Include="Commands\ProjectOpenFileCommand.cs" />
+    <Compile Include="Commands\ShowFileFormatInfoCommand.cs" />
+    <Compile Include="Commands\ShowFileToolInfoCommand.cs" />
     <Compile Include="Commands\WindowCloseCommand.cs" />
     <Compile Include="Commands\OpenContainingFolderCommand.cs" />
     <Compile Include="Commands\ProjectAddFileCommand.cs" />
