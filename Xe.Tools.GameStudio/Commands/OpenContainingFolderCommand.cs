@@ -17,7 +17,8 @@ namespace Xe.Tools.GameStudio.Commands
         public void Execute(object parameter)
         {
             var path = parameter as string;
-            var attr = File.GetAttributes(path);
+			path = path.Replace('/', '\\');
+			var attr = File.GetAttributes(path);
 
             string param;
             if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
@@ -28,6 +29,7 @@ namespace Xe.Tools.GameStudio.Commands
             {
                 param = $"/select,\"{path}\"";
             }
+
             Process.Start("explorer.exe", param);
         }
     }
