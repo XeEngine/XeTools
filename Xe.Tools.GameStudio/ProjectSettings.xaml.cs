@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using Xe.Tools.GameStudio.Models;
 using Xe.Tools.GameStudio.Utility;
+using Xe.Tools.GameStudio.ViewModels;
 using Xe.Tools.Projects;
 using Xe.Tools.Wpf.Dialogs;
 
@@ -13,59 +15,79 @@ namespace Xe.Tools.GameStudio
     /// </summary>
     public partial class ProjectSettings : Window
     {
-        private IProject _project;
-        private ProjectConfiguration _configuration;
+        private IProject project;
 
-        public ProjectSettings(IProject project)
+		public ProjectSettingsViewModel ViewModel => DataContext as ProjectSettingsViewModel;
+
+
+		public ProjectSettings(IProject project)
         {
             InitializeComponent();
-            _project = project;
+			this.project = project;
+
             OpenConfiguration();
         }
 
         protected override void OnClosing(CancelEventArgs e)
-        {
-            if (_configuration != null)
-            {
-                _configuration.Executable = textGameExecutable.Text;
-                _configuration.WorkingDirectory = textWorkingDirectory.Text;
-                _configuration.OutputDirectory = textBuildOutputDirectory.Text;
-            }
-            else
-            {
-                MessageBox.Show("Unable to save the configuration", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            base.OnClosing(e);
+		{
+			Settings.SaveProjectConfiguration(project, ViewModel.ProjectSettings);
+			base.OnClosing(e);
         }
         protected override void OnClosed(EventArgs e)
-        {
-            SaveConfiguration();
+		{
+			if (ViewModel?.ProjectSettings != null)
+			{
+				SaveConfiguration();
+			}
+
             base.OnClosed(e);
         }
 
         private void OpenConfiguration()
         {
             try
-            {
-                _configuration = Settings.GetProjectConfiguration(_project);
-                textGameExecutable.Text = _configuration.Executable;
-                textWorkingDirectory.Text = _configuration.WorkingDirectory;
-                textBuildOutputDirectory.Text = _configuration.OutputDirectory;
-            }
+			{
+				DataContext = new ProjectSettingsViewModel(project);
+			}
             catch (Exception ex)
             {
                 var msg = $"There was an error during the opening of project's configuration:\n{ex.Message}\nDo you want to create a new configuration?";
                 if (Helpers.ShowMessageBoxError(msg, askConfirm: true) ?? false == false)
-                    Close();
+				{
+					Close();
+				}
+				else
+				{
+					NewConfiguration();
+				}
             }
         }
+
+		private void NewConfiguration()
+		{
+			Settings.SaveProjectConfiguration(project, new Models.ProjectSettings()
+			{
+				CurrentConfiguration = "Develop",
+				Configurations = new List<ProjectConfiguration>()
+				{
+					new ProjectConfiguration()
+					{
+						Name = "Develop"
+					},
+					new ProjectConfiguration()
+					{
+						Name = "Release"
+					},
+				}
+			});
+			OpenConfiguration();
+		}
+
         private void SaveConfiguration()
         {
-            if (_configuration == null)
-                return;
             try
             {
-                Settings.SaveProjectConfiguration(_project, _configuration);
+                Settings.SaveProjectConfiguration(project, ViewModel.ProjectSettings);
             }
             catch (Exception ex)
             {
@@ -78,26 +100,29 @@ namespace Xe.Tools.GameStudio
             var fd = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.Executable);
             if (fd.ShowDialog() ?? false == true)
             {
-                textGameExecutable.Text = fd.FileName;
-            }
+                ViewModel.SelectedConfiguration.Value.Executable = fd.FileName;
+				ViewModel?.ConfigurationChanged();
+			}
         }
 
         private void ButtonChooseWorkingDirectory_Click(object sender, RoutedEventArgs e)
         {
             var fd = FileDialog.Factory(this, FileDialog.Behavior.Folder);
             if (fd.ShowDialog() ?? false == true)
-            {
-                textWorkingDirectory.Text = fd.FileName;
-            }
+			{
+				ViewModel.SelectedConfiguration.Value.WorkingDirectory = fd.FileName;
+				ViewModel?.ConfigurationChanged();
+			}
         }
 
         private void ButtonChooseOutputDirectory_Click(object sender, RoutedEventArgs e)
         {
             var fd = FileDialog.Factory(this, FileDialog.Behavior.Folder);
             if (fd.ShowDialog() ?? false == true)
-            {
-                textBuildOutputDirectory.Text = fd.FileName;
-            }
+			{
+				ViewModel.SelectedConfiguration.Value.OutputDirectory = fd.FileName;
+				ViewModel?.ConfigurationChanged();
+			}
         }
     }
 }

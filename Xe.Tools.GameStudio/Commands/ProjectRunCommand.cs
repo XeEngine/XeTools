@@ -11,7 +11,9 @@ namespace Xe.Tools.GameStudio.Commands
 
         public event EventHandler CanExecuteChanged;
 
-        public ProjectRunCommand(GameStudioViewModel vm)
+		public string ConfigurationName { get; set; }
+
+		public ProjectRunCommand(GameStudioViewModel vm)
         {
             _vm = vm;
         }
@@ -26,7 +28,7 @@ namespace Xe.Tools.GameStudio.Commands
             var project = _vm.Project;
             if (project != null)
             {
-                project.Build(() => project.Run());
+                project.Build(ConfigurationName, () => project.Run(ConfigurationName));
             }
         }
     }

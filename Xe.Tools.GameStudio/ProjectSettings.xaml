@@ -5,49 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xe.Tools.GameStudio"
         mc:Ignorable="d"
-        Title="Project settings" Height="194" Width="384" WindowStyle="ToolWindow">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="10">
-            <TextBlock Text="Binaries" FontWeight="Bold" Margin="0 0 0 5"/>
-            <TextBlock Text="Game executable" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="22"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="textGameExecutable" Grid.Column="0"/>
-                <Button Grid.Column="1" Click="ButtonChooseBinary_Click">
-                    <Button.Content>
-                        <Image Source="{StaticResource OpenFileDialog_16x}"/>
-                    </Button.Content>
-                </Button>
-            </Grid>
-            <TextBlock Text="Working directory" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="22"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="textWorkingDirectory" Grid.Column="0"/>
-                <Button Grid.Column="1" Click="ButtonChooseWorkingDirectory_Click">
-                    <Button.Content>
-                        <Image Source="{StaticResource FolderOpen_16x}"/>
-                    </Button.Content>
-                </Button>
-            </Grid>
-            <TextBlock Text="Build output directory" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="22"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="textBuildOutputDirectory" Grid.Column="0"/>
-                <Button Grid.Column="1" Click="ButtonChooseOutputDirectory_Click">
-                    <Button.Content>
-                        <Image Source="{StaticResource FolderOpen_16x}"/>
-                    </Button.Content>
-                </Button>
-            </Grid>
-        </StackPanel>
-    </ScrollViewer>
+        Title="Project settings" Height="Auto" Width="384" WindowStyle="ToolWindow"
+        SizeToContent="Height">
+    <StackPanel Margin="10">
+        <TextBlock Text="Configuration"/>
+        <ComboBox Margin="0 0 0 5"
+                  ItemsSource="{Binding Configurations}"
+                  SelectedItem="{Binding SelectedConfiguration, Mode=TwoWay}"
+                  SelectedIndex="{Binding SelectedConfigurationIndex, Mode=TwoWay}"
+                  DisplayMemberPath="Name"
+                  />
+        <Separator Margin="0 0 0 5"/>
+        
+        <TextBlock Text="Game executable" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="22"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Text="{Binding SelectedConfiguration.Value.Executable, Mode=TwoWay}" Grid.Column="0"/>
+            <Button Grid.Column="1" Click="ButtonChooseBinary_Click">
+                <Button.Content>
+                    <Image Source="{StaticResource OpenFileDialog_16x}"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <TextBlock Text="Working directory" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="22"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Text="{Binding SelectedConfiguration.Value.WorkingDirectory, Mode=TwoWay}" Grid.Column="0"/>
+            <Button Grid.Column="1" Click="ButtonChooseWorkingDirectory_Click">
+                <Button.Content>
+                    <Image Source="{StaticResource FolderOpen_16x}"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <TextBlock Text="Build output directory" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="22"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Text="{Binding SelectedConfiguration.Value.OutputDirectory, Mode=TwoWay}" Grid.Column="0"/>
+            <Button Grid.Column="1" Click="ButtonChooseOutputDirectory_Click">
+                <Button.Content>
+                    <Image Source="{StaticResource FolderOpen_16x}"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+    </StackPanel>
 </Window>

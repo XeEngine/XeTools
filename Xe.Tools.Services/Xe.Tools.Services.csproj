@@ -36,6 +36,8 @@
     <Compile Include="AnimationService.cs" />
     <Compile Include="ArevaloRectanglePacker.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="FileWatched.cs" />
+    <Compile Include="FileWatcherService.cs" />
     <Compile Include="ImageService.cs" />
     <Compile Include="MessageService.cs" />
     <Compile Include="ProjectService.cs" />

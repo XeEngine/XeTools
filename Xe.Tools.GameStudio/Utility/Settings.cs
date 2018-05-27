@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using Xe.Tools.GameStudio.Models;
 using Xe.Tools.Projects;
@@ -40,26 +41,29 @@ namespace Xe.Tools.GameStudio.Utility
 
         private static string GetProjectConfigurationFileName(IProject project)
         {
+			if (project == null) return null;
             return project.FullPath + ".config";
         }
 
-        public static ProjectConfiguration GetProjectConfiguration(IProject project)
-        {
-            var strFile = GetProjectConfigurationFileName(project);
+        public static Models.ProjectSettings GetProjectConfiguration(IProject project)
+		{
+			if (project == null) return null;
+			var strFile = GetProjectConfigurationFileName(project);
             if (!File.Exists(strFile))
-                return new ProjectConfiguration();
+                return new Models.ProjectSettings();
             using (var file = new FileStream(strFile, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new StreamReader(file))
                 {
-                    return JsonConvert.DeserializeObject<ProjectConfiguration>(reader.ReadToEnd());
+                    return JsonConvert.DeserializeObject<Models.ProjectSettings>(reader.ReadToEnd());
                 }
             }
         }
 
-        public static void SaveProjectConfiguration(IProject project, ProjectConfiguration settings)
-        {
-            var strFile = GetProjectConfigurationFileName(project);
+        public static void SaveProjectConfiguration(IProject project, Models.ProjectSettings settings)
+		{
+			if (project == null) return;
+			var strFile = GetProjectConfigurationFileName(project);
             using (var file = new FileStream(strFile, FileMode.Create, FileAccess.Write))
             {
                 using (var writer = new StreamWriter(file))

@@ -4,15 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xe.Tools.GameStudio.Models;
 using Xe.Tools.Projects;
 
 namespace Xe.Tools.GameStudio.Utility
 {
     public static class ProjectUtility
     {
-        public static void Run(this IProject project)
+        public static void Run(this IProject project, string configurationName)
         {
-            var config = Settings.GetProjectConfiguration(project);
+			var config = project.GetConfiguration(configurationName);
             if (string.IsNullOrEmpty(config.Executable) ||
                 string.IsNullOrEmpty(config.WorkingDirectory))
             {
@@ -29,10 +30,11 @@ namespace Xe.Tools.GameStudio.Utility
             }
         }
 
-        public static void Build(this IProject project, Action callback = null)
-        {
-            var config = Settings.GetProjectConfiguration(project);
-            if (string.IsNullOrEmpty(config.OutputDirectory))
+        public static void Build(this IProject project, string configurationName, Action callback = null)
+		{
+			var config = project.GetConfiguration(configurationName);
+
+			if (string.IsNullOrEmpty(config?.OutputDirectory))
             {
                 Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
             }
@@ -46,10 +48,10 @@ namespace Xe.Tools.GameStudio.Utility
             }
         }
 
-        public static void Clean(this IProject project)
-        {
-            var config = Settings.GetProjectConfiguration(project);
-            if (string.IsNullOrEmpty(config.OutputDirectory))
+        public static void Clean(this IProject project, string configurationName)
+		{
+			var config = project.GetConfiguration(configurationName);
+			if (string.IsNullOrEmpty(config.OutputDirectory))
             {
                 Helpers.ShowMessageBoxWarning("Please review your project configuration before to continue.");
             }
@@ -61,5 +63,14 @@ namespace Xe.Tools.GameStudio.Utility
                 });
             }
         }
+
+		public static ProjectConfiguration GetConfiguration(this IProject project, string configurationName)
+		{
+			if (string.IsNullOrEmpty(configurationName))
+				return null;
+
+			return Settings.GetProjectConfiguration(project)?
+				.Configurations.FirstOrDefault(x => x.Name == configurationName);
+		}
     }
 }

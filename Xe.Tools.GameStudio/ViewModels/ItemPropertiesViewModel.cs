@@ -96,7 +96,7 @@ namespace Xe.Tools.GameStudio.ViewModels
 		{
 			get
 			{
-				var component = Globals.Components
+				var component = Globals.Components?
 					.Where(x => x.ComponentInfo.ModuleName == FileFormat)
 					.FirstOrDefault();
 				return component?.Name;
