@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 
 namespace Xe
 {
-    public delegate void LogFunc(Log.Level level, string message, string member, string sourceFile, int sourceLine);
+	public delegate void LogClear();
+	public delegate void LogFunc(Log.Level level, string message, string member, string sourceFile, int sourceLine);
 
-    public static class Log
+	public static class Log
     {
         public enum Level
         {
             Error, Warning, Message
         }
-        public static event LogFunc OnLog;
+
+		public static event LogFunc OnLog;
+		public static event LogClear OnLogClear;
+
         public static void Error(string str,
             [CallerMemberName] string member = null,
             [CallerFilePath] string sourceFilePat = null,
@@ -57,5 +61,10 @@ namespace Xe
                 }
             }
         }
+
+		public static void Clear()
+		{
+			OnLogClear.Invoke();
+		}
     }
 }

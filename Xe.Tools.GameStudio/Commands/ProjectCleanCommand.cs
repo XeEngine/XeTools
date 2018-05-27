@@ -27,8 +27,9 @@ namespace Xe.Tools.GameStudio.Commands
         {
             var project = _vm.Project;
             if (project != null)
-            {
-                project.Clean(ConfigurationName);
+			{
+				Xe.Log.Clear();
+				project.Clean(ConfigurationName);
             }
         }
     }

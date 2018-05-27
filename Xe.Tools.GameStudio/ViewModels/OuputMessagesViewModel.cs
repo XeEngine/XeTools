@@ -16,7 +16,7 @@ namespace Xe.Tools.GameStudio.ViewModels
         private int _logMsgCount;
         private bool _isLogErrVisible = true;
         private bool _isLogWarnVisible = true;
-        private bool _isLogMsgVisible = true;
+        private bool _isLogMsgVisible = false;
         private List<OutputMessageModel> _logList = new List<OutputMessageModel>();
         private ObservableCollection<OutputMessageModel> _logObsList;
 
@@ -103,9 +103,10 @@ namespace Xe.Tools.GameStudio.ViewModels
         {
             Log = new ObservableCollection<OutputMessageModel>();
             Xe.Log.OnLog += Log_OnLog;
+			Xe.Log.OnLogClear += Log_OnLogClear;
         }
 
-        public void Clear()
+		public void Clear()
         {
             _logList.Clear();
             Log.Clear();
@@ -159,9 +160,14 @@ namespace Xe.Tools.GameStudio.ViewModels
                     }));
                 }).Start();
             }
-        }
+		}
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		private void Log_OnLogClear()
+		{
+			Clear();
+		}
+
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

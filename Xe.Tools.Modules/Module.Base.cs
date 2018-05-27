@@ -90,8 +90,15 @@ namespace Xe.Tools.Modules
                 string fileName = Path.Combine(OutputWorkingPath, x);
                 if (File.Exists(fileName))
                 {
-                    File.Delete(fileName);
-                    Log.Message($"File {fileName} deleted.");
+					try
+					{
+						File.Delete(fileName);
+						Log.Message($"File {fileName} deleted.");
+					}
+					catch (Exception e)
+					{
+
+					}
                 }
             }
         }
