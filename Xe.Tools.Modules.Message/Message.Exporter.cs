@@ -37,27 +37,26 @@ namespace Xe.Tools.Modules
             }
         }
 
-        private void Export(Stream stream)
+        private void Export(Stream stream, IEnumerable<Xe.Game.Messages.Message> messages)
         {
             using (var writer = new BinaryWriter(stream))
-                Export(writer);
+                Export(writer, messages);
         }
 
-        private void Export(BinaryWriter writer)
+        private void Export(BinaryWriter writer, IEnumerable<Xe.Game.Messages.Message> messages)
         {
             var entries = new List<BinaryEntry>(0x4000);
             using (var memStream = new MemoryStream(0x20000))
             {
                 var w = new BinaryWriter(memStream);
 
-				var msgOrdered = new Dictionary<uint, Xe.Game.Messages.Message>();
-				msgOrdered = Messages.Messages
-					.Where(x => x.Language == CurrentLanguage)
-					.ToDictionary(x => x.Tag.GetXeHash(), x => x);
-				
+				var msgOrdered = new SortedDictionary<uint, Xe.Game.Messages.Message>(
+					messages.ToDictionary(x => x.Tag.GetXeHash(), x => x));
+
+				w.Write(0x0247534D); // MSGv2
 				w.Write(msgOrdered.Count);
 				var hashPos = w.BaseStream.Position;
-				var offPos = hashPos + msgOrdered.Count * sizeof(uint);
+				var offPos = (int)(hashPos + msgOrdered.Count * sizeof(uint));
 				var msgPos = offPos + msgOrdered.Count * sizeof(uint);
 				foreach (var msg in msgOrdered)
 				{
