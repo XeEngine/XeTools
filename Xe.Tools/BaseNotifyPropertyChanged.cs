@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Xe.Tools.Wpf
+namespace Xe.Tools
 {
     public class BaseNotifyPropertyChanged : INotifyPropertyChanged
     {

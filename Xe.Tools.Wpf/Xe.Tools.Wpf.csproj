@@ -158,7 +158,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseNotifyPropertyChanged.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\StackCommands.cs" />
     <Compile Include="Controls\D2DControl.cs" />
