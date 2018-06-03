@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Xe.Tools.Projects;
+using Xe.Tools.Services;
 using Xe.Tools.Wpf;
 
 namespace Xe.Tools.GameStudio.ViewModels
@@ -7,7 +8,8 @@ namespace Xe.Tools.GameStudio.ViewModels
     public class GameStudioViewModel : BaseNotifyPropertyChanged
     {
         private IProject _project;
-        private ProjectEntryViewModel _selectedProjectEntry;
+		private Context context;
+		private ProjectEntryViewModel _selectedProjectEntry;
 
         public static GameStudioViewModel Instance = new GameStudioViewModel();
 
@@ -31,7 +33,9 @@ namespace Xe.Tools.GameStudio.ViewModels
 
         public bool IsProjectLoaded => Project != null;
 
-        public ProjectEntryViewModel SelectedProjectEntry
+		public Context Context => context = context ?? new Context(Project);
+
+		public ProjectEntryViewModel SelectedProjectEntry
         {
             get => _selectedProjectEntry;
             set
@@ -49,6 +53,7 @@ namespace Xe.Tools.GameStudio.ViewModels
         {
             ProjectFileName = fileName;
             Project = new XeGsProj().Open(fileName);
+			context = null;
         }
         public void SaveProject(string fileName = null)
         {

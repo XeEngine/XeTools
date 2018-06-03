@@ -1,15 +1,18 @@
 ﻿using Xe.Tools.Projects;
-using static Xe.Tools.Project;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.Components
 {
-    public class ComponentProperties
+	public class ComponentProperties
     {
-        public IProject Project;
-        public IProjectFile File;
+        public IProject Project { get; set; }
 
-        //public Project ProjectLegacy;
-        //public Container Container;
-        //public Item Item;
-    }
+		public IProjectFile File { get; set; }
+
+		public Context Context { get; set; }
+
+		//public Project ProjectLegacy;
+		//public Container Container;
+		//public Item Item;
+	}
 }

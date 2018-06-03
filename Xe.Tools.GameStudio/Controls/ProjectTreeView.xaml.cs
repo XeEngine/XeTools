@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Xe.Tools.GameStudio.Utility;
 using Xe.Tools.GameStudio.ViewModels;
 using Xe.Tools.Projects;
+using Xe.Tools.Services;
 
 namespace Xe.Tools.GameStudio.Controls
 {
@@ -55,24 +47,31 @@ namespace Xe.Tools.GameStudio.Controls
                     .Where(x => x.ComponentInfo.ModuleName == moduleName)
                     .SingleOrDefault();
 
-                try
-                {
-                    component.CreateInstance(new Components.ComponentProperties()
-                    {
-                        Project = gs.Project,
-                        File = file
-                    }).ShowDialog();
-                }
-                catch (FileNotFoundException ex)
-                {
-                    Log.Error($"File {ex.FileName} not found.");
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex.Message);
-                }
+				if (component != null)
+				{
+					try
+					{
+						component.CreateInstance(new Components.ComponentProperties()
+						{
+							Project = gs.Project,
+							File = file,
+							Context = gs.Context
+						}).ShowDialog();
+					}
+					catch (FileNotFoundException ex)
+					{
+						Log.Error($"File {ex.FileName} not found.");
+					}
+					catch (Exception ex)
+					{
+						Log.Error(ex.Message);
+					}
+				}
+				else
+				{
+					Log.Error($"No tools for the module {moduleName} has been found; the file {file.Name} cannot be opened.");
+				}
             }
-
-        }
+        } 
     }
 }

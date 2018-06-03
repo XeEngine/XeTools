@@ -13,9 +13,11 @@ namespace Xe.Tools.Components.MessagesEditor
             Properties = settings;
         }
 
-        public MainWindow CreateMainWindow()
+        public Windows.WindowMain CreateMainWindow()
         {
-			return new MainWindow();
+			var window = new Windows.WindowMain();
+			window.SetContext(Properties.File, Properties.Context);
+			return window;
         }
 
         public void Show()

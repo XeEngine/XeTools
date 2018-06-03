@@ -227,6 +227,10 @@
       <Project>{47197a2e-2287-4b30-9adf-ee6921aaf7e9}</Project>
       <Name>Xe.Tools.Components.MapEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Components.MessagesEditor\Xe.Tools.Components.MessagesEditor.csproj">
+      <Project>{d8bc3ccb-2e2a-4664-8dfc-94433226ae0f}</Project>
+      <Name>Xe.Tools.Components.MessagesEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Components.ParticleEditor\Xe.Tools.Components.ParticleEditor.csproj">
       <Project>{ecc169d6-3a46-4135-93fb-05f5b7a19c34}</Project>
       <Name>Xe.Tools.Components.ParticleEditor</Name>
@@ -282,6 +286,10 @@
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj">
       <Project>{e718e2c4-6c6d-4300-8f96-ceefaa85e722}</Project>
       <Name>Xe.Tools.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.Services\Xe.Tools.Services.csproj">
+      <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
+      <Name>Xe.Tools.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
       <Project>{545d863a-cd36-4c79-a07f-cf82b718fc3e}</Project>

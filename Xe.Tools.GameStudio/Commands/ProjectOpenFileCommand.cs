@@ -10,13 +10,13 @@ namespace Xe.Tools.GameStudio.Commands
 {
     public class ProjectOpenFileCommand : ICommand
     {
-        private GameStudioViewModel _vm;
+        private GameStudioViewModel vm;
 
         public event EventHandler CanExecuteChanged;
 
         public ProjectOpenFileCommand(GameStudioViewModel vm)
         {
-            _vm = vm;
+            this.vm = vm;
         }
 
         public bool CanExecute(object parameter)
@@ -37,8 +37,9 @@ namespace Xe.Tools.GameStudio.Commands
                 {
                     component.CreateInstance(new Components.ComponentProperties()
                     {
-                        Project = _vm.Project,
-                        File = file
+                        Project = vm.Project,
+                        File = file,
+						Context = vm.Context
                     }).ShowDialog();
                 }
                 catch (FileNotFoundException ex)

@@ -2,7 +2,7 @@
 
 namespace Xe.Game.Messages
 {
-	public class Message : UniqueObject, IDeepCloneable
+	public class Message : IDeepCloneable
 	{
 		public Language Language { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Xe.Tools;
 using Xe.Tools.Components.KernelEditor.ViewModels;
 using Xe.Tools.Projects;
 using Xe.Tools.Wpf.Controls;
