@@ -14,12 +14,12 @@
                     <Button Grid.Column="1" Margin="0 0 5 0" Click="ButtonRemove_Click">
                         <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
                     </Button>
-                    <CheckBox Margin="0 0 5 0" IsChecked="{Binding IsExecutionEnabled, Mode=TwoWay}"/>
+                    <!--<CheckBox Margin="0 0 5 0" IsChecked="{Binding IsExecutionEnabled, Mode=TwoWay}"/>
                     <Image Margin="0 0 5 0" Visibility="{Binding StateReadyVisibility}" Source="{StaticResource StatusNotStarted_16x}" Width="16"/>
                     <Image Margin="0 0 5 0" Visibility="{Binding StateRunningVisibility}" Source="{StaticResource Run_16x}" Width="16"/>
-                    <Image Margin="0 0 5 0" Visibility="{Binding StateFinishedVisibility}" Source="{StaticResource Stop_16x}" Width="16"/>
-                    <TextBlock Margin="0 0 5 0" Text="Parameter" Visibility="Collapsed"/>
-                    <TextBlock Margin="0 0 5 0" Text="Ease" Visibility="Collapsed"/>
+                    <Image Margin="0 0 5 0" Visibility="{Binding StateFinishedVisibility}" Source="{StaticResource Stop_16x}" Width="16"/>-->
+                    <TextBlock Margin="0 0 5 0" Text="{Binding ParameterName}"/>
+                    <TextBlock Margin="0 0 5 0" Text="{Binding EaseName}"/>
                 </StackPanel>
             </tools:SpecialGroupBox.Header>
             <tools:SpecialGroupBox.Content>

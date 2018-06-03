@@ -52,7 +52,7 @@ namespace Xe.Tools.GameStudio
 						
 #if DEBUG
 						var file = Project.GetFiles()
-							.FirstOrDefault(x => x.Format == "kernel");
+							.FirstOrDefault(x => x.Format == "particleanim");
 						var moduleName = file.Format;
 						while (Globals.Components == null) System.Threading.Thread.Sleep(1);
 						var component = Globals.Components

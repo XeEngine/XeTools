@@ -74,6 +74,18 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 			}
 		}
 
+		public double Timer
+		{
+			get => ParticleSystem?.Timer ?? 0.0;
+			set
+			{
+				ParticleSystem.Timer = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public double TimerTotal { get; private set; }
+
 		public RelayCommand ResetTimerCommand { get; }
 
 		#endregion
@@ -118,6 +130,8 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 		public RelayCommand AddParticleGroup { get; set; }
 
 		public RelayCommand RemoveParticleGroup { get; set; }
+
+		public RelayCommand DuplicateParticleGroup { get; set; }
 
 		#endregion
 
@@ -186,7 +200,7 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 
 			AddParticleGroup = new RelayCommand(x =>
 			{
-				var particlesGroup = new Game.Particles.ParticlesGroup()
+				var particlesGroup = new ParticlesGroup()
 				{
 					
 				};
@@ -207,10 +221,51 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 				}
 			}, x => true);
 
+			DuplicateParticleGroup = new RelayCommand(x =>
+			{
+				if (!IsParticleGroupSelected)
+					return;
+				var cur = SelectedParticleGroup;
+				var particlesGroup = new ParticlesGroup()
+				{
+					AnimationName = cur.AnimationName.Substring(0),
+					 ParticlesCount = cur.Count,
+					 GlobalDelay = cur.GlobalDelay,
+					 GlobalDuration = cur.GlobalDuration,
+					 Delay = cur.DelayBetweenParticles,
+					 Effects = cur.Effects
+						.Select(effect => new Effect
+						{
+							Ease = effect.Ease,
+							Parameter = effect.Parameter,
+							Speed = effect.Speed,
+							FixStep = effect.FixStep,
+							Sum = effect.Sum,
+							Multiplier = effect.Multiplier,
+							Delay = effect.Delay,
+							Duration = effect.Duration
+						})
+						.ToList()
+				};
+				_particlesData.Groups.Add(particlesGroup);
+
+				ParticleGroups.Add(new ParticleGroup(particlesGroup)
+				{
+					AnimationDrawer = ParticleSystem.AnimationDrawer
+				});
+			}, x => true);
+
 			ResetTimerCommand = new RelayCommand(x =>
 			{
 				ParticleSystem.Timer = 0.0;
 			}, x => true);
+		}
+
+		public void SetTimer(double timer)
+		{
+			TimerTotal = _particlesData.Groups.Max(x => x.GlobalDelay + x.GlobalDuration);
+			Timer = Math.Min(timer, TimerTotal);
+			OnPropertyChanged(nameof(TimerTotal));
 		}
 
 		public void SaveChanges()

@@ -77,11 +77,19 @@ namespace Xe.Tools.Modules
                 var anim = tuple.Item2;
                 foreach (var frameRef in anim.Frames)
                 {
-                    if (!dicFrames.TryGetValue(frameRef.Frame, out var frame))
-                    {
-                        Log.Warning($"{Path.GetFileNameWithoutExtension(InputFileName)}: Frame {frameRef.Frame} not found in {anim.Name}.");
-                        continue;
-                    }
+					if (!string.IsNullOrEmpty(frameRef.Frame))
+					{
+						if (!dicFrames.TryGetValue(frameRef.Frame, out var frame))
+						{
+							Log.Warning($"{Path.GetFileNameWithoutExtension(InputFileName)}: Frame {frameRef.Frame} not found in {anim.Name}.");
+							continue;
+						}
+					}
+					else
+					{
+						Log.Warning($"{Path.GetFileNameWithoutExtension(InputFileName)}: Animation {anim.Name} contains empty frames.");
+						break;
+					}
                 }
             }
             #endregion

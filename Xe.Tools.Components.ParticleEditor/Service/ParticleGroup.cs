@@ -322,7 +322,7 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 		{
 			var realTimer = Timer - GlobalDelay;
 			if (realTimer > GlobalDuration)
-				Timer = GlobalDuration;
+				_timer = GlobalDuration;
 			if (realTimer >= 0)
 			{
 				foreach (var entity in _particleEntities)
@@ -330,13 +330,16 @@ namespace Xe.Tools.Components.ParticleEditor.Service
 					var parameters = new Parameters();
 					foreach (var effect in Effects)
 					{
-						var effectTimer = realTimer - effect.Delay;
-						entity.EntityDrawer.Timer = effectTimer;
-						if (effectTimer > 0)
+						if (entity.EntityDrawer != null)
 						{
-							if (effectTimer > effect.Duration)
-								effectTimer = effect.Duration;
-							parameters.AddValue(effect.Parameter, effect.Get(effectTimer));
+							var effectTimer = realTimer - effect.Delay;
+							entity.EntityDrawer.Timer = effectTimer;
+							if (effectTimer > 0)
+							{
+								if (effectTimer > effect.Duration)
+									effectTimer = effect.Duration;
+								parameters.AddValue(effect.Parameter, effect.Get(effectTimer));
+							}
 						}
 					}
 					entity.Parameters.CopyFrom(parameters);

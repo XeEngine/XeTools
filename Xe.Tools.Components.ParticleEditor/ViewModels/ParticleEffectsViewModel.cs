@@ -33,6 +33,7 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 			{
 				Effect.Ease = value;
 				OnPropertyChanged();
+				OnPropertyChanged(nameof(EaseName));
 			}
 		}
 
@@ -85,6 +86,10 @@ namespace Xe.Tools.Components.ParticleEditor.ViewModels
 				OnPropertyChanged();
 			}
 		}
+
+		public string ParameterName => Parameter.ToString();
+
+		public string EaseName => Algorithm.ToString();
 
 		public ParticleEffectsViewModel(ParticleSystem particleSystem, ParticleGroup particleGroup, Effect effect)
 		{

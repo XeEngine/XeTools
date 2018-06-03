@@ -33,12 +33,12 @@ namespace Tiled
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetX { get; set; }
+        public double OffsetX { get; set; }
 
         /// <summary>
         /// Rendering offset for this layer in pixels. Defaults to 0.
         /// </summary>
-        public int OffsetY { get; set; }
+        public double OffsetY { get; set; }
 
         public PropertiesDictionary Properties { get; }
 
@@ -54,8 +54,8 @@ namespace Tiled
             Color = xElement.Attribute("color")?.AsColor();
             Opacity = (double?)xElement.Attribute("opacity") ?? 1.0;
             Visible = (bool?)xElement.Attribute("visible") ?? true;
-            OffsetX = (int?)xElement.Attribute("offsetx") ?? 0;
-            OffsetY = (int?)xElement.Attribute("offsety") ?? 0;
+            OffsetX = (double?)xElement.Attribute("offsetx") ?? 0;
+            OffsetY = (double?)xElement.Attribute("offsety") ?? 0;
 
             Properties = new PropertiesDictionary(xElement);
 

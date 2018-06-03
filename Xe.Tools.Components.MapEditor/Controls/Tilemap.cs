@@ -152,7 +152,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
 			const string DEFAULT_ANIMDATA = "data/sprite/editor.anim.json";
 
 			var realX = x + entry.Width / 2;
-			var realY = y + entry.Height / 2;
+			var realY = y + entry.Height / 2 - entry.Z;
 
 			int errType;
 			var strAnimData = entry.AnimationData;
@@ -261,7 +261,7 @@ namespace Xe.Tools.Components.MapEditor.Controls
                 foreach (var o in layer.Objects)
                 {
                     var ox = o.X;
-                    var oy = o.Y;
+                    var oy = o.Y - o.Z;
                     if (x >= ox && x < ox + o.Width &&
                         y >= oy && y < oy + o.Height)
                         return o;

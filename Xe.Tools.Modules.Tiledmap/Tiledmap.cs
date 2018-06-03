@@ -46,13 +46,6 @@ namespace Xe.Tools.Modules
                     else
                         filesList.Add(item.ImagePath);
                 }
-                if (!string.IsNullOrEmpty(item.ImageSource))
-                {
-                    if (!Path.IsPathRooted(item.ImageSource))
-                        filesList.Add(Path.Combine(basePath, item.ImageSource));
-                    else
-                        filesList.Add(item.ImageSource);
-                }
             }
             return filesList;
         }

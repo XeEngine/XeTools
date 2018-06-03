@@ -16,7 +16,7 @@ namespace Xe.Tools.Services
 
         public IEnumerable<string> AnimationFilesData => ProjectFiles.Select(x =>
         {
-            var strName = x.Name;
+            var strName = x.Path;
             var extIndex = strName.IndexOf(".json");
             return strName.Substring(0, extIndex);
         });
