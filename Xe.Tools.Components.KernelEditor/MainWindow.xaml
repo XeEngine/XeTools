@@ -19,6 +19,9 @@
             </MenuItem>
         </Menu>
         <TabControl>
+            <TabItem Header="Elements">
+                <Controls:TabElements x:Name="TabElements" DataContext="{Binding Elements}"/>
+            </TabItem>
             <TabItem Header="Skills">
                 <Controls:TabSkills x:Name="TabSkills" DataContext="{Binding Skills}"/>
             </TabItem>
