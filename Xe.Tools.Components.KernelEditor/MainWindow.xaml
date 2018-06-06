@@ -1,5 +1,5 @@
 ﻿<xc:WindowEx
-    xmlns:Controls="clr-namespace:Xe.Tools.Components.KernelEditor.Controls"
+    xmlns:Views="clr-namespace:Xe.Tools.Components.KernelEditor.Views"
     xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
     x:Class="Xe.Tools.Components.KernelEditor.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -20,25 +20,25 @@
         </Menu>
         <TabControl>
             <TabItem Header="Elements">
-                <Controls:TabElements x:Name="TabElements" DataContext="{Binding Elements}"/>
+                <Views:TabElements x:Name="TabElements" DataContext="{Binding Elements}"/>
             </TabItem>
             <TabItem Header="Skills">
-                <Controls:TabSkills x:Name="TabSkills" DataContext="{Binding Skills}"/>
+                <Views:TabSkills x:Name="TabSkills" DataContext="{Binding Skills}"/>
             </TabItem>
             <TabItem Header="Players">
-                <Controls:TabPlayers DataContext="{Binding Players}"/>
+                <Views:TabPlayers DataContext="{Binding Players}"/>
             </TabItem>
             <TabItem Header="Enemies">
-                <Controls:TabEnemies/>
+                <Views:TabEnemies/>
             </TabItem>
             <TabItem Header="Messages">
-                <Controls:TabMessages x:Name="TabMessages" DataContext="{Binding Messages}"/>
+                <Views:TabMessages x:Name="TabMessages" DataContext="{Binding Messages}"/>
             </TabItem>
             <TabItem Header="BGMs">
-                <Controls:TabBgms x:Name="TabBgms" DataContext="{Binding Bgms}"/>
+                <Views:TabBgms x:Name="TabBgms" DataContext="{Binding Bgms}"/>
             </TabItem>
             <TabItem Header="SFXs">
-                <Controls:TabSfxs x:Name="TabSfxs" DataContext="{Binding Sfxs}"/>
+                <Views:TabSfxs x:Name="TabSfxs" DataContext="{Binding Sfxs}"/>
             </TabItem>
         </TabControl>
     </DockPanel>

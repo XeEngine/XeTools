@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Xe.Tools.Components.KernelEditor.Controls
+namespace Xe.Tools.Components.KernelEditor.Views
 {
-	/// <summary>
-	/// Interaction logic for TabBgms.xaml
-	/// </summary>
-	public partial class TabBgms : UserControl
-	{
-		public TabBgms()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for TabPlayerGrowth.xaml
+    /// </summary>
+    public partial class TabPlayerGrowth : UserControl
+    {
+        public TabPlayerGrowth()
+        {
+            InitializeComponent();
+        }
+    }
 }

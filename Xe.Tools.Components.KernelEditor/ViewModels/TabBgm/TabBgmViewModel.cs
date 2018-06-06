@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Xe.Game.Kernel;
-using Xe.Tools.Components.KernelEditor.ViewModels.Generics;
+using Xe.Tools.Components.KernelEditor.Models;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels.TabBgm
 {
-	public class TabBgmViewModel : TabGenericListViewModel<Bgm, BgmViewModel>
+	public class TabBgmViewModel : GenericListModel<Bgm, BgmViewModel>
 	{
 		public TabBgmViewModel(KernelData kData) :
 			base(kData.Bgms = kData.Bgms ?? new List<Bgm>())

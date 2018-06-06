@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Xe.Tools.Components.KernelEditor.Controls
+namespace Xe.Tools.Components.KernelEditor.Views
 {
 	/// <summary>
-	/// Interaction logic for TabSfxs.xaml
+	/// Interaction logic for TabBgms.xaml
 	/// </summary>
-	public partial class TabSfxs : UserControl
+	public partial class TabBgms : UserControl
 	{
-		public TabSfxs()
+		public TabBgms()
 		{
 			InitializeComponent();
 		}

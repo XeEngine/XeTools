@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Xe.Tools.Components.KernelEditor.Controls
+namespace Xe.Tools.Components.KernelEditor.Views
 {
-    /// <summary>
-    /// Interaction logic for TabEnemies.xaml
-    /// </summary>
-    public partial class TabEnemies : UserControl
-    {
-        public TabEnemies()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Interaction logic for TabElements.xaml
+	/// </summary>
+	public partial class TabElements : UserControl
+	{
+		public TabElements()
+		{
+			InitializeComponent();
+		}
+	}
 }

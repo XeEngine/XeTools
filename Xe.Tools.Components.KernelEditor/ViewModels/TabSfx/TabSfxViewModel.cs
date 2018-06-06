@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Xe.Game.Kernel;
-using Xe.Tools.Components.KernelEditor.ViewModels.Generics;
+using Xe.Tools.Components.KernelEditor.Models;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels.TabSfx
 {
-	public class TabSfxViewModel : TabGenericListViewModel<Sfx, SfxViewModel>
+	public class TabSfxViewModel : GenericListModel<Sfx, SfxViewModel>
 	{
 		public TabSfxViewModel(KernelData kData) :
 			base(kData.Sfxs = kData.Sfxs ?? new List<Sfx>())

@@ -54,11 +54,11 @@ namespace Xe.Drawing
                 d3dDevice1 = d3dDevice.QueryInterface<d3d.Device1>();
                 d3dDevice5 = d3dDevice.QueryInterface<d3d.Device5>();
                 dxgiDevice = d3dDevice.QueryInterface<dxgi.Device>();
-                dxgiDevice1 = dxgiDevice.QueryInterface<dxgi.Device1>();
+				dxgiDevice1 = dxgiDevice.QueryInterface<dxgi.Device1>();
                 dxgiAdapter = dxgiDevice.Adapter.QueryInterface<dxgi.Adapter>();
                 dxgiFactory = dxgiAdapter.GetParent<dxgi.Factory>();
 
-                dxgiDevice1.MaximumFrameLatency = 1;
+                //dxgiDevice1.MaximumFrameLatency = 1;
                 CreateResources();
             }
 

@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xe.Tools.Components.KernelEditor.ViewModels;
 
-namespace Xe.Tools.Components.KernelEditor.Controls
+namespace Xe.Tools.Components.KernelEditor.Views
 {
     /// <summary>
     /// Interaction logic for TabPlayers.xaml
