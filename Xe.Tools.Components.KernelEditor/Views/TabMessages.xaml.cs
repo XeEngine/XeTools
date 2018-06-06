@@ -13,16 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Xe.Tools.Components.KernelEditor.Controls
+namespace Xe.Tools.Components.KernelEditor.Views
 {
     /// <summary>
-    /// Interaction logic for TabSkillsUsage.xaml
+    /// Interaction logic for TabMessages.xaml
     /// </summary>
-    public partial class TabSkillsUsage : UserControl
+    public partial class TabMessages : UserControl
     {
-        public TabSkillsUsage()
+        public TabMessages()
         {
             InitializeComponent();
+        }
+
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

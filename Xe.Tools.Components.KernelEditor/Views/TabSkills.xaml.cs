@@ -16,7 +16,7 @@ using Xe.Game.Kernel;
 using Xe.Tools.Components.KernelEditor.Dialogs;
 using Xe.Tools.Components.KernelEditor.ViewModels;
 
-namespace Xe.Tools.Components.KernelEditor.Controls
+namespace Xe.Tools.Components.KernelEditor.Views
 {
     /// <summary>
     /// Interaction logic for TabSkills.xaml

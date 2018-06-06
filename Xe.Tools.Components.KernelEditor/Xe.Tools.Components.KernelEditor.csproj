@@ -56,22 +56,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
-    <Compile Include="Controls\TabBgms.xaml.cs">
+    <Compile Include="Views\TabBgms.xaml.cs">
       <DependentUpon>TabBgms.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabElements.xaml.cs">
+    <Compile Include="Views\TabElements.xaml.cs">
       <DependentUpon>TabElements.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabMessages.xaml.cs">
+    <Compile Include="Views\TabMessages.xaml.cs">
       <DependentUpon>TabMessages.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabPlayerGrowth.xaml.cs">
+    <Compile Include="Views\TabPlayerGrowth.xaml.cs">
       <DependentUpon>TabPlayerGrowth.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabSfxs.xaml.cs">
+    <Compile Include="Views\TabSfxs.xaml.cs">
       <DependentUpon>TabSfxs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabSkillsUsage.xaml.cs">
+    <Compile Include="Views\TabSkillsUsage.xaml.cs">
       <DependentUpon>TabSkillsUsage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\NameEditor.xaml.cs">
@@ -81,7 +81,7 @@
     <Compile Include="ViewModels\AnimationsViewModel.cs" />
     <Compile Include="ViewModels\AnimationViewModel.cs" />
     <Compile Include="ViewModels\EnumViewModel.cs" />
-    <Compile Include="ViewModels\Generics\TabGenericListViewModel.cs" />
+    <Compile Include="Models\GenericListModel.cs" />
     <Compile Include="ViewModels\KernelViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
     <Compile Include="ViewModels\TabBgm\BgmViewModel.cs" />
@@ -95,39 +95,39 @@
     <Compile Include="ViewModels\TabSfx\TabSfxViewModel.cs" />
     <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
-    <Page Include="Controls\TabBgms.xaml">
+    <Page Include="Views\TabBgms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabElements.xaml">
+    <Page Include="Views\TabElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabEnemies.xaml">
+    <Page Include="Views\TabEnemies.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabMessages.xaml">
+    <Page Include="Views\TabMessages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabPlayerGrowth.xaml">
+    <Page Include="Views\TabPlayerGrowth.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabPlayers.xaml">
+    <Page Include="Views\TabPlayers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabSfxs.xaml">
+    <Page Include="Views\TabSfxs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabSkills.xaml">
+    <Page Include="Views\TabSkills.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabSkillsUsage.xaml">
+    <Page Include="Views\TabSkillsUsage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,13 +143,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\TabEnemies.xaml.cs">
+    <Compile Include="Views\TabEnemies.xaml.cs">
       <DependentUpon>TabEnemies.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabPlayers.xaml.cs">
+    <Compile Include="Views\TabPlayers.xaml.cs">
       <DependentUpon>TabPlayers.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabSkills.xaml.cs">
+    <Compile Include="Views\TabSkills.xaml.cs">
       <DependentUpon>TabSkills.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
@@ -210,6 +210,8 @@
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModels\Generics\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
