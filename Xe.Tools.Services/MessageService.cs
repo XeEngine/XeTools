@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Xe.Game.Messages;
 using Xe.Tools.Projects;
-using static Xe.Tools.Project;
 
 namespace Xe.Tools.Services
 {
@@ -34,6 +33,12 @@ namespace Xe.Tools.Services
         public IEnumerable<IProjectFile> Items { get; private set; }
 
         public IEnumerable<Tuple<IProjectFile, MessageContainer>> MessageContainers { get; private set; }
+
+		public IEnumerable<string> Tags => MessageContainers
+			.SelectMany(x => x.Item2.Messages)
+			.GroupBy(x => x.Tag)
+			.Select(x => x.Key);
+
 
 		public Language Language { get; set; }
 

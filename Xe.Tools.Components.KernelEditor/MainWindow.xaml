@@ -31,8 +31,8 @@
             <TabItem Header="Enemies">
                 <Views:TabEnemies/>
             </TabItem>
-            <TabItem Header="Messages">
-                <Views:TabMessages x:Name="TabMessages" DataContext="{Binding Messages}"/>
+            <TabItem Header="Zones">
+                <Views:TabZones x:Name="TabZones" DataContext="{Binding Zones}"/>
             </TabItem>
             <TabItem Header="BGMs">
                 <Views:TabBgms x:Name="TabBgms" DataContext="{Binding Bgms}"/>

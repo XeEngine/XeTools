@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xe.Game.Kernel;
-using Xe.Game.Messages;
+using Xe.Tools.Components.KernelEditor.Models;
 using Xe.Tools.Projects;
 using Xe.Tools.Services;
-using static Xe.Tools.Project;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
@@ -22,13 +21,14 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         private string WorkingFileName { get; set; }
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
-        public AnimationGroupsViewModel AnimationGroups { get; private set; }
+		public ZonesModel Zones { get; set; }
+		public BgmsModel Bgms { get; set; }
+		public SfxsModel Sfxs { get; set; }
+
+		public AnimationGroupsViewModel AnimationGroups { get; private set; }
 		public TabElements.TabElementViewModel Elements { get; private set; }
 		public TabSkillsViewModel Skills { get; private set; }
         public TabPlayersViewModel Players { get; private set; }
-        public TabMessagesViewModel Messages { get; private set; }
-		public TabBgm.TabBgmViewModel Bgms { get; private set; }
-		public TabSfx.TabSfxViewModel Sfxs { get; private set; }
 
 		public KernelViewModel(IProject project, IProjectFile file)
         {
@@ -59,14 +59,17 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 			Elements = new TabElements.TabElementViewModel(Kernel);
 			Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
             Players = new TabPlayersViewModel(Kernel.Players, Kernel.Skills, MessageService, ProjectService.AnimationService);
-            Messages = new TabMessagesViewModel(MessageService);
-			Bgms = new TabBgm.TabBgmViewModel(Kernel);
-			Sfxs = new TabSfx.TabSfxViewModel(Kernel);
-
+			Zones = new ZonesModel(Kernel?.Zones?.Select(x => new ZoneModel(x, MessageService)), MessageService);
+			Bgms = new BgmsModel(Kernel?.Bgms?.Select(x => new BgmModel(x)));
+			Sfxs = new SfxsModel(Kernel?.Sfxs?.Select(x => new SfxModel(x)));
 		}
 
         public void SaveChanges()
         {
+			Kernel.Zones = Zones.Items.Select(x => x.Zone).ToList();
+			Kernel.Bgms = Bgms.Items.Select(x => x.Bgm).ToList();
+			Kernel.Sfxs = Sfxs.Items.Select(x => x.Sfx).ToList();
+
             MessageService.SaveChanges();
             Skills.SaveChanges();
             Players.SaveChanges();

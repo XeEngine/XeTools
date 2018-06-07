@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Xe.Game.Kernel;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Wpf;
 
@@ -11,15 +12,15 @@ namespace Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCale
 {
     public class ExtensionBaseViewModel<T> : BaseNotifyPropertyChanged where T : class, IObjectExtension
     {
-        protected T _extension;
+        protected T extension;
 
-        public bool IsLoaded => _extension != null;
+        public bool IsLoaded => extension != null;
 
         public Visibility Visibility => IsLoaded ? Visibility.Visible : Visibility.Collapsed;
 
         public ExtensionBaseViewModel(IObjectExtension objectExtension)
         {
-            _extension = objectExtension as T;
+            extension = objectExtension as T;
         }
     }
 
@@ -27,10 +28,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCale
     {
         public int Entry
         {
-            get => _extension?.Entry ?? 0;
+            get => extension?.Entry ?? 0;
             set
             {
-                _extension.Entry = value;
+                extension.Entry = value;
                 OnPropertyChanged();
             }
         }
@@ -44,20 +45,20 @@ namespace Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCale
     {
         public int ArtificialIntelligence
         {
-            get => _extension?.ArtificialIntelligence ?? 0;
+            get => extension?.ArtificialIntelligence ?? 0;
             set
             {
-                _extension.ArtificialIntelligence = value;
+                extension.ArtificialIntelligence = value;
                 OnPropertyChanged();
             }
         }
 
         public int Variant
         {
-            get => _extension?.Variant ?? 0;
+            get => extension?.Variant ?? 0;
             set
             {
-                _extension.Variant = value;
+                extension.Variant = value;
                 OnPropertyChanged();
             }
         }
@@ -75,38 +76,40 @@ namespace Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCale
     }
 
     public class MapChangeViewModel : ExtensionBaseViewModel<Modules.ObjectExtensions.SwordsOfCalengal.MapChange>
-    {
-        public int Zone
+	{
+		public IEnumerable<Zone> Zones => MapEditorViewModel.Instance.Kernel.Zones;
+
+		public int Zone
         {
-            get => _extension?.Zone ?? 0;
+            get => extension?.Zone ?? 0;
             set
             {
-                _extension.Zone = value;
+                extension.Zone = value;
                 OnPropertyChanged();
             }
         }
 
         public int Map
         {
-            get => _extension?.Map ?? 0;
+            get => extension?.Map ?? 0;
             set
             {
-                _extension.Map = value;
+                extension.Map = value;
                 OnPropertyChanged();
             }
         }
 
         public int Entry
         {
-            get => _extension?.Entry ?? 0;
+            get => extension?.Entry ?? 0;
             set
             {
-                _extension.Entry = value;
+                extension.Entry = value;
                 OnPropertyChanged();
             }
         }
 
-        public MapChangeViewModel(IObjectExtension objectExtension) :
+		public MapChangeViewModel(IObjectExtension objectExtension) :
             base(objectExtension)
         { }
     }
@@ -122,30 +125,30 @@ namespace Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCale
 	{
 		public int Category
 		{
-			get => _extension?.Category ?? 0;
+			get => extension?.Category ?? 0;
 			set
 			{
-				_extension.Category = value;
+				extension.Category = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Index
 		{
-			get => _extension?.Index ?? 0;
+			get => extension?.Index ?? 0;
 			set
 			{
-				_extension.Index = value;
+				extension.Index = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Flags
 		{
-			get => _extension?.Flags ?? 0;
+			get => extension?.Flags ?? 0;
 			set
 			{
-				_extension.Flags = value;
+				extension.Flags = value;
 				OnPropertyChanged();
 			}
 		}
