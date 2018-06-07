@@ -227,8 +227,9 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         {
             MapEditor = vm;
             MasterNode = new NodeMapViewModel(this, MapEditor.MapName);
-            
-            ObjectPropertiesViewModel = new ObjectPropertiesViewModel(this);
+			NodeMapViewModel = MasterNode;
+
+			ObjectPropertiesViewModel = new ObjectPropertiesViewModel(this);
             SetPropertyBar(PropertyBar.None);
 
             MapEditor.OnTilemapChanged += (sender, tileMap) =>
