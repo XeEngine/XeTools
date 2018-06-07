@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Xe.Game.Kernel;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Components.MapEditor.Services;
 
@@ -15,7 +17,10 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
     public class NodeMapViewModel : NodeBaseViewModel
     {
         private NodeOrderMode _nodeOrderMode = NodeOrderMode.GroupByPriority;
-        public NodeOrderMode NodeOrderMode
+
+		public IEnumerable<Bgm> Bgms => MapEditorViewModel.Instance.Kernel.Bgms;
+
+		public NodeOrderMode NodeOrderMode
         {
             get => NodeOrderMode;
             set
@@ -30,13 +35,13 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
 
         public string FriendlyMapName { get; set; }
 
-        public string BgmField
+        public Guid BgmField
         {
             get => TileMap.BgmField;
             set => TileMap.BgmField = value;
         }
 
-        public string BgmBattle
+        public Guid BgmBattle
         {
             get => TileMap.BgmBattle;
             set => TileMap.BgmBattle = value;

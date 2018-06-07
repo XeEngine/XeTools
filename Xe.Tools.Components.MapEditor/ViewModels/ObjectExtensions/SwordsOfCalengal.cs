@@ -109,6 +109,19 @@ namespace Xe.Tools.Components.MapEditor.ViewModels.ObjectExtensions.SwordsOfCale
             }
         }
 
+		public Guid ZoneId
+		{
+			get => extension?.ZoneId ?? Guid.Empty;
+			set
+			{
+				if (extension != null)
+				{
+					extension.ZoneId = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
 		public MapChangeViewModel(IObjectExtension objectExtension) :
             base(objectExtension)
         { }

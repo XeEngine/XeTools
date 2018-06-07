@@ -26,6 +26,7 @@
         <ComboBox Grid.Row="0" Grid.Column="2" 
             ItemsSource="{Binding Zones}"
             SelectedValuePath="Id"
+            SelectedValue="{Binding ZoneId, Mode=TwoWay}"
             DisplayMemberPath="Code"
             SelectedIndex="{Binding Zone, Mode=TwoWay}"/>
 
