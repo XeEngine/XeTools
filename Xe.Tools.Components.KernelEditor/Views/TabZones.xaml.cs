@@ -15,19 +15,14 @@ using System.Windows.Shapes;
 
 namespace Xe.Tools.Components.KernelEditor.Views
 {
-    /// <summary>
-    /// Interaction logic for TabMessages.xaml
-    /// </summary>
-    public partial class TabMessages : UserControl
-    {
-        public TabMessages()
-        {
-            InitializeComponent();
-        }
-
-        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-    }
+	/// <summary>
+	/// Interaction logic for TabZones.xaml
+	/// </summary>
+	public partial class TabZones : UserControl
+	{
+		public TabZones()
+		{
+			InitializeComponent();
+		}
+	}
 }

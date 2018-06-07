@@ -1,20 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xe.Tools.Wpf.Commands;
 
 namespace Xe.Tools.Components.KernelEditor.Models
 {
-	public abstract class GenericListModel<T, TModel> : BaseNotifyPropertyChanged
+	public abstract class GenericListModel<T> : BaseNotifyPropertyChanged
 	{
-		private readonly List<T> list;
-		private TModel selectedItem;
+		private T selectedItem;
 		private int selectedIndex;
+		protected readonly ObservableCollection<T> list;
 
-		public ObservableCollection<TModel> Items =>
-			new ObservableCollection<TModel>(Query());
+		public GenericListModel(IEnumerable<T> list)
+		{
+			Items = this.list = list != null ?
+				new ObservableCollection<T>(list) :
+				new ObservableCollection<T>();
 
-		public TModel SelectedItem
+			AddCommand = new RelayCommand(x =>
+			{
+				var item = OnNewItem();
+				this.list.Add(OnNewItem());
+				OnPropertyChanged(nameof(Items));
+			}, x => this.list != null);
+
+			RemoveCommand = new RelayCommand(x =>
+			{
+				var index = Items.IndexOf(SelectedItem);
+				Items.RemoveAt(index);
+				this.list.RemoveAt(index);
+			}, x => x != null && x is T);
+
+			MoveUpCommand = new RelayCommand(x =>
+			{
+				var item = Items[selectedIndex];
+				Items.RemoveAt(selectedIndex);
+				Items.Insert(--selectedIndex, item);
+				SelectedIndex = selectedIndex;
+			}, x => x != null && x is T);
+
+			MoveDownCommand = new RelayCommand(x =>
+			{
+				var item = Items[selectedIndex];
+				Items.RemoveAt(selectedIndex);
+				Items.Insert(++selectedIndex, item);
+				SelectedIndex = selectedIndex;
+			}, x => x != null && x is T);
+		}
+
+		public ObservableCollection<T> Items { get; private set; }
+
+		public T SelectedItem
 		{
 			get => selectedItem;
 			set
@@ -32,7 +69,7 @@ namespace Xe.Tools.Components.KernelEditor.Models
 			set
 			{
 				selectedIndex = value;
-				
+
 				NotifyItemSelected();
 			}
 		}
@@ -47,41 +84,6 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public RelayCommand MoveDownCommand { get; }
 
-		public GenericListModel(List<T> list)
-		{
-			this.list = list;
-
-			AddCommand = new RelayCommand(x =>
-			{
-				var item = NewItem();
-				this.list.Add((T)item);
-				OnPropertyChanged(nameof(Items));
-			}, x => this.list != null);
-
-			RemoveCommand = new RelayCommand(x =>
-			{
-				var index = Items.IndexOf(SelectedItem);
-				Items.RemoveAt(index);
-				this.list.RemoveAt(index);
-			}, x => x != null && x is TModel);
-
-			MoveUpCommand = new RelayCommand(x =>
-			{
-				var item = Items[selectedIndex];
-				Items.RemoveAt(selectedIndex);
-				Items.Insert(--selectedIndex, item);
-				SelectedIndex = selectedIndex;
-			}, x => x != null && x is TModel);
-
-			MoveDownCommand = new RelayCommand(x =>
-			{
-				var item = Items[selectedIndex];
-				Items.RemoveAt(selectedIndex);
-				Items.Insert(++selectedIndex, item);
-				SelectedIndex = selectedIndex;
-			}, x => x != null && x is TModel);
-		}
-
 		private void NotifyItemSelected()
 		{
 			OnPropertyChanged(nameof(SelectedItem));
@@ -92,15 +94,14 @@ namespace Xe.Tools.Components.KernelEditor.Models
 			OnPropertyChanged(nameof(MoveDownCommand));
 		}
 
-		private IEnumerable<TModel> Query()
+		public void Filter(Func<T, bool> selector = null)
 		{
-			return list?.Select(x => NewViewModel(x)) ?? new TModel[0];
+			Items = selector != null ?
+				new ObservableCollection<T>(list.Where(selector)) : list;
 		}
 
-		protected abstract TModel NewViewModel(T item);
+		protected abstract T OnNewItem();
 
-		protected abstract T NewItem();
-
-		protected abstract void OnSelectedItem(TModel item);
+		protected abstract void OnSelectedItem(T item);
 	}
 }

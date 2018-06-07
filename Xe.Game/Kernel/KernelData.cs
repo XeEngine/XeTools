@@ -14,6 +14,8 @@ namespace Xe.Game.Kernel
 
         public List<Enemy> Enemies { get; set; }
 
+		public List<Zone> Zones { get; set; }
+
 		public List<Bgm> Bgms { get; set; }
 
 		public List<Sfx> Sfxs { get; set; }

@@ -56,14 +56,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
+    <Compile Include="Models\BgmModel.cs" />
+    <Compile Include="Models\SfxModel.cs" />
+    <Compile Include="Models\ZonesModel.cs" />
     <Compile Include="Views\TabBgms.xaml.cs">
       <DependentUpon>TabBgms.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TabElements.xaml.cs">
       <DependentUpon>TabElements.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TabMessages.xaml.cs">
-      <DependentUpon>TabMessages.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TabPlayerGrowth.xaml.cs">
       <DependentUpon>TabPlayerGrowth.xaml</DependentUpon>
@@ -84,17 +84,16 @@
     <Compile Include="Models\GenericListModel.cs" />
     <Compile Include="ViewModels\KernelViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
-    <Compile Include="ViewModels\TabBgm\BgmViewModel.cs" />
-    <Compile Include="ViewModels\TabBgm\TabBgmViewModel.cs" />
     <Compile Include="ViewModels\TabElements\ElementViewModel.cs" />
     <Compile Include="ViewModels\TabElements\TabElementViewModel.cs" />
     <Compile Include="ViewModels\TabPlayersViewModel.cs" />
     <Compile Include="ViewModels\TabMessages.cs" />
     <Compile Include="ViewModels\TabPlayerSkillsUsage.cs" />
-    <Compile Include="ViewModels\TabSfx\SfxViewModel.cs" />
-    <Compile Include="ViewModels\TabSfx\TabSfxViewModel.cs" />
     <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
+    <Compile Include="Views\TabZones.xaml.cs">
+      <DependentUpon>TabZones.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\TabBgms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,10 +103,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TabEnemies.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TabMessages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -156,6 +151,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\TabZones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -210,8 +209,6 @@
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Generics\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
