@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
     <Compile Include="Models\BgmModel.cs" />
+    <Compile Include="Models\ElementsModel.cs" />
     <Compile Include="Models\SfxModel.cs" />
     <Compile Include="Models\ZonesModel.cs" />
     <Compile Include="Views\TabBgms.xaml.cs">
@@ -84,8 +85,6 @@
     <Compile Include="Models\GenericListModel.cs" />
     <Compile Include="ViewModels\KernelViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
-    <Compile Include="ViewModels\TabElements\ElementViewModel.cs" />
-    <Compile Include="ViewModels\TabElements\TabElementViewModel.cs" />
     <Compile Include="ViewModels\TabPlayersViewModel.cs" />
     <Compile Include="ViewModels\TabMessages.cs" />
     <Compile Include="ViewModels\TabPlayerSkillsUsage.cs" />

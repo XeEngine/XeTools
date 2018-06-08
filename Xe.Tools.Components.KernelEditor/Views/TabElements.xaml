@@ -23,17 +23,29 @@
 
             <TextBlock Margin="0 0 0 5">
                     <Run Text="ID "/>
-                    <Run Text="{Binding SelectedItem.Id, Mode=OneWay}"/>
+                    <Run Text="{Binding SelectedItem.Element.Id, Mode=OneWay}"/>
             </TextBlock>
 
             <TextBlock Margin="0 0 0 5">
-                    <Run Text="Virtual index "/>
+                    <Run Text="Index "/>
                     <Run Text="{Binding SelectedItem.VirtualIndex, Mode=OneWay, StringFormat=X02}"/>
             </TextBlock>
 
-            <TextBlock Text="Name"/>
+            <TextBlock Text="Code"/>
             <TextBox Margin="0 0 0 5"
-                Text="{Binding SelectedItem.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding SelectedItem.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="Name"/>
+            <ComboBox ItemsSource="{Binding Messages}"
+                SelectedValue="{Binding SelectedItem.Name}"/>
+            <TextBlock Margin="0 0 0 5" TextWrapping="Wrap"
+                       Text="{Binding SelectedItem.TextName}"/>
+
+            <TextBlock Text="Description"/>
+            <ComboBox ItemsSource="{Binding Messages}"
+                SelectedValue="{Binding SelectedItem.Description}"/>
+            <TextBlock Margin="0 0 0 5" TextWrapping="Wrap"
+                       Text="{Binding SelectedItem.TextDescription}"/>
 
         </StackPanel>
 

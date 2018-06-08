@@ -21,12 +21,12 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         private string WorkingFileName { get; set; }
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
-		public ZonesModel Zones { get; set; }
-		public BgmsModel Bgms { get; set; }
-		public SfxsModel Sfxs { get; set; }
+		public ElementsModel Elements { get; private set; }
+		public ZonesModel Zones { get; private set; }
+		public BgmsModel Bgms { get; private set; }
+		public SfxsModel Sfxs { get; private set; }
 
 		public AnimationGroupsViewModel AnimationGroups { get; private set; }
-		public TabElements.TabElementViewModel Elements { get; private set; }
 		public TabSkillsViewModel Skills { get; private set; }
         public TabPlayersViewModel Players { get; private set; }
 
@@ -56,7 +56,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                 Log.Error($"Error while opening {ProjectFile.Path}: {e.Message}");
             }
 
-			Elements = new TabElements.TabElementViewModel(Kernel);
+			Elements = new ElementsModel(Kernel.Elements, MessageService);
 			Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
             Players = new TabPlayersViewModel(Kernel.Players, Kernel.Skills, MessageService, ProjectService.AnimationService);
 			Zones = new ZonesModel(Kernel?.Zones?.Select(x => new ZoneModel(x, MessageService)), MessageService);
