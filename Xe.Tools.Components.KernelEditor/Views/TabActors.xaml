@@ -5,120 +5,39 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
              xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor.Views"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="432">
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450">
     <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
         <DockPanel>
-            <DockPanel DockPanel.Dock="Top" Margin="0 0 0 5">
+            <DockPanel DockPanel.Dock="Top">
                 <Button x:Name="ButtonRemove" DockPanel.Dock="Right" Command="{Binding RemoveCommand}">
                     <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
                 </Button>
                 <Button x:Name="ButtonAdd" DockPanel.Dock="Right" Command="{Binding AddCommand}">
                     <Image Source="{StaticResource Add_16x}" Width="16"/>
                 </Button>
-                <Button x:Name="ButtonEdit" DockPanel.Dock="Right" Click="ButtonEdit_Click">
-                    <Image Source="{StaticResource EditTitleString_16x}" Width="16"/>
-                </Button>
                 <ComboBox ItemsSource="{Binding Items}" DisplayMemberPath="Code"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
             </DockPanel>
-
-            <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedItem.TextName}" Height="16"/>
-            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Height="32"
-                       TextTrimming="CharacterEllipsis" Text="{Binding SelectedItem.TextDescription}"/>
-            <Rectangle DockPanel.Dock="Top" Height="1" Fill="Gray"/>
-
-            <Grid Margin="0 5 0 5" IsEnabled="{Binding IsItemSelected}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                
-                <Grid Grid.Column="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="15"/>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="Character animation"/>
-                    <ComboBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding Animations}"
-                              SelectedItem="{Binding SelectedItem.Animation, Mode=TwoWay}"/>
-
-                    <CheckBox Grid.Column="0" Grid.Row="3" Content="Enabled"
-                              IsChecked="{Binding SelectedItem.Enabled, Mode=TwoWay}"/>
-                    <CheckBox Grid.Column="2" Grid.Row="3" Content="Locked"
-                              IsChecked="{Binding SelectedItem.Locked, Mode=TwoWay}"/>
-
-                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Level"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="6" MinimumValue="1" MaximumValue="255"
-                                      Value="{Binding SelectedItem.Level, Mode=TwoWay}"/>
-                    <TextBlock Grid.Column="2" Grid.Row="5" Text="Experience"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="6" MaximumValue="16777216"
-                                      Value="{Binding SelectedItem.Experience, Mode=TwoWay}"/>
-
-                    <TextBlock Grid.Column="0" Grid.Row="8" Text="Maximum health"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="9" MinimumValue="0" MaximumValue="32767"
-                                      Value="{Binding SelectedItem.Health, Mode=TwoWay}"/>
-                    <TextBlock Grid.Column="2" Grid.Row="8" Text="Current health"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="9" MaximumValue="32767"
-                                      Value="{Binding SelectedItem.HealthCurrent, Mode=TwoWay}"/>
-
-                    <TextBlock Grid.Column="0" Grid.Row="11" Text="Maximum mana"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="12" MinimumValue="1" MaximumValue="32767"
-                                      Value="{Binding SelectedItem.Mana, Mode=TwoWay}"/>
-                    <TextBlock Grid.Column="2" Grid.Row="11" Text="Current mana"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="12" MaximumValue="32767"
-                                      Value="{Binding SelectedItem.ManaCurrent, Mode=TwoWay}"/>
-
-                    <TextBlock Grid.Column="0" Grid.Row="14" Text="Attack"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="15" MinimumValue="1" MaximumValue="255"
-                                      Value="{Binding SelectedItem.Attack, Mode=TwoWay}"/>
-                    <TextBlock Grid.Column="2" Grid.Row="14" Text="Defense"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="15" MinimumValue="1" MaximumValue="255"
-                                      Value="{Binding SelectedItem.Defense, Mode=TwoWay}"/>
-
-                    <TextBlock Grid.Column="0" Grid.Row="17" Text="Special attack"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="18" MinimumValue="1" MaximumValue="255"
-                                      Value="{Binding SelectedItem.AttackSpecial, Mode=TwoWay}"/>
-                    <TextBlock Grid.Column="2" Grid.Row="17" Text="Special defense"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="18" MinimumValue="1" MaximumValue="255"
-                                      Value="{Binding SelectedItem.DefenseSpecial, Mode=TwoWay}"/>
-                </Grid>
-
+            
+            <DockPanel Margin="0 5 0 5" IsEnabled="{Binding IsItemSelected}">
                 <TabControl Grid.Column="2">
-                    <TabItem Header="Growth">
+                    <TabItem Header="Common">
+                        <local:TabActorCommon/>
+                    </TabItem>
+                    <TabItem Header="Stats">
+                        <local:TabActorStats/>
+                    </TabItem>
+                    <TabItem Header="Growth" IsEnabled="False">
                         <local:TabPlayerGrowth/>
                     </TabItem>
-                    <TabItem Header="Skills">
-                        <local:TabSkillsUsage DataContext="{Binding PlayerSkillUsage}"/>
+                    <TabItem Header="Skills" IsEnabled="False">
+                        <local:TabSkillsUsage/>
                     </TabItem>
-                    <TabItem Header="Abilities">
+                    <TabItem Header="Abilities" IsEnabled="False">
                         <TextBlock Text="Not implemented yet."/>
                     </TabItem>
                 </TabControl>
-            </Grid>
+            </DockPanel>
         </DockPanel>
     </ScrollViewer>
 </UserControl>

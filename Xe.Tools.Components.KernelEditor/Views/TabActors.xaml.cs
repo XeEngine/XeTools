@@ -37,15 +37,5 @@ namespace Xe.Tools.Components.KernelEditor.Views
         {
             ViewModel.Players.Remove(ViewModel.SelectedPlayer);
         }
-
-        private void ButtonEdit_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SkillsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
     }
 }

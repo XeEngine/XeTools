@@ -61,6 +61,12 @@
     <Compile Include="Models\PlayersModel.cs" />
     <Compile Include="Models\SfxModel.cs" />
     <Compile Include="Models\ZonesModel.cs" />
+    <Compile Include="Views\TabActorCommon.xaml.cs">
+      <DependentUpon>TabActorCommon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabActorStats.xaml.cs">
+      <DependentUpon>TabActorStats.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TabBgms.xaml.cs">
       <DependentUpon>TabBgms.xaml</DependentUpon>
     </Compile>
@@ -94,6 +100,14 @@
     <Compile Include="Views\TabZones.xaml.cs">
       <DependentUpon>TabZones.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\TabActorCommon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabActorStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TabBgms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
