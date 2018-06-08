@@ -12,15 +12,15 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
     public class TabPlayersViewModel : BaseNotifyPropertyChanged
     {
-        private List<Player> _playersList;
+        private List<Actor> _playersList;
 
-        private Player _player;
+        private Actor _player;
 
         public MessageService MessageService { get; private set; }
 
         public AnimationService AnimationService { get; private set; }
 
-        public ObservableCollection<Player> Players { get; private set; }
+        public ObservableCollection<Actor> Players { get; private set; }
 
         public IEnumerable<Skill> Skills { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public TabPlayerSkillsUsage PlayerSkillUsage { get; private set; }
 
-        public Player SelectedPlayer
+        public Actor SelectedPlayer
         {
             get => _player;
             set
@@ -55,8 +55,8 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public string Id
         {
-            get => SelectedPlayer.Id;
-            set => SelectedPlayer.Id = value;
+            get => SelectedPlayer.Code;
+            set => SelectedPlayer.Code = value;
         }
 
         public string Animation
@@ -118,7 +118,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
         public ObservableCollection<SkillUsageViewModel> SkillsUsage { get; private set; }
 
-        public TabPlayersViewModel(List<Player> players,
+        public TabPlayersViewModel(List<Actor> players,
             IEnumerable<Skill> skills,
             MessageService messageService,
             AnimationService animationService)
@@ -127,7 +127,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
             AnimationService = animationService;
 
             _playersList = players;
-            Players = new ObservableCollection<Player>(players);
+            Players = new ObservableCollection<Actor>(players);
             Skills = skills;
             PlayerSkillUsage = new TabPlayerSkillsUsage()
             {

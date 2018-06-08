@@ -58,6 +58,7 @@
     <Compile Include="Component.cs" />
     <Compile Include="Models\BgmModel.cs" />
     <Compile Include="Models\ElementsModel.cs" />
+    <Compile Include="Models\PlayersModel.cs" />
     <Compile Include="Models\SfxModel.cs" />
     <Compile Include="Models\ZonesModel.cs" />
     <Compile Include="Views\TabBgms.xaml.cs">
@@ -101,15 +102,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TabEnemies.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\TabPlayerGrowth.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TabPlayers.xaml">
+    <Page Include="Views\TabActors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,11 +134,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\TabEnemies.xaml.cs">
-      <DependentUpon>TabEnemies.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TabPlayers.xaml.cs">
-      <DependentUpon>TabPlayers.xaml</DependentUpon>
+    <Compile Include="Views\TabActors.xaml.cs">
+      <DependentUpon>TabActors.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TabSkills.xaml.cs">
       <DependentUpon>TabSkills.xaml</DependentUpon>

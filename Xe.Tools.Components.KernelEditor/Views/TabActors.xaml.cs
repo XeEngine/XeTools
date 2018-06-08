@@ -19,21 +19,18 @@ namespace Xe.Tools.Components.KernelEditor.Views
     /// <summary>
     /// Interaction logic for TabPlayers.xaml
     /// </summary>
-    public partial class TabPlayers : UserControl
+    public partial class TabActors : UserControl
     {
         public TabPlayersViewModel ViewModel => DataContext as TabPlayersViewModel;
 
-        public TabPlayers()
+        public TabActors()
         {
             InitializeComponent();
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Players.Add(new Game.Kernel.Player()
-            {
-                Id = "<new player>"
-            });
+            ViewModel.Players.Add(new Game.Kernel.Actor());
         }
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)

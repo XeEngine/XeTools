@@ -53,9 +53,9 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string DisplayName => $"{Index.ToString("X02")} {Code}";
 
-		public string TextName => messageService.GetMessage(Name)?.Text;
+		public string TextName => messageService[Name];
 
-		public string TextDescription => messageService.GetMessage(Description)?.Text;
+		public string TextDescription => messageService[Description];
 
 		public string Code
 		{

@@ -28,7 +28,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
 		public AnimationGroupsViewModel AnimationGroups { get; private set; }
 		public TabSkillsViewModel Skills { get; private set; }
-        public TabPlayersViewModel Players { get; private set; }
+        public PlayersModel Players { get; private set; }
 
 		public KernelViewModel(IProject project, IProjectFile file)
         {
@@ -45,8 +45,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                     Kernel = JsonConvert.DeserializeObject<KernelData>(reader.ReadToEnd());
                     if (Kernel.Skills == null) Kernel.Skills = new List<Skill>();
                     if (Kernel.Abilities == null) Kernel.Abilities = new List<Ability>();
-                    if (Kernel.Players == null) Kernel.Players = new List<Player>();
-                    if (Kernel.Enemies == null) Kernel.Enemies = new List<Enemy>();
+                    if (Kernel.Players == null) Kernel.Players = new List<Actor>();
 
                     Log.Message($"Kernel file {WorkingFileName} opened.");
                 }
@@ -58,7 +57,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 
 			Elements = new ElementsModel(Kernel.Elements, MessageService);
 			Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
-            Players = new TabPlayersViewModel(Kernel.Players, Kernel.Skills, MessageService, ProjectService.AnimationService);
+            Players = new PlayersModel(Kernel.Players, MessageService, ProjectService.AnimationService);
 			Zones = new ZonesModel(Kernel?.Zones?.Select(x => new ZoneModel(x, MessageService)), MessageService);
 			Bgms = new BgmsModel(Kernel?.Bgms?.Select(x => new BgmModel(x)));
 			Sfxs = new SfxsModel(Kernel?.Sfxs?.Select(x => new SfxModel(x)));
@@ -69,10 +68,11 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 			Kernel.Zones = Zones.Items.Select(x => x.Zone).ToList();
 			Kernel.Bgms = Bgms.Items.Select(x => x.Bgm).ToList();
 			Kernel.Sfxs = Sfxs.Items.Select(x => x.Sfx).ToList();
+			Kernel.Elements = Elements.Items.Select(x => x.Element).ToList();
 
             MessageService.SaveChanges();
             Skills.SaveChanges();
-            Players.SaveChanges();
+
             try
             {
                 using (var writer = File.CreateText(WorkingFileName))

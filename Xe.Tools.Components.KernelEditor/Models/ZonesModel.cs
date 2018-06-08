@@ -49,9 +49,9 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string DisplayName => !string.IsNullOrEmpty(Code) ? Code : "<no name>";
 
-		public string TextTitle => messageService.GetMessage(Title)?.Text;
+		public string TextTitle => messageService[Title];
 
-		public string TextDescription => messageService.GetMessage(Description)?.Text;
+		public string TextDescription => messageService[Description];
 
 		public string Code
 		{

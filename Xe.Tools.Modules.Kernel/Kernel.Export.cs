@@ -198,13 +198,13 @@ namespace Xe.Tools.Modules.Kernel
             w.Write((byte)skill.Damage);                    // 0x14
             w.Write((ushort)0);                             // 0x16
         }
-        private void ExportPlayer(BinaryWriter w, Player player)
+        private void ExportPlayer(BinaryWriter w, Actor player)
         {
             byte properties = (byte)((player.Enabled ? 1 : 0) |
                 (player.Locked ? 1 : 0));
 
-            w.Write(player.Name.ToInt());                   // 0x00
-            w.Write(player.Description.ToInt());            // 0x04
+            w.Write(player.Name.GetXeHash());               // 0x00
+            w.Write(player.Description.GetXeHash());        // 0x04
             w.Write((byte)0);                               // 0x08     TODO player.Id
             w.Write(properties);                            // 0x09
             w.Write((byte)player.Level);                    // 0x0A
