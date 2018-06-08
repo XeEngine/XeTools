@@ -19,17 +19,10 @@
             </MenuItem>
         </Menu>
         <TabControl>
-            <TabItem Header="Elements">
+            <TabItem Header="Element">
                 <Views:TabElements x:Name="TabElements" DataContext="{Binding Elements}"/>
             </TabItem>
-            <TabItem Header="Skills">
-                <Views:TabSkills x:Name="TabSkills" DataContext="{Binding Skills}"/>
-            </TabItem>
-            <TabItem Header="Players">
-                <Views:TabPlayers DataContext="{Binding Players}"/>
-            </TabItem>
-            <TabItem Header="Enemies">
-                <Views:TabEnemies/>
+            <TabItem Header="Status">
             </TabItem>
             <TabItem Header="Zones">
                 <Views:TabZones x:Name="TabZones" DataContext="{Binding Zones}"/>
@@ -39,6 +32,16 @@
             </TabItem>
             <TabItem Header="SFXs">
                 <Views:TabSfxs x:Name="TabSfxs" DataContext="{Binding Sfxs}"/>
+            </TabItem>
+            <TabItem Header="Inventory" IsEnabled="false">
+            </TabItem>
+            <TabItem Header="Ability" IsEnabled="false">
+            </TabItem>
+            <TabItem Header="Skill">
+                <Views:TabSkills x:Name="TabSkills" DataContext="{Binding Skills}"/>
+            </TabItem>
+            <TabItem Header="Actor">
+                <Views:TabActors DataContext="{Binding Players}"/>
             </TabItem>
         </TabControl>
     </DockPanel>

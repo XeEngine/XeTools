@@ -10,9 +10,7 @@ namespace Xe.Game.Kernel
 
         public List<Ability> Abilities { get; set; }
 
-        public List<Player> Players { get; set; }
-
-        public List<Enemy> Enemies { get; set; }
+        public List<Actor> Players { get; set; }
 
 		public List<Zone> Zones { get; set; }
 

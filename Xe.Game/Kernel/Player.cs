@@ -3,61 +3,42 @@ using System.Collections.Generic;
 
 namespace Xe.Game.Kernel
 {
-    public class Player : StatisticsBase
+    public class Actor
     {
-        /// <summary>
-        /// Player id
-        /// </summary>
-        public string Id { get; set; }
+		public Guid Id { get; set; } = Guid.NewGuid();
 
-        /// <summary>
-        /// Player's animation file
-        /// </summary>
-        public string Animation { get; set; }
+		public string Code { get; set; }
 
-        /// <summary>
-        /// Message id for player's name
-        /// </summary>
-        public Guid Name { get; set; }
+        public string Name { get; set; }
 
-        /// <summary>
-        /// Message id for player's description
-        /// </summary>
-        public Guid Description { get; set; }
+        public string Description { get; set; }
 
-        /// <summary>
-        /// If the player is enabled
-        /// </summary>
-        public bool Enabled { get; set; }
+		public string Animation { get; set; }
 
-        /// <summary>
-        /// If the player is locked
-        /// </summary>
+		public bool Enabled { get; set; }
+
         public bool Locked { get; set; }
 
-        /// <summary>
-        /// Character's level
-        /// </summary>
         public int Level { get; set; }
 
-        /// <summary>
-        /// Character's experience
-        /// </summary>
         public int Experience { get; set; }
 
-        /// <summary>
-        /// Current health
-        /// </summary>
-        public int HealthCurrent { get; set; }
-        
-        /// <summary>
-        /// Current mana
-        /// </summary>
-        public int ManaCurrent { get; set; }
+		public int Health { get; set; }
 
-        /// <summary>
-        /// List of learned skills
-        /// </summary>
-        public List<SkillUsage> Skills { get; set; }
+		public int Mana { get; set; }
+
+		public int Attack { get; set; }
+
+		public int Defense { get; set; }
+
+		public int AttackSpecial { get; set; }
+
+		public int DefenseSpecial { get; set; }
+
+		public int HealthCurrent { get; set; }
+
+		public int ManaCurrent { get; set; }
+
+		public List<SkillUsage> Skills { get; set; }
     }
 }

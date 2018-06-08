@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Xe.Tools.Components.KernelEditor.Views.TabPlayers"
+﻿<UserControl x:Class="Xe.Tools.Components.KernelEditor.Views.TabActors"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,25 +9,25 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="0 0 0 5">
-                <Button x:Name="ButtonRemove" DockPanel.Dock="Right"  Click="ButtonRemove_Click">
+                <Button x:Name="ButtonRemove" DockPanel.Dock="Right" Command="{Binding RemoveCommand}">
                     <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
                 </Button>
-                <Button x:Name="ButtonAdd" DockPanel.Dock="Right"  Click="ButtonAdd_Click">
+                <Button x:Name="ButtonAdd" DockPanel.Dock="Right" Command="{Binding AddCommand}">
                     <Image Source="{StaticResource Add_16x}" Width="16"/>
                 </Button>
-                <Button x:Name="ButtonEdit" DockPanel.Dock="Right"  Click="ButtonEdit_Click">
+                <Button x:Name="ButtonEdit" DockPanel.Dock="Right" Click="ButtonEdit_Click">
                     <Image Source="{StaticResource EditTitleString_16x}" Width="16"/>
                 </Button>
-                <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Id"
-                          SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}"/>
+                <ComboBox ItemsSource="{Binding Items}" DisplayMemberPath="Code"
+                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
             </DockPanel>
 
-            <TextBlock DockPanel.Dock="Top" Text="{Binding Name}" Height="16"/>
-            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis" Text="{Binding Description}" Height="32"/>
+            <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedItem.TextName}" Height="16"/>
+            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Height="32"
+                       TextTrimming="CharacterEllipsis" Text="{Binding SelectedItem.TextDescription}"/>
             <Rectangle DockPanel.Dock="Top" Height="1" Fill="Gray"/>
 
-            <Grid Margin="0 5 0 5" IsEnabled="{Binding IsSelected}">
+            <Grid Margin="0 5 0 5" IsEnabled="{Binding IsItemSelected}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="10"/>
@@ -63,36 +63,48 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="Character animation"/>
-                    <ComboBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding AnimationFileNames}"
-                              SelectedItem="{Binding Animation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <ComboBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding Animations}"
+                              SelectedItem="{Binding SelectedItem.Animation, Mode=TwoWay}"/>
 
-                    <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding Enabled, Mode=TwoWay}" Content="Enabled"/>
-                    <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding Locked, Mode=TwoWay}" Content="Locked"/>
+                    <CheckBox Grid.Column="0" Grid.Row="3" Content="Enabled"
+                              IsChecked="{Binding SelectedItem.Enabled, Mode=TwoWay}"/>
+                    <CheckBox Grid.Column="2" Grid.Row="3" Content="Locked"
+                              IsChecked="{Binding SelectedItem.Locked, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="5" Text="Level"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="6" Value="{Binding Level, Mode=TwoWay}" MinimumValue="1" MaximumValue="255"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="6" MinimumValue="1" MaximumValue="255"
+                                      Value="{Binding SelectedItem.Level, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="2" Grid.Row="5" Text="Experience"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="6" Value="{Binding Experience, Mode=TwoWay}" MaximumValue="16777216"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="6" MaximumValue="16777216"
+                                      Value="{Binding SelectedItem.Experience, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="8" Text="Maximum health"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="9" Value="{Binding Health}" MinimumValue="1" MaximumValue="32767"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="9" MinimumValue="0" MaximumValue="32767"
+                                      Value="{Binding SelectedItem.Health, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="2" Grid.Row="8" Text="Current health"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="9" Value="{Binding HealthCurrent, Mode=TwoWay}" MaximumValue="32767"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="9" MaximumValue="32767"
+                                      Value="{Binding SelectedItem.HealthCurrent, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="11" Text="Maximum mana"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="12" Value="{Binding Mana}" MinimumValue="1" MaximumValue="32767"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="12" MinimumValue="1" MaximumValue="32767"
+                                      Value="{Binding SelectedItem.Mana, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="2" Grid.Row="11" Text="Current mana"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="12" Value="{Binding ManaCurrent, Mode=TwoWay}" MaximumValue="32767"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="12" MaximumValue="32767"
+                                      Value="{Binding SelectedItem.ManaCurrent, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="14" Text="Attack"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="15" Value="{Binding Attack}" MinimumValue="1" MaximumValue="255"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="15" MinimumValue="1" MaximumValue="255"
+                                      Value="{Binding SelectedItem.Attack, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="2" Grid.Row="14" Text="Defense"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="15" Value="{Binding Defense}" MaximumValue="255"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="15" MinimumValue="1" MaximumValue="255"
+                                      Value="{Binding SelectedItem.Defense, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="17" Text="Special attack"/>
-                    <xc:NumericUpDown Grid.Column="0" Grid.Row="18" Value="{Binding AttackSpecial}" MinimumValue="1" MaximumValue="255"/>
+                    <xc:NumericUpDown Grid.Column="0" Grid.Row="18" MinimumValue="1" MaximumValue="255"
+                                      Value="{Binding SelectedItem.AttackSpecial, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="2" Grid.Row="17" Text="Special defense"/>
-                    <xc:NumericUpDown Grid.Column="2" Grid.Row="18" Value="{Binding DefenseSpecial}" MaximumValue="255"/>
+                    <xc:NumericUpDown Grid.Column="2" Grid.Row="18" MinimumValue="1" MaximumValue="255"
+                                      Value="{Binding SelectedItem.DefenseSpecial, Mode=TwoWay}"/>
                 </Grid>
 
                 <TabControl Grid.Column="2">
