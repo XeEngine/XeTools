@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor"
     mc:Ignorable="d"
-    Title="Kernel editor" Height="350" Width="454"
+    Title="Kernel editor" Height="400" Width="454"
     AskExitConfirmation="True">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
