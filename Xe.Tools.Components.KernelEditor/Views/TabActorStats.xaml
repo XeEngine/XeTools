@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
              xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor.Views"
-             mc:Ignorable="d" d:DesignWidth="300" Height="330">
+             mc:Ignorable="d" d:DesignWidth="300" Height="250">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -13,12 +13,6 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="16"/>
-            <RowDefinition Height="22"/>
-            <RowDefinition Height="5"/>
-            <RowDefinition Height="16"/>
-            <RowDefinition Height="22"/>
-            <RowDefinition Height="5"/>
             <RowDefinition Height="16"/>
             <RowDefinition Height="22"/>
             <RowDefinition Height="5"/>
@@ -68,20 +62,6 @@
                                       Value="{Binding SelectedItem.AttackSpecial, Mode=TwoWay}"/>
         <TextBlock Grid.Column="2" Grid.Row="12"  Text="Special defense"/>
         <xc:NumericUpDown Grid.Column="2" Grid.Row="13"  MinimumValue="0" MaximumValue="255"
-                                      Value="{Binding SelectedItem.DefenseSpecial, Mode=TwoWay}"/>
-
-        <TextBlock Grid.Column="0" Grid.Row="15"  Text="Drop HP"/>
-        <xc:NumericUpDown Grid.Column="0" Grid.Row="16"  MinimumValue="0" MaximumValue="255"
-                                      Value="{Binding SelectedItem.AttackSpecial, Mode=TwoWay}"/>
-        <TextBlock Grid.Column="2" Grid.Row="15"  Text="Drop MP"/>
-        <xc:NumericUpDown Grid.Column="2" Grid.Row="16"  MinimumValue="0" MaximumValue="255"
-                                      Value="{Binding SelectedItem.DefenseSpecial, Mode=TwoWay}"/>
-
-        <TextBlock Grid.Column="0" Grid.Row="18"  Text="Drop EXP"/>
-        <xc:NumericUpDown Grid.Column="0" Grid.Row="19"  MinimumValue="0" MaximumValue="255"
-                                      Value="{Binding SelectedItem.AttackSpecial, Mode=TwoWay}"/>
-        <TextBlock Grid.Column="2" Grid.Row="18"  Text="Drop money"/>
-        <xc:NumericUpDown Grid.Column="2" Grid.Row="19"  MinimumValue="0" MaximumValue="255"
                                       Value="{Binding SelectedItem.DefenseSpecial, Mode=TwoWay}"/>
     </Grid>
 </UserControl>

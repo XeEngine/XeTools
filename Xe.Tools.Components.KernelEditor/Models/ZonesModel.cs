@@ -41,11 +41,11 @@ namespace Xe.Tools.Components.KernelEditor.Models
 		public ZoneModel(Zone zone,
 			MessageService messageService)
 		{
-			Zone = zone;
+			Item = zone;
 			this.messageService = messageService;
 		}
 
-		public Zone Zone { get; }
+		public Zone Item { get; }
 
 		public string DisplayName => !string.IsNullOrEmpty(Code) ? Code : "<no name>";
 
@@ -55,10 +55,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Code
 		{
-			get => Zone.Code;
+			get => Item.Code;
 			set
 			{
-				Zone.Code = value;
+				Item.Code = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(DisplayName));
 			}
@@ -66,10 +66,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Title
 		{
-			get => Zone.Title;
+			get => Item.Title;
 			set
 			{
-				Zone.Title = value;
+				Item.Title = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(TextTitle));
 			}
@@ -77,10 +77,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Description
 		{
-			get => Zone.Description;
+			get => Item.Description;
 			set
 			{
-				Zone.Description = value;
+				Item.Description = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(TextDescription));
 			}

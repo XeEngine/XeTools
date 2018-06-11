@@ -21,14 +21,15 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         private string WorkingFileName { get; set; }
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
-		public ElementsModel Elements { get; private set; }
 		public ZonesModel Zones { get; private set; }
 		public BgmsModel Bgms { get; private set; }
 		public SfxsModel Sfxs { get; private set; }
+		public ElementsModel Elements { get; private set; }
+		public StatusesModel Statuses { get; set; }
+		public InventoryEntriesModel Inventory { get; set; }
+		public SkillsModel Skills { get; private set; }
 
-		public AnimationGroupsViewModel AnimationGroups { get; private set; }
-		public TabSkillsViewModel Skills { get; private set; }
-        public PlayersModel Players { get; private set; }
+        public PlayersModel Actors { get; private set; }
 
 		public KernelViewModel(IProject project, IProjectFile file)
         {
@@ -45,7 +46,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                     Kernel = JsonConvert.DeserializeObject<KernelData>(reader.ReadToEnd());
                     if (Kernel.Skills == null) Kernel.Skills = new List<Skill>();
                     if (Kernel.Abilities == null) Kernel.Abilities = new List<Ability>();
-                    if (Kernel.Players == null) Kernel.Players = new List<Actor>();
+                    if (Kernel.Actors == null) Kernel.Actors = new List<Actor>();
 
                     Log.Message($"Kernel file {WorkingFileName} opened.");
                 }
@@ -55,23 +56,27 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                 Log.Error($"Error while opening {ProjectFile.Path}: {e.Message}");
             }
 
-			Elements = new ElementsModel(Kernel.Elements, MessageService);
-			Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
-            Players = new PlayersModel(Kernel.Players, MessageService, ProjectService.AnimationService);
 			Zones = new ZonesModel(Kernel?.Zones?.Select(x => new ZoneModel(x, MessageService)), MessageService);
 			Bgms = new BgmsModel(Kernel?.Bgms?.Select(x => new BgmModel(x)));
 			Sfxs = new SfxsModel(Kernel?.Sfxs?.Select(x => new SfxModel(x)));
+			Elements = new ElementsModel(Kernel.Elements, MessageService);
+			Statuses = new StatusesModel(Kernel.Status, MessageService);
+			Inventory = new InventoryEntriesModel(Kernel.InventoryItems, Kernel, MessageService);
+			Skills = new SkillsModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
+            Actors = new PlayersModel(Kernel.Actors, MessageService, ProjectService.AnimationService);
 		}
 
         public void SaveChanges()
         {
-			Kernel.Zones = Zones.Items.Select(x => x.Zone).ToList();
-			Kernel.Bgms = Bgms.Items.Select(x => x.Bgm).ToList();
-			Kernel.Sfxs = Sfxs.Items.Select(x => x.Sfx).ToList();
-			Kernel.Elements = Elements.Items.Select(x => x.Element).ToList();
+			Kernel.Zones = Zones.Items.Select(x => x.Item).ToList();
+			Kernel.Bgms = Bgms.Items.Select(x => x.Item).ToList();
+			Kernel.Sfxs = Sfxs.Items.Select(x => x.Item).ToList();
+			Kernel.Elements = Elements.Items.Select(x => x.Item).ToList();
+			Kernel.InventoryItems = Inventory.Items.Select(x => x.Item).ToList();
+			Kernel.Skills = Skills.Items.Select(x => x.Item).ToList();
+			Kernel.Actors = Actors.Items.Select(x => x.Item).ToList();
 
-            MessageService.SaveChanges();
-            Skills.SaveChanges();
+			MessageService.SaveChanges();
 
             try
             {

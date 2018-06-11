@@ -27,19 +27,19 @@ namespace Xe.Tools.Components.KernelEditor.Models
 	{
 		public BgmModel(Bgm bgm)
 		{
-			Bgm = bgm;
+			Item = bgm;
 		}
 
-		public Bgm Bgm { get; }
+		public Bgm Item { get; }
 
 		public string DisplayName => !string.IsNullOrEmpty(Name) ? Name : "<no name>";
 
 		public string Name
 		{
-			get => Bgm.Name;
+			get => Item.Name;
 			set
 			{
-				Bgm.Name = value;
+				Item.Name = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(DisplayName));
 			}
@@ -47,20 +47,20 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string FileName
 		{
-			get => Bgm.FileName;
+			get => Item.FileName;
 			set
 			{
-				Bgm.FileName = value;
+				Item.FileName = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Loop
 		{
-			get => Bgm.Loop;
+			get => Item.Loop;
 			set
 			{
-				Bgm.Loop = value;
+				Item.Loop = value;
 				OnPropertyChanged();
 			}
 		}

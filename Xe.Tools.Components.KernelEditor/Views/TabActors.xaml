@@ -27,6 +27,9 @@
                     <TabItem Header="Stats">
                         <local:TabActorStats/>
                     </TabItem>
+                    <TabItem Header="Drops">
+                        <local:TabActorDrop/>
+                    </TabItem>
                     <TabItem Header="Growth" IsEnabled="False">
                         <local:TabPlayerGrowth/>
                     </TabItem>
@@ -34,7 +37,8 @@
                         <local:TabSkillsUsage/>
                     </TabItem>
                     <TabItem Header="Abilities" IsEnabled="False">
-                        <TextBlock Text="Not implemented yet."/>
+                    </TabItem>
+                    <TabItem Header="Equip" IsEnabled="False">
                     </TabItem>
                 </TabControl>
             </DockPanel>

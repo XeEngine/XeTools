@@ -40,11 +40,11 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public PlayerModel(Actor player, MessageService messageService)
 		{
-			Player = player;
+			Item = player;
 			this.messageService = messageService;
 		}
 
-		public Actor Player { get; }
+		public Actor Item { get; }
 
 		public string DisplayName => !string.IsNullOrEmpty(Code) ? Code : "<no name>";
 
@@ -54,10 +54,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Code
 		{
-			get => Player?.Code;
+			get => Item?.Code;
 			set
 			{
-				Player.Code = value;
+				Item.Code = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(DisplayName));
 			}
@@ -65,10 +65,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Name
 		{
-			get => Player?.Name;
+			get => Item?.Name;
 			set
 			{
-				Player.Name = value;
+				Item.Name = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(TextName));
 			}
@@ -76,10 +76,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Description
 		{
-			get => Player?.Description;
+			get => Item?.Description;
 			set
 			{
-				Player.Description = value;
+				Item.Description = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(TextDescription));
 			}
@@ -87,130 +87,170 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Animation
 		{
-			get => Player?.Animation;
+			get => Item?.Animation;
 			set
 			{
-				Player.Animation = value;
+				Item.Animation = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public bool Enabled
 		{
-			get => Player?.Enabled ?? default(bool);
+			get => Item?.Enabled ?? default(bool);
 			set
 			{
-				Player.Enabled = value;
+				Item.Enabled = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public bool Locked
 		{
-			get => Player?.Locked ?? default(bool);
+			get => Item?.Locked ?? default(bool);
 			set
 			{
-				Player.Locked = value;
+				Item.Locked = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Level
 		{
-			get => Player?.Level ?? default(int);
+			get => Item?.Level ?? default(int);
 			set
 			{
-				Player.Level = value;
+				Item.Level = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Experience
 		{
-			get => Player?.Experience ?? default(int);
+			get => Item?.Experience ?? default(int);
 			set
 			{
-				Player.Experience = value;
+				Item.Experience = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Health
 		{
-			get => Player?.Health ?? default(int);
+			get => Item?.Health ?? default(int);
 			set
 			{
-				Player.Health = value;
+				Item.Health = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Mana
 		{
-			get => Player?.Mana ?? default(int);
+			get => Item?.Mana ?? default(int);
 			set
 			{
-				Player.Mana = value;
+				Item.Mana = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int HealthCurrent
 		{
-			get => Player?.HealthCurrent ?? default(int);
+			get => Item?.HealthCurrent ?? default(int);
 			set
 			{
-				Player.HealthCurrent = value;
+				Item.HealthCurrent = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int ManaCurrent
 		{
-			get => Player?.ManaCurrent ?? default(int);
+			get => Item?.ManaCurrent ?? default(int);
 			set
 			{
-				Player.ManaCurrent = value;
+				Item.ManaCurrent = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Attack
 		{
-			get => Player?.Attack ?? default(int);
+			get => Item?.Attack ?? default(int);
 			set
 			{
-				Player.Attack = value;
+				Item.Attack = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int Defense
 		{
-			get => Player?.Defense ?? default(int);
+			get => Item?.Defense ?? default(int);
 			set
 			{
-				Player.Defense = value;
+				Item.Defense = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int AttackSpecial
 		{
-			get => Player?.AttackSpecial ?? default(int);
+			get => Item?.AttackSpecial ?? default(int);
 			set
 			{
-				Player.AttackSpecial = value;
+				Item.AttackSpecial = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public int DefenseSpecial
 		{
-			get => Player?.DefenseSpecial ?? default(int);
+			get => Item?.DefenseSpecial ?? default(int);
 			set
 			{
-				Player.DefenseSpecial = value;
+				Item.DefenseSpecial = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int DropHp
+		{
+			get => Item?.Drop?.Hp ?? default(int);
+			set
+			{
+				Item.Drop.Hp = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int DropMp
+		{
+			get => Item?.Drop?.Mp ?? default(int);
+			set
+			{
+				Item.Drop.Mp = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int DropExp
+		{
+			get => Item?.Drop?.Exp ?? default(int);
+			set
+			{
+				Item.Drop.Exp = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int DropMoney
+		{
+			get => Item?.Drop?.Money ?? default(int);
+			set
+			{
+				Item.Drop.Money = value;
 				OnPropertyChanged();
 			}
 		}

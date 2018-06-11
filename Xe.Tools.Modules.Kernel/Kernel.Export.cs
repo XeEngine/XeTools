@@ -138,7 +138,7 @@ namespace Xe.Tools.Modules.Kernel
                 _skills = GetHashList(KernelData.Skills, x =>
                 {
                     ExportSkill(w, x);
-                    return x.Name.GetXeHash();
+                    return x.Code.GetXeHash();
                 });
             }
             if (header.Content.HasFlag(Content.Abilities))
@@ -154,10 +154,10 @@ namespace Xe.Tools.Modules.Kernel
                 entries.Add(new Entry()
                 {
                     Offset = (int)w.BaseStream.Position,
-                    Count = (short)KernelData.Players.Count,
+                    Count = (short)KernelData.Actors.Count,
                     Stride = SIZEOF_PLAYER
                 });
-                foreach (var player in KernelData.Players)
+                foreach (var player in KernelData.Actors)
                 {
                     ExportPlayer(w, player);
                 }
@@ -188,9 +188,9 @@ namespace Xe.Tools.Modules.Kernel
         }
         private void ExportSkill(BinaryWriter w, Skill skill)
         {
-            w.Write(skill.Name.GetXeHash());                // 0x00
-            w.Write(skill.TagName.GetXeHash());             // 0x04
-            w.Write(skill.TagDescription.GetXeHash());      // 0x08
+            w.Write(skill.Code.GetXeHash());                // 0x00
+            w.Write(skill.Name.GetXeHash());             // 0x04
+            w.Write(skill.Description.GetXeHash());      // 0x08
             w.Write(_gfxs, skill.GfxName);                  // 0x0c
             w.Write(_gfxs, skill.GfxAnimation);             // 0x0e
             w.Write(_gfxs, skill.Sfx);                      // 0x10

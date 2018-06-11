@@ -4,20 +4,22 @@ namespace Xe.Game.Kernel
 {
     public class Skill
     {
+		public Guid Id { get; set; } = Guid.NewGuid();
+
 		/// <summary>
 		/// Internal name
 		/// </summary>
-        public string Name { get; set; }
+		public string Code { get; set; }
 
 		/// <summary>
 		/// Shown translated name
 		/// </summary>
-        public string TagName { get; set; }
+        public string Name { get; set; }
 
 		/// <summary>
 		/// Shown translated description
 		/// </summary>
-        public string TagDescription { get; set; }
+        public string Description { get; set; }
 
 		/// <summary>
 		/// Name of the used effect.
