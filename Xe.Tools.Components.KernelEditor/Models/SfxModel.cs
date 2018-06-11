@@ -27,19 +27,19 @@ namespace Xe.Tools.Components.KernelEditor.Models
 	{
 		public SfxModel(Sfx sfx)
 		{
-			Sfx = sfx;
+			Item = sfx;
 		}
 
-		public Sfx Sfx { get; }
+		public Sfx Item { get; }
 
 		public string DisplayName => !string.IsNullOrEmpty(Name) ? Name : "<no name>";
 
 		public string Name
 		{
-			get => Sfx.Name;
+			get => Item.Name;
 			set
 			{
-				Sfx.Name = value;
+				Item.Name = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(DisplayName));
 			}
@@ -47,10 +47,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string FileName
 		{
-			get => Sfx.FileName;
+			get => Item.FileName;
 			set
 			{
-				Sfx.FileName = value;
+				Item.FileName = value;
 				OnPropertyChanged();
 			}
 		}

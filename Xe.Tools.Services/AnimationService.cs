@@ -14,12 +14,7 @@ namespace Xe.Tools.Services
 
         public IEnumerable<IProjectFile> ProjectFiles => ProjectService.Items.Where(x => x.Format == "animation");
 
-        public IEnumerable<string> AnimationFilesData => ProjectFiles.Select(x =>
-        {
-            var strName = x.Path;
-            var extIndex = strName.IndexOf(".json");
-            return strName.Substring(0, extIndex);
-        });
+        public IEnumerable<string> AnimationFilesData => ProjectFiles.Select(x => x.Path);
 
         public AnimationService(ProjectService projectService)
         {
@@ -28,7 +23,7 @@ namespace Xe.Tools.Services
 
         public AnimationData GetAnimationData(string fileName)
         {
-			var file = ProjectFiles.FirstOrDefault(x => x.Name == fileName);
+			var file = ProjectFiles.FirstOrDefault(x => x.Path == fileName);
 			return file != null ? GetAnimationData(file) : null;
         }
 

@@ -6,17 +6,17 @@ using Xe.Tools.Services;
 
 namespace Xe.Tools.Components.KernelEditor.Models
 {
-	public class ElementsModel : GenericListModel<ElementModel>
+	public class StatusesModel : GenericListModel<StatusModel>
 	{
 		private readonly MessageService messageService;
 
-		public ElementsModel(IEnumerable<Element> list,
+		public StatusesModel(IEnumerable<Status> list,
 			MessageService messageService) :
-			base(list.Take(0x20).Select((x, i) => new ElementModel(i, x, messageService)))
+			base(list?.Take(0x20).Select((x, i) => new StatusModel(i, x, messageService)))
 		{
 			for (int i = this.list.Count; i < 0x20; i++)
 			{
-				this.list.Add(new ElementModel(i, new Element(), messageService));
+				this.list.Add(new StatusModel(i, new Status(), messageService));
 			}
 
 			Messages = messageService.Tags;
@@ -25,29 +25,29 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public IEnumerable<string> Messages { get; set; }
 
-		protected override ElementModel OnNewItem()
+		protected override StatusModel OnNewItem()
 		{
-			return new ElementModel(list.Count, new Element(), messageService);
+			return new StatusModel(list.Count, new Status(), messageService);
 		}
 
-		protected override void OnSelectedItem(ElementModel item)
+		protected override void OnSelectedItem(StatusModel item)
 		{
 		}
 	}
 
-	public class ElementModel : BaseNotifyPropertyChanged
+	public class StatusModel : BaseNotifyPropertyChanged
 	{
 		private readonly MessageService messageService;
 
-		public ElementModel(int index, Element element,
+		public StatusModel(int index, Status element,
 			MessageService messageService)
 		{
-			this.Index = index;
-			Item = element;
+			Index = index;
+			Status = element;
 			this.messageService = messageService;
 		}
 
-		public Element Item { get; }
+		public Status Status { get; }
 
 		public int Index { get; }
 
@@ -59,10 +59,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Code
 		{
-			get => Item.Code;
+			get => Status.Code;
 			set
 			{
-				Item.Code = value;
+				Status.Code = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(DisplayName));
 			}
@@ -70,10 +70,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Name
 		{
-			get => Item.Name;
+			get => Status.Name;
 			set
 			{
-				Item.Name = value;
+				Status.Name = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(TextName));
 			}
@@ -81,10 +81,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public string Description
 		{
-			get => Item.Description;
+			get => Status.Description;
 			set
 			{
-				Item.Description = value;
+				Status.Description = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(TextDescription));
 			}

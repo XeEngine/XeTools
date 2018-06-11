@@ -58,11 +58,20 @@
     <Compile Include="Component.cs" />
     <Compile Include="Models\BgmModel.cs" />
     <Compile Include="Models\ElementsModel.cs" />
+    <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Models\PlayersModel.cs" />
     <Compile Include="Models\SfxModel.cs" />
+    <Compile Include="Models\SkillsModel.cs" />
+    <Compile Include="Models\StatusesModel.cs" />
     <Compile Include="Models\ZonesModel.cs" />
     <Compile Include="Views\TabActorCommon.xaml.cs">
       <DependentUpon>TabActorCommon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabActorDrop.xaml.cs">
+      <DependentUpon>TabActorDrop.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabActorDropItems.xaml.cs">
+      <DependentUpon>TabActorDropItems.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TabActorStats.xaml.cs">
       <DependentUpon>TabActorStats.xaml</DependentUpon>
@@ -72,6 +81,9 @@
     </Compile>
     <Compile Include="Views\TabElements.xaml.cs">
       <DependentUpon>TabElements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabInventory.xaml.cs">
+      <DependentUpon>TabInventory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TabPlayerGrowth.xaml.cs">
       <DependentUpon>TabPlayerGrowth.xaml</DependentUpon>
@@ -85,22 +97,26 @@
     <Compile Include="Dialogs\NameEditor.xaml.cs">
       <DependentUpon>NameEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AnimationGroupsViewModel.cs" />
-    <Compile Include="ViewModels\AnimationsViewModel.cs" />
-    <Compile Include="ViewModels\AnimationViewModel.cs" />
-    <Compile Include="ViewModels\EnumViewModel.cs" />
     <Compile Include="Models\GenericListModel.cs" />
     <Compile Include="ViewModels\KernelViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
-    <Compile Include="ViewModels\TabPlayersViewModel.cs" />
-    <Compile Include="ViewModels\TabMessages.cs" />
     <Compile Include="ViewModels\TabPlayerSkillsUsage.cs" />
-    <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
+    <Compile Include="Views\TabStatus.xaml.cs">
+      <DependentUpon>TabStatus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TabZones.xaml.cs">
       <DependentUpon>TabZones.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\TabActorCommon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabActorDrop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabActorDropItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TabElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabInventory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,6 +178,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\TabStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TabZones.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

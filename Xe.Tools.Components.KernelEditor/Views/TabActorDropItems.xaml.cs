@@ -3,11 +3,11 @@
 namespace Xe.Tools.Components.KernelEditor.Views
 {
 	/// <summary>
-	/// Interaction logic for TabActorCommon.xaml
+	/// Interaction logic for TabActorDropItems.xaml
 	/// </summary>
-	public partial class TabActorCommon : UserControl
+	public partial class TabActorDropItems : UserControl
 	{
-		public TabActorCommon()
+		public TabActorDropItems()
 		{
 			InitializeComponent();
 		}
