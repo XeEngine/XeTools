@@ -63,15 +63,27 @@
                 ItemsSource="{Binding Effects}"
                 SelectedValuePath="Value"
                 DisplayMemberPath="Name"
-                SelectedValue="{Binding SelectedItem.Effect, Mode=TwoWay}"
-                IsEnabled="False">
+                SelectedValue="{Binding SelectedItem.Effect, Mode=TwoWay}">
             </ComboBox>
 
-            <TextBlock Text="Skill"/>
-            <ComboBox Margin="0 0 0 5"
-                SelectedValue="{Binding SelectedItem.SkillId, Mode=TwoWay}"
-                IsEnabled="False">
-            </ComboBox>
+            <StackPanel Visibility="{Binding SelectedItem.SkillVisibility, Mode=OneWay}">
+                <TextBlock Text="Skill"/>
+                <ComboBox Margin="0 0 0 5"
+                    ItemsSource="{Binding Skills}"
+                    SelectedValuePath="Id"
+                    DisplayMemberPath="DisplayName"
+                    SelectedValue="{Binding SelectedItem.SkillId, Mode=TwoWay}">
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding SelectedItem.ConsumableVisibility, Mode=OneWay}">
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding SelectedItem.MaterialVisibility, Mode=OneWay}">
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding SelectedItem.KeyVisibility, Mode=OneWay}">
+            </StackPanel>
             
         </StackPanel>
 

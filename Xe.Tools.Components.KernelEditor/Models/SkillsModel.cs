@@ -61,6 +61,8 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public Skill Item { get; }
 
+		public Guid Id => Item?.Id ?? Guid.Empty;
+
 		public string DisplayName => !string.IsNullOrEmpty(Code) ? Code : "<no name>";
 
 		public string TextName => messageService[Name];

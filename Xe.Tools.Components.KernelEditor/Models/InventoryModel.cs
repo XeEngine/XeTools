@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Xe.Game.Kernel;
 using Xe.Tools.Models;
 using Xe.Tools.Services;
@@ -20,6 +21,7 @@ namespace Xe.Tools.Components.KernelEditor.Models
 		{
 			Kernel = kernel;
 			this.messageService = messageService;
+			Skills = kernel.Skills.Select(x => new SkillModel(x, messageService, null));
 		}
 
 		public EnumModel<InventoryItemType> Types { get; } =
@@ -29,6 +31,8 @@ namespace Xe.Tools.Components.KernelEditor.Models
 			new EnumModel<InventoryItemEffect>();
 
 		public IEnumerable<string> Messages => messageService.Tags;
+
+		public IEnumerable<SkillModel> Skills { get; }
 
 		protected override InventoryEntryModel OnNewItem()
 		{
@@ -55,11 +59,21 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public InventoryItem Item { get; }
 
+		public Guid Id => Item?.Id ?? Guid.Empty;
+
 		public string DisplayName => !string.IsNullOrEmpty(Code) ? Code : "<no name>";
 
 		public string TextName => messageService[Name];
 
 		public string TextDescription => messageService[Description];
+
+		public Visibility SkillVisibility => Type == InventoryItemType.Skill ? Visibility.Visible : Visibility.Collapsed;
+
+		public Visibility ConsumableVisibility => Type == InventoryItemType.Consumable ? Visibility.Visible : Visibility.Collapsed;
+
+		public Visibility MaterialVisibility => Type == InventoryItemType.Material ? Visibility.Visible : Visibility.Collapsed;
+
+		public Visibility KeyVisibility => Type == InventoryItemType.Key ? Visibility.Visible : Visibility.Collapsed;
 
 		public string Code
 		{
@@ -101,6 +115,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 			{
 				Item.Type = value;
 				OnPropertyChanged();
+				OnPropertyChanged(nameof(SkillVisibility));
+				OnPropertyChanged(nameof(ConsumableVisibility));
+				OnPropertyChanged(nameof(MaterialVisibility));
+				OnPropertyChanged(nameof(KeyVisibility));
 			}
 		}
 
