@@ -72,6 +72,8 @@ namespace Xe.Tools.Modules.Kernel
 			WriteChunk(w, KernelData, WriteBgm);
 			WriteChunk(w, KernelData, WriteElements);
 			WriteChunk(w, KernelData, WriteStatus);
+			WriteChunk(w, KernelData, WriteInventory);
+			WriteChunk(w, KernelData, WriteActor);
 
 			WriteTable(w, "BgmFiles");
 			WriteTable(w, "ActorsAnimations");

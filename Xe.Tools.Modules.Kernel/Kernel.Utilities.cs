@@ -69,14 +69,15 @@ namespace Xe.Tools.Modules.Kernel
 		private static string WriteStrings(List<string> list, string name, BinaryWriter w)
 		{
 			var index = 0;
-			var offset = list.Count * sizeof(long);
+			var offset = sizeof(int) + list.Count * sizeof(ushort);
 
+			w.Write(list.Count);
 			foreach (var item in list)
 			{
 				var data = System.Text.Encoding.UTF8.GetBytes(item);
 
-				w.BaseStream.Position = index++ * sizeof(long);
-				w.Write((long)offset);
+				w.BaseStream.Position = sizeof(int) + index++ * sizeof(ushort);
+				w.Write((ushort)offset);
 				w.BaseStream.Position = offset;
 				w.Write(data);
 				w.Write((byte)0);
