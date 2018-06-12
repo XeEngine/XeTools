@@ -55,9 +55,11 @@ namespace Xe.Tools.Modules
 
 				w.Write(0x0247534D); // MSGv2
 				w.Write(msgOrdered.Count);
-				var hashPos = w.BaseStream.Position;
-				var offPos = (int)(hashPos + msgOrdered.Count * sizeof(uint));
+				var headerPos = (int)w.BaseStream.Position;
+				var hashPos = headerPos + 8;
+				var offPos = hashPos + msgOrdered.Count * sizeof(uint);
 				var msgPos = offPos + msgOrdered.Count * sizeof(uint);
+				var msgOff = msgPos;
 				foreach (var msg in msgOrdered)
 				{
 					w.BaseStream.Position = hashPos;
@@ -65,7 +67,7 @@ namespace Xe.Tools.Modules
 					hashPos += sizeof(uint);
 
 					w.BaseStream.Position = offPos;
-					w.Write(msgPos);
+					w.Write(msgPos - msgOff);
 					offPos += sizeof(uint);
 
 					var strData = GetBytesFromString(msg.Value.Text);
@@ -74,6 +76,10 @@ namespace Xe.Tools.Modules
 					w.BaseStream.WriteByte(0);
 					msgPos += strData.Length + 1;
 				}
+
+				w.BaseStream.Position = headerPos;
+				w.Write(msgOff);
+				w.Write((int)(w.BaseStream.Length - msgOff));
 
 				writer.Write(memStream.GetBuffer(), 0, (int)w.BaseStream.Length);
             }
