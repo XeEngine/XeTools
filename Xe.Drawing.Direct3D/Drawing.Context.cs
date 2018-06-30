@@ -12,7 +12,7 @@ namespace Xe.Drawing
 
     public partial class DrawingDirect3D
     {
-        private static CDevice _device = new CDevice();
+        private CDevice _device = new CDevice();
 
         public d3d.Device5 Device => _device.Device;
         public d3d.DeviceContext3 Context => _device.Context;
@@ -23,7 +23,7 @@ namespace Xe.Drawing
             {
                 new d3d.InputElement("POSITION", 0, dxgi.Format.R32G32_Float, sizeof(float) * 0, 0, d3d.InputClassification.PerVertexData, 0),
                 new d3d.InputElement("TEXTURE", 0, dxgi.Format.R32G32_Float, sizeof(float) * 2, 0, d3d.InputClassification.PerVertexData, 0 ),
-                new d3d.InputElement("COLOR", 0, dxgi.Format.R32_Float, sizeof(float) * 4, 0, d3d.InputClassification.PerVertexData, 0 ),
+                new d3d.InputElement("COLOR", 0, dxgi.Format.R32G32B32A32_Float, sizeof(float) * 4, 0, d3d.InputClassification.PerVertexData, 0 ),
             };
 
             private List<IDisposable> _disposables = new List<IDisposable>();
@@ -58,7 +58,6 @@ namespace Xe.Drawing
                 dxgiAdapter = dxgiDevice.Adapter.QueryInterface<dxgi.Adapter>();
                 dxgiFactory = dxgiAdapter.GetParent<dxgi.Factory>();
 
-                dxgiDevice1.MaximumFrameLatency = 1;
                 CreateResources();
             }
 

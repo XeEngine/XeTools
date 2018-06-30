@@ -12,7 +12,7 @@ namespace Xe
             Instance,
         }
 
-        private struct Entry
+        private class Entry
         {
             public Type Implementation;
             public Scope Scope;

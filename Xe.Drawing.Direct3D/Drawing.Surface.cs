@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SharpDX.IO;
+using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace Xe.Drawing
@@ -138,7 +140,7 @@ namespace Xe.Drawing
 
             public void Dispose()
             {
-				_backTexture.Dispose();
+				_backTexture?.Dispose();
 				ShaderResourceView.Dispose();
                 Texture.Dispose();
             }
@@ -170,8 +172,38 @@ namespace Xe.Drawing
             }
 
             public void Save(string filename)
-            {
-            }
+			{
+				if (File.Exists(filename))
+					File.Delete(filename);
+
+				var imagingFactory = new wic.ImagingFactory2();
+				var wicPixelFormat = wic.PixelFormat.Format32bppPBGRA;
+
+				using (var mapped = Map())
+				{
+					using (var stream = new wic.WICStream(imagingFactory, filename, NativeFileAccess.Write))
+					{
+						using (var encoder = new wic.PngBitmapEncoder(imagingFactory))
+						{
+							encoder.Initialize(stream);
+							using (var bitmapFrameEncode = new wic.BitmapFrameEncode(encoder))
+							{
+								bitmapFrameEncode.Initialize();
+								bitmapFrameEncode.SetSize(Width, Height);
+								bitmapFrameEncode.SetPixelFormat(ref wicPixelFormat);
+								bitmapFrameEncode.WritePixels(Height, new SharpDX.DataRectangle()
+								{
+									DataPointer = mapped.Data,
+									Pitch = mapped.Stride
+								});
+
+								bitmapFrameEncode.Commit();
+								encoder.Commit();
+							}
+						}
+					}
+				}
+			}
         }
 
         public override ISurface CreateSurface(int width, int height, PixelFormat pixelFormat, SurfaceType type)
@@ -196,7 +228,7 @@ namespace Xe.Drawing
                     break;
                 case SurfaceType.Output:
                     desc.Usage = d3d.ResourceUsage.Default;
-                    desc.BindFlags = d3d.BindFlags.RenderTarget;
+                    desc.BindFlags = d3d.BindFlags.ShaderResource | d3d.BindFlags.RenderTarget;
                     break;
                 case SurfaceType.InputOutput:
                     desc.Usage = d3d.ResourceUsage.Default;
@@ -216,5 +248,5 @@ namespace Xe.Drawing
             d3d.ShaderResourceView shaderResourceView = new d3d.ShaderResourceView(Device, texture);
             return new CSurface(texture, shaderResourceView);
         }
-    }
+	}
 }

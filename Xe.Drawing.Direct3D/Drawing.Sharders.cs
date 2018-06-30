@@ -24,13 +24,13 @@ struct VertexIn
 {
 	float4 pos		: POSITION;
 	float2 tex		: TEXTURE;
-	float color		: COLOR;
+	float4 color	: COLOR;
 };
 struct VertexOut
 {
 	float4 pos		: SV_POSITION;
 	float2 tex		: TEXTURE;
-	float color		: COLOR;
+	float4 color	: COLOR;
 };
 
 VertexOut main(const VertexIn vIn)
@@ -47,7 +47,7 @@ VertexOut main(const VertexIn vIn)
 {
 	float4 pos		: SV_POSITION;
 	float2 tex		: TEXTURE;
-	float color		: COLOR;
+	float4 color	: COLOR;
 };
 
 Texture2D tImage0;
@@ -58,7 +58,7 @@ SamplerState sampleClut0;
 float4 main(PixelIn pIn) : SV_TARGET
 {
     float4 texColor = tImage0.Sample(sampleImage0, pIn.tex.xy);
-	float4 blendColor = float4(1.0, 1.0, 1.0, pIn.color);
+	float4 blendColor = pIn.color;
     return texColor * blendColor;
 	/*float4 color = pIn.color;
 	if (pIn.tex.z < 0.50)

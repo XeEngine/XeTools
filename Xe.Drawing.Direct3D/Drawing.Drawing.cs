@@ -8,20 +8,28 @@
     using System;
     using System.Security;
 
-    public partial class DrawingDirect3D : Drawing
-    {
-        [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false), SuppressUnmanagedCodeSecurity]
-        public static extern IntPtr CopyMemory(IntPtr dest, IntPtr src, ulong count);
+	public partial class DrawingDirect3D : Drawing
+	{
+		[DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false), SuppressUnmanagedCodeSecurity]
+		public static extern IntPtr CopyMemory(IntPtr dest, IntPtr src, ulong count);
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct Vertex
-        {
-            public float X;
-            public float Y;
-            public float U;
-            public float V;
-            public float A;
-        }
+		[StructLayout(LayoutKind.Sequential)]
+		private struct Vertex
+		{
+			public float X, Y;
+			public float U, V;
+			public ColorF Color;
+		}
+
+		private delegate void DrawSurfaceFunction(DrawingDirect3D drawing, ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip);
+
+		private static readonly DrawSurfaceFunction[] DrawSurfaceFunctions = new DrawSurfaceFunction[4]
+		{
+			DrawSurfaceFlipNone,
+			DrawSurfaceFlipX,
+			DrawSurfaceFlipY,
+			DrawSurfaceFlipXY
+		};
 
 
 		public override void DrawRectangle(RectangleF rect, Color color, float width = 1)
@@ -34,51 +42,179 @@
 
 		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, Flip flip)
 		{
-			DrawSurface(surface, src, dst, 1.0f, flip);
+			DrawSurface(surface, src, dst, new ColorF(1.0f, 1.0f, 1.0f, 1.0f), flip);
 		}
 
 		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, float alpha, Flip flip)
 		{
-			var size = surface.Size;
-			SetTextureToDraw(surface);
-
-			EnqueueVertex(new Vertex()
-			{
-				X = dst.Left / _viewportSize.Width * +2.0f - 1.0f,
-				Y = dst.Top / _viewportSize.Height * -2.0f + 1.0f,
-				U = (float)src.Left / size.Width,
-				V = (float)src.Top / size.Height,
-				A = alpha,
-			});
-			EnqueueVertex(new Vertex()
-			{
-				X = dst.Right / _viewportSize.Width * +2.0f - 1.0f,
-				Y = dst.Top / _viewportSize.Height * -2.0f + 1.0f,
-				U = (float)src.Right / size.Width,
-				V = (float)src.Top / size.Height,
-				A = alpha,
-			});
-			EnqueueVertex(new Vertex()
-			{
-				X = dst.Left / _viewportSize.Width * +2.0f - 1.0f,
-				Y = dst.Bottom / _viewportSize.Height * -2.0f + 1.0f,
-				U = (float)src.Left / size.Width,
-				V = (float)src.Bottom / size.Height,
-				A = alpha,
-			});
-			EnqueueVertex(new Vertex()
-			{
-				X = dst.Right / _viewportSize.Width * +2.0f - 1.0f,
-				Y = dst.Bottom / _viewportSize.Height * -2.0f + 1.0f,
-				U = (float)src.Right / size.Width,
-				V = (float)src.Bottom / size.Height,
-				A = alpha,
-			});
+			DrawSurface(surface, src, dst, new ColorF(1.0f, 1.0f, 1.0f, alpha), flip);
 		}
 
 		public override void DrawSurface(ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip)
 		{
-			DrawSurface(surface, src, dst, color.A, flip);
+			SetTextureToDraw(surface);
+			DrawSurfaceFunctions[(int)flip](this, surface, src, dst, color, flip);
+		}
+
+		private static void DrawSurfaceFlipNone(DrawingDirect3D drawing, ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip)
+		{
+			var size = surface.Size;
+			var viewport = drawing._viewportSize;
+			var index = drawing.RequestVertices(4);
+			var buffer = drawing._dataBuffer;
+
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+		}
+		private static void DrawSurfaceFlipX(DrawingDirect3D drawing, ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip)
+		{
+			var size = surface.Size;
+			var viewport = drawing._viewportSize;
+			var index = drawing.RequestVertices(4);
+			var buffer = drawing._dataBuffer;
+
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+		}
+		private static void DrawSurfaceFlipY(DrawingDirect3D drawing, ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip)
+		{
+			var size = surface.Size;
+			var viewport = drawing._viewportSize;
+			var index = drawing.RequestVertices(4);
+			var buffer = drawing._dataBuffer;
+
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
+		}
+		private static void DrawSurfaceFlipXY(DrawingDirect3D drawing, ISurface surface, Rectangle src, RectangleF dst, ColorF color, Flip flip)
+		{
+			var size = surface.Size;
+			var viewport = drawing._viewportSize;
+			var index = drawing.RequestVertices(4);
+			var buffer = drawing._dataBuffer;
+
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Top / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Bottom / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Left / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Right / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
+			buffer[index++] = new Vertex()
+			{
+				X = dst.Right / viewport.Width * +2.0f - 1.0f,
+				Y = dst.Bottom / viewport.Height * -2.0f + 1.0f,
+				U = (float)src.Left / size.Width,
+				V = (float)src.Top / size.Height,
+				Color = color
+			};
 		}
 
 		private CSurface _prevSurface;
@@ -98,13 +234,20 @@
         private d3d.Buffer _indexBuffer;
         private Vertex[] _dataBuffer = new Vertex[MaximumQuadsCount];
         private int _pendingVerticesCount;
+
+		private int RequestVertices(int count)
+		{
+			if (_pendingVerticesCount + count >= MaximumQuadsCount)
+			{
+				Flush();
+			}
+
+			var index = _pendingVerticesCount;
+			_pendingVerticesCount += count;
+
+			return index;
+		}
 		
-        private void EnqueueVertex(Vertex vertex)
-        {
-            if (_pendingVerticesCount + 1 >= MaximumQuadsCount)
-                Flush();
-            _dataBuffer[_pendingVerticesCount++] = vertex;
-        }
         private void Flush()
         {
             if (_pendingVerticesCount == 0)
