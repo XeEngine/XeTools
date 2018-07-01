@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xe.Game.Kernel;
+using Xe.Tools.Components.KernelEditor.Views;
 using Xe.Tools.Models;
 using Xe.Tools.Services;
+using Xe.Tools.Wpf.Commands;
 
 namespace Xe.Tools.Components.KernelEditor.Models
 {
@@ -15,12 +17,42 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		public SkillsModel(
 			IEnumerable<Skill> list,
+			ElementsModel elementsModel,
+			StatusesModel statusesModel,
 			MessageService messageService,
 			AnimationService animationService) :
 			base(list?.Select(x => new SkillModel(x, messageService, animationService)))
 		{
 			this.messageService = messageService;
 			this.animationService = animationService;
+
+			ElementSelection = new RelayCommand(param =>
+			{
+				var dialog = new DialogElementsSelection(elementsModel.Items.Select(item => item.Code ?? item.DisplayName))
+				{
+					Value = SelectedItem?.Elements ?? 0
+				};
+
+				if (dialog.ShowDialog() == true)
+				{
+					if (SelectedItem != null)
+						SelectedItem.Elements = dialog.Value;
+				}
+			}, x => true);
+
+			StatusSelection = new RelayCommand(param =>
+			{
+				var dialog = new DialogElementsSelection(statusesModel.Items.Select(item => item.Code ?? item.DisplayName))
+				{
+					Value = SelectedItem?.Statuses ?? 0
+				};
+
+				if (dialog.ShowDialog() == true)
+				{
+					if (SelectedItem != null)
+						SelectedItem.Statuses = dialog.Value;
+				}
+			}, x => true);
 		}
 
 		public IEnumerable<string> AnimationFileNames =>
@@ -33,6 +65,10 @@ namespace Xe.Tools.Components.KernelEditor.Models
 			new EnumModel<TargetType>();
 
 		public IEnumerable<string> Messages => messageService.Tags;
+
+		public RelayCommand ElementSelection { get; set; }
+
+		public RelayCommand StatusSelection { get; set; }
 
 		protected override SkillModel OnNewItem()
 		{
@@ -162,6 +198,26 @@ namespace Xe.Tools.Components.KernelEditor.Models
 			set
 			{
 				Item.Damage = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public uint Elements
+		{
+			get => Item?.Elements ?? 0;
+			set
+			{
+				Item.Elements = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public uint Statuses
+		{
+			get => Item?.Statuses ?? 0;
+			set
+			{
+				Item.Statuses = value;
 				OnPropertyChanged();
 			}
 		}

@@ -67,14 +67,14 @@
                         <RowDefinition Height="16"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="5"/>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition Height="18"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="GFX name"/>
@@ -105,7 +105,17 @@
                     <xc:NumericUpDown Grid.Column="0" Grid.Row="7"
                         Value="{Binding SelectedItem.Damage, Mode=TwoWay}"
                         MaximumValue="255"/>
-                    
+
+                    <TextBlock Grid.Column="0" Grid.Row="9" Text="Elements"/>
+                    <Button Grid.Column="0" Grid.Row="10" Content="View or select"
+                        Command="{Binding ElementSelection}"
+                        CommandParameter="{Binding SelectedItem.Elements}"/>
+
+                    <TextBlock Grid.Column="2" Grid.Row="9" Text="Status"/>
+                    <Button Grid.Column="2" Grid.Row="10" Content="View or select"
+                        Command="{Binding StatusSelection}"
+                        CommandParameter="{Binding SelectedItem.Statuses}"/>
+
                 </Grid>
             </StackPanel>
         </ScrollViewer>

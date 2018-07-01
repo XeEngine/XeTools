@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
     <Compile Include="Models\BgmModel.cs" />
+    <Compile Include="Models\BitmaskSelectionModel.cs" />
     <Compile Include="Models\ElementsModel.cs" />
     <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Models\PlayersModel.cs" />
@@ -64,6 +65,12 @@
     <Compile Include="Models\SkillsModel.cs" />
     <Compile Include="Models\StatusesModel.cs" />
     <Compile Include="Models\ZonesModel.cs" />
+    <Compile Include="Views\BitmaskSelection.xaml.cs">
+      <DependentUpon>BitmaskSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DialogElementsSelection.xaml.cs">
+      <DependentUpon>DialogElementsSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TabActorCommon.xaml.cs">
       <DependentUpon>TabActorCommon.xaml</DependentUpon>
     </Compile>
@@ -108,6 +115,14 @@
     <Compile Include="Views\TabZones.xaml.cs">
       <DependentUpon>TabZones.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\BitmaskSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DialogElementsSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TabActorCommon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -41,5 +41,9 @@ namespace Xe.Game.Kernel
         public TargetType Target { get; set; }
 
         public int Damage { get; set; }
-    }
+
+		public uint Elements { get; set; }
+
+		public uint Statuses { get; set; }
+	}
 }

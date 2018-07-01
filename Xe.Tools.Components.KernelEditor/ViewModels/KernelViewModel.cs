@@ -62,7 +62,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
 			Elements = new ElementsModel(Kernel.Elements, MessageService);
 			Statuses = new StatusesModel(Kernel.Status, MessageService);
 			Inventory = new InventoryEntriesModel(Kernel.InventoryItems, Kernel, MessageService);
-			Skills = new SkillsModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
+			Skills = new SkillsModel(Kernel.Skills, Elements, Statuses, MessageService, ProjectService.AnimationService);
             Actors = new PlayersModel(Kernel.Actors, MessageService, ProjectService.AnimationService);
 		}
 
