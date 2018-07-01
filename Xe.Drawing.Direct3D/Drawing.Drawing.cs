@@ -248,7 +248,7 @@
 			return index;
 		}
 		
-        private void Flush()
+        public override void Flush()
         {
             if (_pendingVerticesCount == 0)
                 return;

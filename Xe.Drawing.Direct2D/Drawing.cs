@@ -19,7 +19,7 @@ namespace Xe.Drawing
                 if (_invalidated)
                 {
                     _invalidated = false;
-                    d2dContext.Flush();
+					Flush();
                     d2dContext.EndDraw();
                 }
                 return _surface;
@@ -56,7 +56,12 @@ namespace Xe.Drawing
             }
         }
 
-        public override void Clear(Color color)
+		public override void Flush()
+		{
+			d2dContext.Flush();
+		}
+
+		public override void Clear(Color color)
         {
             var r = color.R / 255.0f;
             var g = color.G / 255.0f;

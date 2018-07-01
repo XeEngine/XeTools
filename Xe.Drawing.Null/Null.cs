@@ -13,6 +13,11 @@ namespace Xe.Drawing
 			set => _filter = value;
 		}
 
+		public override void Flush()
+		{
+			
+		}
+
 		public override void Clear(Color color)
 		{
 		}

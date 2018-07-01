@@ -19,7 +19,7 @@ namespace Xe.Drawing
                 if (_invalidated)
                 {
                     _invalidated = false;
-                    _graphics.Flush();
+					Flush();
                 }
                 return _surface;
             }
@@ -28,8 +28,8 @@ namespace Xe.Drawing
                 if (_surface != value)
                 {
                     _surface?.Dispose();
-                    _graphics?.Flush();
-                    if (value is CSurface surface)
+					Flush();
+					if (value is CSurface surface)
                     {
                         _surface = surface;
                         _graphics = Graphics.FromImage(_surface.Bitmap);
@@ -80,7 +80,12 @@ namespace Xe.Drawing
             }
         }
 
-        public override void Clear(Color color)
+		public override void Flush()
+		{
+			_graphics.Flush();
+		}
+
+		public override void Clear(Color color)
         {
             _graphics.Clear(color);
 		}

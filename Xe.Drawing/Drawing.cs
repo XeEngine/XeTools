@@ -17,6 +17,7 @@ namespace Xe.Drawing
         public abstract ISurface Surface { get; set; }
         public abstract Filter Filter { get; set; }
 
+		public abstract void Flush();
         public abstract void Clear(Color color);
         public abstract ISurface CreateSurface(int width, int height, PixelFormat pixelFormat, SurfaceType type);
         public abstract ISurface CreateSurface(string filename, Color[] filterColors = null);
