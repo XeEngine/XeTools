@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Xe.Game.Kernel;
-using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
     public class TabPlayerSkillsUsage : BaseNotifyPropertyChanged
     {
-        private Player _player;
+        private Actor _player;
         private SkillUsage _skillUsage;
         private IEnumerable<string> _skillNames;
         private IEnumerable<string> _castAnimations;
 
-        public Player Player
+        public Actor Player
         {
             get => _player;
             set

@@ -54,7 +54,10 @@ namespace Xe.Game.Tilemaps
             dst.Tilesets = src.Tilesets.Select(x => Map(x)).ToList();
             dst.Layers = src.Entries.Select(x => Map(x)).ToList();
 
-            Uri Extension = GetPropertyValue(src.Properties, default(Uri), nameof(Extension));
+			dst.BgmField = GetPropertyValue(src.Properties, Guid.Empty, nameof(dst.BgmField));
+			dst.BgmBattle = GetPropertyValue(src.Properties, Guid.Empty, nameof(dst.BgmBattle));
+
+			Uri Extension = GetPropertyValue(src.Properties, default(Uri), nameof(Extension));
             if (Extension != null && !string.IsNullOrEmpty(Extension.OriginalString))
             {
                 string fileName;
@@ -90,6 +93,8 @@ namespace Xe.Game.Tilemaps
             dst.BackgroundColor = src.BackgroundColor;
             //dst.Tilesets = src.Tilesets.Select(x => Map(x)).ToList();
             dst.Entries = src.Layers.Select(x => Map(x)).ToList();
+			dst.Properties[nameof(src.BgmField)] = src.BgmField;
+			dst.Properties[nameof(src.BgmBattle)] = src.BgmBattle;
 
             var extFileName = $"{Path.GetFileNameWithoutExtension(src.FileName)}.ext.json";
             SetPropertyValue(dst.Properties, new Uri(extFileName, UriKind.Relative), "Extension");

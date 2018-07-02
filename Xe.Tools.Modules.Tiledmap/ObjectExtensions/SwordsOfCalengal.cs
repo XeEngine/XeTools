@@ -81,9 +81,11 @@ namespace Xe.Tools.Modules.ObjectExtensions
 
             public int Map { get; set; }
 
-            public int Entry { get; set; }
+			public int Entry { get; set; }
 
-            public void Write(BinaryWriter writer)
+			public Guid ZoneId { get; set; }
+
+			public void Write(BinaryWriter writer)
             {
                 writer.Write((byte)Zone);
                 writer.Write((byte)Map);

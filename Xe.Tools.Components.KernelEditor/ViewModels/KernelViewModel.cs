@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xe.Game.Kernel;
-using Xe.Game.Messages;
+using Xe.Tools.Components.KernelEditor.Models;
 using Xe.Tools.Projects;
 using Xe.Tools.Services;
-using static Xe.Tools.Project;
 
 namespace Xe.Tools.Components.KernelEditor.ViewModels
 {
@@ -22,13 +21,15 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         private string WorkingFileName { get; set; }
         private string BasePath { get => Path.GetDirectoryName(WorkingFileName); }
 
-        public AnimationGroupsViewModel AnimationGroups { get; private set; }
-		public TabElements.TabElementViewModel Elements { get; private set; }
-		public TabSkillsViewModel Skills { get; private set; }
-        public TabPlayersViewModel Players { get; private set; }
-        public TabMessagesViewModel Messages { get; private set; }
-		public TabBgm.TabBgmViewModel Bgms { get; private set; }
-		public TabSfx.TabSfxViewModel Sfxs { get; private set; }
+		public ZonesModel Zones { get; private set; }
+		public BgmsModel Bgms { get; private set; }
+		public SfxsModel Sfxs { get; private set; }
+		public ElementsModel Elements { get; private set; }
+		public StatusesModel Statuses { get; set; }
+		public InventoryEntriesModel Inventory { get; set; }
+		public SkillsModel Skills { get; private set; }
+
+        public PlayersModel Actors { get; private set; }
 
 		public KernelViewModel(IProject project, IProjectFile file)
         {
@@ -45,8 +46,7 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                     Kernel = JsonConvert.DeserializeObject<KernelData>(reader.ReadToEnd());
                     if (Kernel.Skills == null) Kernel.Skills = new List<Skill>();
                     if (Kernel.Abilities == null) Kernel.Abilities = new List<Ability>();
-                    if (Kernel.Players == null) Kernel.Players = new List<Player>();
-                    if (Kernel.Enemies == null) Kernel.Enemies = new List<Enemy>();
+                    if (Kernel.Actors == null) Kernel.Actors = new List<Actor>();
 
                     Log.Message($"Kernel file {WorkingFileName} opened.");
                 }
@@ -56,20 +56,28 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
                 Log.Error($"Error while opening {ProjectFile.Path}: {e.Message}");
             }
 
-			Elements = new TabElements.TabElementViewModel(Kernel);
-			Skills = new TabSkillsViewModel(Kernel.Skills, MessageService, ProjectService.AnimationService);
-            Players = new TabPlayersViewModel(Kernel.Players, Kernel.Skills, MessageService, ProjectService.AnimationService);
-            Messages = new TabMessagesViewModel(MessageService);
-			Bgms = new TabBgm.TabBgmViewModel(Kernel);
-			Sfxs = new TabSfx.TabSfxViewModel(Kernel);
-
+			Zones = new ZonesModel(Kernel?.Zones?.Select(x => new ZoneModel(x, MessageService)), MessageService);
+			Bgms = new BgmsModel(Kernel?.Bgms?.Select(x => new BgmModel(x)));
+			Sfxs = new SfxsModel(Kernel?.Sfxs?.Select(x => new SfxModel(x)));
+			Elements = new ElementsModel(Kernel.Elements, MessageService);
+			Statuses = new StatusesModel(Kernel.Status, MessageService);
+			Inventory = new InventoryEntriesModel(Kernel.InventoryItems, Kernel, MessageService);
+			Skills = new SkillsModel(Kernel.Skills, Elements, Statuses, MessageService, ProjectService.AnimationService);
+            Actors = new PlayersModel(Kernel.Actors, MessageService, ProjectService.AnimationService);
 		}
 
         public void SaveChanges()
         {
-            MessageService.SaveChanges();
-            Skills.SaveChanges();
-            Players.SaveChanges();
+			Kernel.Zones = Zones.Items.Select(x => x.Item).ToList();
+			Kernel.Bgms = Bgms.Items.Select(x => x.Item).ToList();
+			Kernel.Sfxs = Sfxs.Items.Select(x => x.Item).ToList();
+			Kernel.Elements = Elements.Items.Select(x => x.Item).ToList();
+			Kernel.InventoryItems = Inventory.Items.Select(x => x.Item).ToList();
+			Kernel.Skills = Skills.Items.Select(x => x.Item).ToList();
+			Kernel.Actors = Actors.Items.Select(x => x.Item).ToList();
+
+			MessageService.SaveChanges();
+
             try
             {
                 using (var writer = File.CreateText(WorkingFileName))

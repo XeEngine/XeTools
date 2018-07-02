@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xe.Game.Kernel;
 using Xe.Game.Tilemaps;
 using Xe.Tools.Components.MapEditor.Services;
 using Xe.Tools.Projects;
 using Xe.Tools.Services;
-using Xe.Tools.Wpf;
 
 namespace Xe.Tools.Components.MapEditor.ViewModels
 {
@@ -18,7 +13,8 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
         public static MapEditorViewModel Instance = new MapEditorViewModel();
         private Tiled.Map _tiledMap;
         private Map _tileMap;
-        private IProjectFile _file;
+		private KernelData kernel;
+		private IProjectFile _file;
 
         #region Delegates and events
         public delegate void TilemapChangedHandler(MapEditorViewModel sender, Map tileMap);
@@ -39,6 +35,24 @@ namespace Xe.Tools.Components.MapEditor.ViewModels
                 }
             }
         }
+
+		public KernelData Kernel
+		{
+			get
+			{
+				if (kernel == null)
+				{
+					var file = ProjectService.Items
+						.FirstOrDefault(x => x.Name.IndexOf("kernel.bin") == 0);
+					if (file != null)
+					{
+						kernel = ProjectService.DeserializeItem<KernelData>(file);
+					}
+				}
+
+				return kernel;
+			}
+		}
 
         public Map TileMap
         {

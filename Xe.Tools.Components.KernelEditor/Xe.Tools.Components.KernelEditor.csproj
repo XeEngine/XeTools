@@ -56,78 +56,118 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Component.cs" />
-    <Compile Include="Controls\TabBgms.xaml.cs">
+    <Compile Include="Models\BgmModel.cs" />
+    <Compile Include="Models\BitmaskSelectionModel.cs" />
+    <Compile Include="Models\ElementsModel.cs" />
+    <Compile Include="Models\InventoryModel.cs" />
+    <Compile Include="Models\PlayersModel.cs" />
+    <Compile Include="Models\SfxModel.cs" />
+    <Compile Include="Models\SkillsModel.cs" />
+    <Compile Include="Models\StatusesModel.cs" />
+    <Compile Include="Models\ZonesModel.cs" />
+    <Compile Include="Views\BitmaskSelection.xaml.cs">
+      <DependentUpon>BitmaskSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DialogElementsSelection.xaml.cs">
+      <DependentUpon>DialogElementsSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabActorCommon.xaml.cs">
+      <DependentUpon>TabActorCommon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabActorDrop.xaml.cs">
+      <DependentUpon>TabActorDrop.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabActorDropItems.xaml.cs">
+      <DependentUpon>TabActorDropItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabActorStats.xaml.cs">
+      <DependentUpon>TabActorStats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabBgms.xaml.cs">
       <DependentUpon>TabBgms.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabElements.xaml.cs">
+    <Compile Include="Views\TabElements.xaml.cs">
       <DependentUpon>TabElements.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabMessages.xaml.cs">
-      <DependentUpon>TabMessages.xaml</DependentUpon>
+    <Compile Include="Views\TabInventory.xaml.cs">
+      <DependentUpon>TabInventory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabPlayerGrowth.xaml.cs">
+    <Compile Include="Views\TabPlayerGrowth.xaml.cs">
       <DependentUpon>TabPlayerGrowth.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabSfxs.xaml.cs">
+    <Compile Include="Views\TabSfxs.xaml.cs">
       <DependentUpon>TabSfxs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabSkillsUsage.xaml.cs">
+    <Compile Include="Views\TabSkillsUsage.xaml.cs">
       <DependentUpon>TabSkillsUsage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\NameEditor.xaml.cs">
       <DependentUpon>NameEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AnimationGroupsViewModel.cs" />
-    <Compile Include="ViewModels\AnimationsViewModel.cs" />
-    <Compile Include="ViewModels\AnimationViewModel.cs" />
-    <Compile Include="ViewModels\EnumViewModel.cs" />
-    <Compile Include="ViewModels\Generics\TabGenericListViewModel.cs" />
+    <Compile Include="Models\GenericListModel.cs" />
     <Compile Include="ViewModels\KernelViewModel.cs" />
     <Compile Include="ViewModels\NameViewModel.cs" />
-    <Compile Include="ViewModels\TabBgm\BgmViewModel.cs" />
-    <Compile Include="ViewModels\TabBgm\TabBgmViewModel.cs" />
-    <Compile Include="ViewModels\TabElements\ElementViewModel.cs" />
-    <Compile Include="ViewModels\TabElements\TabElementViewModel.cs" />
-    <Compile Include="ViewModels\TabPlayersViewModel.cs" />
-    <Compile Include="ViewModels\TabMessages.cs" />
     <Compile Include="ViewModels\TabPlayerSkillsUsage.cs" />
-    <Compile Include="ViewModels\TabSfx\SfxViewModel.cs" />
-    <Compile Include="ViewModels\TabSfx\TabSfxViewModel.cs" />
-    <Compile Include="ViewModels\TabSkillsViewModel.cs" />
     <Compile Include="ViewModels\SkillUsageViewModel.cs" />
-    <Page Include="Controls\TabBgms.xaml">
+    <Compile Include="Views\TabStatus.xaml.cs">
+      <DependentUpon>TabStatus.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabZones.xaml.cs">
+      <DependentUpon>TabZones.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\BitmaskSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabElements.xaml">
+    <Page Include="Views\DialogElementsSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabEnemies.xaml">
+    <Page Include="Views\TabActorCommon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabMessages.xaml">
+    <Page Include="Views\TabActorDrop.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabPlayerGrowth.xaml">
+    <Page Include="Views\TabActorDropItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabPlayers.xaml">
+    <Page Include="Views\TabActorStats.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabSfxs.xaml">
+    <Page Include="Views\TabBgms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabSkills.xaml">
+    <Page Include="Views\TabElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TabSkillsUsage.xaml">
+    <Page Include="Views\TabInventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabPlayerGrowth.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabActors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabSfxs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabSkills.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabSkillsUsage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,19 +183,24 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\TabEnemies.xaml.cs">
-      <DependentUpon>TabEnemies.xaml</DependentUpon>
+    <Compile Include="Views\TabActors.xaml.cs">
+      <DependentUpon>TabActors.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabPlayers.xaml.cs">
-      <DependentUpon>TabPlayers.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TabSkills.xaml.cs">
+    <Compile Include="Views\TabSkills.xaml.cs">
       <DependentUpon>TabSkills.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\TabStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabZones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

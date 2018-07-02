@@ -23,15 +23,12 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Zone" VerticalAlignment="Center"/>
-        <ComboBox Grid.Row="0" Grid.Column="2" SelectedIndex="{Binding Zone, Mode=TwoWay}">
-            <ComboBoxItem Content="Debug"/>
-            <ComboBoxItem Content="Island"/>
-            <ComboBoxItem Content="Forest"/>
-            <ComboBoxItem Content="Cave"/>
-            <ComboBoxItem Content="Mountain"/>
-            <ComboBoxItem Content="Purification plant"/>
-            <ComboBoxItem Content="Power plant"/>
-        </ComboBox>
+        <ComboBox Grid.Row="0" Grid.Column="2" 
+            ItemsSource="{Binding Zones}"
+            SelectedValuePath="Id"
+            SelectedValue="{Binding ZoneId, Mode=TwoWay}"
+            DisplayMemberPath="Code"
+            SelectedIndex="{Binding Zone, Mode=TwoWay}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Map" VerticalAlignment="Center"/>
         <controls:NumericUpDown Grid.Row="2" Grid.Column="2"
