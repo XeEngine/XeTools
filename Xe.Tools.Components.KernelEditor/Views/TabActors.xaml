@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Xe.Tools.Components.KernelEditor.Views.TabActors"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+             xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor.Views"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <Button x:Name="ButtonRemove" DockPanel.Dock="Right" Command="{Binding RemoveCommand}">
+                    <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                </Button>
+                <Button x:Name="ButtonAdd" DockPanel.Dock="Right" Command="{Binding AddCommand}">
+                    <Image Source="{StaticResource Add_16x}" Width="16"/>
+                </Button>
+                <ComboBox ItemsSource="{Binding Items}" DisplayMemberPath="Code"
+                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
+            </DockPanel>
+            
+            <DockPanel Margin="0 5 0 5" IsEnabled="{Binding IsItemSelected}">
+                <TabControl Grid.Column="2">
+                    <TabItem Header="Common">
+                        <local:TabActorCommon/>
+                    </TabItem>
+                    <TabItem Header="Stats">
+                        <local:TabActorStats/>
+                    </TabItem>
+                    <TabItem Header="Drops">
+                        <local:TabActorDrop/>
+                    </TabItem>
+                    <TabItem Header="Growth" IsEnabled="False">
+                        <local:TabPlayerGrowth/>
+                    </TabItem>
+                    <TabItem Header="Skills" IsEnabled="False">
+                        <local:TabSkillsUsage/>
+                    </TabItem>
+                    <TabItem Header="Abilities" IsEnabled="False">
+                    </TabItem>
+                    <TabItem Header="Equip" IsEnabled="False">
+                    </TabItem>
+                </TabControl>
+            </DockPanel>
+        </DockPanel>
+    </ScrollViewer>
+</UserControl>

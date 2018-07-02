@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Xe.Game.Tilemaps
@@ -13,9 +14,9 @@ namespace Xe.Game.Tilemaps
 
         public Color? BackgroundColor { get; set; }
 
-        public string BgmField { get; set; }
+        public Guid BgmField { get; set; }
 
-        public string BgmBattle { get; set; }
+        public Guid BgmBattle { get; set; }
 
         public List<Tileset> Tilesets { get; set; }
 

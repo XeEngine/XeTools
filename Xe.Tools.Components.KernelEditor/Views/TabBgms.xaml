@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Xe.Tools.Components.KernelEditor.Views.TabBgms"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Xe.Tools.Components.KernelEditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        
+        <DockPanel Margin="5">
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="24"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Margin="0 5 5 0"
+                        Command="{Binding AddCommand}">
+                    <Image Source="{StaticResource Add_16x}" Width="16"/>
+                </Button>
+                <Button Grid.Column="1" Margin="0 5 0 0"
+                        Command="{Binding RemoveCommand}">
+                    <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                </Button>
+            </Grid>
+            <ListBox Grid.Column="0" DisplayMemberPath="DisplayName"
+                     ItemsSource="{Binding Items}"
+                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
+        </DockPanel>
+
+        <StackPanel Grid.Column="1" IsEnabled="{Binding IsItemSelected}">
+            
+            <TextBlock Text="Name"/>
+            <TextBox Margin="0 0 0 5"
+                Text="{Binding SelectedItem.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="File name"/>
+            <TextBox Margin="0 0 0 5"
+                Text="{Binding SelectedItem.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="Offset loop"/>
+            <TextBox Margin="0 0 0 5"
+                Text="{Binding SelectedItem.Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

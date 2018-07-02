@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Xe.Game.Messages;
 using Xe.Tools.Projects;
-using static Xe.Tools.Project;
 
 namespace Xe.Tools.Services
 {
@@ -35,6 +34,12 @@ namespace Xe.Tools.Services
 
         public IEnumerable<Tuple<IProjectFile, MessageContainer>> MessageContainers { get; private set; }
 
+		public IEnumerable<string> Tags => MessageContainers
+			.SelectMany(x => x.Item2.Messages)
+			.GroupBy(x => x.Tag)
+			.Select(x => x.Key);
+
+
 		public Language Language { get; set; }
 
 		public MessageService(ProjectService projectService)
@@ -47,6 +52,20 @@ namespace Xe.Tools.Services
             MessageContainers = Items.Select(x => new Tuple<IProjectFile, MessageContainer> (
                 x, ProjectService.DeserializeItem<MessageContainer>(x)
             )).ToList();
+		}
+
+		public string GetText(string tag)
+		{
+			foreach (var container in MessageContainers)
+			{
+				var message = container.Item2.GetMessagesByTag(tag);
+				if (message != null)
+				{
+					return message.FirstOrDefault()?.Text;
+				}
+			}
+
+			return tag;
 		}
 
 		public Message GetMessage(string tag)
@@ -126,13 +145,7 @@ namespace Xe.Tools.Services
 			}
         }
 
-		public string this[string tag]
-		{
-			get
-			{
-				var msg = GetMessage(tag);
-				return msg != null ? msg.Text : tag;
-			}
-		}
-    }
+		public string this[string tag] => GetText(tag);
+
+	}
 }

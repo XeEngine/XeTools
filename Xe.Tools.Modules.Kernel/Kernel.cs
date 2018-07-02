@@ -26,7 +26,7 @@ namespace Xe.Tools.Modules.Kernel
             }
             return true;
         }
-
+		 
         public override string GetOutputFileName()
         {
             var extIndex = InputFileName.IndexOf(".json");
