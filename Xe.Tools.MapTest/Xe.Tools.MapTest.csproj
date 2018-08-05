@@ -55,10 +55,6 @@
       <Project>{2632A519-F583-438E-8568-F055B192A726}</Project>
       <Name>Tiled</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
-      <Project>{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}</Project>
-      <Name>Xe.Drawing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
       <Project>{356875b9-86c1-47cb-942f-1e8413eec42d}</Project>
       <Name>Xe.Game.Drawing</Name>
@@ -75,8 +71,12 @@
       <Project>{6d7658e8-ff4d-4c50-9ba5-e30889cb00d1}</Project>
       <Name>Xe.Tools.Configurator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Drawing\Xe.Drawing.csproj">
+      <Project>{a06b8687-c55f-4c29-b53e-15e225be4cb4}</Project>
+      <Name>Xe.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe\Xe.csproj">
+      <Project>{c9cf8f2f-72f5-44cf-be30-a5466dad8415}</Project>
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>

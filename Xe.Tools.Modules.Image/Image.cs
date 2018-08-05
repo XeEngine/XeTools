@@ -35,10 +35,10 @@ namespace Xe.Tools.Modules
             var outputFileName = Path.Combine(OutputWorkingPath, OutputFileName);
             if (File.Exists(outputFileName))
                 File.Delete(outputFileName);
-            ImageService.MakeTransparent(outputFileName, inputFileName, new Color[]
+            ImageService.MakeTransparent(outputFileName, inputFileName, new Xe.Graphics.Color[]
             {
-                new Color() { r = 255, g = 0, b = 255 },
-                new Color() { r = 255, g = 128, b = 0 }
+                new Xe.Graphics.Color() { r = 255, g = 0, b = 255 },
+                new Xe.Graphics.Color() { r = 255, g = 128, b = 0 }
             });
         }
     }

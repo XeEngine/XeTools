@@ -92,6 +92,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Xe.BusinessLogic\Xe.BusinessLogic.csproj">
+      <Project>{c57850ad-c0b6-4f60-8a88-985a01dcf964}</Project>
+      <Name>Xe.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{B5A0BF08-18E7-406E-82E7-DF72EB113B1B}</Project>
       <Name>Xe.Game</Name>
@@ -104,17 +108,13 @@
       <Project>{240B9F1C-1DBA-4D73-8FC3-7F9EB39B57D5}</Project>
       <Name>Xe.Tools.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
-      <Project>{545d863a-cd36-4c79-a07f-cf82b718fc3e}</Project>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
+      <Project>{f6e4e1df-acc6-4dde-912f-c6465cb3d393}</Project>
       <Name>Xe.Tools.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
-      <Project>{EA2C7533-429D-4C2E-A3CE-4C77340E8A40}</Project>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Tools\Xe.Tools.csproj">
+      <Project>{6949ec2f-846a-40e1-955f-f0d06b8ae4e8}</Project>
       <Name>Xe.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{1936CEBA-B05F-4A04-BB47-299D8201EC63}</Project>
-      <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

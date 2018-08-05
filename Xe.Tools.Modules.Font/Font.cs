@@ -66,10 +66,10 @@ namespace Xe.Tools.Modules
                 var output = Path.Combine(outputBasePath, table.Texture);
                 if (File.Exists(output))
                     File.Delete(output);
-                ImageService.MakeTransparent(output, input, new Color[]
+                ImageService.MakeTransparent(output, input, new Xe.Graphics.Color[]
                 {
-                    new Color() { r = 255, g = 0, b = 255 },
-                    new Color() { r = 255, g = 128, b = 0 },
+                    new Xe.Graphics.Color() { r = 255, g = 0, b = 255 },
+                    new Xe.Graphics.Color() { r = 255, g = 128, b = 0 },
                 });
             }
         }

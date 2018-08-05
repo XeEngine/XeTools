@@ -19,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj" />
     <ProjectReference Include="..\Xe.Tools.Modules\Xe.Tools.Modules.csproj" />
-    <ProjectReference Include="..\Xe\Xe.csproj" />
   </ItemGroup>
 
 </Project>

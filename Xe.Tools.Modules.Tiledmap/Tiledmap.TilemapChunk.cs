@@ -197,11 +197,12 @@ namespace Xe.Tools.Modules
                              layer.MapHeight * tileSize.Height,
                              PixelFormat.Undefined, SurfaceType.Output);
 
-                        dc.Drawing.Surface = surface;
+						dc.Drawing.Surface = surface;
                         foreach (var sublayer in layer.Sublayers)
                             dc.DrawLayer(sublayer, rect);
-                        layer.Surface = drawing.Surface;
-                    }
+						dc.Drawing.Flush();
+						layer.Surface = drawing.Surface;
+					}
                 }
 
                 // Tileset creation
