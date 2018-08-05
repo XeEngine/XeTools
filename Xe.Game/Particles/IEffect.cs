@@ -1,40 +1,5 @@
 ﻿namespace Xe.Game.Particles
 {
-	public enum Ease
-	{
-		Linear,
-		QuadraticEaseIn,
-		QuadraticEaseOut,
-		Quadratic,
-		CubicEaseIn,
-		CubicEaseOut,
-		CubicEaseInOut,
-		QuarticEaseIn,
-		QuarticEaseOut,
-		QuarticEaseInOut,
-		QuinticEaseIn,
-		QuinticEaseOut,
-		QuinticEaseInOut,
-		SineEaseIn,
-		SineEaseOut,
-		SineEaseInOut,
-		CircularEaseIn,
-		CircularEaseOut,
-		CircularEaseInOut,
-		ExponentialEaseIn,
-		ExponentialEaseOut,
-		ExponentialEaseInOut,
-		ElasticEaseIn,
-		ElasticEaseOut,
-		ElasticEaseInOut,
-		BackEaseIn,
-		BackEaseOut,
-		BackEaseInOut,
-		BounceEaseIn,
-		BounceEaseOut,
-		BounceEaseInOut
-	}
-
 	public enum ParameterType
 	{
 		None,

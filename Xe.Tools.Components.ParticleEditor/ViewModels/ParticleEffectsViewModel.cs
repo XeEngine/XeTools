@@ -1,4 +1,5 @@
-﻿using Xe.Game.Particles;
+﻿using Xe.Game;
+using Xe.Game.Particles;
 using Xe.Tools.Components.ParticleEditor.Service;
 using Xe.Tools.Wpf;
 

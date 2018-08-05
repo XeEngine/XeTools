@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using Xe.Game;
 using Xe.Game.Particles;
 using Xe.Tools.Components.ParticleEditor.ViewModels;
 

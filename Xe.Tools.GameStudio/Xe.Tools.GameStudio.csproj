@@ -206,6 +206,10 @@
       <Project>{c57850ad-c0b6-4f60-8a88-985a01dcf964}</Project>
       <Name>Xe.BusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xe.Tools.AnimatedPaletteEditor\Xe.Tools.Components.AnimatedPaletteEditor.csproj">
+      <Project>{7130939c-c497-44df-bd97-ac6b9d158149}</Project>
+      <Name>Xe.Tools.Components.AnimatedPaletteEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
       <Project>{f6e4e1df-acc6-4dde-912f-c6465cb3d393}</Project>
       <Name>Xe.Tools.Wpf</Name>
