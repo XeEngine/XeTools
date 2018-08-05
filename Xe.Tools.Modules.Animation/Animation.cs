@@ -71,7 +71,7 @@ namespace Xe.Tools.Modules
                 if (texture.Transparencies?.Length > 0)
                 {
                     ImageService.MakeTransparent(output, input, texture.Transparencies
-                        .Select(x => new Color()
+                        .Select(x => new Xe.Graphics.Color()
                         {
                             r = (byte)((x >> 24) & 0xFF),
                             g = (byte)((x >> 16) & 0xFF),

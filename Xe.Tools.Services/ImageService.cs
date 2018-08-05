@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,11 +8,6 @@ using System.Windows.Media.Imaging;
 
 namespace Xe.Tools.Services
 {
-    public class Color
-    {
-        public byte r, g, b, a;
-    }
-
     /// <summary>
     /// Manage opening, saving and operations on images
     /// </summary>
@@ -49,7 +43,7 @@ namespace Xe.Tools.Services
             }
         }
 
-        public static void MakeTransparent(string fileOutput, string fileInput, Color[] colors)
+        public static void MakeTransparent(string fileOutput, string fileInput, Xe.Graphics.Color[] colors)
         {
             var bitmapImage = MakeTransparent(fileInput, colors);
 
@@ -66,13 +60,13 @@ namespace Xe.Tools.Services
             }
         }
 
-        public static BitmapSource MakeTransparent(string fileName, Color[] colors)
+        public static BitmapSource MakeTransparent(string fileName, Xe.Graphics.Color[] colors)
         {
             var bitmapImage = Open(fileName);
             return bitmapImage.MakeTransparent(colors);
         }
 
-        public static BitmapSource MakeTransparent(this BitmapSource bitmap, Color[] colors)
+        public static BitmapSource MakeTransparent(this BitmapSource bitmap, Xe.Graphics.Color[] colors)
         {
             BitmapSource newBitmap = null;
 
@@ -135,7 +129,7 @@ namespace Xe.Tools.Services
             }
             return newBitmap;
         }
-        public static PixelFormat MakeTransparent(IntPtr data, int stride, int height, PixelFormat pixelFormat, Color[] colors)
+        public static PixelFormat MakeTransparent(IntPtr data, int stride, int height, PixelFormat pixelFormat, Xe.Graphics.Color[] colors)
         {
             if (pixelFormat == PixelFormats.Bgr32 ||
                 pixelFormat == PixelFormats.Bgra32)
@@ -144,7 +138,7 @@ namespace Xe.Tools.Services
                 {
                     int to = color.b | (color.g << 8) | (color.r << 16);
                     int from = to | (0xFF << 24);
-                    MakeTransparent_Bpp32(data, stride, height, from, to);
+                    Xe.Tools.Utilities.BitmapUtility.MakeTransparent_Bpp32(data, stride, height, from, to);
                 }
                 return PixelFormats.Bgra32;
             }
@@ -152,51 +146,6 @@ namespace Xe.Tools.Services
             {
                 Log.Error($"Unsupported pixel format {pixelFormat}.");
                 return pixelFormat;
-            }
-        }
-        public static void MakeTransparent_Bgra32(IntPtr data, int stride, int height, Color[] colors)
-        {
-            foreach (var color in colors)
-            {
-                int to = color.b | (color.g << 8) | (color.r << 16);
-                int from = to | (0xFF << 24);
-                to = 0; // HACK
-                MakeTransparent_Bpp32(data, stride, height, from, to);
-            }
-        }
-
-        private static unsafe void MakeTransparent_Bpp24(IntPtr data, int stride, int height, int from, int to)
-        {
-            ushort srcab = (ushort)from;
-            byte srcc = (byte)(from >> 16);
-
-            ushort dstab = (ushort)to;
-            byte dstc = (byte)(to >> 16);
-
-            for (int i = 0; i < height; i++)
-            {
-                byte* p = (byte*)(data + i * stride);
-                for (int j = 0; j < stride; j += 3, p += 3)
-                {
-                    if (*(ushort*)p == srcab &&
-                        *(p + 2) == srcc)
-                    {
-                        *(ushort*)p = dstab;
-                        *(p + 2) = dstc;
-                    }
-                }
-            }
-        }
-        private static unsafe void MakeTransparent_Bpp32(IntPtr data, int stride, int height, int from, int to)
-        {
-            for (int i = 0; i < height; i++)
-            {
-                int* p = (int*)(data + i * stride);
-                for (int j = 0; j < stride; j += 4, p++)
-                {
-                    if (*p == from)
-                        *p = to;
-                }
             }
         }
     }

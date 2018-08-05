@@ -47,16 +47,20 @@
     <Compile Include="SpriteService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Xe.BusinessLogic\Xe.BusinessLogic.csproj">
+      <Project>{c57850ad-c0b6-4f60-8a88-985a01dcf964}</Project>
+      <Name>Xe.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
-      <Project>{ea2c7533-429d-4c2e-a3ce-4c77340e8a40}</Project>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Tools\Xe.Tools.csproj">
+      <Project>{6949ec2f-846a-40e1-955f-f0d06b8ae4e8}</Project>
       <Name>Xe.Tools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe\Xe.csproj">
-      <Project>{1936ceba-b05f-4a04-bb47-299d8201ec63}</Project>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe\Xe.csproj">
+      <Project>{c9cf8f2f-72f5-44cf-be30-a5466dad8415}</Project>
       <Name>Xe</Name>
     </ProjectReference>
   </ItemGroup>

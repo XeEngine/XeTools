@@ -106,9 +106,9 @@
       <Project>{2632a519-f583-438e-8568-f055b192a726}</Project>
       <Name>Tiled</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Drawing\Xe.Drawing.csproj">
-      <Project>{17CE77B7-CAE4-46F1-93B2-BE1809856F4D}</Project>
-      <Name>Xe.Drawing</Name>
+    <ProjectReference Include="..\Xe.BusinessLogic\Xe.BusinessLogic.csproj">
+      <Project>{C57850AD-C0B6-4F60-8A88-985A01DCF964}</Project>
+      <Name>Xe.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xe.Game.Drawing\Xe.Game.Drawing.csproj">
       <Project>{356875B9-86C1-47CB-942F-1E8413EEC42D}</Project>
@@ -138,13 +138,13 @@
       <Project>{240b9f1c-1dba-4d73-8fc3-7f9eb39b57d5}</Project>
       <Name>Xe.Tools.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
-      <Project>{545d863a-cd36-4c79-a07f-cf82b718fc3e}</Project>
-      <Name>Xe.Tools.Wpf</Name>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Drawing\Xe.Drawing.csproj">
+      <Project>{a06b8687-c55f-4c29-b53e-15e225be4cb4}</Project>
+      <Name>Xe.Drawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools\Xe.Tools.csproj">
-      <Project>{ea2c7533-429d-4c2e-a3ce-4c77340e8a40}</Project>
-      <Name>Xe.Tools</Name>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
+      <Project>{f6e4e1df-acc6-4dde-912f-c6465cb3d393}</Project>
+      <Name>Xe.Tools.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

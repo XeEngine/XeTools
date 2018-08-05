@@ -48,7 +48,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xe.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -116,6 +115,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Xe.BusinessLogic\Xe.BusinessLogic.csproj">
+      <Project>{C57850AD-C0B6-4F60-8A88-985A01DCF964}</Project>
+      <Name>Xe.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xe.Game\Xe.Game.csproj">
       <Project>{b5a0bf08-18e7-406e-82e7-df72eb113b1b}</Project>
       <Name>Xe.Game</Name>
@@ -128,9 +131,13 @@
       <Project>{00030908-6B5C-4589-B525-07196A614E0B}</Project>
       <Name>Xe.Tools.Modules.TileCollision</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
-      <Project>{545d863a-cd36-4c79-a07f-cf82b718fc3e}</Project>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Tools.Wpf\Xe.Tools.Wpf.csproj">
+      <Project>{f6e4e1df-acc6-4dde-912f-c6465cb3d393}</Project>
       <Name>Xe.Tools.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XeEngine.Tools.Public\Xe.Tools\Xe.Tools.csproj">
+      <Project>{6949ec2f-846a-40e1-955f-f0d06b8ae4e8}</Project>
+      <Name>Xe.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
