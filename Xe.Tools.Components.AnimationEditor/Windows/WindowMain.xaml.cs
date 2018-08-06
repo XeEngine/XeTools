@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 using Xe.Game;
 using Xe.Game.Animations;
 using Xe.Tools.Components.AnimationEditor.Services;
@@ -12,7 +11,6 @@ using Xe.Tools.Components.AnimationEditor.ViewModels;
 using Xe.Tools.Projects;
 using Xe.Tools.Wpf.Controls;
 using Xe.Tools.Wpf.Dialogs;
-using static Xe.Tools.Project;
 
 namespace Xe.Tools.Components.AnimationEditor.Windows
 {

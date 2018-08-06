@@ -1,4 +1,4 @@
-﻿<Window x:Class="Xe.Tools.Components.AnimatedPaletteEditor.Views.MainView"
+﻿<controls:WindowEx x:Class="Xe.Tools.Components.AnimatedPaletteEditor.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,16 +6,17 @@
         xmlns:local="clr-namespace:Xe.Tools.Components.AnimatedPaletteEditor.Views"
         xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
         mc:Ignorable="d"
-        Title="Animated Palette Editor" Height="350" Width="700">
+        Title="Animated Palette Editor" Height="500" Width="750"
+                   AskExitConfirmation="True">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
         <local:ActionsView Grid.Column="0"
@@ -25,42 +26,99 @@
             DataContext="{Binding Actions.SelectedItem}"
             IsEnabled="{Binding Actions.IsItemSelected}"/>
 
-        <StackPanel Grid.Column="4"
-            DataContext="{Binding Actions.SelectedItem.SelectedItem}"
+        <ScrollViewer Grid.Column="4" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <StackPanel Grid.Column="4"
+                DataContext="{Binding Actions.SelectedItem.SelectedItem}"
+                IsEnabled="{Binding Actions.SelectedItem.IsItemSelected}">
+                <TextBlock Text="Command"/>
+                <ComboBox
+                    ItemsSource="{Binding CommandTypes}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Value"
+                    SelectedValue="{Binding CommandType}"
+                    SelectionChanged="Command_Selected"/>
+                <TextBlock Margin="0 0 0 5" TextWrapping="Wrap"
+                    Text="{Binding CommandDescription}"/>
+
+                <TextBlock Text="Ease"/>
+                <ComboBox Margin="0 0 0 5"
+                    ItemsSource="{Binding EaseTypes}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Value"
+                    SelectedValue="{Binding Ease}"/>
+
+                <CheckBox Margin="0 0 0 5"
+                          IsChecked="{Binding InvertedTimer}"
+                          Content="Inverted timer"/>
+
+                <TextBlock Text="Start"/>
+                <controls:NumericUpDownd Margin="0 0 0 5"
+                    Value="{Binding Start, Mode=TwoWay}"/>
+
+                <TextBlock Text="End"/>
+                <controls:NumericUpDownd Margin="0 0 0 5"
+                    Value="{Binding End, Mode=TwoWay}"/>
+
+                <TextBlock Text="Loop"/>
+                <DockPanel>
+                    <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center"
+                        IsChecked="{Binding LoopEnabled, Mode=TwoWay}"/>
+                    <controls:NumericUpDownd Margin="0 0 5 0"
+                        IsEnabled="{Binding LoopEnabled, Mode=TwoWay}"
+                        Value="{Binding Loop, Mode=TwoWay}"/>
+                </DockPanel>
+
+                <StackPanel x:Name="commandParametersPanel"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <DockPanel Grid.Column="6"
             IsEnabled="{Binding Actions.SelectedItem.IsItemSelected}">
-            <TextBlock Text="Command"/>
-            <ComboBox
-                ItemsSource="{Binding CommandTypes}"
-                DisplayMemberPath="Name"
-                SelectedValuePath="Value"
-                SelectedValue="{Binding CommandType}"/>
-            <TextBlock Margin="0 0 0 5" TextWrapping="Wrap"
-                Text="{Binding CommandDescription}"/>
-            
-            <TextBlock Text="Ease"/>
-            <ComboBox Margin="0 0 0 5"
-                ItemsSource="{Binding EaseTypes}"
-                DisplayMemberPath="Name"
-                SelectedValuePath="Value"
-                SelectedValue="{Binding Ease}"/>
-            
-            <TextBlock Text="Start"/>
-            <controls:NumericUpDownd Margin="0 0 0 5"
-                Value="{Binding Start, Mode=TwoWay}"/>
+            <Image DockPanel.Dock="Top" Height="128"
+                   Stretch="Fill" Margin="0 0 0 5"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                   Source="{Binding Palette}"/>
 
-            <TextBlock Text="End"/>
-            <controls:NumericUpDownd Margin="0 0 0 5"
-                Value="{Binding End, Mode=TwoWay}"/>
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Loop"/>
-            <DockPanel Margin="0 0 0 5">
-                <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center"
-                    IsChecked="{Binding LoopEnabled, Mode=TwoWay}"/>
-                <controls:NumericUpDownd Margin="0 0 5 0"
-                    IsEnabled="{Binding LoopEnabled, Mode=TwoWay}"
-                    Value="{Binding Loop, Mode=TwoWay}"/>
-            </DockPanel>
-        </StackPanel>
+                <Button Grid.Column="0"
+                        Command="{Binding PlayActionCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Run_16x}" Width="16"/>
+                        <TextBlock Text="Action" Margin="3 0 3 0"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2"
+                        Command="{Binding PlayCommandCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Run_16x}" Width="16"/>
+                        <TextBlock Text="Command" Margin="3 0 3 0"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="4"
+                        Command="{Binding StopCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Stop_16x}" Width="16"/>
+                        <TextBlock Text="Stop" Margin="3 0 3 0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
 
+            <Button DockPanel.Dock="Bottom"
+                    Content="Load image..."
+                    Command="{Binding LoadImageCommand}"/>
+
+            <Image Stretch="Uniform"
+                RenderOptions.BitmapScalingMode="NearestNeighbor"
+                Source="{Binding Spritesheet}"/>
+        </DockPanel>
+        
     </Grid>
-</Window>
+</controls:WindowEx>

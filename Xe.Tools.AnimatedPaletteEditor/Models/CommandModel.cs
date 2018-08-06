@@ -45,6 +45,12 @@ namespace Xe.Tools.Components.AnimatedPaletteEditor.Models
 			set => Command.Ease = value;
 		}
 
+		public bool InvertedTimer
+		{
+			get => Command?.InvertedTimer ?? false;
+			set => Command.InvertedTimer = value;
+		}
+
 		public double Start
 		{
 			get => Command?.Start ?? 0.0;
@@ -72,16 +78,18 @@ namespace Xe.Tools.Components.AnimatedPaletteEditor.Models
 			{
 				Command.Loop = (float)value;
 				OnPropertyChanged();
+				OnPropertyChanged(nameof(LoopEnabled));
 			}
 		}
 
 		public bool LoopEnabled
 		{
-			get => Loop == float.MaxValue;
+			get => Loop != float.MaxValue;
 			set
 			{
-				Loop = value ? float.MaxValue : 0.0;
+				Loop = value ? 0.0 : float.MaxValue;
 				OnPropertyChanged();
+				OnPropertyChanged(nameof(Loop));
 			}
 		}
 

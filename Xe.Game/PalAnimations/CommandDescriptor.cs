@@ -139,21 +139,21 @@ namespace Xe.Game.PalAnimations
 						{
 							Type = typeof(float),
 							Name = "Red channel",
-							Minimum = 0,
+							Minimum = 0.0f,
 							Maximum = 256.0f,
 						},
 						new CommandParameter()
 						{
 							Type = typeof(float),
 							Name = "Blue channel",
-							Minimum = 0,
+							Minimum = 0.0f,
 							Maximum = 256.0f,
 						},
 						new CommandParameter()
 						{
 							Type = typeof(float),
 							Name = "Green channel",
-							Minimum = 0,
+							Minimum = 0.0f,
 							Maximum = 256.0f,
 						},
 					}),
@@ -398,25 +398,25 @@ namespace Xe.Game.PalAnimations
 						},
 					}),
 
-				[CommandType.RotateHue] = new CommandDescriptor(
-					"Rotate the hue of the color",
-					new CommandParameter[]
-					{
-						new CommandParameter()
-						{
-							Type = typeof(byte),
-							Name = "Destination index",
-							Minimum = 0,
-							Maximum = 255,
-						},
-						new CommandParameter()
-						{
-							Type = typeof(float),
-							Name = "Hue movement per second",
-							Minimum = -720.0f,
-							Maximum = +720.0f,
-						},
-					}),
+				//[CommandType.RotateHue] = new CommandDescriptor(
+				//	"Rotate the hue of the color",
+				//	new CommandParameter[]
+				//	{
+				//		new CommandParameter()
+				//		{
+				//			Type = typeof(byte),
+				//			Name = "Destination index",
+				//			Minimum = 0,
+				//			Maximum = 255,
+				//		},
+				//		new CommandParameter()
+				//		{
+				//			Type = typeof(float),
+				//			Name = "Hue movement per second",
+				//			Minimum = -720.0f,
+				//			Maximum = +720.0f,
+				//		},
+				//	}),
 
 				[CommandType.RotateRight] = new CommandDescriptor(
 					"Rotate a group of colors to the right",
@@ -478,58 +478,58 @@ namespace Xe.Game.PalAnimations
 						},
 					}),
 
-				[CommandType.LoadClut] = new CommandDescriptor(
-					"Replace the current Clut with a new one",
-					new CommandParameter[]
-					{
-						new CommandParameter()
-						{
-							Type = typeof(byte[]),
-							Name = "Data",
-						},
-					}),
+				//[CommandType.LoadClut] = new CommandDescriptor(
+				//	"Replace the current Clut with a new one",
+				//	new CommandParameter[]
+				//	{
+				//		new CommandParameter()
+				//		{
+				//			Type = typeof(byte[]),
+				//			Name = "Data",
+				//		},
+				//	}),
 
-				[CommandType.ApplyClut] = new CommandDescriptor(
-					"Apply the Clut filtering by a key color",
-					new CommandParameter[]
-					{
-						new CommandParameter()
-						{
-							Type = typeof(byte[]),
-							Name = "Data",
-						},
-						new CommandParameter()
-						{
-							Type = typeof(byte),
-							Name = "Red channel of key color",
-							Minimum = 0,
-							Maximum = 255,
-						},
-						new CommandParameter()
-						{
-							Type = typeof(byte),
-							Name = "Blue channel of key color",
-							Minimum = 0,
-							Maximum = 255,
-						},
-						new CommandParameter()
-						{
-							Type = typeof(byte),
-							Name = "Green channel of key color",
-							Minimum = 0,
-							Maximum = 255,
-						},
-					}),
+				//[CommandType.ApplyClut] = new CommandDescriptor(
+				//	"Apply the Clut filtering by a key color",
+				//	new CommandParameter[]
+				//	{
+				//		new CommandParameter()
+				//		{
+				//			Type = typeof(byte[]),
+				//			Name = "Data",
+				//		},
+				//		new CommandParameter()
+				//		{
+				//			Type = typeof(byte),
+				//			Name = "Red channel of key color",
+				//			Minimum = 0,
+				//			Maximum = 255,
+				//		},
+				//		new CommandParameter()
+				//		{
+				//			Type = typeof(byte),
+				//			Name = "Blue channel of key color",
+				//			Minimum = 0,
+				//			Maximum = 255,
+				//		},
+				//		new CommandParameter()
+				//		{
+				//			Type = typeof(byte),
+				//			Name = "Green channel of key color",
+				//			Minimum = 0,
+				//			Maximum = 255,
+				//		},
+				//	}),
 			};
 		}
 
-		public CommandDescriptor(string description, IEnumerable<CommandParameter> parameters)
+		public CommandDescriptor(string description, CommandParameter[] parameters)
 		{
 			Parameters = parameters;
 			Description = description;
 		}
 
-		public IEnumerable<CommandParameter> Parameters { get; }
+		public CommandParameter[] Parameters { get; }
 
 		public string Description { get; set; }
 	}

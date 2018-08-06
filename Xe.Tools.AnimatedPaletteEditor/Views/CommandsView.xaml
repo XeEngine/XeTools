@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Xe.Tools.Components.AnimatedPaletteEditor.Views"
+             xmlns:controls="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="160">
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Margin="0 0 0 3"
                        Text="Commands"/>
+
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal">
             <Button Grid.Column="0" Margin="0 5 5 0"
@@ -24,20 +26,13 @@
                 </StackPanel>
             </Button>
             <Button Grid.Column="2" Margin="0 5 5 0"
-                    Command="{Binding DuplicateCommand}"
-                    IsEnabled="false">
+                    Command="{Binding DuplicateCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Copy_16x}" Width="16"/>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="3" Margin="0 5 5 0"
-                    Command="{Binding PreviewCommand}"
-                    IsEnabled="false">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource Run_16x}" Width="16"/>
-                </StackPanel>
-            </Button>
         </StackPanel>
+        
         <ListBox
             ItemsSource="{Binding Items}"
             SelectedItem="{Binding SelectedItem}"

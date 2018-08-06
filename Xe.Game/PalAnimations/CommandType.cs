@@ -26,10 +26,10 @@
 		MultiplyAlpha = 22,
 
 		Invert = 24,
-		RotateHue = 25,
+		//RotateHue = 25,
 		RotateRight = 26,
 		RotateLeft = 27,
-		LoadClut = 28,
-		ApplyClut = 29,
+		//LoadClut = 28,
+		//ApplyClut = 29,
 	}
 }

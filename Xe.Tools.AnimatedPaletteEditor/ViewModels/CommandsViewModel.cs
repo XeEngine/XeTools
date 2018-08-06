@@ -11,12 +11,12 @@ namespace Xe.Tools.Components.AnimatedPaletteEditor.ViewModels
 		public CommandsViewModel()
 			: this(new PalAction()
 			{
-				Actions = new List<PalCommand>()
+				Commands = new List<PalCommand>()
 			})
 		{ }
 
 		public CommandsViewModel(PalAction action)
-			: base(action.Actions.Select(x => new CommandModel(x)))
+			: base(action.Commands.Select(x => new CommandModel(x)))
 		{
 			Action = action;
 		}

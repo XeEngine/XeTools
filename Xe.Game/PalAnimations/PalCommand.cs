@@ -8,6 +8,8 @@ namespace Xe.Game.PalAnimations
 
 		public Ease Ease { get; set; }
 
+		public bool InvertedTimer { get; set; }
+
 		public float Start { get; set; }
 
 		public float End { get; set; }

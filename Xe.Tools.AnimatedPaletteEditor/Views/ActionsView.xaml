@@ -24,8 +24,7 @@
                 </StackPanel>
             </Button>
             <Button Grid.Column="2" Margin="0 5 5 0"
-                    Command="{Binding DuplicateCommand}"
-                    IsEnabled="false">
+                    Command="{Binding DuplicateCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Copy_16x}" Width="16"/>
                 </StackPanel>

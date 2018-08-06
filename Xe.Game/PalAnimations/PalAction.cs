@@ -6,6 +6,6 @@ namespace Xe.Game.PalAnimations
     {
 		public string Name { get; set; }
 
-		public List<PalCommand> Actions { get; set; }
+		public List<PalCommand> Commands { get; set; }
 	}
 }
