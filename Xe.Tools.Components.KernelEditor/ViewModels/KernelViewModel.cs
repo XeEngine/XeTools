@@ -69,7 +69,12 @@ namespace Xe.Tools.Components.KernelEditor.ViewModels
         public void SaveChanges()
         {
 			Kernel.Zones = Zones.Items.Select(x => x.Item).ToList();
-			Kernel.Bgms = Bgms.Items.Select(x => x.Item).ToList();
+			Kernel.Bgms = Bgms.Items.Select(x =>
+			{
+				x.Item.Loops = x.Loops.ToList();
+				x.Item.Starts = x.Starts.ToList();
+				return x.Item;
+			}).ToList();
 			Kernel.Sfxs = Sfxs.Items.Select(x => x.Item).ToList();
 			Kernel.Elements = Elements.Items.Select(x => x.Item).ToList();
 			Kernel.InventoryItems = Inventory.Items.Select(x => x.Item).ToList();

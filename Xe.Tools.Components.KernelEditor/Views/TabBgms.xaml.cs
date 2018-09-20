@@ -11,5 +11,10 @@ namespace Xe.Tools.Components.KernelEditor.Views
 		{
 			InitializeComponent();
 		}
+
+		private void ButtonChooseFile_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+
+		}
 	}
 }

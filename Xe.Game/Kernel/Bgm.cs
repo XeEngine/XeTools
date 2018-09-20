@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Xe.Game.Kernel
 {
@@ -10,6 +11,8 @@ namespace Xe.Game.Kernel
 
 		public string FileName { get; set; }
 
-		public int Loop { get; set; }
+		public List<BgmLoop> Loops { get; set; }
+
+		public List<BgmStart> Starts { get; set; }
 	}
 }

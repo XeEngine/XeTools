@@ -86,12 +86,12 @@ namespace Xe.Tools.Components.KernelEditor.Models
 
 		private void NotifyItemSelected()
 		{
-			OnPropertyChanged(nameof(SelectedItem));
-			OnPropertyChanged(nameof(SelectedIndex));
 			OnPropertyChanged(nameof(IsItemSelected));
 			OnPropertyChanged(nameof(RemoveCommand));
 			OnPropertyChanged(nameof(MoveUpCommand));
 			OnPropertyChanged(nameof(MoveDownCommand));
+			OnPropertyChanged(nameof(SelectedIndex));
+			OnPropertyChanged(nameof(SelectedItem));
 		}
 
 		public void Filter(Func<T, bool> selector = null)

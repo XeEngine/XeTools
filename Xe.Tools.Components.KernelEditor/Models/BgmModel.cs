@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Xe.Game.Kernel;
 
 namespace Xe.Tools.Components.KernelEditor.Models
@@ -28,6 +29,8 @@ namespace Xe.Tools.Components.KernelEditor.Models
 		public BgmModel(Bgm bgm)
 		{
 			Item = bgm;
+			Loops = new ObservableCollection<BgmLoop>(Item.Loops ?? new List<BgmLoop>());
+			Starts = new ObservableCollection<BgmStart>(Item.Starts ?? new List<BgmStart>() { new BgmStart() });
 		}
 
 		public Bgm Item { get; }
@@ -55,14 +58,8 @@ namespace Xe.Tools.Components.KernelEditor.Models
 			}
 		}
 
-		public int Loop
-		{
-			get => Item.Loop;
-			set
-			{
-				Item.Loop = value;
-				OnPropertyChanged();
-			}
-		}
+		public ObservableCollection<BgmLoop> Loops { get; set; }
+
+		public ObservableCollection<BgmStart> Starts { get; set; }
 	}
 }

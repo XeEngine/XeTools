@@ -33,21 +33,64 @@
                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
         </DockPanel>
 
-        <StackPanel Grid.Column="1" IsEnabled="{Binding IsItemSelected}">
-            
-            <TextBlock Text="Name"/>
-            <TextBox Margin="0 0 0 5"
+        <Grid Grid.Column="1" IsEnabled="{Binding IsItemSelected}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Name"/>
+                <TextBox Margin="0 0 0 5"
                 Text="{Binding SelectedItem.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Text="File name"/>
-            <TextBox Margin="0 0 0 5"
+                <TextBlock Text="Path"/>
+                <Grid Margin="0 0 0 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" Click="ButtonChooseFile_Click">
+                        <Button.Content>
+                            <Image Source="{StaticResource FolderOpen_16x}"/>
+                        </Button.Content>
+                    </Button>
+                    <TextBox
                 Text="{Binding SelectedItem.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <TextBlock Text="Offset loop"/>
-            <TextBox Margin="0 0 0 5"
-                Text="{Binding SelectedItem.Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            
-        </StackPanel>
+                </Grid>
+            </StackPanel>
+            <TabControl Grid.Row="1">
+                <TabItem Header="Loops">
+                    <ScrollViewer>
+                        <DataGrid ItemsSource="{Binding SelectedItem.Loops}"
+                            AutoGenerateColumns="False"
+                            CanUserReorderColumns="False"
+                            CanUserResizeColumns="False"
+                            CanUserSortColumns="False"
+                            CanUserResizeRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*" Header="Start" Binding="{Binding OffsetStart}" />
+                                <DataGridTextColumn Width="*" Header="End" Binding="{Binding OffsetEnd}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Start points">
+                    <ScrollViewer>
+                        <DataGrid ItemsSource="{Binding SelectedItem.Starts}"
+                            AutoGenerateColumns="False"
+                            CanUserReorderColumns="False"
+                            CanUserResizeColumns="False"
+                            CanUserSortColumns="False"
+                            CanUserResizeRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*" Header="Start" Binding="{Binding OffsetStart}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Grid>
         
     </Grid>
 </UserControl>
